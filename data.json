@@ -22,7 +22,7 @@
 	"js":         [ 
 	],
 	"routes":     {
-		"default": { "model": "default", "view": [ "master/head", "default", "master/tail" ] },
+		"default": { "model": "default", "view": [ "master/head", "master/nav", "default", "master/tail" ] },
 		"home": { }
 	}
 }
