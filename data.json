@@ -1,0 +1,28 @@
+{
+	"source":     "Iv_Tracker_Db",
+	"cookie":     "3ad2d4dc34e75130c0c2f3c4bbb262481b49250261bcb8e6443728b63d24",
+	"base":       "/motrpac/web/secure/dataentry/iv/",
+	"Home":       "tmp",
+	"name":       "iv",
+	"title":      "iv",
+	"debug":      0,
+	"master-post":false,
+	"localOverride": {
+		"4xx": 0,
+		"5xx": 0
+	},
+	"settings":   {
+		"verboseLog": 0,
+		"addLogLine": 0
+	}, 
+	"data":       {
+	},
+	"css":        [ 
+	],
+	"js":         [ 
+	],
+	"routes":     {
+		"default": { "model": "default", "view": [ "master/head", "default", "master/tail" ] },
+		"home": { }
+	}
+}
