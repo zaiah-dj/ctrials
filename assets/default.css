@@ -1,45 +1,3 @@
-/*zero*/
-/* Borrowed and modified from http://meyerweb.com/eric/tools/css/reset/ */
-html, body, div, 
-h1, h2, h3, h4, h5, h6, 
-p, pre,
-a, img, b, u, i, center, dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend, table, caption, 
-tbody, tfoot, thead, tr, th, td, article, aside, 
-canvas, details, embed, figure, figcaption, 
-footer, header, hgroup, menu, nav, output, ruby, 
-section, summary, time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after, q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-
 /*global*/
 html {
 	font-family: Helvetica;
@@ -113,30 +71,11 @@ h3 { font-size: 4em; }
 h4 { font-size: 3em; }
 h5 { font-size: 2em; }
 
-a {
-	font-family: "Lucida Console", "Lucida Sans Typewriter", monaco, "Bitstream Vera Sans Mono", monospace;
-	line-height: 40px;
-	background-color: #333;
-	font-size: 1.4em;
-	color: white;
-	text-align: center;
-	padding: 10px;
-}
-
-a:hover {
-	background-color: white;
-	color: black;
-}
 
 p {
 	font-family: "Lucida Console", "Lucida Sans Typewriter", monaco, "Bitstream Vera Sans Mono", monospace;
 	font-size: 1.4em;
 	margin-top: 30px;
-}
-
-ul li {
-	margin: 5;
-	margin-left: 0;
 }
 
 .gets
@@ -173,13 +112,6 @@ ul li {
 	}
 }
 
-@media (min-width: 737px) and ( max-width: 1200px ) {
-	h1 { font-size: 10em; 
-			 font-weight: bold; 
-			 padding-top: 100px; }
-}
-
-
 html {
 	background-color: #001a00;
 }
@@ -188,37 +120,79 @@ html {
 	width: 100%;
 }
 
-.participants li
+div.part-div {
+	width: 100%;
+	white-space: nowrap;
+	border: 4px solid gray;
+	overflow: scroll;
+}
+
+.participant-selector
 {
-	background-color: #eee;
-	width: 90%;
-	color: black;
+	z-index: 99;
+	width: 200px;
+	background-color: #aaa;
+	height: 30px;
+	padding: 5px;
+	transform:
+		rotate( -70deg )
+	;
+	transform-origin:
+		120px 100px;
+	;
 	transition: 
 		background-color 0.2s,
-		height 0.2s,
 		color 0.2s
 	;
 }
 
-.participants li:hover
+.participant-selector:hover
 {
 	background-color: green;
 	color: white;
-	width: 90%;
 }
 
-.participants li.active
+.participant-info
+{
+	background-color: #e6e6ff;
+}
+
+.participants li + div:active
 {
 	width: 100%;
-	height: 100%;
 	transition: 
 		background-color 0.2s,
-		height 0.2s,
 		color 0.2s
 	;
 }
 
-.nav ul.nav li {
+.participants li
+{
+	z-index: 0;
+	position: relative;
+	margin-bottom: -10px;
+	display: inline-block;
+	width: 40px;
+	height: 200px;
+	background-color: #eee;
+	color: black;
+	border: 3px solid orange;
+}
+
+
+ul.nav a {
+	background-color: #fff;
+	width: 120px;
+	display: inline-block;
+	height: 70px;
+	margin: 10px;
+	font-size: 2em;
+	text-align: center;
+	padding-top: 30px;
+}
+
+ul.nav a:hover {
+	background-color: purple;
 	width: 120px;
 	display: inline-block;
 	height: 70px;

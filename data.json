@@ -22,7 +22,8 @@
 	"js":         [ 
 	],
 	"routes":     {
-		"default": { "model": "default", "view": [ "master/head", "master/nav", "default", "master/tail" ] },
+		"default": { "model": "default", "view": [ "master/head", "master/nav", "participant-list", "default", "master/tail" ] },
+		"participant": { "model": [ "default", "participant" ], "view": [ "master/head", "master/nav", "participant-list", "participant", "master/tail" ] },
 		"home": { }
 	}
 }

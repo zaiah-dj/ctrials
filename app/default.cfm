@@ -2,5 +2,5 @@
 <!---
 --->
 <cfquery datasource=#data.source# name=itch>
-SELECT * FROM ac_mtr_participants
+SELECT * FROM ac_mtr_participants;
 </cfquery>

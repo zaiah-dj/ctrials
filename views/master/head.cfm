@@ -1,8 +1,8 @@
 <cfoutput>
 <html>
 <head>
+	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
 	<link rel="stylesheet" href="#link( "assets/default.css" )#">
-	<link rel="stylesheet" href="">
 	<link rel="stylesheet" href="">
 
 	<script type="text/javascript" src="#link("assets/index.js")#"></script>
