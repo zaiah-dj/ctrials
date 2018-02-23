@@ -112,9 +112,11 @@ p {
 	}
 }
 
+/*
 html {
 	background-color: #001a00;
 }
+*/
 
 .container {
 	width: 100%;
@@ -123,17 +125,21 @@ html {
 div.part-div {
 	width: 100%;
 	white-space: nowrap;
-	border: 4px solid gray;
 	overflow: scroll;
+	overflow-y: hidden;
 }
 
 .participant-selector
 {
+	font-size: 1.5em;
+	position:relative;
+	top: 40px;
 	z-index: 99;
-	width: 200px;
-	background-color: #aaa;
-	height: 30px;
-	padding: 5px;
+	width: 300px;
+	background-color: black;
+	height: 50px;
+	padding: 10px;
+	padding-left: 50px;
 	transform:
 		rotate( -70deg )
 	;
@@ -172,13 +178,16 @@ div.part-div {
 	position: relative;
 	margin-bottom: -10px;
 	display: inline-block;
-	width: 40px;
+	width: 60px;
 	height: 200px;
-	background-color: #eee;
 	color: black;
-	border: 3px solid orange;
+	background-color: transparent;
 }
 
+.participants li a {
+	color: white;
+	text-decoration: none;
+}
 
 ul.nav a {
 	background-color: #fff;
@@ -198,3 +207,5 @@ ul.nav a:hover {
 	height: 70px;
 	margin: 10px;
 }
+
+

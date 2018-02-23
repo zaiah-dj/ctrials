@@ -601,6 +601,7 @@ component name = "ColdMVC" {
 		if (!match) 
 		{
 			render_page(
+				status_line = 0,
 				status   = 500, 
 				abort    = true, 
 				errorMsg = ToString("A function requested the page " & name & " in the folder " & 

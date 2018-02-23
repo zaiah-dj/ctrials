@@ -288,6 +288,7 @@ STATUS_ERROR_MESSAGE = this.statusErrorMessage;
 		<cfelse>
 		<div class="container-section">
 			<div class="errorHeader">Line</div>
+			<cfset status_line = 0>
 			<p class="error lineNo">Error at line: #status_line#</p>
 		</div>
 		</cfif>

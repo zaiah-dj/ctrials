@@ -75,6 +75,39 @@ participant_id int
 ,participant_initial_height varchar(max)
 );
 
+
+/*
+ ----------------------------
+ac_mtr_participants
+
+A list of the participants (probably coming from somewhere else, but plug this in later)
+This is looped through when building a list of participants to search through.
+ ----------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_participant_addl', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_participant_addl;
+END
+CREATE TABLE ac_mtr_participant_addl 
+(
+participant_addl_id int 
+,participant_addl_other_id varchar(64)
+,participant_addl_fname varchar(256)
+,participant_addl_mname varchar(256)
+,participant_addl_lname varchar(256)
+,participant_addl_age varchar(64)
+,participant_addl_randomization_string varchar(256)
+,participant_addl_date_of_randomization datetime
+,participant_addl_date_added datetime
+,participant_addl_date_modified datetime
+,participant_addl_avatar varchar(2048)
+,participant_addl_notes varchar(max)
+,participant_addl_initial_weight varchar(max)
+,participant_addl_initial_height varchar(max)
+);
+
+
+
 /*
  ----------------------------
 ac_mtr_exercisetypes
@@ -136,42 +169,6 @@ dlog_id int
 );
 
 
-/*
- ----------------------------
-ac_mtr_log_strength
-
-Logs data specific to the 
-strength study.
- 
-id 					an identifier
-,set_index int - which number set is this?
-,repetitions int - how many repetitions were part of this set
-,weight_used int - how much weight was used
-,notes varchar(max)  - anything of note happen?
-
-ls_id                   Unique ID of this particular exercise
-ls_parent_id            Parent is the dlog_id
-ls_set_index            Strength training usually involves sets, so log the number here 
-ls_repetitions          How many repetitions did the participant do?
-ls_weight_used_lbs      How heavy (in lbs)
-ls_weight_used_kgs      How heavy (in kgs)
-ls_notes                Notes?  (a little excessive, but nobody cares)
- ----------------------------
-*/
-IF OBJECT_ID( N'ac_mtr_log_strength', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_log_strength;
-END
-CREATE TABLE ac_mtr_log_strength (
-ls_id int
-,ls_parent_id int
-,ls_set_index int
-,ls_repetitions int
-,ls_weight_used_lbs int
-,ls_weight_used_kgs int
-,ls_notes varchar(max) 
-)
-
 
 /*
  ----------------------------
@@ -232,6 +229,42 @@ lc_id int
 ,lc_notes varchar(max) 
 )
 
+
+/*
+ ----------------------------
+ac_mtr_log_strength
+
+Logs data specific to the 
+strength study.
+ 
+id 					an identifier
+,set_index int - which number set is this?
+,repetitions int - how many repetitions were part of this set
+,weight_used int - how much weight was used
+,notes varchar(max)  - anything of note happen?
+
+ls_id                   Unique ID of this particular exercise
+ls_parent_id            Parent is the dlog_id
+ls_set_index            Strength training usually involves sets, so log the number here 
+ls_repetitions          How many repetitions did the participant do?
+ls_weight_used_lbs      How heavy (in lbs)
+ls_weight_used_kgs      How heavy (in kgs)
+ls_notes                Notes?  (a little excessive, but nobody cares)
+ ----------------------------
+*/
+IF OBJECT_ID( N'ac_mtr_log_strength', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_log_strength;
+END
+CREATE TABLE ac_mtr_log_strength (
+ls_id int
+,ls_parent_id int
+,ls_set_index int
+,ls_repetitions int
+,ls_weight_used_lbs int
+,ls_weight_used_kgs int
+,ls_notes varchar(max) 
+)
 
 
 /*
