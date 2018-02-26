@@ -22,6 +22,6 @@ Application.cfc
 	if ( isDefined( "application.dsn" ) || structKeyExists( application, "dsn" ) ) {
 		data.source = application.dsn;
 	}
-
+abort;
 	coldmvc.make_index(coldmvc);
 </cfscript>
