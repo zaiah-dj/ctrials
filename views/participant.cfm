@@ -103,44 +103,44 @@ f = [
 { designation = "Contact Info" },
 { name = "PT_CELLNA", field = #willis.PT_CELLNA#, caption = "PT_CELLNA", text = "PT_CELLNA" },
 { name = "PT_CELLNUM", field = #willis.PT_CELLNUM#, caption = "PT_CELLNUM", text = "PT_CELLNUM" },
-{ name = "PT_CITY", field = #willis.PT_CITY#, caption = "PT_CITY", text = "PT_CITY" },
-{ name = "PT_EMAIL", field = #willis.PT_EMAIL#, caption = "PT_EMAIL", text = "PT_EMAIL" },
+{ name = "PT_CITY", field = #willis.PT_CITY#, caption = "PT_CITY", text = "Participant City" },
+{ name = "PT_EMAIL", field = #willis.PT_EMAIL#, caption = "PT_EMAIL", text = "Participant Email" },
 { name = "PT_EMAILNA", field = #willis.PT_EMAILNA#, caption = "PT_EMAILNA", text = "PT_EMAILNA" },
 { name = "PT_HOMENA", field = #willis.PT_HOMENA#, caption = "PT_HOMENA", text = "PT_HOMENA" },
-{ name = "PT_HOMENUM", field = #willis.PT_HOMENUM#, caption = "PT_HOMENUM", text = "PT_HOMENUM" },
+{ name = "PT_HOMENUM", field = #willis.PT_HOMENUM#, caption = "PT_HOMENUM", text = "Participant Home Tel." },
 { name = "PT_STATE", field = #willis.PT_STATE#, caption = "PT_STATE", text = "PT_STATE" },
-{ name = "PT_STREET1", field = #willis.PT_STREET1#, caption = "PT_STREET1", text = "PT_STREET1" },
-{ name = "PT_STREET2", field = #willis.PT_STREET2#, caption = "PT_STREET2", text = "PT_STREET2" },
-{ name = "PT_ZIPCODE", field = #willis.PT_ZIPCODE#, caption = "PT_ZIPCODE", text = "PT_ZIPCODE" },
-{ name = "STATE", field = #willis.STATE#, caption = "STATE", text = "STATE" },
+{ name = "PT_STREET1", field = #willis.PT_STREET1#, caption = "PT_STREET1", text = "Participant Street Address 1" },
+{ name = "PT_STREET2", field = #willis.PT_STREET2#, caption = "PT_STREET2", text = "Participant Street Address 2" },
+{ name = "PT_ZIPCODE", field = #willis.PT_ZIPCODE#, caption = "PT_ZIPCODE", text = "Particiapnt Zip Code" },
+{ name = "STATE", field = #willis.STATE#, caption = "STATE", text = "Participant State" },
 { name = "STATE_NA", field = #willis.STATE_NA#, caption = "STATE_NA", text = "STATE_NA" },
 { name = "STATE_REF", field = #willis.STATE_REF#, caption = "STATE_REF", text = "STATE_REF" },
 
 { designation = "Excess Info" },
-{ name = "AUTOIMMUNE", field = #willis.AUTOIMMUNE#, caption = "AUTOIMMUNE", text = "AUTOIMMUNE" },
-{ name = "BONEDIS", field = #willis.BONEDIS#, caption = "BONEDIS", text = "BONEDIS" },
+{ name = "AUTOIMMUNE", field = #willis.AUTOIMMUNE#, caption = "AUTOIMMUNE", text = "Has autoimmune disorder?" },
+{ name = "BONEDIS", field = #willis.BONEDIS#, caption = "BONEDIS", text = "Has bone disease?" },
 { name = "CHRONICINF", field = #willis.CHRONICINF#, caption = "CHRONICINF", text = "CHRONICINF" },
 { name = "CHRONICINFSP", field = #willis.CHRONICINFSP#, caption = "CHRONICINFSP", text = "CHRONICINFSP" },
 { name = "COMPLETEDBY", field = #willis.COMPLETEDBY#, caption = "COMPLETEDBY", text = "COMPLETEDBY" },
 { name = "CURRENTCIG", field = #willis.CURRENTCIG#, caption = "CURRENTCIG", text = "CURRENTCIG" },
-{ name = "DONATED", field = #willis.DONATED#, caption = "DONATED", text = "DONATED" },
-{ name = "DRINKS", field = #willis.DRINKS#, caption = "DRINKS", text = "DRINKS" },
-{ name = "ELIGIBLE", field = #willis.ELIGIBLE#, caption = "ELIGIBLE", text = "ELIGIBLE" },
-{ name = "HOUSEHOLD", field = #willis.HOUSEHOLD#, caption = "HOUSEHOLD", text = "HOUSEHOLD" },
-{ name = "HOUSE_REF", field = #willis.HOUSE_REF#, caption = "HOUSE_REF", text = "HOUSE_REF" },
-{ name = "HYPO_NODIAB", field = #willis.HYPO_NODIAB#, caption = "HYPO_NODIAB", text = "HYPO_NODIAB" },
-{ name = "INSERTEDBY", field = #willis.INSERTEDBY#, caption = "INSERTEDBY", text = "INSERTEDBY" },
+{ name = "DONATED", field = #willis.DONATED#, caption = "DONATED", text = "Donated blood?" },
+{ name = "DRINKS", field = #willis.DRINKS#, caption = "DRINKS", text = "Drinks?" },
+/*{ name = "ELIGIBLE", field = #willis.ELIGIBLE#, caption = "ELIGIBLE", text = "Eligible for study?" },*/
+/*{ name = "HOUSEHOLD", field = #willis.HOUSEHOLD#, caption = "HOUSEHOLD", text = "HOUSEHOLD" },
 { name = "IS_ELIGIBLE", field = #willis.IS_ELIGIBLE#, caption = "IS_ELIGIBLE", text = "IS_ELIGIBLE" },
+{ name = "HOUSE_REF", field = #willis.HOUSE_REF#, caption = "HOUSE_REF", text = "HOUSE_REF" },*/
+{ name = "HYPO_NODIAB", field = #willis.HYPO_NODIAB#, caption = "HYPO_NODIAB", text = "HYPO_NODIAB" },
 { name = "LASTGRADE", field = #willis.LASTGRADE#, caption = "LASTGRADE", text = "LASTGRADE" },
+{ name = "INSERTEDBY", field = #willis.INSERTEDBY#, caption = "INSERTEDBY", text = "INSERTEDBY" },
 { name = "LASTGRADESP", field = #willis.LASTGRADESP#, caption = "LASTGRADESP", text = "LASTGRADESP" },
 { name = "LATINO", field = #willis.LATINO#, caption = "LATINO", text = "LATINO" },
-{ name = "MARIJUANA", field = #willis.MARIJUANA#, caption = "MARIJUANA", text = "MARIJUANA" },
-{ name = "MARITALSTAT", field = #willis.MARITALSTAT#, caption = "MARITALSTAT", text = "MARITALSTAT" },
+{ name = "MARIJUANA", field = #willis.MARIJUANA#, caption = "MARIJUANA", text = "Smokes marijuana?" },
+{ name = "MARITALSTAT", field = #willis.MARITALSTAT#, caption = "MARITALSTAT", text = "Marital Status" },
 { name = "OUTOFTOWN", field = #willis.OUTOFTOWN#, caption = "OUTOFTOWN", text = "OUTOFTOWN" },
 { name = "REC_ID", field = #willis.REC_ID#, caption = "REC_ID", text = "REC_ID" },
-{ name = "SMOKECIG", field = #willis.SMOKECIG#, caption = "SMOKECIG", text = "SMOKECIG" },
-{ name = "TOBACCO", field = #willis.TOBACCO#, caption = "TOBACCO", text = "TOBACCO" },
-{ name = "WORK", field = #willis.WORK#, caption = "WORK", text = "WORK" },
+{ name = "SMOKECIG", field = #willis.SMOKECIG#, caption = "SMOKECIG", text = "Smokes cigarettes?" },
+{ name = "TOBACCO", field = #willis.TOBACCO#, caption = "TOBACCO", text = "Uses tobacco?" },
+{ name = "WORK", field = #willis.WORK#, caption = "WORK", text = "Work Schedule" },
 { name = "WORKHOURS", field = #willis.WORKHOURS#, caption = "WORKHOURS", text = "WORKHOURS" }
 ];
 </cfscript>
@@ -162,7 +162,13 @@ f = [
 	<cfelse>
 	<tr>
 		<td>#ff.text#</td>
-		<td>#ff.field#</td>
+		<td>
+			<cfif getMetadata( ff.field ).getTypeName() eq "java.lang.Integer">
+				<cfif ff.field eq 0>No<cfelseif ff.field eq 1>Yes<cfelse>#ff.field#</cfif>
+			<cfelse>
+				#ff.field#
+			</cfif>
+		</td>
 	</tr>
 	</cfif>
 	</cfoutput>

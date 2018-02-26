@@ -16,6 +16,7 @@ Application.cfc
 */ 
 component {
 
+	setting showdebugoutput="false";
 	this.sessionManagement = true;
 
 	switch ( #CGI.HTTP_HOST# ) {

@@ -115,7 +115,6 @@ INNER JOIN
 ( SELECT 
 		participantGUID as aduscr_participant_id	
 		,dob
-		,gender
 		,height
 		,weight
 		,latino
@@ -129,6 +128,10 @@ INNER JOIN
 		,race_othsp
 		,race_ref
 		,tobacco
+		,CASE gender
+			WHEN 1 THEN 'Male' 
+			WHEN 2 THEN 'Female'
+		 END as gender 
 	FROM 
 		frm_ADUScreening 
 ) AS SCREEN

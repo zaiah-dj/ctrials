@@ -2,12 +2,17 @@
 <html>
 <head>
 	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
-
 	<link rel="stylesheet" href="#link( "assets/default.css" )#">
 	
-	<!-- Latest compiled and minified CSS -->
+	<!-- Bootstrap: Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+	<!-- C3 css -->
+	<link rel="stylesheet" href="#link( "assets/css/c3.min.css" )#">
+
+	<!-- C3.js - Easy charts -->
+	<script src="https://d3js.org/d3.v3.js"></script>       <!-- D3.js is a dependency -->
+	<script src="#link( "assets/js/c3.min.js" )#"></script>
 
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
