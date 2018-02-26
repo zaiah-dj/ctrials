@@ -17,12 +17,41 @@ ul.endurance li:hover {
 #_cycle, #_treadmill {
 	display: none;
 }
+
+textarea.width {
+	width: 100%;
+	height: 150px;
+	font-size: 1.2em;
+}
 </style>
 
+
 <script type="text/javascript">
+//Add all controls
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
-	//
+	//********************************************************** 
+	//******      CONTROL SLIDERS                        *******
+	//********************************************************** 
+	//var a = Array.prototype.slice.call( document.querySelectorAll( "table.participant-entry" ) );
+	var a = Array.prototype.slice.call( document.querySelectorAll( "input[ type=range ]" ) );
+	for ( ii=0; ii<a.length; ii++ ) {
+		//Get that nice slider effect going
+		a[ii].addEventListener( "input", function (ev) {
+			ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+		} );
+
+		//This allows this to fire and save when the user is done
+		a[ii].addEventListener( "change", function (ev) {
+			//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+		} );
+	}
+	//console.log( a ); 
+
+
+	//********************************************************** 
+	//******      CONTROL EXERCISE DETAILS               *******
+	//********************************************************** 
 	var v = document.getElementById( "choose_mode" );
 	v.addEventListener( "change", function (ev) {
 
@@ -80,14 +109,27 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				<tr>
 					<td>RPM</td>
 					<td>
-						<input type="number" size="2" name="rpm">
+						<!---
+							<input type="number" size="2" name="rpm">
+						--->
+						<div class="row">
+							<div class="cc col-sm-8">
+								<input type="range" min="5" max="80" class="slider" value="0" defaultvalue="0" name="rpm">
+							</div>
+							<div class="catch cc col-sm-2">0</div> MPH 
+						</div>
 					</td>
 				</tr>
 
 				<tr>
 					<td>Watts or Resistance</td>
 					<td>
-						<input type="number" size="2" name="resistance">
+						<div class="row">
+							<div class="cc col-sm-8">
+								<input type="range" min="0" max="80" class="slider" value="0" defaultvalue="0" name="resistance">
+							</div>
+							<div class="catch cc col-sm-2">0</div> Units of Resistance 
+						</div>
 					</td>
 				</tr>
 			</tbody>
@@ -100,13 +142,23 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				<tr>
 					<td>Speed (MPH)</td>
 					<td>
-						<input type="number" size="2" name="speed">
+						<div class="row">
+							<div class="cc col-sm-8">
+								<input type="range" min="0" max="80" class="slider" value="0" defaultvalue="0" name="speed">
+							</div>
+							<div class="catch cc col-sm-2">0</div> MPH 
+						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>% Grade *</td>
 					<td>
-						<input type="number" size="2" name="grade">
+						<div class="row">
+							<div class="cc col-sm-8">
+								<input type="range" min="1" max="100" class="slider" value="0" defaultvalue="0" name="grade">
+							</div>
+							<div class="catch cc col-sm-2">0</div> % 
+						</div>
 					</td>
 				</tr>
 			</tbody>
@@ -119,28 +171,63 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			<tr>
 				<td>Heart Rate*</td>
 				<td>
-					<input type="number" size="2" name="heart_rate">
+					<div class="row">
+						<div class="cc col-sm-8">
+							<input type="range" min="30" max="200" class="slider" value="0" defaultvalue="0" name="heart_rate">
+						</div>
+						<div class="catch cc col-sm-2">0</div> BPM
+					</div>
 				</td>
 			</tr>
 
 			<tr>
 				<td>Blood Pressure**</td>
 				<td>
-					<input type="number" size="2" name="sys_bp"> / <input type="number" width=2 name="sys_dp">
+					<!--- 10 / 23 bp --->
+					<div class="row">
+						<div class="cc col-sm-4">
+							<!---	
+							<input type="range" min="12" max="120" class="slider" value="0" defaultvalue="0" name="sys_bp">
+							--->
+							<input type="number" min="12" max="120" class="slider" value="0" defaultvalue="0" name="sys_bp">
+						</div>
+						<div class="catch cc col-sm-1">/</div>
+						<div class="cc col-sm-4">
+							<!---	
+							<input type="range" min="12" max="120" class="slider" value="0" defaultvalue="0" name="dia_bp">
+							--->
+							<input type="number" min="12" max="120" class="slider" value="0" defaultvalue="0" name="dia_bp">
+						</div>
+						<div class="catch cc col-sm-2">0</div>
+					</div>
 				</td>
 			</tr>
 
 			<tr>
 				<td>Rating of Perceived Exertion***</td>
 				<td>
-					<input type="number" size="2" name="rating_pe">
+					<!--- Agree on a number system? --->
+					<div class="row">
+						<div class="cc col-sm-8">
+							<input type="range" min="1" max="5" class="slider" value="0" defaultvalue="0" name="ex_rating">
+						</div>
+						<div class="catch cc col-sm-2">0</div>
+					</div>
+					<br />
+	
+					<!--- Modal should pop up on click / touch, but the value should show up here --->
+					<textarea class="width" name="rating_pe_textarea"></textarea>
+					
 				</td>
 			</tr>
 
 			<tr>
 				<td>Other (Affect?)****</td>
 				<td>
-					<input type="number" size="2" name="other">
+
+					<!--- Modal should pop up on click / touch, but the value should show up here --->
+					<textarea class="width" name="other_textarea"></textarea>
+					
 				</td>
 			</tr>
 
