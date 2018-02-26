@@ -15,10 +15,6 @@
 		"verboseLog": 0,
 		"addLogLine": 0
 	}, 
-	"sources":       {
-		"motrpac": "motrpac",
-		"me": "Iv_Tracker_Db"
-	},
 	"data":       {
 	},
 	"css":        [ 

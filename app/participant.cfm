@@ -6,7 +6,7 @@ Contains all the participant data.
 Right now, it's just some fake thing.
 
 --->
-<cfquery datasource=#data.sources.me# name=part>
+<cfquery datasource=#data.source# name=part>
 SELECT * FROM ac_mtr_participants 
 WHERE participant_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#url.id#">;
 </cfquery>
@@ -15,7 +15,7 @@ WHERE participant_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#url.id#"
 <!--- Query for a lot of participant data 
 (Consider using a view to speed things up)
 --->
-<cfquery datasource=#data.sources.motrpac# name=willis>
+<cfquery datasource=#data.source# name=willis>
 SELECT * FROM
 ( SELECT * FROM
 	( SELECT * FROM
