@@ -17,5 +17,11 @@ Application.cfc
   --->
 <cfscript>
 	coldmvc = createObject("component", "coldmvc").init({});
+	
+	//Select application.dsn data sources
+	if ( isDefined( "application.dsn" ) || structKeyExists( application, "dsn" ) ) {
+		data.source = application.dsn;
+	}
+
 	coldmvc.make_index(coldmvc);
 </cfscript>

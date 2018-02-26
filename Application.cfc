@@ -15,7 +15,43 @@ Application.cfc
 @end
 */ 
 component {
+
 	this.sessionManagement = true;
+
+	switch ( #CGI.HTTP_HOST# ) {
+		// LOCAL
+		case "127.0.0.1:8500":
+			This.applicationTimeout = "#createtimespan(0,0,0,1)#";
+			This.sessionTimeout = "#createtimespan(0,8,0,0)#";
+			request.whichserver = "local";
+			application.dsn = "Iv_Tracker_Db";
+			break;
+		// DEVELOPMENT ---
+		case "dev1cf16.phs.wakehealth.edu":
+			This.applicationTimeout = "#createtimespan(0,0,0,1)#";
+			This.sessionTimeout = "#createtimespan(0,8,0,0)#";
+			request.whichserver = "dev";
+			application.dsn = "motrpac";
+			break;
+		// PRODUCTION SERVER ---
+		default:
+			This.applicationTimeout = "#createtimespan(0,12,0,0)#";
+			This.sessionTimeout = "#createtimespan(0,0,30,0)#";
+			request.whichserver = "prod";
+			application.dsn = "motrpac";
+			//error type="EXCEPTION" template="/errorException.cfm" mailto="#application.siteadminemail#"
+	}
+	
+	/*Modified to more closely match how things are done at WFCF*/
+	function onApplicationStart ( ) {
+		appInit();
+	}
+
+	function appInit() {
+
+
+	}
+
 	function onRequestStart (string Page) {
 		//application.data = DeserializeJSON(FileRead(this.jsonManifest, "utf-8"));
 		if (structKeyExists(url, "reload")) {
