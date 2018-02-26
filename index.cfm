@@ -16,12 +16,13 @@ Application.cfc
 @end
   --->
 <cfscript>
+writeoutput( "<h2>Hello</h2>" );
+abort;
 	coldmvc = createObject("component", "coldmvc").init({});
 	
 	//Select application.dsn data sources
 	if ( isDefined( "application.dsn" ) || structKeyExists( application, "dsn" ) ) {
 		data.source = application.dsn;
 	}
-abort;
 	coldmvc.make_index(coldmvc);
 </cfscript>
