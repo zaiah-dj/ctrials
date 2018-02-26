@@ -444,10 +444,12 @@ component name = "ColdMVC" {
 	//@end   
 	private function logReport (Required String message) 
 	{
+		/*
 		//Throw an error to get access to the exception 
 		line=0; file="";
-		try  
-		 { callFin(); } 
+		try { 
+			callFin();
+		}
 		catch (any e) { 
 			template = e.TagContext[ 2 ].template; 
 			line = e.TagContext[ 2 ].line; 
@@ -456,6 +458,7 @@ component name = "ColdMVC" {
 		//Append the line number to whatever text is being written
 		this.logstring = ( StructKeyExists( this, "addLogLine") && this.addLogLine ) ? "<li>At line " & line & " in template '" & template & "': " & message & "</li>" : "<li>" & message & "</li>";
 		(StructKeyExists(this, "verboseLog") && this.verboseLog) ? writeoutput( this.logString ) : 0;
+		*/
 	}
 
 
