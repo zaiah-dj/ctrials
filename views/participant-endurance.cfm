@@ -1,28 +1,5 @@
 <style type="text/css">
-ul.endurance li {
-	text-align: center;
-	width: 60px; 
-	padding: 5px; 
-	display: inline-block; 
-	background-color: #333; 
-	color: white;
-	transition: background-color 0.2s, color 0.2s;
-}
-	
-ul.endurance li:hover {
-	background-color: cyan; 
-	color: black; 
-}	
-
-#_cycle, #_treadmill {
-	display: none;
-}
-
-textarea.width {
-	width: 100%;
-	height: 150px;
-	font-size: 1.2em;
-}
+#_cycle, #_treadmill { display: none; }
 </style>
 
 
@@ -89,7 +66,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	<table class="table">
 		<tbody>
 			<tr>
-				<td>Exercise Type</td>
+				<td class="title">Exercise Type</td>
 				<td>
 				<select id="choose_mode" name="mode">
 					<option value="0">Choose One</option>
@@ -107,7 +84,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		<table class="table">
 			<tbody>
 				<tr>
-					<td>RPM</td>
+					<td class="title">RPM</td>
 					<td>
 						<!---
 							<input type="number" size="2" name="rpm">
@@ -122,7 +99,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				</tr>
 
 				<tr>
-					<td>Watts or Resistance</td>
+					<td class="title">Watts or Resistance</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
@@ -140,7 +117,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		<table class="table">
 			<tbody>
 				<tr>
-					<td>Speed (MPH)</td>
+					<td class="title">Speed (MPH)</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
@@ -151,7 +128,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 					</td>
 				</tr>
 				<tr>
-					<td>% Grade *</td>
+					<td class="title">Percent Grade</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
@@ -169,7 +146,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		<tbody>
 			<!--- Global Things --->
 			<tr>
-				<td>Heart Rate*</td>
+				<td class="title">Heart Rate</td>
 				<td>
 					<div class="row">
 						<div class="cc col-sm-8">
@@ -181,7 +158,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			</tr>
 
 			<tr>
-				<td>Blood Pressure**</td>
+				<td class="title">Blood Pressure</td>
 				<td>
 					<!--- 10 / 23 bp --->
 					<div class="row">

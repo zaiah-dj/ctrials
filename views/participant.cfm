@@ -5,50 +5,6 @@ div.holdThings { width: 200px; }
 h3.dogInThisFight
 { display: inline-block; width: 200px; }
 
-input.collapsible {
-	position: relative;
-	top: 5px;
-	display: inline-block;
-	cursor: pointer;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	-ms-appearance: none;
-	appearance: none;
-	outline: unset;
-  border-top: 0px solid black;
-  border-left: 0px solid black;
-  border-right: 10px solid black;
-  border-bottom: 10px solid black;
-	width: 25px;
-	height: 25px;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-	transition:
-		transform 0.2s
-	;
-}
-
-input.collapsible + div {
-	height: 2px;
-	max-height: 0px;
-	transition: max-height 0.5s;
-}
-
-input.collapsible:checked {
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-input.collapsible:checked + div{
-	display: block;	
-	height: auto;
-	max-height: 1000px;
-}
-
-input.collapsible + div > table {display: none;}
-input.collapsible:checked + div > table { display: block; }
 
 </style>
 

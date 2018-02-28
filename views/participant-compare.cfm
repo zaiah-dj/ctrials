@@ -1,15 +1,6 @@
 <!--- compare everything that's comparable --->
 <div class="part-div">
 
-	<style type="text/css">
-		#chart {
-			border: 2px solid black;
-			height: 100px;
-			width: 100%;
-		}	
-
-	</style>
-
 	<!--- ... --->
 	<script> 
 	document.addEventListener( "DOMContentLoaded", function (ev) {

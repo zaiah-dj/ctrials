@@ -22,11 +22,11 @@
 	"js":         [ 
 	],
 	"routes":     {
-		"default": { "model": "default",                                   "view": [ "master/head", "master/nav", "participant-list", "default", "master/tail" ] },
+		"default": { "model": "default",                                   "view": [ "master/head", "master/nav", "drop-sort", "master/tail" ] },
+		"chosen": { "model": "default",                                    "view": [ "master/head", "master/nav", "participant-list", "default", "master/tail" ] },
 		"participant": { "model": [ "default", "participant" ],            "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant", "master/tail" ] },
 		"participant-input": { "model": [ "default", "participant" ],      "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-input", "master/tail" ] },
 		"participant-compare": { "model": [ "default", "participant" ],    "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-compare", "master/tail" ] },
-		"participant-control": { "model": [ "default", "participant" ],    "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-control", "master/tail" ] },
 		"participant-resistance": { "model": [ "default", "participant" ], "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-resistance", "master/tail" ] },
 		"participant-endurance": { "model": [ "default", "participant" ],  "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-endurance", "master/tail" ] },
 		"home": { }

@@ -1,14 +1,23 @@
 <cfoutput>
 <html>
 <head>
+	<!-- All CSS and whatnot -->
 	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
-	<link rel="stylesheet" href="#link( "assets/default.css" )#">
 	
 	<!-- Bootstrap: Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 	<!-- C3 css -->
 	<link rel="stylesheet" href="#link( "assets/css/c3.min.css" )#">
+
+	<!-- My chart styles --> 
+	<link rel="stylesheet" href="#link( "assets/chart.css" )#">
+
+	<!-- My styles -->
+	<link rel="stylesheet" href="#link( "assets/default.css" )#">
+<!--[if gte IE 9]>
+	<link rel="stylesheet" href="#link( "assets/default-ie.css" )#">
+<![endif]-->
 
 	<!-- C3.js - Easy charts -->
 	<script src="https://d3js.org/d3.v3.js"></script>       <!-- D3.js is a dependency -->
@@ -24,21 +33,5 @@
 
 <body>
 </cfoutput>
-
-<style type="text/css">
-ul.participant-info-nav li {
-	display: inline-block; width: 200px;	
-	text-align: center;
-	transition: 
-		background-color 0.2s,
-		color 0.2s;
-	;
-}
-
-ul.participant-info-nav li:hover {
-	background-color: green;	
-	color: white;	
-}
-</style>
 
 <div class="container">

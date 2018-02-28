@@ -1,53 +1,4 @@
 <style type="text/css">
-/* **************************************** *
- * **************************************** *
- * **************************************** *
-   SLIDER 
-
- * **************************************** *
- * **************************************** *
- * **************************************** */
-
-/*Slider*/
-.slidecontainer {
-    width: 100%; /* Width of the outside container */
-}
-
-/* The slider itself */
-.slider {
-    -webkit-appearance: none;  /* Override default CSS styles */
-    appearance: none;
-    width: 100%; /* Full-width */
-    height: 25px; /* Specified height */
-    background: #d3d3d3; /* Grey background */
-    outline: none; /* Remove outline */
-    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
-.slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: #4CAF50; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-}
-
-.slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: #4CAF50; /* Green background */
-    cursor: pointer; /* Cursor on hover */
-}
-
 .cc {
 	display: inline-block;
 	font-size: 1.3em;
@@ -86,6 +37,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		//This allows this to fire and save when the user is done
 		a[ii].addEventListener( "change", function (ev) {
 			//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+			//alert( "New value is: " + ev.target.value );
 		} );
 	}
 	console.log( a ); 
@@ -96,19 +48,6 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 <cfoutput>
 <div class="part-div">
 
-	<!--- Choose between 'pounds' and 'kilograms' --->
-	<table class="table">
-		<tr>
-			<td>Units</td>
-			<td>
-				<!--- Use a custom radio / checkbox to select either --->
-				<select name="">
-					<option value="0">Pounds</option>
-					<option value="1">Kilograms</option>
-				</select>
-			</td>	
-		</tr>
-	</table>
 
 
 	<cfscript>
@@ -123,13 +62,63 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		"Chest Presses",
 		"Seated Rows"
 	];
+
+	fail_reasons = [
+		"Illness/Health Problems",
+		"Transportation Difficulties",
+		"Cognitive difficulties",
+		"In Nursing Home/Long-Term Care Facility",
+		"Too Busy; Time and/or Work Conflict",
+		"Caregiver Responsibilities",
+		"Physician's Advice",
+		"Problems with Muscles/Joints",
+		"Forgot Appointment",
+		"Moved out of area",
+		"Traveling/On Vacation",
+		"Personal Problems",
+		"Unable to Contact/Locate",
+		"Refused to Give Reason",
+		"Withdrew from Study",
+		"Withdrew Informed Consent",
+		"Dissatisfied with Study",
+		"Deceased",
+		"Center Closed",
+		"Other",
+		"Unknown"
+	];
 	</cfscript>
+
+
+	<label>Patient Could Not Continue</label>
+	<cfset sc=1>
+	<select name="fail_reason">
+		<option value="0">Choose a Reason</option>	
+	<cfloop array = "#fail_reasons#" index = "reason">
+		<option value="#sc++#">#reason#</option>	
+	</cfloop>
+	</select>
+
+
+	<!--- Choose between 'pounds' and 'kilograms' --->
+	<table class="table">
+		<tr>
+			<td class="title">Units</td>
+			<td>
+				<!--- Use a custom radio / checkbox to select either --->
+				<select name="">
+					<option value="0">Pounds</option>
+					<option value="1">Kilograms</option>
+				</select>
+			</td>	
+		</tr>
+	</table>
 
 	<ul class="inner-nav">
 	<cfloop array = "#exercises#" index = "exercise">
 		<li>#exercise#</li>	
 	</cfloop>
 	</ul>
+
 
 	<cfloop array = "#exercises#" index = "exercise">
 		<table class="table table-striped participant-entry">
@@ -143,7 +132,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			<tbody>
 				<!--- Global Things --->
 				<tr>
-					<td rowspan="4">#exercise#</td>
+					<td class="title" rowspan="4">#exercise#</td>
 				</tr>
 
 				<cfloop list="1,2,3" index="listy">
@@ -151,7 +140,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 					<td>Set #listy#</td>
 					<td>
 						<div class="row">
-							<div class="cc col-sm-8">
+							<div class="col-sm-8">
 								<input type="range" min="0" max="50" class="slider" value="0" defaultvalue="0" name="#Replace( LCase( exercise ), " ", "_" )#_field">
 							</div>
 							<div class="catch cc col-sm-2">0</div>
@@ -160,7 +149,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 
 					<td>
 						<div class="row">
-							<div class="cc col-sm-8">
+							<div class="col-sm-8">
 								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0">
 							</div>
 							<div class="catch cc col-sm-2">0</div> lb
