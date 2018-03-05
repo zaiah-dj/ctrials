@@ -5,7 +5,7 @@
 	"Home":       "tmp",
 	"name":       "iv",
 	"title":      "iv",
-	"debug":      0,
+	"debug":      1,
 	"master-post":false,
 	"localOverride": {
 		"4xx": 0,
@@ -23,12 +23,14 @@
 	],
 	"routes":     {
 		"default": { "model": "default",                                   "view": [ "master/head", "master/nav", "drop-sort", "master/tail" ] },
-		"chosen": { "model": "default",                                    "view": [ "master/head", "master/nav", "participant-list", "default", "master/tail" ] },
-		"participant": { "model": [ "default", "participant" ],            "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant", "master/tail" ] },
-		"participant-test": { "model": [ "default", "participant" ],      "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-test", "master/tail" ] },
-		"participant-compare": { "model": [ "default", "participant" ],    "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-compare", "master/tail" ] },
-		"participant-resistance": { "model": [ "default", "participant" ], "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-resistance", "master/tail" ] },
-		"participant-endurance": { "model": [ "default", "participant" ],  "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-endurance", "master/tail" ] },
+		"start-daily": { "model": "participant/session-write",                         "view": "session-write", "content_type": "application/json" },
+
+		"chosen": { "model": [ "participant/session-check", "chosen" ],                                    "view": [ "master/head", "master/nav", "participant-list", "default", "master/tail" ] },
+		"participant": { "model": [ "participant/session-check", "chosen", "participant" ],            "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant", "master/tail" ] },
+		"participant-test": { "model": [ "participant/session-check", "chosen", "participant" ],      "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-test", "master/tail" ] },
+		"participant-compare": { "model": [ "participant/session-check", "chosen", "participant" ],    "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-compare", "master/tail" ] },
+		"participant-resistance": { "model": [ "participant/session-check", "chosen", "participant" ], "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-resistance", "master/tail" ] },
+		"participant-endurance": { "model": [ "participant/session-check", "chosen", "participant" ],  "view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-endurance", "master/tail" ] },
 		"home": { }
 	}
 }

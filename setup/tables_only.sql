@@ -25,7 +25,7 @@ BEGIN
 END
 CREATE TABLE ac_mtr_participants 
 (
-participant_id int 
+participant_id INT IDENTITY(1,1) NOT NULL 
 ,participant_other_id varchar(64)
 ,participant_fname varchar(256)
 ,participant_mname varchar(256)
@@ -56,7 +56,7 @@ BEGIN
 END
 CREATE TABLE ac_mtr_participant_addl 
 (
-participant_addl_id int 
+participant_addl_id INT IDENTITY(1,1) NOT NULL 
 ,participant_addl_other_id varchar(64)
 ,participant_addl_fname varchar(256)
 ,participant_addl_mname varchar(256)
@@ -90,7 +90,7 @@ BEGIN
 END
 CREATE TABLE ac_mtr_exercisetypes 
 (
-et_id int
+et_id INT IDENTITY(1,1) NOT NULL
 ,et_name varchar(256)
 ,et_description varchar(max)
 );
@@ -124,7 +124,7 @@ BEGIN
 	DROP TABLE ac_mtr_dlog;
 END
 CREATE TABLE ac_mtr_dlog (
-dlog_id int
+dlog_id INT IDENTITY(1,1) NOT NULL
 ,dlog_participant_id int
 ,dlog_exercise_id int
 ,dlog_exercise_type int
@@ -157,7 +157,7 @@ BEGIN
 	DROP TABLE ac_mtr_log_control;
 END
 CREATE TABLE ac_mtr_log_control (
-lcc_id int
+lcc_id INT IDENTITY(1,1) NOT NULL
 ,lcc_parent_id int
 ,lcc_misc varchar(256)
 ,lcc_notes varchar(max) 
@@ -186,7 +186,7 @@ BEGIN
 	DROP TABLE ac_mtr_log_cardio;
 END
 CREATE TABLE ac_mtr_log_cardio (
-lc_id int
+lc_id INT IDENTITY(1,1) NOT NULL
 ,lc_type int
 ,lc_type_other varchar(256) 
 ,lc_set_index int
@@ -223,7 +223,7 @@ BEGIN
 	DROP TABLE ac_mtr_log_strength;
 END
 CREATE TABLE ac_mtr_log_strength (
-ls_id int
+ls_id INT IDENTITY(1,1) NOT NULL
 ,ls_parent_id int
 ,ls_set_index int
 ,ls_repetitions int
@@ -257,7 +257,7 @@ BEGIN
 	DROP TABLE ac_mtr_patientstatus;
 END
 CREATE TABLE ac_mtr_patientstatus (
-ps_id int
+ ps_id INT IDENTITY(1,1) NOT NULL
 ,ps_before bit
 ,ps_weight int
 ,ps_height int
@@ -283,8 +283,12 @@ p_staff_id          The staff member who will put in the data.
 p_currentDatetime   Save the current date time
 
 
-*IF I save as I go, how do I get 
-rid of stuff?
+*If I save as I go, how do I get 
+rid of stuff?  
+Also, how do I recall??????????
+More than likely the same session is used...
+May need to modify...
+
 ----------------------------------
  */
 IF OBJECT_ID( N'ac_mtr_participant_transaction_set', N'U') IS NOT NULL
@@ -293,7 +297,7 @@ BEGIN
 END
 CREATE TABLE ac_mtr_participant_transaction_set
 (
-	p_uuid INT
+	p_uuid INT IDENTITY(1,1) NOT NULL
 	,p_transaction_id INT
 	,p_staff_id INT
 	,p_currentDateTime DATETIME
@@ -318,7 +322,18 @@ BEGIN
 END
 CREATE TABLE ac_mtr_participant_transaction_members 
 (
-	p_uuid INT
+	p_uuid INT IDENTITY(1,1) NOT NULL
 	,p_transaction_id INT
 	,p_id INT
 );
+
+SET IDENTITY_INSERT ac_mtr_participant_transaction_members ON;
+SET IDENTITY_INSERT ac_mtr_participant_transaction_set ON;
+SET IDENTITY_INSERT ac_mtr_patientstatus ON;
+SET IDENTITY_INSERT ac_mtr_log_strength ON;
+SET IDENTITY_INSERT ac_mtr_log_cardio ON;
+SET IDENTITY_INSERT ac_mtr_log_control ON;
+SET IDENTITY_INSERT ac_mtr_dlog ON;
+SET IDENTITY_INSERT ac_mtr_exercisetypes ON;
+SET IDENTITY_INSERT ac_mtr_participant_addl ON;
+SET IDENTITY_INSERT ac_mtr_participants ON;

@@ -83,6 +83,8 @@ p {
 }
 
 div.part-div {
+	position: relative;
+	top: -10px;
 	width: 100%;
 	white-space: nowrap;
 	overflow: scroll;
@@ -154,22 +156,32 @@ ul.nav a {
 	background-color: #fff;
 	width: 120px;
 	display: inline-block;
-	height: 70px;
+	height: 100px;
 	margin: 10px;
 	font-size: 2em;
 	text-align: center;
 	padding-top: 30px;
+	padding-bottom: 20px;
+	color: black;
+}
+
+ul.nav a.selected {
+	background-color: #ccc;
+	display: inline-block;
+	color: white;
 }
 
 ul.nav a:hover {
-	background-color: purple;
+	background-color: cyan;
 	width: 120px;
 	display: inline-block;
-	height: 70px;
 	margin: 10px;
 }
 
-
+ul.nav a.selected:hover {
+	background-color: #ccc;
+	color: white;
+}
 
 .table th {
 	font-weight: bold;
@@ -526,3 +538,5 @@ a.tiny-link {
 .short-list {
 
 }
+
+

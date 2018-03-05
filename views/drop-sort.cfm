@@ -1,3 +1,4 @@
+<cfset submit_link="#link( 'start-daily.cfm' )#">
 <style type="text/css">
 .short-list { position: relative; border/*-bottom*/: 2px solid black; margin-bottom: 10px; width: 100%; }
 .wash input[type=text] { display: none; }
@@ -8,7 +9,7 @@
 .short-list ul li:hover { background: white; }
 
 ul.part-drop-list li:hover { background-color: black; color: white; }
-.part-div { border: 3px solid blue; overflow: hidden; }
+.part-div { overflow: hidden; }
 </style>
 
 <!--- A way to sort participants ahead of time --->
@@ -59,7 +60,7 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 	document.getElementById( "wash-id" ).addEventListener( "submit", function (ev) {
 		ev.preventDefault();
 
-		//...
+		//Serialize all the data
 		vv=[];
 		vals = [].slice.call(document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" )); 
 
@@ -71,7 +72,55 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 				
 		//send a list back
 		this.list.value = vv.join(',');
-		this.submit();
+
+		//I'll never really submit this, I'll AJAX it instead	
+		if ( 0 )
+			this.submit();
+		else {
+			// So, let's see if that works
+			var xhr = new XMLHttpRequest();
+
+			//Read that XML	
+			xhr.onreadystatechange = function () {
+				if ( this.readyState == 4 && this.status == 200 ) {
+					//console.log( this.responseText );
+					parsed = JSON.parse( this.responseText );
+					console.log( parsed );
+
+					
+					if ( parsed.status == 200 )
+						celebrate();
+
+					else {
+
+					}
+				}
+			};
+
+			// This is butt-ugly and should be done differently
+			console.log( "opening connection to " + "<cfoutput>#submit_link#</cfoutput>" );
+
+			//What does the pbody look like
+			payload = "staffer_id=" + this.staffer_id.value +
+					"&transact_id=" + this.transact_id.value +
+					"&list=" + this.list.value;
+
+			console.log( payload );
+
+			// tHis is made all the more ugly because I'm using GETs when I should be using POSTs
+			if ( 0 ) {
+				xhr.open( "POST", '<cfoutput>#submit_link#</cfoutput>', true );
+				xhr.send( 
+					"staffer_id=" + this.staffer_id.value +
+					"&transact_id=" + this.transact_id.value +
+					"&list=" + this.list.value
+				);
+			}
+			else {
+				xhr.open( "GET", '<cfoutput>#submit_link#</cfoutput>?' + payload , true );
+				xhr.send( );
+			}
+		}
 		return;	
 	});
 });
@@ -119,9 +168,11 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 
 
 	<!--- On submit, or next, do it. --->
-	<form id="wash-id" action="#link('blubber.cfm')#" class="wash"> 
-		<input type="text" name="id" value="#randstr( 48 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
+	<form id="wash-id" method="POST" action="#submit_link#" class="wash"> 
+		<input type="text" name="staffer_id" value="#randnum( 8 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
+		<input type="text" name="transact_id" value="#randnum( 8 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
 		<input type="text" name="list"> <!--- make a list here --->
+		<input type="text" name="sess_id" value="#session.iv_motrpac_transact_id#"> <!--- make a list here --->
 		<input type="submit" value="Done!">
 	</form>
 </div>
