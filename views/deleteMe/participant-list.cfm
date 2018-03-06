@@ -2,9 +2,12 @@
 <cfoutput>
 <div class="part-div">
 <ul class="participants" id="participant_list">
+
+
+
 	<cfloop query="part_list" >
-	<li>
-		<a class="" href="#link( "participant.cfm?id=#participant_id#" )#">
+	<li class="selected">
+		<a class="selected" href="#link( "input.cfm?id=#participant_id#" )#">
 			<div class="participant-selector">
 				#participant_fname# #participant_lname#
 			</div>

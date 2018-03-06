@@ -96,17 +96,19 @@ div.part-div {
 	position:relative;
 	top: 40px;
 	z-index: 99;
-	width: 300px;
 	background-color: black;
 	height: 50px;
 	padding: 10px;
 	padding-left: 50px;
+	/*
+	width: 300px;
 	transform:
 		rotate( -70deg )
 	;
 	transform-origin:
 		120px 100px;
 	;
+	*/
 	transition: 
 		background-color 0.2s,
 		color 0.2s
@@ -140,10 +142,13 @@ div.part-div {
 	position: relative;
 	margin-bottom: -10px;
 	display: inline-block;
-	width: 60px;
 	height: 200px;
 	color: black;
 	background-color: transparent;
+	width: 300px;
+	/*
+	width: 60px;
+	*/
 }
 
 .participants li a {

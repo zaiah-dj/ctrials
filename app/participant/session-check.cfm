@@ -1,4 +1,9 @@
 <cfscript>
+if ( 1 ) {
+	//Pre-select an ID for this test run so that I don't have to put up with it....
+	session.iv_sess_id = 24716702;
+}
+else {
 	//right now, I'm passing the session id via Javascript
 	//it's ugly and really could use a rework
 
@@ -49,5 +54,5 @@
 
 		writeoutput( "<div class='campy-hidden'>Using Session ID from POST</div>" );
 	}
-
+}
 </cfscript>

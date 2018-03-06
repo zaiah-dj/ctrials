@@ -137,6 +137,7 @@ INNER JOIN
 ) AS SCREEN
 ON ALLPART.participantGUID = SCREEN.aduscr_participant_id
 </cfquery>
+
 <!---
 <cfdump var = #willis#>
 <cfabort>
@@ -154,3 +155,6 @@ model.participant_avatar = "/assets/jc_avatar.jpg";
 model.greeting = "Hello, there!";
 model.addText = "And welcome to ColdMVC!";
 </cfscript>
+
+
+<!--- Do different things depending on the randomized exercise type --->
