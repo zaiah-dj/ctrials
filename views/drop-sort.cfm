@@ -1,4 +1,5 @@
 <cfset submit_link="#link( 'start-daily.cfm' )#">
+<cfset linkish="#link( 'chosen.cfm' )#">
 <style type="text/css">
 .short-list { position: relative; border/*-bottom*/: 2px solid black; margin-bottom: 10px; width: 100%; }
 .wash input[type=text] { display: none; }
@@ -79,6 +80,7 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 		else {
 			// So, let's see if that works
 			var xhr = new XMLHttpRequest();
+			var frm = this;
 
 			//Read that XML	
 			xhr.onreadystatechange = function () {
@@ -88,9 +90,13 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 					console.log( parsed );
 
 					
-					if ( parsed.status == 200 )
-						celebrate();
+					if ( parsed.status == 200 ) {
+						//JS Forwards us on... but this is not super safe...
+						frm.submit(); //I'm only concerned with trans_id
+		
+						//window.location.replace( "<cfoutput>#link('chosen.cfm')#</cfoutput>" );	
 
+					}
 					else {
 
 					}
@@ -101,9 +107,11 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 			console.log( "opening connection to " + "<cfoutput>#submit_link#</cfoutput>" );
 
 			//What does the pbody look like
-			payload = "staffer_id=" + this.staffer_id.value +
-					"&transact_id=" + this.transact_id.value +
-					"&list=" + this.list.value;
+			payload = [
+				 "staffer_id=" + this.staffer_id.value  
+				,"transact_id=" + this.transact_id.value 
+				,"list=" + this.list.value 
+			].join( '&' );
 
 			console.log( payload );
 
@@ -168,11 +176,10 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 
 
 	<!--- On submit, or next, do it. --->
-	<form id="wash-id" method="POST" action="#submit_link#" class="wash"> 
+	<form id="wash-id" method="POST" action="#linkish#" class="wash"> 
 		<input type="text" name="staffer_id" value="#randnum( 8 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
 		<input type="text" name="transact_id" value="#randnum( 8 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
 		<input type="text" name="list"> <!--- make a list here --->
-		<input type="text" name="sess_id" value="#session.iv_motrpac_transact_id#"> <!--- make a list here --->
 		<input type="submit" value="Done!">
 	</form>
 </div>

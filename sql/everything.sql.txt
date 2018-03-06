@@ -304,3 +304,60 @@ ps_id int
 );
 
 
+/*
+ ----------------------------------
+ac_mtr_participant_transaction_set
+
+I'm so tired, I can't even think
+of good table names...
+
+p_uuid              Unique ID (all my tables have row id's)
+p_transaction_id    A unique transaction ID, (which will be used only temporarily, but, yah, maybe I can recall)
+p_staff_id          The staff member who will put in the data.
+p_currentDatetime   Save the current date time
+
+
+*If I save as I go, how do I get 
+rid of stuff?  
+Also, how do I recall??????????
+More than likely the same session is used...
+May need to modify...
+
+----------------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_participant_transaction_set', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_participant_transaction_set;
+END
+CREATE TABLE ac_mtr_participant_transaction_set
+(
+	p_uuid INT
+	,p_transaction_id INT
+	,p_staff_id INT
+	,p_currentDateTime DATETIME
+);
+
+/*
+----------------------------------
+ac_mtr_participant_transaction_members
+
+This might be a job for Redis.
+
+With its key valuing...
+
+p_uuid              Unique ID (all my tables have row id's)
+p_transaction_id    Use the same transaction.
+p_id                Save each ID here.
+----------------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_participant_transaction_members', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_participant_transaction_members;
+END
+CREATE TABLE ac_mtr_participant_transaction_members 
+(
+	p_uuid INT
+	,p_transaction_id INT
+	,p_id INT
+);
+

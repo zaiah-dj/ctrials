@@ -87,7 +87,6 @@ div.part-div {
 	top: -10px;
 	width: 100%;
 	white-space: nowrap;
-	overflow: scroll;
 	overflow-y: hidden;
 }
 
