@@ -25,8 +25,19 @@
 		"docs": { 
 			"model": "docs",
 			"view":  "docs",
-			"hint":  "This just documents this app."
-		},
+			"hint":  "This just documents this app." },
+
+		"test": { 
+			"hint":  "Test how new HTML5 controls look.",
+			"model": [ "participant/session-check", "chosen", "participant" ],      
+			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "test", "master/tail" ] },
+
+		"update": { 
+			"hint":  "This acts as the server side endpoint for values edited via AJAX.  It will break up a block of JSON and store data in the proper tables.",
+			"model": "update",                                   
+			"content_type": "application/json",                                   
+			"view":  "update" },
+
 
 		"default": { 
 			"hint":  "The thing of the thing.",
@@ -41,32 +52,23 @@
 		"chosen": { 
 			"hint":  "The thing of the thing.",
 			"model": [ "participant/session-check", "chosen" ],                                    
-			"view": [ "master/head", "master/nav", "participant-list", "master/tail" ] },
+			"view": [ "master/head", "master/nav", "participant/list", "master/tail" ] },
 
-		"participant": { 
-			"hint":  "The thing of the thing.",
+		"info": { 
+			"hint":  "See all patient data (more than you ever wanted to know).",
 			"model": [ "participant/session-check", "chosen", "participant" ],            
-			"view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant", "master/tail" ] },
+			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "info", "master/tail" ] },
 
-		"participant-test": { 
-			"hint":  "The thing of the thing.",
-			"model": [ "participant/session-check", "chosen", "participant" ],      
-			"view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-test", "master/tail" ] },
 
-		"participant-compare": { 
-			"hint":  "The thing of the thing.",
+		"compare": { 
+			"hint":  "Compare the participant's previous weeks history.",
 			"model": [ "participant/session-check", "chosen", "participant" ],    
-			"view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-compare", "master/tail" ] },
+			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "compare", "master/tail" ] },
 
-		"participant-resistance": { 
-			"hint":  "The thing of the thing.",
+		"input": { 
+			"hint":  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here.",
 			"model": [ "participant/session-check", "chosen", "participant" ], 
-			"view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-resistance", "master/tail" ] },
-
-		"participant-endurance": { 
-			"hint":  "The thing of the thing.",
-			"model": [ "participant/session-check", "chosen", "participant" ],  
-			"view": [ "master/head", "master/nav", "participant-list", "participant-nav", "participant-endurance", "master/tail" ] },
+			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "input", "master/tail" ] },
 
 		"revoke": { 
 			"model": "revoke",

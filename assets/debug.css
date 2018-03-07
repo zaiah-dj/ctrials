@@ -1,0 +1,15 @@
+.debug {
+	width: 120px;
+	height: auto;
+	color: white;
+	background-color: red;
+	position: fixed;
+	z-index: 99;
+	right: 0px;
+	top: 0px;
+	padding: 10px;
+}
+
+#debugger .inner div {
+	margin: 10px;
+}

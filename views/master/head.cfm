@@ -1,8 +1,14 @@
 <cfoutput>
 <html>
 <head>
+
 	<!-- All CSS and whatnot -->
 	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
+	
+	<cfif data.debug eq 1>
+	<!-- CSS Debug stylesheet -->
+	<link rel="stylesheet" href="#link( "assets/debug.css" )#">
+	</cfif>
 	
 	<!-- Bootstrap: Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -55,5 +61,5 @@
 
 <body>
 </cfoutput>
-
+<cfif data.debug eq 1><div id="debugger" class="debug"></div></cfif>
 <div class="container">
