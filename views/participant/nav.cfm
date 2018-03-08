@@ -8,13 +8,15 @@
 		<a href="#link( "participant-control.cfm" )#"><li><h3>Enter Control Data</h3></li></a>
 			--->
 	<cfif not StructKeyExists( url, "id" )>
-		<a href="#link( "input.cfm" )#"><li><h3>Enter Today's Exercise Data</h3></li></a>
-		<a href="#link( "compare.cfm" )#"><li><h3>Compare Previous Data</h3></li></a>
-		<a href="#link( "info.cfm" )#"><li><h3>Participant Info</h3></li></a>
+		<a href="#link( "check-in.cfm" )#"><li>Check-In</li></a>
+		<a href="#link( "input.cfm" )#"><li>Enter Today's<br />Exercise Data</li></a>
+		<a href="#link( "compare.cfm" )#"><li>Compare<br/>Previous Data</li></a>
+		<a href="#link( "info.cfm" )#"><li>Participant Info</li></a>
 	<cfelse>
-		<a href="#link( "input.cfm?id=#url.id#" )#"><li><h3>Enter Today's Exercise Data</h3></li></a>
-		<a href="#link( "compare.cfm?id=#url.id#" )#"><li><h3>Compare Previous Data</h3></li></a>
-		<a href="#link( "info.cfm?id=#url.id#" )#"><li><h3>Participant Info</h3></li></a>
+		<a href="#link( "check-in.cfm?id=#url.id#" )#"><li>Check-In</li></a>
+		<a href="#link( "input.cfm?id=#url.id#" )#"><li>Enter Today's<br />Exercise Data</li></a>
+		<a href="#link( "compare.cfm?id=#url.id#" )#"><li>Compare<br />Previous Data</li></a>
+		<a href="#link( "info.cfm?id=#url.id#" )#"><li>Participant Info</li></a>
 	</cfif>
 	</ul>
 	

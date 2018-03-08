@@ -19,60 +19,26 @@ A list of the participants (probably coming from somewhere else, but plug this i
 This is looped through when building a list of participants to search through.
  ----------------------------
  */
-IF OBJECT_ID( N'ac_mtr_participants', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_participants__', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_participants;
+	DROP TABLE ac_mtr_participants__;
 END
-CREATE TABLE ac_mtr_participants 
+CREATE TABLE ac_mtr_participants__
 (
-participant_id INT IDENTITY(1,1) NOT NULL 
-,participant_other_id varchar(64)
+ participant_id INT IDENTITY(1,1) NOT NULL
 ,participant_fname varchar(256)
-,participant_mname varchar(256)
 ,participant_lname varchar(256)
-,participant_age varchar(64)
-,participant_randomization_string varchar(256)
-,participant_date_of_randomization datetime
-,participant_date_added datetime
-,participant_date_modified datetime
-,participant_avatar varchar(2048)
-,participant_notes varchar(max)
-,participant_initial_weight varchar(max)
-,participant_initial_height varchar(max)
+,participant_mname varchar(256)
+,participant_exercise INT NOT NULL
+,participant_randomization_string VARCHAR(256)
+,participant_initial_weight FLOAT NOT NULL
+,participant_initial_height FLOAT NOT NULL
+,participant_date_of_randomization DATETIME
+,participant_avatar VARCHAR(max)
+,participant_date_added DATETIME
+,participant_date_modified DATETIME
+,participant_notes VARCHAR(max)
 );
-
-
-/*
- ----------------------------
-ac_mtr_participants
-
-A list of the participants (probably coming from somewhere else, but plug this in later)
-This is looped through when building a list of participants to search through.
- ----------------------------
- */
-IF OBJECT_ID( N'ac_mtr_participant_addl', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_participant_addl;
-END
-CREATE TABLE ac_mtr_participant_addl 
-(
-participant_addl_id INT IDENTITY(1,1) NOT NULL 
-,participant_addl_other_id varchar(64)
-,participant_addl_fname varchar(256)
-,participant_addl_mname varchar(256)
-,participant_addl_lname varchar(256)
-,participant_addl_age varchar(64)
-,participant_addl_randomization_string varchar(256)
-,participant_addl_date_of_randomization datetime
-,participant_addl_date_added datetime
-,participant_addl_date_modified datetime
-,participant_addl_avatar varchar(2048)
-,participant_addl_notes varchar(max)
-,participant_addl_initial_weight varchar(max)
-,participant_addl_initial_height varchar(max)
-);
-
-
 
 /*
  ----------------------------
@@ -84,11 +50,33 @@ or not we want to maintain
 them here or in the app.
  ----------------------------
  */
-IF OBJECT_ID( N'ac_mtr_exercisetypes', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_re_exercise_list', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_exercisetypes;
+	DROP TABLE ac_mtr_re_exercise_list;
 END
-CREATE TABLE ac_mtr_exercisetypes 
+CREATE TABLE ac_mtr_re_exercise_list 
+(
+et_id INT IDENTITY(1,1) NOT NULL
+,et_name varchar(256)
+,et_description varchar(max)
+);
+
+IF OBJECT_ID( N'ac_mtr_ee_machine_list', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_ee_machine_list;
+END
+CREATE TABLE ac_mtr_ee_machine_list 
+(
+et_id INT IDENTITY(1,1) NOT NULL
+,et_name varchar(256)
+,et_description varchar(max)
+);
+
+IF OBJECT_ID( N'ac_mtr_fail_visit_reasons', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_fail_visit_reasons;
+END
+CREATE TABLE ac_mtr_fail_visit_reasons 
 (
 et_id INT IDENTITY(1,1) NOT NULL
 ,et_name varchar(256)
@@ -138,134 +126,98 @@ dlog_id INT IDENTITY(1,1) NOT NULL
 
 /*
  ----------------------------
-ac_mtr_log_control
+ac_mtr_exercise_log
 
-Logs data specific to the 
-control group.
+Logs all exercise data. Less
+conditional programming is needed.
+Hopefully...
+
+el_id                      - Unique ID
+el_type                    - Type of exercise (re or ee, needed to diff)
+el_sess_id                 - Session ID
+el_participant_id          - part ID
+el_re_reps                 - Repetitions in an re set
+el_re_set_index            - Which set is/was the participant busy with?
+el_re_weight_used_lbs      - What weight was used during this set
+el_re_weight_used_kgs
+el_re_equipment            - What equipment was used
+el_ee_stage                - [cooldown, warmup, ... ]
+el_ee_resistance_used      - 
+el_ee_equipment
+el_equipment_other
+el_equipment_other_reason
+el_ee_timeblock
+el_datetime
+el_notes
+
+ ----------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_exercise_log', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_exercise_log;
+END
+CREATE TABLE ac_mtr_exercise_log (
+ el_id INT IDENTITY(1,1) NOT NULL
+,el_type INT
+,el_sess_id INT
+,el_participant_id INT
+,el_re_reps INT
+,el_re_set_index INT
+,el_re_weight_used_lbs INT
+,el_re_weight_used_kgs INT
+,el_re_equipment INT
+,el_ee_stage INT
+,el_ee_resistance_used INT
+,el_ee_equipment INT
+,el_equipment_other VARCHAR(MAX)
+,el_equipment_other_reason VARCHAR(MAX)
+,el_ee_timeblock INT
+,el_cc_fieldInt1 INT
+,el_cc_fieldInt2 INT
+,el_cc_fieldVarchar1 VARCHAR( MAX )
+,el_cc_fieldVarchar2 VARCHAR( MAX )
+,el_datetime DATETIME
+,el_notes VARCHAR( MAX )
+ );
+
+
+/*
+ ----------------------------
+ac_mtr_checkinstatus
 
 What condition is the patient
 in during the visit?
 
-lc_id            Log control ID
-lc_parent_id     Parent study
-lc_misc          ?
-lc_notes         ?
- ----------------------------
- */
-IF OBJECT_ID( N'ac_mtr_log_control', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_log_control;
-END
-CREATE TABLE ac_mtr_log_control (
-lcc_id INT IDENTITY(1,1) NOT NULL
-,lcc_parent_id int
-,lcc_misc varchar(256)
-,lcc_notes varchar(max) 
-)
-
-
-
-/*
- ----------------------------
-ac_mtr_log_cardio
-
-Logs data specific to the 
-cardio group.
-
-lc_id                 Unique
-lc_type               Which type of cardio was used? (another table for this)
-lc_type_other         Could be a totally different type of cardio
-lc_set_index          ?
-lc_length_of_set      Length that exercise was done
-lc_resistance_used    ?
-lc_notes              notes...
- ----------------------------
- */
-IF OBJECT_ID( N'ac_mtr_log_cardio', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_log_cardio;
-END
-CREATE TABLE ac_mtr_log_cardio (
-lc_id INT IDENTITY(1,1) NOT NULL
-,lc_type int
-,lc_type_other varchar(256) 
-,lc_set_index int
-,lc_length_of_set int
-,lc_resistance_used int
-,lc_notes varchar(max) 
-)
-
-
-/*
- ----------------------------
-ac_mtr_log_strength
-
-Logs data specific to the 
-strength study.
- 
-id 					an identifier
-,set_index int - which number set is this?
-,repetitions int - how many repetitions were part of this set
-,weight_used int - how much weight was used
-,notes varchar(max)  - anything of note happen?
-
-ls_id                   Unique ID of this particular exercise
-ls_parent_id            Parent is the dlog_id
-ls_set_index            Strength training usually involves sets, so log the number here 
-ls_repetitions          How many repetitions did the participant do?
-ls_weight_used_lbs      How heavy (in lbs)
-ls_weight_used_kgs      How heavy (in kgs)
-ls_notes                Notes?  (a little excessive, but nobody cares)
- ----------------------------
-*/
-IF OBJECT_ID( N'ac_mtr_log_strength', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_log_strength;
-END
-CREATE TABLE ac_mtr_log_strength (
-ls_id INT IDENTITY(1,1) NOT NULL
-,ls_parent_id int
-,ls_set_index int
-,ls_repetitions int
-,ls_weight_used_lbs int
-,ls_weight_used_kgs int
-,ls_notes varchar(max) 
-)
-
-
-/*
- ----------------------------
-ac_mtr_patientstatus
-
-What condition is the patient
-in during the visit?
-
-ps_id                 Unique
+ps_id                 Unique ID
+ps_session_id         The session ID that this participant was tested during.
 ps_before             Was this done before or after the exercises?
 ps_weight             How heavy is patient at start?
 ps_height             How tall is patient at start?
 ps_fatigue            Approximate statement concerning the person's energy level
-ps_vision             ...?
-ps_stool              ...?
-ps_hunger             ...?
+ps_vision             Vision test evaluation
+ps_hunger             Is the participant hungry?
 ps_date_time_assessed When was the person assessed
-ps_notes              notes...
+ps_droppedout         Did the participant opt out this time?
+ps_dropout_reason     Why?
+ps_notes              Other notes concerning the patient's condition.
  ----------------------------
  */
-IF OBJECT_ID( N'ac_mtr_patientstatus', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_checkinstatus', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_patientstatus;
+	DROP TABLE ac_mtr_checkinstatus;
 END
-CREATE TABLE ac_mtr_patientstatus (
+CREATE TABLE ac_mtr_checkinstatus (
  ps_id INT IDENTITY(1,1) NOT NULL
+,ps_session_id INT
 ,ps_before bit
 ,ps_weight int
 ,ps_height int
 ,ps_fatigue int
 ,ps_vision int
-,ps_stool int
 ,ps_hunger int
 ,ps_date_time_assessed datetime
+,ps_droppedout bit
+,ps_dropout_reason varchar(512)
 ,ps_notes varchar(max)
 );
 
@@ -327,6 +279,7 @@ CREATE TABLE ac_mtr_participant_transaction_members
 	,p_id INT
 );
 
+/*
 SET IDENTITY_INSERT ac_mtr_participant_transaction_members ON;
 SET IDENTITY_INSERT ac_mtr_participant_transaction_set ON;
 SET IDENTITY_INSERT ac_mtr_patientstatus ON;
@@ -336,4 +289,71 @@ SET IDENTITY_INSERT ac_mtr_log_control ON;
 SET IDENTITY_INSERT ac_mtr_dlog ON;
 SET IDENTITY_INSERT ac_mtr_exercisetypes ON;
 SET IDENTITY_INSERT ac_mtr_participant_addl ON;
-SET IDENTITY_INSERT ac_mtr_participants ON;
+SET IDENTITY_INSERT ac_mtr_participants__ ON;
+SET IDENTITY_INSERT ac_mtr_re_exercise_list ON;
+SET IDENTITY_INSERT ac_mtr_ee_machine_list ON;
+SET IDENTITY_INSERT ac_mtr_fail_visit_reasons ON;
+*/
+
+/*
+----------------------------------
+Prefill lots of this.
+----------------------------------
+ */
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Presses', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Curls', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Extensions', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Seated Calf', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Bicep Curls', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Tricep Presses', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Chest Presses', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Seated Rows', '' );
+
+
+INSERT INTO ac_mtr_ee_machine_list VALUES ( 'Cycle', '' );
+INSERT INTO ac_mtr_ee_machine_list VALUES ( 'Treadmill', '' );
+INSERT INTO ac_mtr_ee_machine_list VALUES ( 'Other', '' );
+
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Illness/Health Problems', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Transportation Difficulties', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Cognitive difficulties', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'In Nursing Home/Long-Term Care Facility', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Too Busy; Time and/or Work Conflict', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Caregiver Responsibilities', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Physician''s Advice', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Problems with Muscles/Joints', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Forgot Appointment', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Moved out of area', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Traveling/On Vacation', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Personal Problems', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Unable to Contact/Locate', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Refused to Give Reason', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Withdrew from Study', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Withdrew Informed Consent', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Dissatisfied with Study', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Deceased', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Center Closed', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Other', '' );
+INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Unknown', '' );
+
+
+INSERT INTO ac_mtr_participants__ VALUES ( 'Robert', 'Beasely', 'M', 1, '7999573dd86773e000769f8fc6ef81fb', 236.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Wellesly', 'Chapel', 'Elliott', 2, 'ab021d4f2ca7eb3221780d843b6fbeab', 521.0, 96.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Durn', 'Furn', 'The', 1, '94d7d96ac3d24fc54e48764f6732ee55', 233.0, 52.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Durham', 'Bigly', 'O', 1, '8f78255f717c000fa9766c8689b4ac71', 211.0, 64.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Virginia', 'Tellurude', '', 1, 'cc6bd720fcf62888f03e9dfdbcdef5c6', 121.0, 74.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Gonzaga', 'Montroni', '', 1, 'f345f812e3ddbffc64f3cc08d2502e00', 111.0, 75.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Jim', 'Fashionista', '', 3, '46185b7fbe0d4e75d3120b0535930620', 186.0, 77.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Antonio', 'Collins', 'Ramar', 2, '93a64ab9cfc28478c77920463915aaed', 187.0, 81.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Fat', 'Man', '', 2, '8cea9cc559b44ad8ecb90d82a7ef4e1e', 154.0, 92.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Little', 'Boy', '', 2, '6e2ae3787cae27ca7a2593022ed6c37d', 164.0, 91.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Hiroshima', 'Marketplace', 'The', 1, 'd6b24c57606f6d3b6e8965901f2c44f0', 151.0, 78.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Heidi', 'Woe', 'Woe', 1, '82dede3a93b6adc7ce606ba94150d8a4', 123.0, 82.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Dell', 'Jackson', 'Michael', 1, '07ae127c83bbcb9a19352ff105cb523c', 187.0, 85.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Michael', 'Jackson', 'Joe', 1, 'f868352bd570bb498e498cbf80eaf412', 142.0, 86.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Smarty', 'Jopeep', '', 2, '6c99d53beba19432e329e98094eca59d', 156.0, 86.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Peter', 'Rabbit', '', 1, '126348853a241a13f5f626264409bbf5', 210.0, 81.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Wallets', 'Getstolen', 'Always', 2, '46830983eaf211822a2bd834cc4ee55d', 274.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Jarius', 'Richardson', '', 1, 'acc51db689572c1c443c6ba9e95636de', 121.0, 46.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Avagard', 'Reva', '', 3, '7e227a123d9d520b7e63d4ef13de3f29', 96.0, 54.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants__ VALUES ( 'Dr', 'Monty', '', 3, '09f6cfc5d626c2c14dadc09c6aaac41d', 184.0, 87.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );

@@ -90,50 +90,8 @@ div.part-div {
 	overflow-y: hidden;
 }
 
-.participant-selector
-{
-	font-size: 1.5em;
-	position:relative;
-	top: 40px;
-	z-index: 99;
-	background-color: black;
-	height: 50px;
-	padding: 10px;
-	padding-left: 50px;
-	/*
-	width: 300px;
-	transform:
-		rotate( -70deg )
-	;
-	transform-origin:
-		120px 100px;
-	;
-	*/
-	transition: 
-		background-color 0.2s,
-		color 0.2s
-	;
-}
-
-.participant-selector:hover
-{
-	background-color: green;
-	color: white;
-}
-
 .participant-info
-{
-	background-color: #e6e6ff;
-}
-
-.participants li + div:active
-{
-	width: 100%;
-	transition: 
-		background-color 0.2s,
-		color 0.2s
-	;
-}
+{ background-color: #e6e6ff; }
 
 .participants li
 {
@@ -142,25 +100,25 @@ div.part-div {
 	position: relative;
 	margin-bottom: -10px;
 	display: inline-block;
-	height: 200px;
-	color: black;
-	background-color: transparent;
-	width: 300px;
-	/*
-	width: 60px;
-	*/
+	height: 80px;
+	width: 80px;
+	color: white;
+	background-color: black;
+	transition: 
+		background-color 0.2s,
+		color 0.2s
+	;
 }
 
-.participants li a {
-	color: white;
-	text-decoration: none;
+.participants li:hover {
+	background-color: #aaa;
 }
 
 ul.nav a {
 	background-color: #fff;
-	width: 120px;
+	width: 80px;
 	display: inline-block;
-	height: 100px;
+	height: 120px;
 	margin: 10px;
 	font-size: 2em;
 	text-align: center;
@@ -177,7 +135,6 @@ ul.nav a.selected {
 
 ul.nav a:hover {
 	background-color: cyan;
-	width: 120px;
 	display: inline-block;
 	margin: 10px;
 }
@@ -195,12 +152,34 @@ ul.nav a.selected:hover {
 	width: 200px;
 }
 
+ul.dasch li {
+	display: inline-block;
+	background-color: #aaa;
+	color: black;
+	margin-right: 5px;
+	min-width: 50px;
+	max-width: 150px;
+	padding: 5px;
+	transition: background-color 0.2s,
+							color 0.2s;
+}
+
+ul.dasch li.selected {
+	background-color: #e0ffff;
+}
+
+ul.dasch li:hover {
+	background-color: #00ffff;
+}
+
 
 /*2nd-level navigation (Switch between endurance and resistance data)*/
 ul.participant-info-nav li {
-	display: inline-block; width: 200px;	
+	display: inline-block; 
 	text-align: center;
-	font-size: 0.7em;
+	padding: 10px;
+	color: #ddd;
+	background-color: purple;
 	transition: 
 		background-color 0.2s,
 		color 0.2s;

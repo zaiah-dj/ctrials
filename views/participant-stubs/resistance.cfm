@@ -11,42 +11,10 @@ exercises = [
 	"Chest Presses",
 	"Seated Rows"
 ];
-
-fail_reasons = [
-	"Illness/Health Problems",
-	"Transportation Difficulties",
-	"Cognitive difficulties",
-	"In Nursing Home/Long-Term Care Facility",
-	"Too Busy; Time and/or Work Conflict",
-	"Caregiver Responsibilities",
-	"Physician's Advice",
-	"Problems with Muscles/Joints",
-	"Forgot Appointment",
-	"Moved out of area",
-	"Traveling/On Vacation",
-	"Personal Problems",
-	"Unable to Contact/Locate",
-	"Refused to Give Reason",
-	"Withdrew from Study",
-	"Withdrew Informed Consent",
-	"Dissatisfied with Study",
-	"Deceased",
-	"Center Closed",
-	"Other",
-	"Unknown"
-];
 </cfscript>
 
 
 <cfoutput>
-	<label>Patient Could Not Continue</label>
-	<cfset sc=1>
-	<select name="fail_reason">
-		<option value="0">Choose a Reason</option>	
-	<cfloop array = "#fail_reasons#" index = "reason">
-		<option value="#sc++#">#reason#</option>	
-	</cfloop>
-	</select>
 
 
 	<!--- Choose between 'pounds' and 'kilograms' --->

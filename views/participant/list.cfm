@@ -3,13 +3,9 @@
 <div class="part-div">
 <ul class="participants" id="participant_list">
 	<cfloop query="part_list" >
-	<li>
-		<a class="" href="#link( "input.cfm?id=#participant_id#" )#">
-			<div class="participant-selector">
-				#participant_fname# #participant_lname#
-			</div>
-		</a>
-	</li>
+	<a class="" href="#link( "check-in.cfm?id=#participant_id#" )#">
+		<li>#participant_fname# <br />#participant_lname#</li>
+	</a>
 	</cfloop>
 </ul>
 </div>
