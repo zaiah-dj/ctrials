@@ -61,5 +61,7 @@
 
 <body>
 </cfoutput>
-<cfif data.debug eq 1><div id="debugger" class="debug"></div></cfif>
+<cfif data.debug eq 1>
+	<div id="debugger" class="debug"></div>
+</cfif>
 <div class="container">

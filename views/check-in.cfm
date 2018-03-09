@@ -17,7 +17,7 @@
 	{ label = ( #part.participant_exercise# eq 1 ) ? "Machine Selection" : "Exercise Selection",
 		 uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
 	];
-
+/*
 exercises = [
 	"Leg Presses",
 	"Leg Curls",
@@ -58,6 +58,7 @@ machines = [
 		"Other",
 		"Unknown"
 	];
+*/
 </cfscript>
 
 
@@ -105,8 +106,8 @@ machines = [
 					<cfset sc=1>
 					<select name="fail_reason">
 						<option value="0">Choose a Reason</option>	
-					<cfloop array = "#fail_reasons#" index = "reason">
-						<option value="#sc++#">#reason#</option>	
+					<cfloop query = "fail_reasons"> 
+						<option value="#sc++#">#et_name#</option>	
 					</cfloop>
 					</select>
 				</td>
@@ -135,15 +136,15 @@ machines = [
 				<td class="title">#iif( part.participant_exercise eq 1, DE("Machine Selection"),DE("Exercise Selection"))#</td>
 				<td>
 					<cfif part.participant_exercise eq 1>
-						<cfloop array=#machines# index="thing">
-							<label>#thing#</label>
-							<input type="radio" value="#thing#">
+						<cfloop query=machines> 
+							<label>#et_name#</label>
+							<input type="radio" value="#et_name#">
 						</cfloop>
 					<cfelse>
 						<ul>
-						<cfloop array=#exercises# index="thing">
-							<li><label>#thing#</label>
-							<input type="checkbox" value="#thing#"></li>
+						<cfloop query=exercises>
+							<li><label>#et_name#</label>
+							<input type="checkbox" value="#et_name#"></li>
 						</cfloop>
 						</ul>
 					</cfif>

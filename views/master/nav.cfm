@@ -6,6 +6,7 @@
 		<a #iif( data.page eq "gto", 'class="selected"', "" )# href="#link( "global-participant-list.cfm" )#">
 			<li><span style="font-size:0.6em;">Participant List</span></li>
 		</a>
+		<a href="#link( "logout.cfm" )#"><li>Logout</li></a>
 	</ul>
 </div>
 </cfoutput>

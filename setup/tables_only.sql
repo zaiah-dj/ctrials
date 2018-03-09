@@ -19,11 +19,11 @@ A list of the participants (probably coming from somewhere else, but plug this i
 This is looped through when building a list of participants to search through.
  ----------------------------
  */
-IF OBJECT_ID( N'ac_mtr_participants__', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_participants', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_participants__;
+	DROP TABLE ac_mtr_participants;
 END
-CREATE TABLE ac_mtr_participants__
+CREATE TABLE ac_mtr_participants
 (
  participant_id INT IDENTITY(1,1) NOT NULL
 ,participant_fname varchar(256)
@@ -133,6 +133,7 @@ conditional programming is needed.
 Hopefully...
 
 el_id                      - Unique ID
+el_length                  - How long has the session been going on
 el_type                    - Type of exercise (re or ee, needed to diff)
 el_sess_id                 - Session ID
 el_participant_id          - part ID
@@ -159,6 +160,7 @@ END
 CREATE TABLE ac_mtr_exercise_log (
  el_id INT IDENTITY(1,1) NOT NULL
 ,el_type INT
+,el_length INT
 ,el_sess_id INT
 ,el_participant_id INT
 ,el_re_reps INT
@@ -228,11 +230,13 @@ ac_mtr_participant_transaction_set
 
 I'm so tired, I can't even think
 of good table names...
-
+k
 p_uuid              Unique ID (all my tables have row id's)
 p_transaction_id    A unique transaction ID, (which will be used only temporarily, but, yah, maybe I can recall)
 p_staff_id          The staff member who will put in the data.
+p_expire_time       When should this be completely finished?
 p_currentDatetime   Save the current date time
+p_lastUpdateTime    Last updated when?
 
 
 *If I save as I go, how do I get 
@@ -249,10 +253,12 @@ BEGIN
 END
 CREATE TABLE ac_mtr_participant_transaction_set
 (
-	p_uuid INT IDENTITY(1,1) NOT NULL
+	 p_uuid INT IDENTITY(1,1) NOT NULL
 	,p_transaction_id INT
 	,p_staff_id INT
+	,p_expires BIT
 	,p_currentDateTime DATETIME
+	,p_lastUpdateTime DATETIME
 );
 
 /*
@@ -277,6 +283,40 @@ CREATE TABLE ac_mtr_participant_transaction_members
 	p_uuid INT IDENTITY(1,1) NOT NULL
 	,p_transaction_id INT
 	,p_id INT
+);
+
+
+/*
+----------------------------------
+ac_mtr_days_tracker
+
+Track the days that the participant is in.
+
+With its key valuing...
+
+dt_uuid              - Unique ID
+dt_session           - Session that this set belonged to
+dt_day_of_week       - Day of week that the participant is attending
+dt_part_id           - Participant ID
+dt_date_full         - What's the full date? (dunno if this is really needed)
+dt_week_index        - Which week is the participant on?
+dt_week_start        - A date that marks the start of the week ( can calculate from here )
+dt_week_visit_index  - Which visit during the week is this?  ( 1 - 4 )
+----------------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_days_tracker', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_days_tracker;
+END
+CREATE TABLE ac_mtr_days_tracker 
+(
+ dt_uuid INT IDENTITY(1,1) NOT NULL
+,dt_session_id INT
+,dt_day_of_week INT /*Perhaps this should just be the day name?*/
+,dt_participant_id INT
+,dt_week_index INT
+,dt_date_full DATETIME
+,dt_week_visit_index INT
 );
 
 /*
@@ -337,23 +377,23 @@ INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Other', '' );
 INSERT INTO ac_mtr_fail_visit_reasons VALUES ( 'Unknown', '' );
 
 
-INSERT INTO ac_mtr_participants__ VALUES ( 'Robert', 'Beasely', 'M', 1, '7999573dd86773e000769f8fc6ef81fb', 236.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Wellesly', 'Chapel', 'Elliott', 2, 'ab021d4f2ca7eb3221780d843b6fbeab', 521.0, 96.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Durn', 'Furn', 'The', 1, '94d7d96ac3d24fc54e48764f6732ee55', 233.0, 52.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Durham', 'Bigly', 'O', 1, '8f78255f717c000fa9766c8689b4ac71', 211.0, 64.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Virginia', 'Tellurude', '', 1, 'cc6bd720fcf62888f03e9dfdbcdef5c6', 121.0, 74.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Gonzaga', 'Montroni', '', 1, 'f345f812e3ddbffc64f3cc08d2502e00', 111.0, 75.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Jim', 'Fashionista', '', 3, '46185b7fbe0d4e75d3120b0535930620', 186.0, 77.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Antonio', 'Collins', 'Ramar', 2, '93a64ab9cfc28478c77920463915aaed', 187.0, 81.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Fat', 'Man', '', 2, '8cea9cc559b44ad8ecb90d82a7ef4e1e', 154.0, 92.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Little', 'Boy', '', 2, '6e2ae3787cae27ca7a2593022ed6c37d', 164.0, 91.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Hiroshima', 'Marketplace', 'The', 1, 'd6b24c57606f6d3b6e8965901f2c44f0', 151.0, 78.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Heidi', 'Woe', 'Woe', 1, '82dede3a93b6adc7ce606ba94150d8a4', 123.0, 82.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Dell', 'Jackson', 'Michael', 1, '07ae127c83bbcb9a19352ff105cb523c', 187.0, 85.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Michael', 'Jackson', 'Joe', 1, 'f868352bd570bb498e498cbf80eaf412', 142.0, 86.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Smarty', 'Jopeep', '', 2, '6c99d53beba19432e329e98094eca59d', 156.0, 86.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Peter', 'Rabbit', '', 1, '126348853a241a13f5f626264409bbf5', 210.0, 81.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Wallets', 'Getstolen', 'Always', 2, '46830983eaf211822a2bd834cc4ee55d', 274.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Jarius', 'Richardson', '', 1, 'acc51db689572c1c443c6ba9e95636de', 121.0, 46.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Avagard', 'Reva', '', 3, '7e227a123d9d520b7e63d4ef13de3f29', 96.0, 54.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
-INSERT INTO ac_mtr_participants__ VALUES ( 'Dr', 'Monty', '', 3, '09f6cfc5d626c2c14dadc09c6aaac41d', 184.0, 87.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Robert', 'Beasely', 'M', 1, '7999573dd86773e000769f8fc6ef81fb', 236.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Wellesly', 'Chapel', 'Elliott', 2, 'ab021d4f2ca7eb3221780d843b6fbeab', 521.0, 96.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Durn', 'Furn', 'The', 1, '94d7d96ac3d24fc54e48764f6732ee55', 233.0, 52.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Durham', 'Bigly', 'O', 1, '8f78255f717c000fa9766c8689b4ac71', 211.0, 64.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Virginia', 'Tellurude', '', 1, 'cc6bd720fcf62888f03e9dfdbcdef5c6', 121.0, 74.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Gonzaga', 'Montroni', '', 1, 'f345f812e3ddbffc64f3cc08d2502e00', 111.0, 75.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Jim', 'Fashionista', '', 3, '46185b7fbe0d4e75d3120b0535930620', 186.0, 77.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Antonio', 'Collins', 'Ramar', 2, '93a64ab9cfc28478c77920463915aaed', 187.0, 81.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Fat', 'Man', '', 2, '8cea9cc559b44ad8ecb90d82a7ef4e1e', 154.0, 92.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Little', 'Boy', '', 2, '6e2ae3787cae27ca7a2593022ed6c37d', 164.0, 91.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Hiroshima', 'Marketplace', 'The', 1, 'd6b24c57606f6d3b6e8965901f2c44f0', 151.0, 78.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Heidi', 'Woe', 'Woe', 1, '82dede3a93b6adc7ce606ba94150d8a4', 123.0, 82.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Dell', 'Jackson', 'Michael', 1, '07ae127c83bbcb9a19352ff105cb523c', 187.0, 85.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Michael', 'Jackson', 'Joe', 1, 'f868352bd570bb498e498cbf80eaf412', 142.0, 86.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Smarty', 'Jopeep', '', 2, '6c99d53beba19432e329e98094eca59d', 156.0, 86.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Peter', 'Rabbit', '', 1, '126348853a241a13f5f626264409bbf5', 210.0, 81.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Wallets', 'Getstolen', 'Always', 2, '46830983eaf211822a2bd834cc4ee55d', 274.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Jarius', 'Richardson', '', 1, 'acc51db689572c1c443c6ba9e95636de', 121.0, 46.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Avagard', 'Reva', '', 3, '7e227a123d9d520b7e63d4ef13de3f29', 96.0, 54.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );
+INSERT INTO ac_mtr_participants VALUES ( 'Dr', 'Monty', '', 3, '09f6cfc5d626c2c14dadc09c6aaac41d', 184.0, 87.0, 0, '/assets/jc_avatar.jpg', 0, 0 , '' );

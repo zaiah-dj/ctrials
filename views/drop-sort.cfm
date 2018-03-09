@@ -85,7 +85,7 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 			//Read that XML	
 			xhr.onreadystatechange = function () {
 				if ( this.readyState == 4 && this.status == 200 ) {
-					//console.log( this.responseText );
+					console.log( this.responseText );
 					parsed = JSON.parse( this.responseText );
 					console.log( parsed );
 
@@ -136,6 +136,9 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 
 
 <cfoutput>
+<cfif data.debug eq 1>
+	<div class="debug2">#mySession# - #sessionStatus#</div>
+</cfif>
 <div class="part-div">
 	<div class="bigly">
 
@@ -156,7 +159,7 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 		<!--- Drag and drop --->
 		<div class="listing">
 		<ul class="part-drop-list">
-			<cfloop query = "part_list">
+			<cfloop query = "all_part_list">
 				<li draggable="true" ondragstart="drag(event)">
 					<span>#participant_fname# #participant_lname#</span>
 					<span>#participant_id#</span>
@@ -170,6 +173,14 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 	<div class="bigly" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
 		<div class="listing listing-drop">
 			<ul> 
+		<cfif sessionStatus eq 2>
+			<cfloop query = "part_list">
+				<li>
+					<span>#participant_fname# #participant_lname#</span>
+					<span>#participant_id#</span>
+				</li>	
+			</cfloop>
+		</cfif>
 			</ul>
 		</div>
 	</div>
@@ -177,10 +188,12 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 
 	<!--- On submit, or next, do it. --->
 	<form id="wash-id" method="POST" action="#linkish#" class="wash"> 
-		<input type="text" name="staffer_id" value="#randnum( 8 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
-		<input type="text" name="transact_id" value="#randnum( 8 )#"> <!--- Generate this on the fly, but maybe cf should do this...? --->
+		<input type="text" name="staffer_id" value="#randnum( 8 )#"> 
+		<input type="text" name="transact_id" value="#mySession#"> 
 		<input type="text" name="list"> <!--- make a list here --->
 		<input type="submit" value="Done!">
 	</form>
 </div>
+
+<cfdump var = #session#>
 </cfoutput>

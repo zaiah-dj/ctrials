@@ -5,6 +5,7 @@ select everything from the thing
 SELECT * FROM ac_mtr_participant_transaction_set
 WHERE p_transaction_id = <cfqueryparam cfsqltype="cf_sql_varchar"> ;
 --->
+<cfif sessionStatus eq 2>
 <cfquery datasource = "#data.source#" name = "part_list">
 SELECT 
 	*
@@ -14,7 +15,7 @@ FROM
 	FROM 
 		ac_mtr_participant_transaction_members
 	WHERE 
-		p_transaction_id = <cfqueryparam value="#session.iv_sess_id#" cfsqltype="cf_sql_int"> 
+		p_transaction_id = <cfqueryparam value="#mySession#" cfsqltype="cf_sql_int"> 
 ) AS CurrentTransactionIDList
 LEFT JOIN
 ( SELECT 
@@ -28,4 +29,4 @@ ON CurrentTransactionIDList.p_id = amp.participant_id;
 <cfdump var=#part_list#>
 <cfabort>
 --->
-
+</cfif>
