@@ -9,7 +9,10 @@
 	<!-- CSS Debug stylesheet -->
 	<link rel="stylesheet" href="#link( "assets/debug.css" )#">
 	</cfif>
-	
+
+	<!-- custom fonts -->	
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
 	<!-- Bootstrap: Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 

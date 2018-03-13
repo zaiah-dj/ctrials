@@ -138,7 +138,8 @@ machines = [
 					<cfif part.participant_exercise eq 1>
 						<cfloop query=machines> 
 							<label>#et_name#</label>
-							<input type="radio" value="#et_name#">
+							<input type="radio" name="machine_value" value="#et_name#">
+							<br />
 						</cfloop>
 					<cfelse>
 						<ul>

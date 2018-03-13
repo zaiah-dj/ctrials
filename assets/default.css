@@ -1,11 +1,14 @@
 /*global*/
 html {
-	font-family: Helvetica;
+	font-family: 'Montserrat', sans-serif;
 	background-color: #ddd;
 }
 
+p, div {
+	font-family: 'Montserrat', sans-serif;
+}
+
 pre {
-	font-family: "Lucida Console", "Lucida Sans Typewriter", monaco, "Bitstream Vera Sans Mono", monospace;
 	width: 95%;
 	margin: 0 auto;
 	background-color: white;
@@ -55,7 +58,7 @@ p {
 							width 0.2s;
 }
 
-a {
+a, ul {
 	transition: background-color 0.2s,
 							color 0.2s;
 }
@@ -68,7 +71,6 @@ h5 { font-size: 2em; }
 
 
 p {
-	font-family: "Lucida Console", "Lucida Sans Typewriter", monaco, "Bitstream Vera Sans Mono", monospace;
 	font-size: 1.4em;
 	margin-top: 30px;
 }
@@ -84,7 +86,6 @@ p {
 
 div.part-div {
 	position: relative;
-	top: -10px;
 	width: 100%;
 	white-space: nowrap;
 	overflow-y: hidden;
@@ -95,15 +96,27 @@ div.part-div {
 
 .participants li
 {
-	font-size: 1.0em;
-	z-index: 0;
 	position: relative;
-	margin-bottom: -10px;
+	z-index: 0;
 	display: inline-block;
-	height: 80px;
-	width: 80px;
+
+	font-size: 1.0em;
+	text-align: center;
+
+	height: 100px;
+	width: 100px;
+
+	margin-top: 10px;
+	margin-right: 10px;
+	padding: 10px;
+	padding-top: 30px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+
 	color: white;
 	background-color: black;
+
 	transition: 
 		background-color 0.2s,
 		color 0.2s
@@ -114,17 +127,33 @@ div.part-div {
 	background-color: #aaa;
 }
 
+div.nav, 
+.part-div 
+{
+	border-bottom: 5px solid black;
+	margin-bottom: 10px;
+}
+
 ul.nav a {
-	background-color: #fff;
-	width: 80px;
+	background-color: #eee;
+
+	width: 100px;
+
 	display: inline-block;
-	height: 120px;
-	margin: 10px;
-	font-size: 2em;
+
+	font-size: 1.5em;
+	letter-spacing: -1px;
 	text-align: center;
-	padding-top: 30px;
-	padding-bottom: 20px;
+
+	margin-right: 10px;
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+
 	color: black;
+	transition: background-color 0.2s,
+							color 0.2s;
 }
 
 ul.nav a.selected {
@@ -135,8 +164,9 @@ ul.nav a.selected {
 
 ul.nav a:hover {
 	background-color: cyan;
+	color: white;
 	display: inline-block;
-	margin: 10px;
+	text-decoration: none;
 }
 
 ul.nav a.selected:hover {
@@ -174,12 +204,24 @@ ul.dasch li:hover {
 
 
 /*2nd-level navigation (Switch between endurance and resistance data)*/
-ul.participant-info-nav li {
+ul.participant-info-nav {
+	border: 2px solid black;
+}
+ 
+ul.participant-info-nav li 
+{
 	display: inline-block; 
+
 	text-align: center;
+
+	height: 100px;
+	width: 150px;
+
 	padding: 10px;
+
 	color: #ddd;
 	background-color: purple;
+
 	transition: 
 		background-color 0.2s,
 		color 0.2s;
@@ -465,12 +507,13 @@ input.collapsible:checked + div > table { display: block; }
 
 .bigly {
 	display: inline-block;
-	padding: 10px;
+	padding: 2px;
 	height: 70%;
 	background-color: #aaa;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-gecko-border-radius: 10px;
+	border: 2px solid #aaa;
 	width: 48%;
 	position: relative;
 }
