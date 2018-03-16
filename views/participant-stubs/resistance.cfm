@@ -13,9 +13,17 @@ exercises = [
 ];
 </cfscript>
 
+<!--- ... --->
+<cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
+	location = link( "update.cfm" ) 
+ ,querySelector = "input[ name=comp1 ], input[ name=comp2 ]" 
+ ,event = "blur"
+ ,callback = "input[ name=comp1 ], input[ name=comp2 ]" 
+)>
 
 <cfoutput>
-
+	<!--- Real ugly front end initialization code --->
+	#AjaxClientInitCode#
 
 	<!--- Choose between 'pounds' and 'kilograms' --->
 	<table class="table">

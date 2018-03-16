@@ -1,5 +1,1 @@
-{<cfoutput> 
-<!--- Simply send the response back via JSON --->
-	"status": #model.status#,
-	"message": "#model.message#" 
-}</cfoutput>
+<!--- This page is just a stub for now --->

@@ -3,8 +3,9 @@
 div.holdThings { width: 200px; }
 
 h3.dogInThisFight
-{ display: inline-block; width: 200px; }
+{ display: inline-block; } 
 
+.collapsible { position: relative; float: right; top: 30px; right: 20px; }
 
 </style>
 
@@ -103,30 +104,33 @@ f = [
 
 
 <cfset c=0>
-<cfloop array = "#f#" item = "ff" >
-	<cfoutput>
+<cfoutput>
+<div class="part-div">
+	<cfloop array = "#f#" item = "ff" >
+
 	<cfif structKeyExists( ff, "designation" )>
 		<cfif c++ gt 0> </tbody>
 			</table>
 		</div>
 	</cfif>
-		<h3 class="dogInThisFight">#ff.designation#</h3>
-		<input type="checkbox" class="collapsible">
+	<h3 class="dogInThisFight">#ff.designation#</h3>
+	<input type="checkbox" class="collapsible">
 	<div>
 	<table class="table">
 		<tbody>
 	<cfelse>
-	<tr>
-		<td>#ff.text#</td>
-		<td>
-			<cfif getMetadata( ff.field ).getTypeName() eq "java.lang.Integer">
-				<cfif ff.field eq 0>No<cfelseif ff.field eq 1>Yes<cfelse>#ff.field#</cfif>
-			<cfelse>
-				#ff.field#
-			</cfif>
-		</td>
-	</tr>
+		<tr>
+			<td class="title">#ff.text#</td>
+			<td style="width: 70%">
+				<cfif getMetadata( ff.field ).getTypeName() eq "java.lang.Integer">
+					<cfif ff.field eq 0>No<cfelseif ff.field eq 1>Yes<cfelse>#ff.field#</cfif>
+				<cfelse>
+					#ff.field#
+				</cfif>
+			</td>
+		</tr>
 	</cfif>
-	</cfoutput>
-</cfloop>
-</table>
+	</cfloop>
+	</table>
+</div>
+</cfoutput>

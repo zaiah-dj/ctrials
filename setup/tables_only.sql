@@ -83,13 +83,6 @@ et_id INT IDENTITY(1,1) NOT NULL
 ,et_description varchar(max)
 );
 
-/*
- ----------------------------
-app_activity_log
-
-Log application activity :)
- ----------------------------
-*/
 
 
 /*

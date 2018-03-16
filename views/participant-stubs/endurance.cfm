@@ -3,6 +3,12 @@
 <!--- Populate the exercise time range menu --->
 <cfscript>arry=[]; ii=1;for ( i = 5; i <= 60; i += 5 ) arry[ ii++ ]	= i - 4 & " - " & i;</cfscript>
 
+<!--- ... --->
+<cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
+	location = link( "update.cfm" ) 
+ ,querySelector = "input[ type=range ]" 
+ ,event = "change"
+)>
 
 <!--- Data --->
 <cfscript>
@@ -20,12 +26,14 @@ values = [
 ,{ label = "Blood Pressure",uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
 ,{ label = "Perceived Exertion Rating",    
 													  uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
-,{ label = "Percent Grade", uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
 ];
 </cfscript>
 
 
 <cfoutput>
+	<!--- Real ugly front end initialization code --->
+	#AjaxClientInitCode#
+
 	<ul class="inner-nav">
 	<cfloop array=#arry# index=ind> <a href="##"><li>#ind#</li></a></cfloop>
 	</ul>

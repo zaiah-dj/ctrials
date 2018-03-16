@@ -105,6 +105,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			} );
 
 			//This allows this to fire and save when the user is done
+			/*
 			b[i].addEventListener( "change", function (ev) {
 				//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
 				//alert( "New value is: " + ev.target.value );
@@ -138,6 +139,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 xhr.send( 'value={value:33,name:"Antonio Collins",table:"ermigerd",id:12}' );
 				}
 			} );
+			*/
 		}
 
 
