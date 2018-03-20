@@ -27,8 +27,8 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		for ( i=0; i < touchEl.length; i++ ) 
 		{
 			el = touchEl[ i ];
-			el.setAttribute( "draggable", true );
-			el.addEventListener( "dragstart", drag ); 
+			//el.setAttribute( "draggable", true );
+			//el.addEventListener( "dragstart", drag ); 
 			el.addEventListener( "touchstart", touchStart, true );
 		}
 	} 
