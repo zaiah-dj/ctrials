@@ -36,6 +36,22 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	}
 
 
+	//Basic filter search works
+	ip = document.querySelector( "input[type=search]" );
+	ip.addEventListener( "keyup", function (ev) 
+	{
+		vv = [].slice.call( document.querySelectorAll( "ul.part-drop-list li" ) );
+		for ( i=0; i < vv.length; i++ ) {
+			nod =         vv[i].children[0].parentElement;
+			key = String( vv[i].children[0].innerHTML );
+			val = ev.target.value;
+			//console.log( ev.target.value +
+			//	(( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? " != " : " == " ) + key );
+			nod.style.display = ( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? "none" : "block"; 
+		}
+	});
+
+
 
 	//???What is this?
 	a = [].slice.call( document.querySelectorAll( ".participants li" ) );
@@ -59,37 +75,6 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 
 	if ( loc.indexOf( "input.cfm" ) > -1 ) 
 	{
-
-		//********************************************************** 
-		//******      CONTROL EXERCISE DETAILS               *******
-		//********************************************************** 
-		if ( v = document.getElementById( "choose_mode" ) ) {
-			v.addEventListener( "change", function (ev) {
-
-				console.log( ev.target.value );	
-				console.log( document.getElementById( "_cycle" ) ); 
-			
-		//INSTEAD OF AN ID AND DIV, USE A QUERY SELECTOR AND DROP
-		//CAN PROBABLY DO SOME ANIMATION TO MAKE IT LOOK SMOOTH AND FLY
-		/*
-				if ( ev.target.value == 1 ) 
-				{
-					document.getElementById( "_cycle" ).style.display = "block";
-					document.getElementById( "_treadmill" ).style.display = "none";
-				}
-				else if ( ev.target.value == 2 )
-				{
-					document.getElementById( "_cycle" ).style.display = "none";
-					document.getElementById( "_treadmill" ).style.display = "block";
-				}
-				else if ( ev.target.value == 3 )
-				{
-					document.getElementById( "_cycle" ).style.display = "none";
-					document.getElementById( "_treadmill" ).style.display = "none";
-				}
-		*/
-			});
-		}
 
 		//********************************************************** 
 		//******      INPUT SLIDER FUNCTIONALITY            *******

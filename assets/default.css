@@ -1,8 +1,9 @@
 /*global*/
 html {
 	font-family: 'Montserrat', sans-serif;
-	background-color: #ddd;
 }
+
+body {background-color: #eee;}
 
 p, div {
 	font-family: 'Montserrat', sans-serif;
@@ -51,12 +52,18 @@ pre {
 
 .container {
 	position: relative;
+	background-color: #fff;
 	top: 5%;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	height: 90%;
-	border: 2px solid black;
+	border: 1px solid gray;
 	overflow: hidden;
+	width: 95%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	box-shadow: 10px 10px 5px gray;
 }
 
 h1, h2, h3, h4, h5 {
@@ -88,10 +95,6 @@ p {
 .gets {
 	transition: display 0.2s;
 	display: none;
-}
-
-.container {
-	width: 100%;
 }
 
 div.part-div {
@@ -139,16 +142,17 @@ div.part-div {
 div.nav, 
 .part-div 
 {
-	border-bottom: 5px solid black;
 	margin-bottom: 10px;
 }
 
 ul.nav a {
 	background-color: #eee;
+	position: relative;
+	left: 2.5%;
+	width: 95%;
 
-	width: 100px;
-
-	display: inline-block;
+	display: block;
+	top: 10px;
 
 	font-size: 1.5em;
 	letter-spacing: -1px;
@@ -213,17 +217,13 @@ ul.dasch li:hover {
 
 
 /*2nd-level navigation (Switch between endurance and resistance data)*/
-ul.participant-info-nav {
-	border: 2px solid black;
-}
- 
 ul.participant-info-nav li 
 {
 	display: inline-block; 
 
 	text-align: center;
 
-	height: 100px;
+	height: 40px;
 	width: 150px;
 
 	padding: 10px;
@@ -238,8 +238,8 @@ ul.participant-info-nav li
 }
 
 ul.participant-info-nav li:hover {
-	background-color: green;	
-	color: white;	
+	background-color: #e5bdfb;	
+	color: cyan;	
 }
 
 
@@ -247,7 +247,6 @@ ul.participant-info-nav li:hover {
 /*Inner navigation*/
 ul.inner-nav li {
 	text-align: center;
-	width: 60px; 
 	padding: 5px; 
 	display: inline-block; 
 	background-color: #333; 
@@ -436,7 +435,6 @@ textarea.width {
 /*mobile*/
 @media ( max-width: 736px ) {
 	.container {
-		width: 100%;
 		height: 100%;
 		padding-bottom: 20px;
 	}
@@ -515,6 +513,7 @@ input.collapsible + div > table {display: none;}
 input.collapsible:checked + div > table { display: block; }
 
 .bigly {
+	position: relative;
 	display: inline-block;
 	padding: 2px;
 	height: 70%;
@@ -524,7 +523,36 @@ input.collapsible:checked + div > table { display: block; }
 	-gecko-border-radius: 10px;
 	border: 2px solid #aaa;
 	width: 48%;
-	position: relative;
+	transition: width 0.1s, height 0.1s, font-size 0.1s, background-color 0.1s;
+}
+
+.endurance-class:hover
+{ background-color: #b3c6ef; }
+
+.resistance-class:hover
+{ background-color: #f2cef3; }
+
+.control-class:hover
+{ background-color: #fac0b0; }
+
+.endurance-class
+{ background-color: #7da1ee; }
+
+.resistance-class
+{ background-color: #dc79f9; }
+
+.control-class
+{ background-color: #e74f2f; }
+
+.bigly:hover {
+/*
+	width: 56%;
+	position: absolute;
+	height: 100%;
+	left: -20px;
+*/
+	background-color: cyan;
+	z-index: 99;
 }
 
 .bigly input[ type=search ] {
@@ -545,16 +573,19 @@ input.collapsible:checked + div > table { display: block; }
 }
 
 .listing ul li {
-	border: 2px solid black;
+	border: 1px solid black;
 	padding: 5px;
+	padding-top: 10px;
+	height: 50px;
 	font-size: 1.2em;
-	margin: 2px;
+	margin: 5px;
+	width: 90%;
+	box-shadow: 10px 10px 5px gray;
+	transition: color 0.1s, background-color 0.1s;
 }
 
 .listing ul li:hover {
-	border: 2px solid black;
-	background-color: white;
-	color: black;
+	color: white;
 }
 
 ul.part-drop-list li span:nth-child(2) ,
@@ -570,8 +601,71 @@ a.tiny-link {
 	display: inline-block;
 }
 
-.short-list {
-
+/*hamburger*/
+.header {
+	width: 100%;
+	height: 50px;
+	position: fixed;
+	background-color: #aaa;
+	transition: height 0.1s;
+	z-index: 90;
 }
 
+.checkity {
+	z-index: 99;
+	appearance: none;
+	-webkit-appearance: none;
+	border: 5px solid white;
+	color: white;
+	height: 40px;
+	width: 40px;
+	left: 5px;
+	position: relative;
+}
 
+.checkity + .side-menu {
+	left: -300px;
+}
+
+.checkity:checked + .side-menu {
+	left: 0px;
+}
+
+.side-menu {
+	position: fixed;
+	top: 50px;
+	left: 0px;
+	width: 300px;
+	height: 100%;
+	background-color: gray;
+	transition: left 0.2s;
+}
+
+.hidden {
+	height: 10px;
+}
+
+.mid-cent 
+{
+	width: 90%;
+	left: 6%;
+	position: relative;
+	font-size: 1.6em;
+}
+
+.mid-cent li {
+	padding-top: 20px !important;
+	width: 45% !important;
+}
+
+.menu-div
+{
+	margin-top: 20px; 
+	margin-bottom: 10px; 
+	color: white;
+	font-weight: bold;
+	border-bottom: 2px solid white;
+	width: 95%;
+	left: 2.5%;
+	position: relative;
+}

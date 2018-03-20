@@ -8,7 +8,6 @@
 .bigly input[type=search] { border: 0px; font-size: 1.5em; padding: 10px; }
 .short-list ul li { width: 50px; display: inline-block; background: black; padding-left: 10px; }
 .short-list ul li:hover { background: white; }
-ul.part-drop-list li:hover { background-color: black; color: white; }
 .part-div { overflow: hidden; }
 </style>
 
@@ -81,13 +80,13 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	}
 
 	function tm(evt,pn) {
-		event.preventDefault();
-		if ( event.touches.length == 1 ) {
-			curX = event.touches[0].pageX;
-			curY = event.touches[0].pageY;
+		evt.prevtDefault();
+		if ( evt.touches.length == 1 ) {
+			curX = evt.touches[0].pageX;
+			curY = evt.touches[0].pageY;
 LOG( "X: " + curX + ", Y: " + curY );
 		} else {
-			touchCancel(event);
+			touchCancel(evt);
 		}
 	}
  
@@ -203,7 +202,7 @@ LOG( "X: " + curX + ", Y: " + curY );
 		<div class="listing">
 		<ul class="part-drop-list">
 			<cfloop query = "all_part_list">
-				<li><!--- draggable="true" ondragstart="drag(event)" --->
+				<li class="#iif( participant_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
 					<span>#participant_fname# #participant_lname#</span>
 					<span>#participant_id#</span>
 				</li>	
