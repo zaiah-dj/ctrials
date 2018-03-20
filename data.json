@@ -4,7 +4,7 @@
 	"base":       "/motrpac/web/secure/dataentry/iv/",
 	"Home":       "tmp",
 	"name":       "iv",
-	"title":      "iv",
+	"title":      "Motrpac Intervention Tracking",
 	"debug":      1,
 	"master-post":false,
 	"localOverride": {
