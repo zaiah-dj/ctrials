@@ -37,6 +37,7 @@ function touchStart(event,passedName) {
 		startY = event.touches[0].pageY;
 		// store the triggering element ID
 		triggerElementID = passedName;
+		LOG( passedName );
 	} else {
 		// more than one finger touched so cancel
 		touchCancel(event);
