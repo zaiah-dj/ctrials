@@ -7,13 +7,16 @@ function allowDrop(ev) {
 
 function drag(ev, optArg) {
 	if ( optArg ) {
-		alert( "swipe complete..." );
+		LOG( "swipe complete..." );
 		return;
 	}
-	//ev.dataTransfer.setData("text", ev.target.id);
-	console.log( ev.target.innerHTML );
-	fw[fw.index] = { id: ev.target.children[1].innerHTML, string: ev.target.children[0].innerHTML };
-	console.log( fw[ fw.index ] );
+	else {
+		LOG( "drag complete..." );
+		//ev.dataTransfer.setData("text", ev.target.id);
+		//console.log( ev.target.innerHTML );
+		fw[fw.index] = { id: ev.target.children[1].innerHTML, string: ev.target.children[0].innerHTML };
+		//console.log( fw[ fw.index ] );
+	}
 }
 
 function drop(ev) {
