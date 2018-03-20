@@ -26,6 +26,7 @@
 
 	<!-- My styles -->
 	<link rel="stylesheet" href="#link( "assets/default.css" )#">
+
 <!--[if gte IE 9]>
 	<link rel="stylesheet" href="#link( "assets/default-ie.css" )#">
 <![endif]-->
@@ -50,7 +51,6 @@
 	<!-- Our JS -->
 	<script type="text/javascript" src="#link("assets/index.js")#"></script>
 
-
 	<!-- iPad Stuff -->
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -58,7 +58,8 @@
 	<meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-	
+
+	<!-- Reset iPad touch event data -->	
 	<script type="text/javascript">
 		// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT
 		// Courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM

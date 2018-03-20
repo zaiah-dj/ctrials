@@ -49,6 +49,16 @@ pre {
 	font-size: 1.5em;
 }
 
+.container {
+	position: relative;
+	top: 5%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	height: 90%;
+	border: 2px solid black;
+	overflow: hidden;
+}
+
 h1, h2, h3, h4, h5 {
 	transition: font-size 0.2s;	
 }
@@ -88,7 +98,6 @@ div.part-div {
 	position: relative;
 	width: 100%;
 	white-space: nowrap;
-	overflow-y: hidden;
 }
 
 .participant-info

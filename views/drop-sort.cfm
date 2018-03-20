@@ -8,7 +8,6 @@
 .bigly input[type=search] { border: 0px; font-size: 1.5em; padding: 10px; }
 .short-list ul li { width: 50px; display: inline-block; background: black; padding-left: 10px; }
 .short-list ul li:hover { background: white; }
-
 ul.part-drop-list li:hover { background-color: black; color: white; }
 .part-div { overflow: hidden; }
 </style>
@@ -19,6 +18,84 @@ ul.part-drop-list li:hover { background-color: black; color: white; }
 //When you click stuff--this thing should save
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
+
+	//Touch controls
+	function ts (evt,passedName) {
+		// disable the standard ability to select the touched object
+		evt.preventDefault();
+		// short name for the stuff I'm concerned with
+		ec = evt.target.children;
+		// get the total number of fingers touching the screen
+		fingerCount = evt.touches.length;
+		//See info
+		//LOG( fingerCount );LOG( passedName );LOG( "STRING: " + ec[0].innerHTML );LOG( "ID: " + ec[1].innerHTML );
+		pp = { id: evt.target.children[1].innerHTML, string: evt.target.children[0].innerHTML };
+
+		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
+		// check that only one finger was used
+		if ( fingerCount > 1 ) 
+			touchCancel(evt);
+		else {
+			//Always check against drop list and make sure the duplicate entries aren't getting in
+			aa = [].slice.call( document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" ) ); 
+			LOG( pp.string );
+			//check what's in aa
+			if ( aa.length > 0 ) {
+				for ( i=0; i<aa.length; i++) {
+					if ( aa[i].innerHTML == pp.id ) {
+						console.log( "Looks like this id is already here, stopping request..." );
+						return;
+					}
+				}
+			}
+
+			//Add a new node otherwise
+			node = document.createElement( "li" );
+			span1 = document.createElement( "span" );
+			span1.innerHTML = pp.string;
+			span2 = document.createElement( "span" );
+			span2.innerHTML = pp.id;
+			node.appendChild( span1 ); 
+			node.appendChild( span2 ); 
+			LOG( document.querySelector( ".listing-drop ul" ) );
+			targ = document.querySelector( ".listing-drop ul" ) 
+			targ.appendChild( node );
+		}
+	}
+
+	function tc(evt,pn) {
+		// reset the variables back to default values
+		fingerCount = 0;
+		startX = 0;
+		startY = 0;
+		curX = 0;
+		curY = 0;
+		deltaX = 0;
+		deltaY = 0;
+		horzDiff = 0;
+		vertDiff = 0;
+		swipeLength = 0;
+		swipeAngle = null;
+		swipeDirection = null;
+		triggerElementID = null;
+	}
+
+	function tm(evt,pn) {
+		event.preventDefault();
+		if ( event.touches.length == 1 ) {
+			curX = event.touches[0].pageX;
+			curY = event.touches[0].pageY;
+LOG( "X: " + curX + ", Y: " + curY );
+		} else {
+			touchCancel(event);
+		}
+	}
+ 
+	function te(evt,pn) {
+		;
+	}
+
+
 	//Start listening out for touch events
 	touchEl = [].slice.call( document.querySelectorAll( ".part-drop-list li" ) );
 	if ( touchEl.length ) 
@@ -27,11 +104,19 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		for ( i=0; i < touchEl.length; i++ ) 
 		{
 			el = touchEl[ i ];
-			//el.setAttribute( "draggable", true );
-			//el.addEventListener( "dragstart", drag ); 
-			el.addEventListener( "touchstart", touchStart, true );
+			el.setAttribute( "draggable", true );
+			el.addEventListener( "dragstart", drag ); 
+			el.addEventListener( "touchstart", ts, true );
 		}
 	} 
+
+	//Get .listing
+	list = [].slice.call( document.querySelectorAll( ".listing" ) );
+	for ( i=0; i<list.length; i++ ) {
+		list[i].addEventListener( "touchEnd", te );
+		list[i].addEventListener( "touchMove", tm );
+		list[i].addEventListener( "touchCancel", tc );
+	}
 
 	//Sequence all JS data
 	document.getElementById( "wash-id" ).addEventListener( "submit", function (ev) {
@@ -61,20 +146,13 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			//Read that XML	
 			xhr.onreadystatechange = function () {
 				if ( this.readyState == 4 && this.status == 200 ) {
-					console.log( this.responseText );
+					//console.log( this.responseText );
 					parsed = JSON.parse( this.responseText );
-					console.log( parsed );
-
-					
+					//console.log( parsed );
 					if ( parsed.status == 200 ) {
 						//JS Forwards us on... but this is not super safe...
 						frm.submit(); //I'm only concerned with trans_id
-		
 						//window.location.replace( "<cfoutput>#link('chosen.cfm')#</cfoutput>" );	
-
-					}
-					else {
-
 					}
 				}
 			};
@@ -121,17 +199,6 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		<!--- Search for names --->
 		<input type="search">
 
-		<!--- Or find all A's --->
-		<div class="short-list">
-		<!--- 
-			<ul>
-			<cfloop list="a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z" index="item">
-			<a href="##" class="tiny-link"><li>#item#</li></a>
-			</cfloop>
-			</ul>
-		--->
-		</div>
-
 		<!--- Drag and drop --->
 		<div class="listing">
 		<ul class="part-drop-list">
@@ -171,5 +238,4 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	</form>
 </div>
 
-<cfdump var = #session#>
 </cfoutput>
