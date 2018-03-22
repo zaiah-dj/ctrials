@@ -1,6 +1,9 @@
-<!--- Let's Try the simplest possible things in the world --->
-<cfoutput>
-	<div class="part-list">
+<!--- participant list can go off to the side -->
+	<div class="menu-div">
+		PARTICIPANTS	
+	</div>
+
+	<div class="mid-cent">
 		<ul class="participants" id="participant_list">
 
 		<cfif isDefined("part_list")>
@@ -16,5 +19,4 @@
 			</a>
 
 		</ul>
-	</div>
-</cfoutput>
+	</div> <!--- div class=mid-cent --->

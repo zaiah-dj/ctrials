@@ -2,7 +2,10 @@
 <cfscript>
 //Probably will be a database... but doesn't have to
 exercises = [
-	"Leg Presses",
+	"Leg Presses"
+];
+/*
+ex = [
 	"Leg Curls",
 	"Leg Extensions",
 	"Seated Calf",
@@ -11,6 +14,7 @@ exercises = [
 	"Chest Presses",
 	"Seated Rows"
 ];
+*/
 </cfscript>
 
 <!--- ... --->
@@ -74,7 +78,6 @@ exercises = [
 							<div class="catch cc col-sm-2">0</div>
 						</div>
 					</td>
-
 					<td>
 						<div class="row">
 							<div class="col-sm-8">

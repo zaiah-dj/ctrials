@@ -5,7 +5,6 @@
 .wash input[type=text] { display: none; }
 .wash input[type=submit] { margin-top: 10px; font-size: 1.2em; background-color: #ccc; border-radius: 5px; -moz-border-radius: 5px; -gecko-border-radius: 5px; display: block; float: right; width: 100px; height: 50px; border: 0px; transition: background-color 0.2s; color 0.2s; }
 .wash input[type=submit]:hover { background-color: cyan; color: white; }
-.bigly input[type=search] { border: 0px; font-size: 1.5em; padding: 10px; }
 .short-list ul li { width: 50px; display: inline-block; background: black; padding-left: 10px; }
 .short-list ul li:hover { background: white; }
 .part-div { overflow: hidden; }
@@ -187,54 +186,62 @@ LOG( "X: " + curX + ", Y: " + curY );
 });
 </script>
 
+<!---
+<div class="welcome">
+	Welcome to Motrpac Intervention Tracking
+</div>
+	--->
 
+<div class="container">
 <cfoutput>
 <cfif data.debug eq 1>
 	<div class="debug2">#mySession# - #sessionStatus#</div>
 </cfif>
-<div class="part-div">
-	<div class="bigly">
+	<div class="part-div">
+		<div class="bigly-push">
+			<!--- Search for names --->
+			<input type="search">
 
-		<!--- Search for names --->
-		<input type="search">
-
-		<!--- Drag and drop --->
-		<div class="listing">
-		<ul class="part-drop-list">
-			<cfloop query = "all_part_list">
-				<li class="#iif( participant_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
-					<span>#participant_fname# #participant_lname#</span>
-					<span>#participant_id#</span>
-				</li>	
-			</cfloop>
-		</ul>
 		</div>
 
-	</div>
+		<div class="bigly-wrap">
+			<div class="bigly bigly-left">
+				<div class="listing">
+					<ul class="part-drop-list">
+						<cfloop query = "all_part_list">
+							<li class="#iif( participant_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
+								<span>#participant_fname# #participant_lname#</span>
+								<span>#participant_id#</span>
+							</li>	
+						</cfloop>
+					</ul>
+				</div>
+			</div>
 
-	<div class="bigly" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
-		<div class="listing listing-drop">
-			<ul> 
-		<cfif sessionStatus eq 2>
-			<cfloop query = "part_list">
-				<li>
-					<span>#participant_fname# #participant_lname#</span>
-					<span>#participant_id#</span>
-				</li>	
-			</cfloop>
-		</cfif>
-			</ul>
+			<div class="bigly bigly-right" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<div class="listing listing-drop">
+					<ul> 
+				<cfif sessionStatus eq 2>
+					<cfloop query = "part_list">
+						<li>
+							<span>#participant_fname# #participant_lname#</span>
+							<span>#participant_id#</span>
+						</li>	
+					</cfloop>
+				</cfif>
+					</ul>
+				</div>
+			</div>
 		</div>
+
+		<!--- On submit, or next, do it. --->
+		<form id="wash-id" method="POST" action="#linkish#" class="wash"> 
+			<input type="text" name="staffer_id" value="#randnum( 8 )#"> 
+			<input type="text" name="transact_id" value="#mySession#"> 
+			<input type="text" name="list"> <!--- make a list here --->
+			<input type="submit" id="done" value="Done!">
+		</form>
 	</div>
-
-
-	<!--- On submit, or next, do it. --->
-	<form id="wash-id" method="POST" action="#linkish#" class="wash"> 
-		<input type="text" name="staffer_id" value="#randnum( 8 )#"> 
-		<input type="text" name="transact_id" value="#mySession#"> 
-		<input type="text" name="list"> <!--- make a list here --->
-		<input type="submit" value="Done!">
-	</form>
-</div>
 
 </cfoutput>
+</div><!--- class="container" --->

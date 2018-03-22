@@ -1,7 +1,8 @@
 <cfoutput query="part" >
 <div class="participant-info">
+<!---
 	<h2>#part.participant_fname# #part.participant_lname#</h2>
-
+	--->
 	<ul class="participant-info-nav">
 		<!---
 		<a href="#link( "participant-input.cfm?id=13" )#"><li><h3>Test Controls</h3></li></a>
