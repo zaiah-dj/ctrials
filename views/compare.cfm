@@ -1,5 +1,5 @@
 <!--- compare everything that's comparable --->
-<div class="part-div">
+<div class="container-body">
 
 	<!--- ... --->
 	<script> 
@@ -17,16 +17,10 @@
 	</script>
 
 <cfoutput>
-	<!---
-	<p>
-	<cfoutput query="#willis#">
-	Here you can see previous results for #participant_fname# #participant_lname#.
-	</cfoutput>
-	</p>
-	--->
-
-	<ul class="inner-nav">
-	<cfloop from=1 to=12 index=aa> <a href="##"><li>Week #aa#</li></a></cfloop>
+	<ul class="inner-selection">
+	<cfloop from=1 to=12 index=aa> 
+		<a href="##"><li>Week #aa#</li></a>
+	</cfloop>
 	</ul>
 
 	<!--- Chart --->

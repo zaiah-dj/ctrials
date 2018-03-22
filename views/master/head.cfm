@@ -52,6 +52,12 @@
 	<script type="text/javascript" src="#link("assets/debug.js")#"></script>
 	</cfif>
 
+	<!---
+	<!-- Jquery mobile if needed -->
+	<link rel="stylesheet" type="text/css" href="#link( 'assets/css/mobileSelect.css' )#">
+	<script src="#link( 'assets/js/mobileSelect.js' )#" type="text/javascript"></script>
+		--->
+
 	<!-- iPad Stuff -->
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -73,17 +79,21 @@
 <body>
 
 	<cfif data.debug eq 1>
+<!---
 	<div class="debug" id="mega-debug">
 		<button class="op">open</button>
 		<button class="cl">close</button>
-		<cfinclude template="../dumply.cfm">
+		<cfinclude template="../tests/dumply.cfm">
 	</div><!--- class="debug" id="mega-debug" --->
+--->
 	</cfif>	
 
 	<div class="persistent-nav">
 		<a href="/motrpac/web/secure/dataentry">Back to Motrpac</a>
-		<a href="#link( "logout.cfm" )#">Logout</a>
+		<a href="#link( "default.cfm" )#">Select</a>
 		<a href="#link( "save.cfm" )#">Save Session</a>
+		<a href="#link( "logout.cfm" )#">Logout</a>
+		<a href="#link( "chosen.cfm" )#">Input</a>
 	</div>
 
 	<div class="container">

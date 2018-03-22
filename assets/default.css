@@ -18,55 +18,6 @@ pre {
 	padding: 5;
 }
 
-.center {
-	text-align: center;
-}
-
-.other-container {
-	position: relative;
-	width: 39%;
-	padding-top: 10;
-	margin-bottom: 10;
-	float: right;
-}
-
-.container-section {
-	position: relative;
-	width: 95%;
-	padding-top: 10;
-	margin: 0 auto;
-	margin-bottom: 10;
-}
-
-.container-dark-line {
-	border-top: 5px solid #333;
-}
-
-.container-light-line {
-	border-top: 5px solid #ccc;
-}
-
-.container p {
-	font-size: 1.5em;
-}
-
-.container {
-	position: relative;
-	background-color: #fff;
-	top: 5%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	height: 85%;
-	border: 1px solid gray;
-
-	width: 95%;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-gecko-border-radius: 5px;
-	box-shadow: 10px 10px 5px gray;
-
-	overflow: hidden;
-}
 
 h1, h2, h3, h4, h5 {
 	transition: font-size 0.2s;	
@@ -94,68 +45,235 @@ p {
 	margin-top: 30px;
 }
 
-.gets {
-	transition: display 0.2s;
-	display: none;
+.container p {
+	font-size: 1.5em;
 }
 
-div.part-div {
+/*Highlight selected links*/
+a.selected {
+	font-weight: bold;
+	text-decoration: underline;
+	text-shadow: 2px 2px 5px #fff;
+}
+
+
+/*This is a somewhat strange concept that I'm going to try out for these nested interfaces*/
+.nselect {
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-gecko-border-radius: 10px;
+}
+
+.nselect-1 
+{ 
+	border: 10px solid cyan;
+	background-color: cyan;
+}
+
+.nselect-2 
+{ 
+	border: 10px solid cyan;
+	background-color: cyan;
+}
+
+.nselect-3
+{ 
+	border: 10px solid cyan;
+	background-color: cyan;
+}
+
+.container {
+	position: relative;
+	background-color: #fff;
+	top: 5%;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	height: 85%;
+	border: 1px solid gray;
+
+	width: 95%;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	box-shadow: 10px 10px 5px gray;
+
+	overflow: hidden;
+}
+
+/*This only exists as an element to test against the container-header*/
+.container-is-single {
+	width: 100%;
+	height: 0px;
+}
+
+/*All participants sit here.*/
+.container-header {
+	height: 15%;
+	min-height: 100px; 
+	border-bottom: 5px solid black;
+}
+
+/*Intermediate navigation between parts of data entry go here.*/
+.container-nav {
+	height: 10%;
+	min-height: 50px; 
+	padding-top: 2.5px;
+	padding-bottom: 2.5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+/*All info goes here.*/
+.container-body {
 	position: relative;
 	width: 100%;
 	white-space: nowrap;
 	/*overflow-Y: scroll;*/
 	overflow: hidden;
 	overflow-Y: scroll;
+	height: 80%;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.container-header ~ .container-body {
+	overflow: hidden;	
+}
+
+.container-nav + .container-body {
 	height: 70%;
+	overflow: hidden;
+	overflow-Y: scroll;
+	padding: 20px;
+	overflow: hidden;
+	overflow-Y: scroll;
 }
 
-.participant-info
-{ 
-	margin-top: 10px;
-	margin-bottom: 10px;
-	width: 100%;
-	padding-right: 5px;
-	padding-bottom: 5px;
-	border-bottom: 3px solid black;
-	position: relative;
-}
-
-.participants li
+.container-header li
 {
 	position: relative;
 	z-index: 0;
 	display: inline-block;
 
-	font-size: 1.0em;
+	font-size: 1.3em;
 	text-align: center;
 
-	height: 70px;
+	height: 100%;
+	margin-top: 10%;
 	width: 130px;
 
-	margin-top: 10px;
 	padding: 10px;
 	padding-top: 17px;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-gecko-border-radius: 5px;
+
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-gecko-border-radius: 5px 5px 0px 0px;
 
 	color: white;
-	background-color: black;
+	background-color: #4b0082;
 
 	transition: 
 		background-color 0.2s,
 		color 0.2s
 	;
+
+	margin: 0px;
 }
 
-.participants li:hover {
-	background-color: #aaa;
+.container-header li:hover {
+	background-color: #9370db;
 }
 
-div.nav, 
-.part-div 
+.container-header li.selected {
+	background-color: #dda0dd; 
+}
+
+
+/*2nd-level navigation (Switch between endurance and resistance data)*/
+.container-nav ul li 
 {
-	margin-bottom: 10px;
+	display: inline-block; 
+
+	text-align: center;
+
+	font-weight: bold;
+
+	margin: 0px;
+	height: 100%;
+	width: 130px;
+
+	padding: 10px;
+
+	color: #ddd;
+	background-color: purple;
+
+	transition: 
+		background-color 0.2s,
+		color 0.2s;
+	;
+}
+
+.container-nav ul li:hover {
+	background-color: #e5bdfb;	
+	color: cyan;
+}
+
+.container-nav ul li.selected {
+	background-color: #e5bdfb;
+/*
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	border: 5px solid #ff00ff;
+*/
+	color: cyan;	
+}
+
+/*Inner navigation*/
+div.inner-selection {
+	width : 100%;
+	height: 100px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+ul.inner-selection {
+	
+/*
+	-ms-column-count: 2;
+	-o-column-count: 2;
+	-moz-column-count: 2;
+	-khtml-column-count: 2;
+	column-count: 2;
+*/
+}
+
+.container-body .inner-selection li {
+	min-width: 110px;
+	width: 10%;
+	font-weight: bold;
+	text-align: center;
+	font-size: 0.9em;
+	padding: 5px; 
+	display: inline-block; 
+	background-color: #333; 
+	color: white;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+.container-body .inner-selection li:hover {
+	background-color: cyan; 
+	color: black; 
+}
+
+.container-body .inner-selection li.selected {
+	background-color: #e5bdfb;
+	color: black; 
+}
+
+.container-body .inner-selection li.completed {
+	background-color: #999;
+	color: black; 
 }
 
 ul.nav a {
@@ -229,49 +347,6 @@ ul.dasch li:hover {
 }
 
 
-/*2nd-level navigation (Switch between endurance and resistance data)*/
-ul.participant-info-nav li 
-{
-	display: inline-block; 
-
-	text-align: center;
-
-	margin: 0px;
-	height: 40px;
-	width: 130px;
-
-	padding: 10px;
-
-	color: #ddd;
-	background-color: purple;
-
-	transition: 
-		background-color 0.2s,
-		color 0.2s;
-	;
-}
-
-ul.participant-info-nav li:hover {
-	background-color: #e5bdfb;	
-	color: cyan;	
-}
-
-
-
-/*Inner navigation*/
-ul.inner-nav li {
-	text-align: center;
-	padding: 5px; 
-	display: inline-block; 
-	background-color: #333; 
-	color: white;
-	transition: background-color 0.2s, color 0.2s;
-}
-	
-ul.inner-nav li:hover {
-	background-color: cyan; 
-	color: black; 
-}
 
 ul.endurance li {
 	text-align: center;
@@ -745,8 +820,8 @@ a.tiny-link {
 
 #done {
 	position: absolute;
-	bottom: 5px;
-	right: 0px;
+	bottom: 10px;
+	right: 20px;
 }
 
 input[type=search] { 
@@ -784,3 +859,17 @@ input[type=search] {
 	position: relative;
 	margin-right: 10px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*end of stylesheet ;) */

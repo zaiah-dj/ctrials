@@ -1,25 +1,32 @@
+<cfscript>
+container_nav = [
+	{ title = "Check-In", href = "check-in.cfm" }
+ ,{ title = "Exercise Data", href = "input.cfm" }
+ ,{ title = "Compare Data", href = "compare.cfm" }
+ ,{ title = "Information", href = "info.cfm" }
+];
+</cfscript>
+
+<div class="container-nav">
 <cfoutput query="part" >
-<div class="participant-info">
-<!---
-	<h2>#part.participant_fname# #part.participant_lname#</h2>
-	--->
 	<ul class="participant-info-nav">
-		<!---
-		<a href="#link( "participant-input.cfm?id=13" )#"><li><h3>Test Controls</h3></li></a>
-		<a href="#link( "participant-control.cfm" )#"><li><h3>Enter Control Data</h3></li></a>
-			--->
-	<cfif not StructKeyExists( url, "id" )>
-		<a href="#link( "check-in.cfm" )#"><li>Check-In</li></a>
-		<a href="#link( "input.cfm" )#"><li> Exercise Data</li></a>
-		<a href="#link( "compare.cfm" )#"><li>Compare Data</li></a>
-		<a href="#link( "info.cfm" )#"><li>Participant Info</li></a>
+	<cfif isDefined( "url.id" )>
+	 <cfloop array = #container_nav# index="cn">
+		<a href="#link( "#cn.href#?id=#participant_id#" )#">
+			<cfif data.page eq Left( cn.href, Len( cn.href ) - 4 )>
+			<li class="selected">#cn.title#</li>
+			<cfelse>
+			<li>#cn.title#</li>
+			</cfif>
+		</a>
+	 </cfloop>
 	<cfelse>
-		<a href="#link( "check-in.cfm?id=#url.id#" )#"><li>Check-In</li></a>
-		<a href="#link( "input.cfm?id=#url.id#" )#"><li> Exercise Data</li></a>
-		<a href="#link( "compare.cfm?id=#url.id#" )#"><li>Compare Data</li></a>
-		<a href="#link( "info.cfm?id=#url.id#" )#"><li>Participant Info</li></a>
+	 <cfloop array = #container_nav# index="cn">
+		<a href="#link( "#cn.href#?id=#participant_id#" )#">
+			<li class="selected">#cn.title#</li>
+		</a>
+	 </cfloop>
 	</cfif>
 	</ul>
-	
-</div>
 </cfoutput>
+</div>

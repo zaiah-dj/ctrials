@@ -1,5 +1,5 @@
 	<!--- Keep this the simplest possible template in the universe --->
-	<div class="part-div">
+	<div class="container-body">
 
 		<!--- Include control --->
 		<cfif #part.participant_exercise# eq "0">

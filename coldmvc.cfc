@@ -1530,10 +1530,13 @@ component name = "ColdMVC" {
 			}
 		}
 
+		/*
 		//Load JSON manifest with route information.
 		try {
 			logReport( "Loading JSON file" );
-			jsonMfst = FileRead(getDirectoryFromPath(getCurrentTemplatePath()) & "data.json");
+		//jsonMfst = FileRead(getDirectoryFromPath(getCurrentTemplatePath()) & "data.json");
+		//include getDirectoryFromPath( getCurrentTemplatePath() ) & "data.cfm";
+			include "data.cfm";
 			logReport( "Success" );
 		}
 		catch (any e) {
@@ -1547,11 +1550,25 @@ component name = "ColdMVC" {
 		//Parse JSON manifest with route information.
 		try {
 			logReport( "Parsing JSON file" );
-			appdata=DeserializeJSON(jsonMfst);
+		//appdata = DeserializeJSON(jsonMfst);
+			appdata = manifest;
 			logReport( "Success" );
 		}
 		catch (any e) {
 			render_page(status=500, errorMsg=ToString("Deserializing data.json failed"), stackTrace=e);
+			abort;
+		}
+		*/
+
+		//Now I can just run regular stuff
+		try {
+			logReport( "Loading data.cfm..." );
+			include "data.cfm";
+			appdata = manifest;
+			logReport( "Success" );
+		}
+		catch (any e) {
+			render_page(status=500, errorMsg="Deserializing data.cfm failed", stackTrace=e);
 			abort;
 		}
 
@@ -1594,69 +1611,3 @@ component name = "ColdMVC" {
 	 *
 	 */
 </cfscript>
-
-	<!---
-	</cfcomponent>
-	--->
-	<!---
-	<!---
-	execute_sql.cfm
-
-	Executes an SQL query from file or string.  Specifying dump=true will do a 
-	cfdump of the query. 
-
-	User may specify fields from the function versus having to fill out cfset 
-	or cfparam or some other variable in some weird place within the code.  
-	This prevents untracked globals from running around too.
-	--->
-
-	<!--- Use this to execute queries properly --->
-	<cffunction 
-		name=dynquery 
-		description="Runs queries."
-		hint="Runs queries and returns the data in a struct."
-		returnType="struct"
-	>
-		<cfargument name="queryPath" required="yes">
-		<cfargument name="queryVar" required="yes">
-		<cfargument name="queryDatasource" required="no" default="#data.DATASOURCE#">
-		<cfargument name="debuggable" required="no" default=false>
-
-		<cfparam name="myRes" default="">
-		<cfset myRes=StructNew()>
-
-		<!--- Output stuff --->
-		<cfif debuggable gt 0>
-			<cfdump var="#queryPath#">
-			<cfdump var="#queryVar#">
-			<cfdump var="#queryDatasource#">
-		</cfif>
-
-		<cftry>
-			<cfquery name="__results" result="__object" datasource="#queryDatasource#">
-				<cfinclude template="#queryPath#">
-			</cfquery>
-		<cfcatch>
-			<cfdump var="#cfcatch#">
-			<cfsavecontent variable="killerBob">
-				<cfset err="#cfcatch.TagContext[1]#">
-				<cfoutput>SQL execution error at file #err.template#, line #err.Line#. #cfcatch.message#</cfoutput>
-				<!---
-				<cfoutput>#cfcatch.message#</cfoutput>
-				--->
-			</cfsavecontent>
-			<cfset myRes.status = 0>
-			<cfset myRes.object = QueryNew("nothing")>   <!---Any way to make a blank query--->
-			<cfset myRes.error = "#killerBob#">
-			<cfset myRes.results = QueryNew("nothing")>
-			<cfreturn myRes>
-		</cfcatch>
-		</cftry>
-
-		<cfset myRes.status = 1>
-		<cfset myRes.error = "">
-		<cfset myRes.object = __object>
-		<cfset myRes.results = __results>
-		<cfreturn myRes>
-	</cffunction>
-	--->

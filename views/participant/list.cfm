@@ -1,20 +1,25 @@
 <!--- Let's Try the simplest possible things in the world --->
 <cfoutput>
-	<div class="part-list">
-		<ul class="participants" id="participant_list">
+	<div class="container-header">
+		<ul id="participant_list">
+		 <cfif isDefined("part_list")>
+		  <cfloop query="part_list" >
 
-		<cfif isDefined("part_list")>
-		<cfloop query="part_list" >
-			<a class="" href="#link( "check-in.cfm?id=#participant_id#" )#">
-				<li>#participant_fname# <br/>#participant_lname#</li>
-			</a>
-		</cfloop>
-		</cfif>
-
+			<cfif IsDefined("url.id") and #url.id# eq #participant_id#>
+				<a class="selected" href="#link( "check-in.cfm?id=#participant_id#" )#">
+					<li class="selected">#participant_fname# <br/>#participant_lname#</li>
+				</a>
+			<cfelse>	
+				<a class="" href="#link( "check-in.cfm?id=#participant_id#" )#">
+					<li>#participant_fname# <br/>#participant_lname#</li>
+				</a>
+			</cfif>	
+				
+		  </cfloop>
+		 </cfif>
 			<a class="" href="#link( "" )#">
 				<li>+<br/><span style="color:black;">+</span></li>
 			</a>
-
 		</ul>
-	</div>
+	</div> <!-- class="container-header" -->
 </cfoutput>

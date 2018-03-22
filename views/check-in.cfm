@@ -1,6 +1,3 @@
-<link rel="stylesheet" type="text/css" href="#link( 'assets/css/mobileSelect.css' )#">
-<script src="#link( 'assets/js/mobileSelect.js' )#" type="text/javascript"></script>
-
 <cfif part.participant_exercise lt 3>
 <cfscript>
 	values = [
@@ -21,7 +18,7 @@
 
 
 <cfoutput>
-	<div class="part-div">
+	<div class="container-body">
 		<table class="table">
 			<tbody>
 

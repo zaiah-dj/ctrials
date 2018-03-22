@@ -105,32 +105,32 @@ f = [
 
 <cfset c=0>
 <cfoutput>
-<div class="part-div">
-	<cfloop array = "#f#" item = "ff" >
+	<div class="container-body">
+		<cfloop array = "#f#" item = "ff" >
 
-	<cfif structKeyExists( ff, "designation" )>
-		<cfif c++ gt 0> </tbody>
-			</table>
-		</div>
-	</cfif>
-	<h3 class="dogInThisFight">#ff.designation#</h3>
-	<input type="checkbox" class="collapsible">
-	<div>
-	<table class="table">
-		<tbody>
-	<cfelse>
-		<tr>
-			<td class="title">#ff.text#</td>
-			<td style="width: 70%">
-				<cfif getMetadata( ff.field ).getTypeName() eq "java.lang.Integer">
-					<cfif ff.field eq 0>No<cfelseif ff.field eq 1>Yes<cfelse>#ff.field#</cfif>
-				<cfelse>
-					#ff.field#
-				</cfif>
-			</td>
-		</tr>
-	</cfif>
-	</cfloop>
-	</table>
-</div>
+		<cfif structKeyExists( ff, "designation" )>
+			<cfif c++ gt 0> </tbody>
+				</table>
+			</div>
+		</cfif>
+		<h3 class="dogInThisFight">#ff.designation#</h3>
+		<input type="checkbox" class="collapsible">
+		<div>
+		<table class="table">
+			<tbody>
+		<cfelse>
+			<tr>
+				<td class="title">#ff.text#</td>
+				<td style="width: 70%">
+					<cfif getMetadata( ff.field ).getTypeName() eq "java.lang.Integer">
+						<cfif ff.field eq 0>No<cfelseif ff.field eq 1>Yes<cfelse>#ff.field#</cfif>
+					<cfelse>
+						#ff.field#
+					</cfif>
+				</td>
+			</tr>
+		</cfif>
+		</cfloop>
+		</table>
+	</div>
 </cfoutput>

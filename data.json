@@ -41,8 +41,8 @@
 
 		"default": { 
 			"hint":  "The thing of the thing.",
-			"model": [ "session/check", "drop-sort", "chosen", "reconcile" ],
-			"view": [ "master/head", "drop-sort", "master/tail" ] },
+			"model": [ "session/check", "default", "chosen", "reconcile" ],
+			"view": [ "master/head", "default", "master/tail" ] },
 
 		"start-daily": { 
 			"hint":  "The thing of the thing.",
