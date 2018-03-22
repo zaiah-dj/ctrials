@@ -15,27 +15,6 @@ function LOG( text ) {
 
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
-	//Initialize a debugger window here...
-	if ( aa = document.getElementById( "debugger" ) ) {
-		button = document.createElement( "button" );
-		button.innerHTML = "Wipe!";
-		button.style.width = "100px";
-		button.style.color = "black";
-		button.style.fontSize = "0.8em";
-		button.style.height = "20px";
-		aa.appendChild( button );
-
-		div = document.createElement( "div" );
-		div.className = "inner";
-		aa.appendChild( div );
-
-		button.addEventListener( "click", function (ev) {
-			//Get rid of all children...
-			document.querySelectorAll( "#debugger .inner" )[0].innerHTML = "";
-		} );
-	}
-
-
 	//Basic filter search works
 	ip = document.querySelector( "input[type=search]" );
 	ip.addEventListener( "keyup", function (ev) 

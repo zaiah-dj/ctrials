@@ -104,7 +104,17 @@ div.part-div {
 }
 
 .participant-info
-{ background-color: #e6e6ff; }
+{ 
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 95%;
+	left: 2.5%;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	border-bottom: 3px solid black;
+	position: relative;
+}
 
 .participants li
 {
@@ -224,7 +234,7 @@ ul.participant-info-nav li
 	text-align: center;
 
 	height: 40px;
-	width: 150px;
+	width: 130px;
 
 	padding: 10px;
 
@@ -512,20 +522,99 @@ input.collapsible:checked + div{
 input.collapsible + div > table {display: none;}
 input.collapsible:checked + div > table { display: block; }
 
+.bigly-push {
+	border-bottom: 5px solid black;
+	height: 10%;
+	width: 100%;
+}
+
+.bigly-wrap {
+	position: relative;
+	margin-top: 2%;
+	height: 83%;
+}
+
 .bigly {
 	position: relative;
 	display: inline-block;
 	padding: 2px;
-	height: 70%;
-	background-color: #aaa;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-gecko-border-radius: 10px;
-	border: 2px solid #aaa;
+	height: 100%;
+	border-right: 2px solid #aaa;
 	width: 48%;
 	transition: width 0.1s, height 0.1s, font-size 0.1s, background-color 0.1s;
 }
 
+.bigly-right {
+	border-right: 0px;
+	border-left: 2px solid #aaa;
+	float: right;
+	height: 80%;
+}
+
+@keyframes shake {
+	from: { left: 0px; }
+	to: { left: 10px; }
+}
+
+.bigly li {
+	position: relative;
+	border: 0px;
+	padding: 5px;
+	padding-top: 10px;
+	height: 50px;
+	font-size: 1.4em;
+	margin: 5px;
+	margin-bottom: 10px;
+	width: 90%;
+	box-shadow: 10px 10px 5px gray;
+	transition: color 0.1s, background-color 0.1s;
+	font-weight: bold;
+}
+
+.bigly li:active {
+	height: 50px;
+	width: 100%;
+	font-size: 1.8em;
+	background-color: blue;
+/*	
+ 	animation-name: shake;
+	animation-duration: 1s;
+*/
+}
+
+.bigly li:hover {
+	color: white;
+}
+
+.bigly input[ type=search ] {
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 20px;
+}	
+
+/*
+.bigly:hover {
+	width: 56%;
+	position: absolute;
+	height: 100%;
+	left: -20px;
+	background-color: cyan;
+	z-index: 99;
+}
+*/
+
+.listing {
+	overflow: hidden;
+	overflow-Y: scroll;
+	height: 100%;
+	background-color: white;
+}
+
+
+ul.part-drop-list li span:nth-child(2) ,
+.listing li span:nth-child(2) {
+	display: none;	
+}
 .endurance-class:hover
 { background-color: #b3c6ef; }
 
@@ -544,54 +633,6 @@ input.collapsible:checked + div > table { display: block; }
 .control-class
 { background-color: #e74f2f; }
 
-.bigly:hover {
-/*
-	width: 56%;
-	position: absolute;
-	height: 100%;
-	left: -20px;
-*/
-	background-color: cyan;
-	z-index: 99;
-}
-
-.bigly input[ type=search ] {
-	width: 100%;
-	padding: 5px;
-	margin-bottom: 20px;
-}	
-
-.listing {
-	overflow: hidden;
-	overflow-Y: scroll;
-	height: 80%;
-	background-color: white;
-}
-
-.listing-drop {
-	height: 100%;
-}
-
-.listing ul li {
-	border: 1px solid black;
-	padding: 5px;
-	padding-top: 10px;
-	height: 50px;
-	font-size: 1.2em;
-	margin: 5px;
-	width: 90%;
-	box-shadow: 10px 10px 5px gray;
-	transition: color 0.1s, background-color 0.1s;
-}
-
-.listing ul li:hover {
-	color: white;
-}
-
-ul.part-drop-list li span:nth-child(2) ,
-.listing li span:nth-child(2) {
-	display: none;	
-}
 
 a.tiny-link { 
 	text-transform: uppercase;
@@ -604,11 +645,13 @@ a.tiny-link {
 /*hamburger*/
 .header {
 	width: 100%;
-	height: 50px;
+	height: 5px;
 	position: fixed;
 	background-color: #aaa;
 	transition: height 0.1s;
 	z-index: 90;
+	top: 0px;
+	overflow: hidden;
 }
 
 .checkity {
@@ -668,4 +711,64 @@ a.tiny-link {
 	width: 95%;
 	left: 2.5%;
 	position: relative;
+}
+
+.header:hover {
+	height: 50px;	
+}
+
+
+@keyframes open {
+	from { height: 80%; }
+	to { height: 0%; }
+}
+
+.welcome {
+	position: absolute;
+	z-index: 99;
+	top: 10%;
+	width: 50%;
+	left: 25%;
+	height: 80%;
+	display: block;
+	margin: 0 auto;	
+	animation-name: open;
+	animation-duration: 3s;
+	animation-fill-mode: forwards;
+	background-color: white;
+	overflow: hidden;
+}
+
+#done {
+	position: absolute;
+	bottom: 5px;
+	right: 0px;
+}
+
+input[type=search] { 
+/*	border: 0px; 
+	font-size: 1.5em; 
+	padding: 10px; 
+*/
+}
+
+.part-list {
+	position: fixed;
+	top: 20px;
+	left: 0px;
+	height: 90%;
+	width: 20px;	
+	transition: width 0.2s;
+	background-color: gray;
+	z-index: 99;
+	overflow: hidden;
+}
+
+.part-list ul {
+	position: relative;
+	left: 20px;
+}
+
+.part-list:hover {
+	width: 50%;
 }

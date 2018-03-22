@@ -42,7 +42,7 @@
 		"default": { 
 			"hint":  "The thing of the thing.",
 			"model": [ "session/check", "drop-sort", "chosen", "reconcile" ],
-			"view": [ "master/head", "master/nav", "drop-sort", "master/tail" ] },
+			"view": [ "master/head", "drop-sort", "master/tail" ] },
 
 		"start-daily": { 
 			"hint":  "The thing of the thing.",
@@ -58,7 +58,6 @@
 			"hint":  "See all patient data (more than you ever wanted to know).",
 			"model": [ "session/check", "chosen", "participant" ],            
 			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "info", "master/tail" ] },
-
 
 		"compare": { 
 			"hint":  "Compare the participant's previous weeks history.",
@@ -84,6 +83,11 @@
 			"model": "session/kill",
 			"view":  "revoke",
 			"hint":  "Use this endpoint to revoke all session keys." },
+
+		"dumply": { 
+			"model": "_none",
+			"view":  "dumply",
+			"hint":  "Use this endpoint to see all values." },
 
 		"home": { }
 	}
