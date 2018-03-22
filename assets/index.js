@@ -16,20 +16,19 @@ function LOG( text ) {
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 	//Basic filter search works
-	ip = document.querySelector( "input[type=search]" );
-	ip.addEventListener( "keyup", function (ev) 
-	{
-		vv = [].slice.call( document.querySelectorAll( "ul.part-drop-list li" ) );
-		for ( i=0; i < vv.length; i++ ) {
-			nod =         vv[i].children[0].parentElement;
-			key = String( vv[i].children[0].innerHTML );
-			val = ev.target.value;
-			//console.log( ev.target.value +
-			//	(( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? " != " : " == " ) + key );
-			nod.style.display = ( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? "none" : "block"; 
-		}
-	});
-
+		//ip = document.querySelector( "input[type=search]" );
+	if ( ip = document.getElementById( "bigly-search" ) ) { 
+		ip.addEventListener( "keyup", function (ev) {
+			vv = [].slice.call( document.querySelectorAll( "ul.part-drop-list li" ) );
+			for ( i=0; i < vv.length; i++ ) {
+				nod =         vv[i].children[0].parentElement;
+				key = String( vv[i].children[0].innerHTML );
+				val = ev.target.value;
+				//console.log( ev.target.value +
+				//	(( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? " != " : " == " ) + key );
+				nod.style.display = ( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? "none" : "block"; 
+		}});
+	}
 
 
 	//???What is this?

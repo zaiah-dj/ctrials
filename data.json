@@ -30,7 +30,7 @@
 		"test": { 
 			"hint":  "Test how new HTML5 controls look.",
 			"model": [ "session/check", "chosen", "participant" ],      
-			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "test", "master/tail" ] },
+			"view": [ "master/head", "participant/list", "participant/nav", "test", "master/tail" ] },
 
 		"update": { 
 			"hint":  "This acts as the server side endpoint for values edited via AJAX.  It will break up a block of JSON and store data in the proper tables.",
@@ -52,42 +52,43 @@
 		"chosen": { 
 			"hint":  "The thing of the thing.",
 			"model": [ "session/check", "chosen" ],                                    
-			"view": [ "master/head", "master/nav", "participant/list", "master/tail" ] },
+			"view": [ "master/head", "participant/list", "master/tail" ] },
 
 		"info": { 
 			"hint":  "See all patient data (more than you ever wanted to know).",
 			"model": [ "session/check", "chosen", "participant" ],            
-			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "info", "master/tail" ] },
+			"view": [ "master/head", "participant/list", "participant/nav", "info", "master/tail" ] },
 
 		"compare": { 
 			"hint":  "Compare the participant's previous weeks history.",
 			"model": [ "session/check", "chosen", "participant" ],    
-			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "compare", "master/tail" ] },
+			"view": [ "master/head", "participant/list", "participant/nav", "compare", "master/tail" ] },
 
 		"check-in": { 
 			"hint":  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here.",
 			"model": [ "session/check", "chosen", "participant","check-in" ], 
-			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "check-in", "master/tail" ] },
+			"view": [ "master/head", "participant/list", "participant/nav", "check-in", "master/tail" ] },
 
 		"input": { 
 			"hint":  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here.",
 			"model": [ "session/check", "chosen", "participant" ], 
-			"view": [ "master/head", "master/nav", "participant/list", "participant/nav", "input", "master/tail" ] },
+			"view": [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] },
 
 		"logout": { 
 			"model": "session/kill",
-			"view":  "revoke",
-			"hint":  "Use this endpoint to revoke all session keys." },
-
-		"revoke": { 
-			"model": "session/kill",
-			"view":  "revoke",
+			"view":  "logout",
 			"hint":  "Use this endpoint to revoke all session keys." },
 
 		"dumply": { 
 			"model": "_none",
 			"view":  "dumply",
 			"hint":  "Use this endpoint to see all values." },
+
+		"save": { 
+			"model": "_none",
+			"view":  "save",
+			"hint":  "Use this endpoint to see all values." },
+
 
 		"home": { }
 	}

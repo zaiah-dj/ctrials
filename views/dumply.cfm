@@ -16,6 +16,8 @@ for ( scope in scopes ) {
 	for ( x in scopes[ scope ] ) {
 		writeoutput( "<tr>" );
 		writeoutput( "<td>" & x & "</td>" );
+		if ( IsSimpleValue( scopes[ scope ][ x ] ) ) 
+			writeoutput( "<td>" & scopes[ scope ][ x ] & "</td>" );
 		writeoutput( "</tr>" );
 	}
 	writeoutput( "</table>" );

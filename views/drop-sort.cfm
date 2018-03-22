@@ -200,7 +200,7 @@ LOG( "X: " + curX + ", Y: " + curY );
 	<div class="part-div">
 		<div class="bigly-push">
 			<!--- Search for names --->
-			<input type="search">
+			<input id="bigly-search" type="search">
 
 		</div>
 

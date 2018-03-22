@@ -64,10 +64,8 @@
 	<script type="text/javascript">
 		// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT
 		// Courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM
-	
 		var fingerCount = 0;
 		var startX = 0;
-		
 	</script>
 
 </head>
@@ -81,6 +79,12 @@
 		<cfinclude template="../dumply.cfm">
 	</div><!--- class="debug" id="mega-debug" --->
 	</cfif>	
+
+	<div class="persistent-nav">
+		<a href="/motrpac/web/secure/dataentry">Back to Motrpac</a>
+		<a href="#link( "logout.cfm" )#">Logout</a>
+		<a href="#link( "save.cfm" )#">Save Session</a>
+	</div>
 
 	<div class="container">
 </cfoutput>
