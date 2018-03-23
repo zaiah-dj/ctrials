@@ -200,7 +200,7 @@ a.selected {
 
 	margin: 0px;
 	height: 100%;
-	width: 130px;
+	width: 140px;
 
 	padding: 10px;
 
@@ -887,9 +887,7 @@ input[type=search] {
 	margin-right: 10px;
 }
 
-
 span.huge { font-weight: bold; font-size: 1.5em; }
-
 
 table.table select
 ,table.table input[type=date]
