@@ -1,14 +1,3 @@
-<!--- participant --->
-<style type="text/css">
-div.holdThings { width: 200px; }
-
-h3.dogInThisFight
-{ display: inline-block; } 
-
-.collapsible { position: relative; float: right; top: 30px; right: 20px; }
-
-</style>
-
 <cfscript>
 f = [
 /*
@@ -106,6 +95,17 @@ f = [
 <cfset c=0>
 <cfoutput>
 	<div class="container-body">
+		<!--- participant --->
+		<style type="text/css">
+		div.holdThings { width: 200px; }
+
+		h3.dogInThisFight
+		{ display: inline-block; } 
+
+		.collapsible { position: relative; float: right; top: 30px; right: 20px; }
+
+		</style>
+
 		<cfloop array = "#f#" item = "ff" >
 
 		<cfif structKeyExists( ff, "designation" )>

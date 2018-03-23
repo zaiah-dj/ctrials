@@ -17,9 +17,6 @@
 				
 		  </cfloop>
 		 </cfif>
-			<a class="" href="#link( "" )#">
-				<li>+<br/><span style="color:black;">+</span></li>
-			</a>
 		</ul>
 	</div> <!-- class="container-header" -->
 </cfoutput>
