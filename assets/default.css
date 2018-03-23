@@ -226,7 +226,8 @@ a.selected {
 	-gecko-border-radius: 5px;
 	border: 5px solid #ff00ff;
 */
-	color: cyan;	
+	color: white;
+	text-shadow: 2px 2px 5px white;	
 }
 
 /*Inner navigation*/
