@@ -51,7 +51,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	locarr = location.href.split( "/" ) ;
 	loc = locarr[ locarr.length - 1 ];
 
-	if ( loc.indexOf( "input.cfm" ) > -1 ) 
+	if ( loc.indexOf( "input.cfm" ) > -1 || loc.indexOf( "check-in.cfm" ) )
 	{
 
 		//********************************************************** 

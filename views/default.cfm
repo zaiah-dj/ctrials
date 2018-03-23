@@ -3,8 +3,6 @@
 <style type="text/css">
 .short-list { position: relative; border/*-bottom*/: 2px solid black; margin-bottom: 10px; width: 100%; }
 .wash input[type=text] { display: none; }
-.wash input[type=submit] { margin-top: 10px; font-size: 1.2em; background-color: #ccc; border-radius: 5px; -moz-border-radius: 5px; -gecko-border-radius: 5px; display: block; float: right; width: 100px; height: 50px; border: 0px; transition: background-color 0.2s; color 0.2s; }
-.wash input[type=submit]:hover { background-color: cyan; color: white; }
 .short-list ul li { width: 50px; display: inline-block; background: black; padding-left: 10px; }
 .short-list ul li:hover { background: white; }
 .part-div { overflow: hidden; }

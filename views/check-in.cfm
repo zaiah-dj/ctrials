@@ -1,24 +1,15 @@
 <cfif part.participant_exercise lt 3>
-<cfscript>
-	values = [
-/*
-	//Cycle only
-	 { label = "",           uom = "",    min = 5, max = 80, def = 0, step = 2, name = "rpm" }
-	,{ label = "Watts/Resistance", 
-															uom = "",    min = 0, max = 80, def = 0, step = 1, name = "resistance" }
-	//Treadmill only
-	,{ label = "Speed",         uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
-	,{ label = "Percent Grade", uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
-*/
-	//All others
-	{ label = ( #part.participant_exercise# eq 1 ) ? "Machine Selection" : "Exercise Selection",
-		 uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
-	];
-</cfscript>
-
 
 <cfoutput>
 	<div class="container-body">
+<style type="text/css">
+.cc { display: inline-block;}
+.w200 { width: 20%; }
+.w100 { width: 10%; }
+.w050 { width: 10%; }
+</style>
+
+		<form name="checkInForm" action="#link( 'check-in-complete.cfm' )#" method="POST">
 		<table class="table">
 			<tbody>
 
@@ -26,11 +17,11 @@
 					<td class="title">Study Week</td>
 					<td>
 						<cfset sc=1>
-						<ul class="dasch">
-						<cfloop from = 1 to=4 index = "reason">
-							<li>Day #reason#</li>	
+						<select name="recday">
+						<cfloop from=1 to=4 index = "d">
+							<option value=#d#>Day #d#</option>	
 						</cfloop>
-						</ul>
+						</select>
 					</td>
 				</tr>
 
@@ -38,9 +29,14 @@
 					<td class="title">Exercise Session</td>
 					<td>
 						<cfset sc=1>
+						<cfset today = LCase( DateTimeFormat( Now(), "EEE" ))>
 						<ul class="dasch">
-						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat,Sun" item = "day">
+						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
+							<cfif today eq LCase( day )>
+							<li class="selected">#day#</li>	
+							<cfelse>
 							<li>#day#</li>	
+							</cfif>
 						</cfloop>
 						</ul>
 					</td>
@@ -50,10 +46,10 @@
 					<td class="title">Next Scheduled Visit</td>
 					<td>
 						<input type="date" name="next_scheduled_visit">
-						<div>01/01/1991</div>
+						<div>( e.g. 01/01/1991 )</div>
 					</td>
 				</tr>
-
+<!---
 				<tr>
 					<td class="title">Patient Could Not Continue</td>
 					<td>
@@ -66,23 +62,69 @@
 						</select>
 					</td>
 				</tr>
-
+--->
 				<tr>
 					<td class="title">Blood Pressure</td>
 					<td>
-						<input type="numeric" name="systolic_bp"> / 
-						<input type="numeric" name="diastolic_bp">
+						<span class=huge>180</span> / <span class=huge>90</span>
+						<i>(*No further readings need to be taken at this time)</i>
 						<div>
-							Populate text here letting staff know if they need to take new BP or not.
+						<div>
+							<label class="sameline">Systolic</label>
+							<div class="cc w200">
+								<input type="range" min="90" max="180" class="slider" value="0" name="sys">
+							</div>
+							<div class="cc w100">0</div>
 						</div>
+						</div><br />
+						<div>
+							<label class="sameline">Diastolic</label>
+							<div class="cc w200">
+								<input type="range" min="90" max="180" class="slider" value="0" name="dia">
+							</div>
+							<div class="cc w100">0</div>
+						</div>
+<!---
+						<input type="numeric" name="systolic_bp" value = "180"> / 
+						<input type="range" min="90" max="180" class="slider" value="0" name="heart_rate_min">
+						<input type="range" min="90" max="180" class="slider" value="0" name="heart_rate_max"> 
+
+						<input type="numeric" name="diastolic_bp" value = "90">
+--->
+					</td>
+				</tr>
+
+				<tr>
+					<td class="title">Weight</td>
+					<td>
+						<span class=huge>180</span> lbs 
+						<div class="cc w200">
+							<input type="range" min="50" max="300" class="slider" value="0" name="weight">
+						</div>
+						<div class="cc w100">0</div>
+
+<!---
+						<input type="numeric" name="heart_rate_min"> to
+						<input type="numeric" name="heart_rate_max"> BPM
+--->
 					</td>
 				</tr>
 
 				<tr>
 					<td class="title">Heart Rate</td>
 					<td>
+						<div class="cc w050">
+							<span class=huge>180</span>
+						</div>
+						<div class="cc w200">
+							<input type="range" min="90" max="180" class="slider" value="0" name="heart_rate_min">
+						</div>
+						<div class="cc w100">0</div>
+
+<!---
 						<input type="numeric" name="heart_rate_min"> to
 						<input type="numeric" name="heart_rate_max"> BPM
+--->
 					</td>
 				</tr>
 
@@ -96,20 +138,38 @@
 								<br />
 							</cfloop>
 						<cfelse>
-							<ul>
+							<cfset el=ListToArray( ValueList( exercises.et_name, "," ))>
+<!---
 							<cfloop query=exercises>
 								<li><label>#et_name#</label>
-								<input type="checkbox" value="#et_name#"></li>
+								<input type="radio" value="#et_name#"></li>
 							</cfloop>
+--->
+							<ul>
+								<li>
+									<label><cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop></label>
+									<input type="radio" name="exset" value="5"><br />
+								</li>
+								<li>
+									<label><cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop></label>
+									<input type="radio" name="exset" value="6">
+								</li>
 							</ul>
 						</cfif>
-						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td class="title">Assessment Notes</td>
+					<td>
+						<textarea name="assessment_notes"></textarea>
 					</td>
 				</tr>
 
 			</tbody>
 		</table>
 
+		<input type="submit" value="Next!"></input>
+		</form>
 	</div>
 </cfoutput>
 </cfif>

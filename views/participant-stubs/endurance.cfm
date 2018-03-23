@@ -1,8 +1,8 @@
 <!--- endurance.cfm --->
 
 <!--- Populate the exercise time range menu --->
-<cfscript>arry1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) arry1[ ii++ ]	= i - 4 & " - " & i;</cfscript>
-<cfscript>arry2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) arry2[ ii++ ]	= i - 4 & " - " & i;</cfscript>
+<cfscript>arry1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) arry1[ ii++ ]	= /*i - 4 & */"< " & i;</cfscript>
+<cfscript>arry2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) arry2[ ii++ ]	=/* i - 4 & */"< " & i;</cfscript>
 
 <!--- ... --->
 <cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
@@ -65,7 +65,8 @@ values = [
 		<tbody>
 			<tr>
 				<td class="title">Exercise Type</td>
-				<td>
+				<td>Cycle</td>
+<!---
 				<select id="choose_mode" name="mode">
 					<option value="0">This Will Already be Chosen</option>
 					<option value="1">Cycle</option>
@@ -73,6 +74,7 @@ values = [
 					<option value="3">Elliptical</option>
 					<option value="4">Other</option>
 				</select>
+--->
 				</td>
 			</tr>
 		<cfloop array = #values#  index = "val">

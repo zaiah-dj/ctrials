@@ -235,6 +235,7 @@ div.inner-selection {
 	height: 100px;
 	overflow: hidden;
 	white-space: nowrap;
+	position: relative;
 }
 
 ul.inner-selection {
@@ -246,15 +247,20 @@ ul.inner-selection {
 	-khtml-column-count: 2;
 	column-count: 2;
 */
+	position: relative;
+	width: 80%;
+	min-width: 300px;
+	margin: 0 auto;
 }
 
 .container-body .inner-selection li {
-	min-width: 110px;
+	min-width: 70px;
 	width: 10%;
 	font-weight: bold;
 	text-align: center;
 	font-size: 0.9em;
 	padding: 5px; 
+	margin-bottom: 5px;
 	display: inline-block; 
 	background-color: #333; 
 	color: white;
@@ -339,7 +345,10 @@ ul.dasch li {
 }
 
 ul.dasch li.selected {
-	background-color: #e0ffff;
+	background-color: purple;
+	color: white;
+	font-weight: bold;
+	text-shadow: 2px 2px 2px white;
 }
 
 ul.dasch li:hover {
@@ -818,11 +827,29 @@ a.tiny-link {
 	overflow: hidden;
 }
 
-#done {
+#done ,
+.butty {
 	position: absolute;
 	bottom: 10px;
 	right: 20px;
 }
+
+input[type=submit] { margin-top: 10px; 
+	font-size: 1.2em; 
+	background-color: #ccc; 
+	border-radius: 5px; 
+	-moz-border-radius: 5px; 
+	-gecko-border-radius: 5px; 
+	display: block; 
+	float: right; 
+	width: 100px; 
+	height: 50px; 
+	border: 0px; 
+	transition: background-color 0.2s; 
+	color 0.2s; 
+}
+
+input[type=submit]:hover { background-color: cyan; color: white; }
 
 input[type=search] { 
 /*	border: 0px; 
@@ -861,9 +888,38 @@ input[type=search] {
 }
 
 
+span.huge { font-weight: bold; font-size: 1.5em; }
 
 
+table.table select
+,table.table input[type=date]
+,table.table input[type=text]
+,table.table textarea 
+{
+	position: relative;
+	padding: 5px;
+	width: 50%;
+	font-size: 1.2em;
+}
 
+table.table textarea {
+	height: 200px;
+}
+
+,table.table input[type=radio] {
+	width: 30%;
+}
+
+.table.table label {
+	min-width: 200px;
+	width: 30%;
+}
+
+.table.table label.sameline {
+	display: inline-block;
+	width: 50px !important;
+	float: left;
+}
 
 
 

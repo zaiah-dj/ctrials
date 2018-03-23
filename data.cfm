@@ -51,6 +51,12 @@ I can do more with this concept...
 	 ,"view"  = [ "master/head", "default", "master/tail" ] 
 	}
 
+	,"check-in-complete"= { 
+		"hint"  =  "Mark a check-in as completed."
+	 ,"model" = [ "session/check", "check-in-complete" ]
+	 ,"view"  = "check-in-complete"
+	}
+
 	,"start-daily" = { 
 		"hint"  =  "The thing of the thing."
 	 ,"model" = "update-trans-members"

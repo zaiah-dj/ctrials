@@ -208,14 +208,52 @@ CREATE TABLE ac_mtr_checkinstatus (
 ,ps_weight int
 ,ps_height int
 ,ps_fatigue int
-,ps_vision int
-,ps_hunger int
+,ps_day int
+,ps_next_sched datetime
 ,ps_date_time_assessed datetime
 ,ps_droppedout bit
 ,ps_dropout_reason varchar(512)
 ,ps_notes varchar(max)
 );
 
+
+/*
+ ----------------------------
+	ac_mtr_dayplot
+	
+	This can be done via the 
+	app engine, but I'm doing
+	it here so the app can be
+	more flexible.
+ ----------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_dayplot', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_dayplot ;
+END
+CREATE TABLE ac_mtr_dayplot (
+	dp_id INT
+	,dp_day VARCHAR(4)
+	,dp_longday VARCHAR(24)
+);
+
+
+/*
+ ----------------------------
+	ac_ex_choices
+
+	temporary table to hold
+	choices of exerciss	
+ ----------------------------
+ */
+IF OBJECT_ID( N'ac_ex_choices', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_ex_choices ;
+END
+CREATE TABLE ac_ex_choices (
+	 ex_id INT
+	,ex_designation VARCHAR(256)
+);
 
 /*
  ----------------------------------
