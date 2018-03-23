@@ -23,10 +23,10 @@ values = [
 ,{ label = "Percent Grade", uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
 
 //All others
-,{ label = "Heart Rate",    uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
-,{ label = "Blood Pressure",uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
+/*,{ label = "Heart Rate",    uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
+,{ label = "Blood Pressure",uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}*/
 ,{ label = "Perceived Exertion Rating",    
-													  uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
+													  uom = "mph", min = 0, max = 5, def = 0, step = 1, name = "speed"}
 ];
 </cfscript>
 
