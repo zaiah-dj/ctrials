@@ -86,72 +86,74 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 --->
 
 <cfoutput>
-<table class="table">
-	<tr>
-		<td>Today''s Date</td>
-		<td>#DateFormat( Now())#</td>
-	</tr>
+<div class="container-body">
+	<table class="table">
+		<tr>
+			<td>Today''s Date</td>
+			<td>#DateFormat( Now())#</td>
+		</tr>
 
-	<tr>
-		<td>Slider Value</td>
-		<td>
-			<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
-		</td>
-	</tr>
-
-
-	<tr>
-		<td>HTML5 Slider Value</td>
-		<td>
-			<!---
-			min = 0  ; minimum value
-			max = 0  ; maximum value
-			val = 10 ; default value
-				--->
-			<input type="range" min="0" max="20" class="slider" value="10">
-		</td>
-	</tr>
+		<tr>
+			<td>Slider Value</td>
+			<td>
+				<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+			</td>
+		</tr>
 
 
-	<tr>
-		<td>Modal Pop-Up Value</td>
-		<td> 
-			<button id="myBtn">Edit Me</button>
-		</td>
+		<tr>
+			<td>HTML5 Slider Value</td>
+			<td>
+				<!---
+				min = 0  ; minimum value
+				max = 0  ; maximum value
+				val = 10 ; default value
+					--->
+				<input type="range" min="0" max="20" class="slider" value="10">
+			</td>
+		</tr>
 
-		<div id="myModal" class="modal">
-			<div class="modal-content">
-				<span class="close">&times;</span>
-				<p>Text in the modal</p>
-				<textarea name="myTextArea"></textarea>
-			</div>	
-		</div>
-	</tr>
 
-	<tr>
-		<td>Bar</td>
-		<td>
-			<div class="barOuter">
-				<div class="barInner"></div>
+		<tr>
+			<td>Modal Pop-Up Value</td>
+			<td> 
+				<button id="myBtn">Edit Me</button>
+			</td>
+
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<p>Text in the modal</p>
+					<textarea name="myTextArea"></textarea>
+				</div>	
 			</div>
-		</td>
-	</tr>
+		</tr>
 
-	<tr>
-		<td>iOS Style Date Picker</td>
-		<td>
-			<div id="ios-picker" style="border:1px solid black;">
-			</div>
-		</td>
-	</tr>
-<!---
-	<cfelseif EXTYPE eq 4>
-	<tr>
-		<td>Bootstrap Slider Value</td>
-		<td>
-			<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
-		</td>
-	</tr>
---->
-</table>
+		<tr>
+			<td>Bar</td>
+			<td>
+				<div class="barOuter">
+					<div class="barInner"></div>
+				</div>
+			</td>
+		</tr>
+
+		<tr>
+			<td>iOS Style Date Picker</td>
+			<td>
+				<div id="ios-picker" style="border:1px solid black;">
+				</div>
+			</td>
+		</tr>
+	<!---
+		<cfelseif EXTYPE eq 4>
+		<tr>
+			<td>Bootstrap Slider Value</td>
+			<td>
+				<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+			</td>
+		</tr>
+	--->
+	</table>
+</div>
 </cfoutput>
