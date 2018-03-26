@@ -3,28 +3,71 @@
 <cfdump var = #form#>
 <cfset sess_id = #session.iv_motrpac_transact_id#>
 
-<cfquery name="updateT" datasource=#data.source#>
-INSERT INTO 
-	ac_mtr_checkinstatus
-VALUES (
-	<cfqueryparam value="#sess_id#" cfsqltype='cf_sql_varchar'>
-	,1
-	<cfqueryparam value="#form.weight#" cfsqltype='cf_sql_integer'>
-	<cfqueryparam value="#form.recday#" cfsqltype='cf_sql_integer'>
-	<cfqueryparam value="#form.next_scheduled_visit#" cfsqltype='cf_sql_datetime'>
-	<cfqueryparam value="#DateTimeFormat( Now(), "YYYY-MM-DD" )#" cfsqltype='cf_sql_datetime'>
-	<cfqueryparam value="#form.assessment_notes#" cfsqltype='cf_sql_varchar'>
-);
-</cfquery>
 
-<cfabort>
-<cfset w = CreateObject("component", "components.writeback").Server(
-	listen   = "POST"
- ,ds       = "#data.source#"
- ,table    = "ac_mtr_checkinstatus"
- ,using    = "SQLServer"
- ,insertOn = '!checkFor( where = "sess_id = :sess_id", predicate = "##form.truana##" )'
- ,insertStmt = "INSERT INTO ac_mtr_checkinstatus VALUES ( '##form.truana##', NULL, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0 )"
- ,where    = { clause = "el_sess_id = :sess_id", predicate = { sess_id = "##form.truana##" }}
- ,only     = [ "comp1", "comp2", "dt1", "bt1" ]
-)>
+<cfif !IsDefined("form") || !IsDefined("session") || !IsStruct( form )>
+	Error submitting form.
+	<cfoutput><a href="#link('')#">Home</a></cfoutput>
+	<cfabort>
+<cfelse>
+
+
+<cfoutput>#sess_id#</cfoutput>
+
+
+
+
+<cfscript>
+message = "";
+if ( !StructKeyExists( form, "ps_pid" ) || StructFind( form, "ps_pid" ) eq "" ) 
+	message = "PID is missing";
+if ( !StructKeyExists( form, "ps_weight" ) || StructFind( form, "ps_weight" ) eq "" ) 
+	message = "Weight is missing";
+if ( !StructKeyExists( form, "ps_day" )  || StructFind( form, "ps_day" ) eq "" ) 
+	message = "Day of participation is missing";
+if ( !StructKeyExists( form, "ps_next_sched" ) || StructFind( form, "ps_next_sched" ) eq "" ) 
+	message = "Next scheduled visit is missing";
+</cfscript>
+
+
+<cfif message eq "">
+	<h2>#message#</h2>
+<cfelse>
+<cftry>
+	<cfscript>
+	ns = "2008-09-09";
+	bp = 0;
+	nt = "";
+
+	if ( StructKeyExists( form, "ps_bp" ) )
+		bp = form.ps_bp;
+
+	if ( StructKeyExists( form, "ps_notes" ) )
+		nt = form.ps_notes;
+	</cfscript>
+
+	<cfquery name="updateT" datasource=#data.source#>
+	INSERT INTO 
+		ac_mtr_checkinstatus
+	VALUES (
+		 <cfqueryparam value="#form.ps_pid#" cfsqltype='cf_sql_integer'>
+		,<cfqueryparam value="#sess_id#" cfsqltype='cf_sql_integer'>
+		,1
+		,<cfqueryparam value="#form.ps_weight#" cfsqltype='cf_sql_integer'>
+		,<cfqueryparam value="#form.ps_day#" cfsqltype='cf_sql_integer'>
+		,<cfqueryparam value="#bp#" cfsqltype='cf_sql_integer'>
+		,0	
+		,<cfqueryparam value="#ns#" cfsqltype='cf_sql_datetime'>
+		,<cfqueryparam value="#DateTimeFormat( Now(), "YYYY-MM-DD" )#" cfsqltype='cf_sql_datetime'>
+		,<cfqueryparam value="#nt#" cfsqltype='cf_sql_varchar'>
+	);
+	</cfquery>
+
+	<cfcatch> 
+		<cfdump var = #cfcatch#>
+		<cfabort>
+	</cfcatch>
+
+	</cftry>
+
+	</cfif>
+</cfif>

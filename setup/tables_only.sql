@@ -187,10 +187,8 @@ ps_id                 Unique ID
 ps_session_id         The session ID that this participant was tested during.
 ps_before             Was this done before or after the exercises?
 ps_weight             How heavy is patient at start?
-ps_height             How tall is patient at start?
-ps_fatigue            Approximate statement concerning the person's energy level
-ps_vision             Vision test evaluation
-ps_hunger             Is the participant hungry?
+
+ps_day                What day of the week were they looked at?
 ps_date_time_assessed When was the person assessed
 ps_droppedout         Did the participant opt out this time?
 ps_dropout_reason     Why?
@@ -201,18 +199,29 @@ IF OBJECT_ID( N'ac_mtr_checkinstatus', N'U') IS NOT NULL
 BEGIN
 	DROP TABLE ac_mtr_checkinstatus;
 END
+CREATE TABLE [dbo].[ac_mtr_checkinstatus](
+	[ps_id] [int] IDENTITY(1,1) NOT NULL,
+	[ps_session_id] [int] NULL,
+	[ps_before] [bit] NULL,
+	[ps_weight] [int] NULL,
+	[ps_day] [int] NULL,
+	[ps_next_sched] [datetime] NULL,
+	[ps_date_time_assessed] [datetime] NULL,
+	[ps_notes] [varchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+
 CREATE TABLE ac_mtr_checkinstatus (
  ps_id INT IDENTITY(1,1) NOT NULL
+,ps_pid int
 ,ps_session_id INT
 ,ps_before bit
 ,ps_weight int
-,ps_height int
-,ps_fatigue int
 ,ps_day int
+,ps_bp int
+,ps_heartrate int
 ,ps_next_sched datetime
 ,ps_date_time_assessed datetime
-,ps_droppedout bit
-,ps_dropout_reason varchar(512)
 ,ps_notes varchar(max)
 );
 

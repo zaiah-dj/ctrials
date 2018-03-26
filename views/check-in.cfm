@@ -1,13 +1,22 @@
 <cfif part.participant_exercise lt 3>
 
+<cfscript>
+/*
+fields = [
+	{ name = "Study Week", type = "drop", eval = "<cfloop from=1 to=4 index=d><option value=#d#>Day #d#</option></cfloop>" }
+, { name = "Exercise Session", type =   
+];
+*/
+</cfscript>
+
 <cfoutput>
 	<div class="container-body">
-<style type="text/css">
-.cc { display: inline-block;}
-.w200 { width: 20%; }
-.w100 { width: 10%; }
-.w050 { width: 10%; }
-</style>
+		<style type="text/css">
+		.cc { display: inline-block;}
+		.w200 { width: 20%; }
+		.w100 { width: 10%; }
+		.w050 { width: 10%; }
+		</style>
 
 		<form name="checkInForm" action="#link( 'check-in-complete.cfm' )#" method="POST">
 		<table class="table">
@@ -17,7 +26,7 @@
 					<td class="title">Study Week</td>
 					<td>
 						<cfset sc=1>
-						<select name="recday">
+						<select name="ps_day">
 						<cfloop from=1 to=4 index = "d">
 							<option value=#d#>Day #d#</option>	
 						</cfloop>
@@ -45,24 +54,11 @@
 				<tr>
 					<td class="title">Next Scheduled Visit</td>
 					<td>
-						<input type="date" name="next_scheduled_visit">
+						<input type="date" name="ps_next_sched">
 						<div>( e.g. 01/01/1991 )</div>
 					</td>
 				</tr>
-<!---
-				<tr>
-					<td class="title">Patient Could Not Continue</td>
-					<td>
-						<cfset sc=1>
-						<select name="fail_reason">
-							<option value="0">Choose a Reason</option>	
-						<cfloop query = "fail_reasons"> 
-							<option value="#sc++#">#et_name#</option>	
-						</cfloop>
-						</select>
-					</td>
-				</tr>
---->
+
 				<tr>
 					<td class="title">Blood Pressure</td>
 					<td>
@@ -84,13 +80,6 @@
 							</div>
 							<div class="cc w100">0</div>
 						</div>
-<!---
-						<input type="numeric" name="systolic_bp" value = "180"> / 
-						<input type="range" min="90" max="180" class="slider" value="0" name="heart_rate_min">
-						<input type="range" min="90" max="180" class="slider" value="0" name="heart_rate_max"> 
-
-						<input type="numeric" name="diastolic_bp" value = "90">
---->
 					</td>
 				</tr>
 
@@ -99,14 +88,9 @@
 					<td>
 						<span class=huge>180</span> lbs 
 						<div class="cc w200">
-							<input type="range" min="50" max="300" class="slider" value="0" name="weight">
+							<input type="range" min="50" max="300" class="slider" value="0" name="ps_weight">
 						</div>
 						<div class="cc w100">0</div>
-
-<!---
-						<input type="numeric" name="heart_rate_min"> to
-						<input type="numeric" name="heart_rate_max"> BPM
---->
 					</td>
 				</tr>
 
@@ -120,11 +104,6 @@
 							<input type="range" min="90" max="180" class="slider" value="0" name="heart_rate_min">
 						</div>
 						<div class="cc w100">0</div>
-
-<!---
-						<input type="numeric" name="heart_rate_min"> to
-						<input type="numeric" name="heart_rate_max"> BPM
---->
 					</td>
 				</tr>
 
@@ -139,12 +118,6 @@
 							</cfloop>
 						<cfelse>
 							<cfset el=ListToArray( ValueList( exercises.et_name, "," ))>
-<!---
-							<cfloop query=exercises>
-								<li><label>#et_name#</label>
-								<input type="radio" value="#et_name#"></li>
-							</cfloop>
---->
 							<ul>
 								<li>
 									<label><cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop></label>
@@ -159,15 +132,16 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="title">Assessment Notes</td>
+					<td class="title">Participant Notes</td>
 					<td>
-						<textarea name="assessment_notes"></textarea>
+						<textarea name="ps_notes"></textarea>
 					</td>
 				</tr>
 
 			</tbody>
 		</table>
 
+		<input type="hidden" name="ps_pid" value="#url.id#">
 		<input type="submit" value="Next!"></input>
 		</form>
 	</div>

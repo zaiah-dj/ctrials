@@ -12,6 +12,7 @@ I can do more with this concept...
 ,"name"   = "iv"
 ,"title"  = "Motrpac Intervention Tracking"
 ,"debug"  =  1
+,"ajaxEveryTime"  =  1
 ,"master-post" = false
 ,"data"   = {}
 ,"css"    = []

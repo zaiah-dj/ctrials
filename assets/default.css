@@ -611,10 +611,25 @@ input.collapsible:checked + div{
 input.collapsible + div > table {display: none;}
 input.collapsible:checked + div > table { display: block; }
 
-.bigly-push {
-	border-bottom: 5px solid black;
-	height: 10%;
-	width: 100%;
+.container-header-inner {
+	position: relative;
+	top: 5px;
+	width: 100%;		
+}
+
+.container-header-left {
+	position: absolute;
+	top: 0px;
+	width: 60%;
+	left: 0px;
+}
+
+.container-header-right {
+	position: absolute;
+	top: 0px;
+	left: 60%;
+	width: 40%;
+	line-height: 30px;
 }
 
 .bigly-wrap {
@@ -675,11 +690,41 @@ input.collapsible:checked + div > table { display: block; }
 	color: white;
 }
 
-.bigly input[ type=search ] {
-	width: 100%;
+.container-header-inner label { border: 1px solid black; padding: 5px;}
+.container-header-right .legend {
+	position: relative;
+	left: 50%;
+	top: -30px;
+}
+
+#bigly-search {
+	width: 80%;
 	padding: 5px;
+	margin-top: 15px;
 	margin-bottom: 20px;
+	top: -23px;
+	left: 10%;
+	font-size: 1.1em;
+	position: relative;
+	border: 1px solid black;
+	transition: position 0.2s, font-size 0.2s, width 0.2s;
 }	
+
+
+
+.box, .box:hover { 
+	height: 20px;
+	width: 20px;
+	display: inline-block;
+	text-align: right;
+	position: relative;
+}
+
+#bigly-search:focus {
+	font-size: 1.3em;
+	width: 90%;
+	left: 5%;
+}
 
 /*
 .bigly:hover {
