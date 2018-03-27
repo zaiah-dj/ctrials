@@ -60,7 +60,7 @@ I can do more with this concept...
 
 	,"start-daily" = { 
 		"hint"  =  "The thing of the thing."
-	 ,"model" = "update-trans-members"
+	 ,"model" = "update"
 	 ,"view"  = "session-write"
 	 ,"content_type" = "application/json" 
 		}

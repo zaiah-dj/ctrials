@@ -132,35 +132,35 @@ LOG( "X: " + curX + ", Y: " + curY );
 				if ( this.readyState == 4 && this.status == 200 ) {
 					//console.log( this.responseText );
 					parsed = JSON.parse( this.responseText );
-					//console.log( parsed );
+					console.log( parsed );
 					if ( parsed.status == 200 ) {
-						//JS Forwards us on... but this is not super safe...
-						frm.submit(); //I'm only concerned with trans_id
-						//window.location.replace( "<cfoutput>#link('chosen.cfm')#</cfoutput>" );	
+						frm.submit();
 					}
 				}
 			};
-
-			// This is butt-ugly and should be done differently
-			//console.log( "opening connection to " + "<cfoutput>#submit_link#</cfoutput>" );
 
 			//What does the pbody look like
 			payload = [
 				 "staffer_id=" + this.staffer_id.value  
 				,"transact_id=" + this.transact_id.value 
+				,"this=check-in-complete"
 				,"list=" + this.list.value 
 			].join( '&' );
 
 			console.log( payload );
 
 			// tHis is made all the more ugly because I'm using GETs when I should be using POSTs
-			if ( 0 ) {
-				xhr.open( "POST", '<cfoutput>#submit_link#</cfoutput>', true );
-				xhr.send( 
+			if ( 1 ) {
+				xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
+				xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+				xhr.send( payload );
+				/* 
 					"staffer_id=" + this.staffer_id.value +
 					"&transact_id=" + this.transact_id.value +
+					"&this=check-in-complete" +
 					"&list=" + this.list.value
 				);
+				*/
 			}
 			else {
 				xhr.open( "GET", '/motrpac/web/secure/dataentry/iv/start-daily.cfm?' + payload , true );

@@ -61,7 +61,8 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		var b = [].slice.call( document.querySelectorAll( ".slider" ) );  
 
 		//...
-		for ( i = 0; i < b.length; i++ ) {
+		for ( i = 0; i < b.length; i++ ) 
+		{
 			//Get that nice slider effect going
 			b[i].addEventListener( "input", function (ev) {
 				ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
@@ -104,9 +105,5 @@ xhr.send( 'value={value:33,name:"Antonio Collins",table:"ermigerd",id:12}' );
 			} );
 			*/
 		}
-
-
-
 	}
-		
 })

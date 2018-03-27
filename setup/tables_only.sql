@@ -322,6 +322,7 @@ CREATE TABLE ac_mtr_participant_transaction_members
 (
 	p_uuid INT IDENTITY(1,1) NOT NULL
 	,p_transaction_id INT
+	,p_day INT
 	,p_id INT
 );
 

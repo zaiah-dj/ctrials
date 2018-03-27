@@ -7,4 +7,7 @@
 *.png
 *.gif
 *.md
+assets/img
+assets/libs/mobileSelect.js
 TODO
+components/cfwriteback
