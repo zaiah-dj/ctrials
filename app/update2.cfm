@@ -69,7 +69,7 @@ if ( form.this eq "startSession" ) {
 			stmt = "INSERT INTO ac_mtr_participant_transaction_members VALUES ( :mid, :dom, :day, :listing )";
 			nq = new Query( );
 			nq.setDatasource( "#data.source#" );
-			nq.addParam( name = "mid", value=form.transact_id, cfsqltype="cf_sql_int" );
+			nq.addParam( name = "mid", value=form.transact_id, cfsqltype="cf_sql_nvarchar" );
 			nq.addParam( name = "dom", value=todayDom, cfsqltype="cf_sql_int" );
 			nq.addParam( name = "day", value=todayDay, cfsqltype="cf_sql_int" );
 			nq.addParam( name = "listing", value=listing, cfsqltype="cf_sql_int" );

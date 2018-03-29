@@ -72,13 +72,6 @@ I can do more with this concept...
 	 ,"view"  = "check-in-complete"
 	}
 
-	,"start-daily" = { 
-		"hint"  =  "The thing of the thing."
-	 ,"model" = "update"
-	 ,"view"  = "session-write"
-	 ,"content_type" = "application/json" 
-		}
-
 	,"chosen" = { 
 		"hint"  =  "See all chosen participants in a session."
 	 ,"model" = [ "session/check", "chosen" ]

@@ -55,7 +55,7 @@ if ( !StructKeyExists( form, "ps_next_sched" ) || StructFind( form, "ps_next_sch
 		ac_mtr_checkinstatus
 	VALUES (
 		 <cfqueryparam value="#form.ps_pid#" cfsqltype='cf_sql_integer'>
-		,<cfqueryparam value="#sess_id#" cfsqltype='cf_sql_integer'>
+		,<cfqueryparam value="#sess_id#" cfsqltype='cf_sql_nvarchar'>
 		,1
 		,<cfqueryparam value="#form.ps_weight#" cfsqltype='cf_sql_integer'>
 		,<cfqueryparam value="#form.ps_day#" cfsqltype='cf_sql_integer'>

@@ -140,7 +140,7 @@ CREATE TABLE ac_mtr_exercise_log_master (
 	 el_id INT IDENTITY(1,1) NOT NULL
 	,el_matchid INT  /*which log to look into?*/
 	,el_type INT
-	,el_sess_id INT
+	,el_sess_id VARCHAR(64)
 	,el_datetime DATETIME
 	,el_fail BIT 
 	,el_failreason VARCHAR(MAX)
@@ -173,7 +173,7 @@ END
 CREATE TABLE ac_mtr_exercise_log_re (
 	 el_reid INT IDENTITY(1,1) NOT NULL
 	,el_re_pid INT
-	,el_re_ex_session_id INT 
+	,el_re_ex_session_id VARCHAR(64)
 	,el_re_reps1 INT
 	,el_re_weight1 INT
 	,el_re_reps2 INT
@@ -210,7 +210,7 @@ END
 CREATE TABLE ac_mtr_exercise_log_ee (
 	 el_eeid INT IDENTITY(1,1) NOT NULL
 	,el_ee_pid INT
-	,el_ee_ex_session_id INT
+	,el_ee_ex_session_id VARCHAR(64)
 	,el_ee_equipment INT
 	,el_ee_timeblock INT
 	,el_ee_rpm INT
@@ -248,31 +248,13 @@ END
 CREATE TABLE ac_mtr_checkinstatus (	
 	 ps_id INT IDENTITY(1,1) NOT NULL
 	,ps_pid int
-	,ps_session_id INT
+	,ps_session_id VARCHAR(64)
 	,ps_before bit
 	,ps_weight int
 	,ps_day int
 	,ps_next_sched datetime
 	,ps_date_time_assessed datetime
 	,ps_notes varchar(max)
-);
-
-/*
- ----------------------------
-ac_mtr_bloodpressure
-
-Get the blood pressure of a 
-participant if needed.
-
- ----------------------------
- */
-CREATE TABLE ac_mtr_bloodpressure (
-	 bp_id INT IDENTITY(1,1) NOT NULL
-	,bp_pid int
-	,bp_systolic int
-	,bp_diastolic int
-	,bp_daterecorded DATETIME
-	,bp_notes varchar(max)
 );
 
 
@@ -304,7 +286,7 @@ BEGIN
 END
 CREATE TABLE ac_mtr_participant_transaction_set (
 	 p_uuid INT IDENTITY(1,1) NOT NULL
-	,p_transaction_id INT
+	,p_transaction_id VARCHAR(64)
 	,p_expires BIT
 	,p_currentDateTime DATETIME
 	,p_lastUpdateTime DATETIME
@@ -330,7 +312,7 @@ END
 CREATE TABLE ac_mtr_participant_transaction_staff 
 (
 	s_uuid INT IDENTITY(1,1) NOT NULL
-	,s_transaction_id INT
+	,s_transaction_id VARCHAR(64)
 	,s_sdom INT
 	,s_sday INT
 	,s_sid INT
@@ -359,7 +341,7 @@ END
 CREATE TABLE ac_mtr_participant_transaction_members 
 (
 	p_uuid INT IDENTITY(1,1) NOT NULL
-	,p_transaction_id INT
+	,p_transaction_id VARCHAR(64)
 	,p_pdom INT
 	,p_pday INT
 	,p_pid INT
@@ -391,7 +373,7 @@ END
 CREATE TABLE ac_mtr_days_tracker 
 (
 	 dt_uuid INT IDENTITY(1,1) NOT NULL
-	,dt_session_id INT
+	,dt_session_id VARCHAR(64)
 	,dt_day_of_week INT /*Perhaps this should just be the day name?*/
 	,dt_participant_id INT
 	,dt_week_index INT
@@ -455,6 +437,53 @@ INSERT INTO ac_mtr_participants VALUES ( 'Jarius', 'Richardson', '', 1, 'acc51db
 INSERT INTO ac_mtr_participants VALUES ( 'Avagard', 'Reva', '', 3, '7e227a123d9d520b7e63d4ef13de3f29', 96.0, 54.0, 0, '/assets/jc_avatar.jpg', 0, 0 , 87, '' );
 INSERT INTO ac_mtr_participants VALUES ( 'Doctor', 'Monty', 'Julius', 3, '09f6cfc5d626c2c14dadc09c6aaac41d', 184.0, 87.0, 0, '/assets/jc_avatar.jpg', 0, 0 , 83, '' );
 
+/*
+ ----------------------------
+ac_mtr_bloodpressure
+
+Get the blood pressure of a 
+participant if needed.
+
+ ----------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_bloodpressure ', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_bloodpressure ;
+END
+CREATE TABLE ac_mtr_bloodpressure (
+	 bp_id INT IDENTITY(1,1) NOT NULL
+	,bp_pid int
+	,bp_systolic int
+	,bp_diastolic int
+	,bp_daterecorded DATETIME
+	,bp_notes varchar(max)
+);
+
+INSERT INTO ac_mtr_bloodpressure VALUES ( 1, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 2, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 3, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 4, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 5, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 6, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 7, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 8, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 9, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 10, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 11, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 12, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 13, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 14, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 15, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 16, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 17, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 18, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 19, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 20, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 21, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 22, 0, 0, 1970-01-01, '' );
+INSERT INTO ac_mtr_bloodpressure VALUES ( 23, 0, 0, 1970-01-01, '' );
+
+/* a trigger may be needeD? */
 
 /*
 SET IDENTITY_INSERT ac_mtr_participant_transaction_members ON;
@@ -471,4 +500,5 @@ SET IDENTITY_INSERT ac_mtr_re_exercise_list ON;
 SET IDENTITY_INSERT ac_mtr_ee_machine_list ON;
 SET IDENTITY_INSERT ac_mtr_fail_visit_reasons ON;
 */
+
 

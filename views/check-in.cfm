@@ -21,14 +21,13 @@ fields = [
 		<form name="checkInForm" action="#link( 'check-in-complete.cfm' )#" method="POST">
 		<table class="table">
 			<tbody>
-
 				<tr>
 					<td class="title">Study Week</td>
 					<td>
 						<cfset sc=1>
-						<select name="ps_day">
-						<cfloop from=1 to=4 index = "d">
-							<option value=#d#>Day #d#</option>	
+						<select name="ps_week">
+						<cfloop from=1 to=14 index = "d">
+							<option value=#d#>Week #d#</option>	
 						</cfloop>
 						</select>
 					</td>
@@ -38,6 +37,12 @@ fields = [
 					<td class="title">Exercise Session</td>
 					<td>
 						<cfset sc=1>
+						<select name="ps_day">
+						<cfloop from=1 to=4 index = "d">
+							<option value=#d#>Day #d#</option>	
+						</cfloop>
+						</select>
+					
 						<cfset today = LCase( DateTimeFormat( Now(), "EEE" ))>
 						<ul class="dasch">
 						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">

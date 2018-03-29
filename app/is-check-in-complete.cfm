@@ -7,7 +7,7 @@ SELECT * FROM
 	ac_mtr_checkinstatus
 WHERE
 	ps_pid = <cfqueryparam value = "#pid#" cfsqltype="cf_sql_integer">
-	ps_session_id = <cfqueryparam value = "#sess_id#" cfsqltype="cf_sql_integer">
+	ps_session_id = <cfqueryparam value = "#sess_id#" cfsqltype="cf_sql_nvarchar">
 </cfquery>
 
 

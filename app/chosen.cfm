@@ -9,7 +9,7 @@
 		FROM 
 			ac_mtr_participant_transaction_members
 		WHERE 
-			p_transaction_id = <cfqueryparam value="#sess.key#" cfsqltype="cf_sql_int"> 
+			p_transaction_id = <cfqueryparam value="#sess.key#" cfsqltype="cf_sql_nvarchar"> 
 	) AS CurrentTransactionIDList
 	LEFT JOIN
 	( SELECT 
