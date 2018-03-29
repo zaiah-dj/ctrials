@@ -11,7 +11,7 @@ I can do more with this concept...
 ,"Home"   = "tmp"
 ,"name"   = "iv"
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  1
+,"debug"  =  0
 ,"ajaxEveryTime"  =  1
 ,"master-post" = false
 ,"data"   = {}
