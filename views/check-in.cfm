@@ -1,4 +1,4 @@
-<cfif part.participant_exercise lt 3>
+<cfif part.p_exercise lt 3>
 
 <cfscript>
 /*
@@ -108,9 +108,9 @@ fields = [
 				</tr>
 
 				<tr>
-					<td class="title">#iif( part.participant_exercise eq 1, DE("Machine Selection"),DE("Exercise Selection"))#</td>
+					<td class="title">#iif( part.p_exercise eq 1, DE("Machine Selection"),DE("Exercise Selection"))#</td>
 					<td>
-						<cfif part.participant_exercise eq 1>
+						<cfif part.p_exercise eq 1>
 							<cfloop query=machines> 
 								<label>#et_name#</label>
 								<input type="radio" name="machine_value" value="#et_name#">

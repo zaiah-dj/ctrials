@@ -8,7 +8,7 @@ Right now, it's just some fake thing.
 --->
 <cfquery datasource=#data.source# name=part>
 SELECT * FROM ac_mtr_participants 
-WHERE participant_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#url.id#">;
+WHERE p_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#url.id#">;
 </cfquery>
 
 

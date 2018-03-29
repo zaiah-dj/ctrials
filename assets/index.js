@@ -16,7 +16,6 @@ function LOG( text ) {
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 	//Basic filter search works
-		//ip = document.querySelector( "input[type=search]" );
 	if ( ip = document.getElementById( "bigly-search" ) ) { 
 		ip.addEventListener( "keyup", function (ev) {
 			vv = [].slice.call( document.querySelectorAll( "ul.part-drop-list li" ) );

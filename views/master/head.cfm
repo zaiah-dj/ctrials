@@ -88,6 +88,10 @@
 --->
 	</cfif>	
 
+	<cfif data.debug eq 1>
+		<div class="debug2">#sess.key# - #sess.status#</div>
+	</cfif>
+
 	<div class="persistent-nav">
 		<a href="/motrpac/web/secure/dataentry">Back to Motrpac</a>
 		<a href="#link( "default.cfm" )#">Select</a>

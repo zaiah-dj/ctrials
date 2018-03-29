@@ -67,8 +67,8 @@ else {
 	INSERT INTO 
 		ac_mtr_participant_transaction_members
 	vALUES (
-		<cfqueryparam value = "#model.id#" CFSQLTYPE="cf_sql_int">,
-		<cfqueryparam value = "#listing#" CFSQLTYPE="cf_sql_nvarchar">
+		<cfqueryparam value = "#model.id#" CFSQLTYPE="cf_sql_int">
+		,<cfqueryparam value = "#listing#" CFSQLTYPE="cf_sql_nvarchar">
 	); 
 
 	</cfquery>

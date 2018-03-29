@@ -132,6 +132,7 @@ a.selected {
 	overflow: hidden;
 	overflow-Y: scroll;
 	height: 80%;
+	border: 5px solid black;
 	padding-left: 20px;
 	padding-right: 20px;
 }
@@ -192,13 +193,21 @@ a.selected {
 /*2nd-level navigation (Switch between endurance and resistance data)*/
 .container-nav ul li 
 {
+	position: relative;
+
 	display: inline-block; 
 
 	text-align: center;
 
 	font-weight: bold;
 
-	margin: 0px;
+	border-top: 5px solid hidden;
+	border-left: 5px solid hidden;
+	border-right: 5px solid hidden;
+
+	color: white;
+
+	margin-right: 10px;
 	height: 100%;
 	width: 140px;
 
@@ -211,6 +220,12 @@ a.selected {
 		background-color 0.2s,
 		color 0.2s;
 	;
+
+	top: 8px;
+}
+
+.container-body {
+	background-color: white;
 }
 
 .container-nav ul li:hover {
@@ -219,15 +234,14 @@ a.selected {
 }
 
 .container-nav ul li.selected {
-	background-color: #e5bdfb;
-/*
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-gecko-border-radius: 5px;
-	border: 5px solid #ff00ff;
-*/
-	color: white;
-	text-shadow: 2px 2px 5px white;	
+	border-top: 5px solid black;
+	border-left: 5px solid black;
+	border-right: 5px solid black;
+
+	background-color: white;
+	color: black;
+	/*text-shadow: 2px 2px 5px white;	*/
+	z-index: 99;
 }
 
 /*Inner navigation*/
@@ -935,6 +949,19 @@ input[type=search] {
 
 span.huge { font-weight: bold; font-size: 1.5em; }
 
+.container-body table tr td {
+	border: 1px solid black;
+}
+
+.container-body table tr td:first-child {
+	width: 30%;
+	font-weight: bold;
+}
+
+.container-body table tr { 
+	height: 50px;
+}
+
 table.table select
 ,table.table input[type=date]
 ,table.table input[type=text]
@@ -942,12 +969,14 @@ table.table select
 {
 	position: relative;
 	padding: 5px;
-	width: 50%;
+	width: 100%;
 	font-size: 1.2em;
 }
 
 table.table textarea {
 	height: 200px;
+	font-size: 1.2em;
+	padding: 5px;
 }
 
 ,table.table input[type=radio] {

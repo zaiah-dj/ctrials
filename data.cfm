@@ -46,6 +46,20 @@ I can do more with this concept...
 	 ,"view"  =  "update" 
 	}
 
+	,"update2"= { 
+		"hint"  =  "This acts as the server side endpoint for values edited via AJAX."
+	 ,"model" = "update2"
+	 ,"content_type"  
+						= "application/json"
+	 ,"view"  =  "update" 
+	}
+
+	,"expired"= { 
+		"hint"  =  "The thing of the thing."
+	 ,"model" = [ "session/check", "default", "expired", "chosen", "reconcile" ]
+	 ,"view"  = [ "master/head", "default", "master/tail" ] 
+	}
+
 	,"default"= { 
 		"hint"  =  "The thing of the thing."
 	 ,"model" = [ "session/check", "default", "chosen", "reconcile" ]

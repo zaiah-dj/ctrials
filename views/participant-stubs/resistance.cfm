@@ -1,4 +1,5 @@
 <!--- resistance.cfm --->
+<cfset pid = #url.id#>
 <cfquery name="reExList" datasource="#data.source#">
 SELECT * FROM ac_mtr_re_exercise_list
 </cfquery>
@@ -14,11 +15,22 @@ SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = <cfqueryparam cfsqltype="cf_
 </cfquery>
 
 <!--- ... --->
+<cfset clijs = CreateObject( "component", "components.writeback" )>
+
+<cfset DebugClientCode = clijs.ClientDebug()>
+
 <cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 	location = link( "update.cfm" ) 
- ,querySelector = "input[ name=comp1 ], input[ name=comp2 ]" 
- ,event = "blur"
- ,callback = "input[ name=comp1 ], input[ name=comp2 ]" 
+ ,additional = [ 
+		{ name = "this", value = "resistance" }
+	 ,{ name = "sess_id", value = "#session.iv_motrpac_transact_id#" }
+	 ,{ name = "pid", value = "#pid#" }
+	]
+ ,querySelector = {
+		dom = "##participant_list li, .participant-info-nav li, .inner-selection li"
+	 ,event = "click"
+	 ,send = ".slider"
+	}
 )>
 
 <cfoutput>
@@ -37,7 +49,7 @@ SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = <cfqueryparam cfsqltype="cf_
 	<cfloop query = "reExSel"> 
 		<table class="table table-striped participant-entry">
 			<thead>
-				<th>Exercise</th>
+				<th>Exercise</th> <!--- add a colspan --->
 				<th>Set ##</th>
 				<th>Repetitions<br /><small>(50 lb max)</small></th>
 				<th>Weight Lifted<br /><small>(300 lb max)</small></th>
@@ -46,24 +58,28 @@ SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = <cfqueryparam cfsqltype="cf_
 			<tbody>
 				<!--- Global Things --->
 				<tr>
-					<td class="title" rowspan="4">#et_name#</td>
+					<td class="title" rowspan="7">#et_name#</td>
 				</tr>
 
 				<cfloop list="1,2,3" index="listy">
 				<tr>
+					<input type="hidden" value="#listy#" name="set_index">
 					<td>Set #listy#</td>
 					<td>
 						<div class="row">
 							<div class="col-sm-8">
-								<input type="range" min="0" max="50" class="slider" value="0" defaultvalue="0" name="#Replace( LCase( et_name ), " ", "_" )#_field">
+								<input type="range" min="0" max="50" class="slider" value="0" defaultvalue="0" name="#Replace( LCase( et_name ), " ", "_" )#_reps_#listy#">
 							</div>
 							<div class="catch cc col-sm-2">0</div>
 						</div>
 					</td>
+				</tr>
+
+				<tr>
 					<td>
 						<div class="row">
 							<div class="col-sm-8">
-								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0">
+								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0" name="#Replace( LCase( et_name ), " ", "_" )#_weight_#listy#">
 							</div>
 							<div class="catch cc col-sm-2">0</div> lb
 						</div>

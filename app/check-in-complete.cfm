@@ -1,20 +1,25 @@
 <!--- save check-in data --->
+<!---
 <cfdump var = #session#>
 <cfdump var = #form#>
+	--->
 <cfset sess_id = #session.iv_motrpac_transact_id#>
 
 
+<!--- Check for invalid methods --->
 <cfif !IsDefined("form") || !IsDefined("session") || !IsStruct( form )>
-	Error submitting form.
-	<cfoutput><a href="#link('')#">Home</a></cfoutput>
+	<cfcontent type="application/json">
+	<cfoutput>{ status: 403, message: "Bad request." }</cfoutput>
+	</cfcontent>
 	<cfabort>
 <cfelse>
 
-
-<cfoutput>#sess_id#</cfoutput>
-
-
-
+<!---
+<cfcontent type="application/json">
+<cfoutput>{ sess: #sess_id# }</cfoutput>
+</cfcontent>
+<cfabort>
+	--->
 
 <cfscript>
 message = "";

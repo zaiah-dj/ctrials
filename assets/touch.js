@@ -3,6 +3,11 @@
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 
+	// a callback handler for errors during XHR
+	function onError ( responseText ) {
+		console.log( responseText );
+	}
+
 	//Touch controls
 	function ts (evt,passedName) {
 		// disable the standard ability to select the touched object
@@ -130,12 +135,15 @@ LOG( "X: " + curX + ", Y: " + curY );
 			//Read that XML	
 			xhr.onreadystatechange = function () {
 				if ( this.readyState == 4 && this.status == 200 ) {
-					//console.log( this.responseText );
-					parsed = JSON.parse( this.responseText );
-					console.log( parsed );
-					if ( parsed.status == 200 ) {
-						frm.submit();
+					try {
+						parsed = JSON.parse( this.responseText );
 					}
+					catch (err) {
+						console.log( err.message );
+						console.log( this.responseText );
+						return;
+					}
+					( parsed.status ) ? frm.submit() : onError( this.responseText );
 				}
 			};
 
@@ -143,15 +151,15 @@ LOG( "X: " + curX + ", Y: " + curY );
 			payload = [
 				 "staffer_id=" + this.staffer_id.value  
 				,"transact_id=" + this.transact_id.value 
-				,"this=check-in-complete"
 				,"list=" + this.list.value 
+				,"this=startSession"
 			].join( '&' );
 
 			console.log( payload );
 
 			// tHis is made all the more ugly because I'm using GETs when I should be using POSTs
 			if ( 1 ) {
-				xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
+				xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update2.cfm", true );
 				xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 				xhr.send( payload );
 				/* 
@@ -161,10 +169,6 @@ LOG( "X: " + curX + ", Y: " + curY );
 					"&list=" + this.list.value
 				);
 				*/
-			}
-			else {
-				xhr.open( "GET", '/motrpac/web/secure/dataentry/iv/start-daily.cfm?' + payload , true );
-				xhr.send( );
 			}
 		}
 		return;	

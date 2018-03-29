@@ -7,8 +7,6 @@ The first page that staff members see, allowing them
 to reorganize participants.
 
 --->
-<cfset submit_link="#link( 'start-daily.cfm' )#">
-<cfset linkish="#link( 'chosen.cfm' )#">
 <style type="text/css">
 .short-list { position: relative; border/*-bottom*/: 2px solid black; margin-bottom: 10px; width: 100%; }
 .wash input[type=text] { display: none; }
@@ -23,9 +21,6 @@ to reorganize participants.
 <!--- Include the requirements for touch --->
 <script type="text/javascript" src="#link( 'assets/touch.js' )#"></script>
 
-<cfif data.debug eq 1>
-	<div class="debug2">#mySession# - #sessionStatus#</div>
-</cfif>
 
 	<div class="container-header">
 		<div class="container-header-inner">
@@ -55,9 +50,9 @@ to reorganize participants.
 				<div class="listing">
 					<ul class="part-drop-list">
 						<cfloop query = "all_part_list">
-							<li class="#iif( participant_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
-								<span>#participant_fname# #participant_lname#</span>
-								<span>#participant_id#</span>
+							<li class="#iif( p_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
+								<span>#p_fname# #p_lname#</span>
+								<span>#p_id#</span>
 							</li>	
 						</cfloop>
 					</ul>
@@ -67,11 +62,11 @@ to reorganize participants.
 			<div class="bigly bigly-right" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
 				<div class="listing listing-drop">
 					<ul> 
-				<cfif sessionStatus eq 2>
+				<cfif sess.status gt 2>
 					<cfloop query = "part_list">
 						<li>
-							<span>#participant_fname# #participant_lname#</span>
-							<span>#participant_id#</span>
+							<span>#p_fname# #p_lname#</span>
+							<span>#p_id#</span>
 						</li>	
 					</cfloop>
 				</cfif>
@@ -81,9 +76,9 @@ to reorganize participants.
 		</div>
 
 		<!--- On submit, or next, do it. --->
-		<form id="wash-id" method="POST" action="#link('chosen.cfm')#" class="wash"> 
-			<input type="text" name="staffer_id" value="#randnum( 8 )#"> 
-			<input type="text" name="transact_id" value="#mySession#"> 
+		<form id="wash-id" method="POST" action="#link('chosen.cfm')#" class="wash">
+			<input type="text" name="staffer_id" value="#randnum( 8 )#">
+			<input type="text" name="transact_id" value="#sess.key#">
 			<input type="text" name="list"> <!--- make a list here --->
 			<input type="submit" id="done" value="Done!">
 		</form>

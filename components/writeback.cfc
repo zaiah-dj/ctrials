@@ -83,7 +83,70 @@ component {
 
 	//datasource and table should be part of the component
 	this.datasource = "";
+
+	//also should be private
 	this.table = "";
+
+	//should be a private var...
+	this.DebugMe = 0;
+
+
+	//Returns an object with 'value' and 'type'
+	//
+	//Checks that the value can be Evaluated()
+	//Should handle binding
+	//
+	// ap  - A place to search for values that could [ string, array or struct ]
+	// obj - 
+	// parameter - A potential key that could exist
+	private function checkBindType ( 
+	   ap
+	  ,String parameter
+ 	)
+	{
+		//Pre-initialize 'value' and 'type'
+		v = {};
+		v.value = "";
+		v.name  = parameter;
+		v.type  = "varchar";
+
+		//If the dev only has one value and can assume it's a varchar, then use it (likewise I can probably figure out if this is a number or not)
+		if ( !IsStruct( ap ) ) 
+		{
+			v.value = ( Left(ap,1) eq '##' && Right(ap,1) eq '##' ) ? Evaluate( ap ) : ap;
+			try {
+				//coercion has failed if I can't do this...
+				__ = value + 1;
+				v.type = "integer";
+			}
+			catch (any e) {
+				//writeoutput( "conversion fail: " & e.message & "<br />" & e.detail & "<br />" );
+				v.type = "varchar";
+			}
+		}
+		else
+		if ( StructKeyExists( ap, parameter ) ) {
+			//Is ap.parameter a struct?	
+			//If not, then it's just a value
+			if ( !IsStruct( ap[ parameter ] ) )
+				v.value = ( Left(ap[parameter],1) eq '##' && Right(ap[parameter],1) eq '##' ) ? Evaluate( ap[parameter] ) : ap[parameter];
+				//value = Evaluate( ap[ parameter ] );
+			else 
+			{
+				if ( StructKeyExists( ap[ parameter ], "value" ) )
+					v.value = ( Left(ap[parameter]["value"],1) eq '##' && Right(ap[parameter]["value"],1) eq '##' ) ? Evaluate( ap[parameter]["value"] ) : ap[parameter]["value"];
+					//value = Evaluate( ap[ parameter ][ "value" ] );
+				if ( StructKeyExists( ap[ parameter ], "type" ) )
+					v.type = ap[ parameter ][ "type" ];
+			}
+		}
+
+		//See test results	
+		//writeoutput( "Interpreted value is: " & value & "<br /> & "Assumed type is: " & type & "<br />" ); 
+		//nq.addParam( name = parameter, value = value, cfsqltype = type );
+		return v; 
+	}
+
 
 	//checkfor - Checks for values in the database.  
 	//It's such a common operation that it is one of the included situations to check 
@@ -122,50 +185,12 @@ component {
 
 			//Bind all parameters in the 'predicate' object
 			for ( parameter in mp ) {
-				//Initialize 'value' and 'type'
-				value = "";
-				type = "varchar";
-
-				//For testing purposes
-				//writeoutput( "Got parameter: " & parameter & "<br />" );
-
-				//If the dev only has one value and can assume it's a varchar, then use it (likewise I can probably figure out if this is a number or not)
-				if ( !IsStruct( ap ) ) {
-					value = ( Left(ap,1) eq '##' && Right(ap,1) eq '##' ) ? Evaluate( ap ) : ap;
-					try {
-						//coercion has failed if I can't do this...
-						__ = value + 1;
-						type = "integer";
-					}
-					catch (any e) {
-						//writeoutput( "conversion fail: " & e.message & "<br />" & e.detail & "<br />" );
-						type = "varchar";
-					}
-				}
-				else
-				if ( StructKeyExists( ap, parameter ) ) {
-					//Is ap.parameter a struct?	
-					//If not, then it's just a value
-					if ( !IsStruct( ap[ parameter ] ) )
-						value = ( Left(ap[parameter],1) eq '##' && Right(ap[parameter],1) eq '##' ) ? Evaluate( ap[parameter] ) : ap[parameter];
-						//value = Evaluate( ap[ parameter ] );
-					else {
-						if ( StructKeyExists( ap[ parameter ], "value" ) )
-							value = ( Left(ap[parameter]["value"],1) eq '##' && Right(ap[parameter]["value"],1) eq '##' ) ? Evaluate( ap[parameter]["value"] ) : ap[parameter]["value"];
-							//value = Evaluate( ap[ parameter ][ "value" ] );
-						if ( StructKeyExists( ap[ parameter ], "type" ) )
-							type = ap[ parameter ][ "type" ];
-					}
-				}
-		
-				//See test results	
-				//writeoutput( "Interpreted value is: " & value & "<br /> & "Assumed type is: " & type & "<br />" ); 
-				nq.addParam( name = parameter, value = value, cfsqltype = type );
+				n = checkBindType( ap, parameter );
+				nq.addParam( name = n.name, value = n.value, cfsqltype = n.type );
 			} //end for
 
 			nr = nq.execute( sql = "SELECT * FROM #arguments.table# WHERE #arguments.where#" );
 			nm = nr.getPrefix();
-			//writedump( nr );
 		}
 		catch (any e) {
 			messageOfDoom = "#e.message# & #e.detail#";
@@ -204,6 +229,62 @@ component {
 	}
 
 
+	//Some client debugging code to see stuff...
+	public String function ClientDebug() 
+	{
+		this.DebugMe = 1;
+		writeoutput( '
+			<script type=text/javascript>
+			function _LOG( text ) {
+				//if ( !(a = document.getElementById( "_debugger" )) )
+				if ( !(a = document.querySelectorAll( "##_debugger .inner" )[0]) )
+					console.log( text );
+				else {
+					div = document.createElement( "div" );
+					div.innerHTML = text;
+					a.appendChild( div );
+				}
+			}
+
+			//Initialize a debugger window here...
+			if ( !document.getElementById( "_debugger" ) ) 
+			{
+				// _debugger
+				aa = document.createElement( "div" );
+				aa.id = "_debugger";
+				aa.style.position = "absolute";
+				aa.style.top = "10px";
+				aa.style.overflow = "scroll";
+				aa.style.right = "20px";
+				aa.style.width = "30%";
+				aa.style.height = "50%";
+				aa.style.backgroundColor = "red";
+			
+				//button to wipe things	
+				button = document.createElement( "button" );
+				button.innerHTML = "Wipe!";
+				button.style.width = "100px";
+				button.style.color = "black";
+				button.style.fontSize = "0.8em";
+				button.style.height = "20px";
+				aa.appendChild( button );
+
+				//???
+				div = document.createElement( "div" );
+				div.className = "inner";
+				aa.appendChild( div );
+
+				//make the button wipe things
+				button.addEventListener( "click", function (ev) {
+					//Get rid of all children...
+					document.querySelectorAll( "##_debugger .inner" )[0].innerHTML = "";
+				} );
+
+				//add to the dom
+				document.body.appendChild( aa );
+		}</script>' );
+	}
+
 	//Client
 	public String function Client (
 		 Required String location 
@@ -228,6 +309,36 @@ component {
 		 ,ERR_VALUE_SAVE_FAILED = "Coulndn't save values."
 		};
 
+		//Where is everything that the user is asking for?
+		QUERY_SELECTION = "#arguments.querySelector#";
+		QUERY_SELECTIONS = [];
+		DOM_EVENT = "";
+	
+		//Move through all the things here
+		if ( StructKeyExists( arguments, "querySelector" ) ) {
+			//if it's not a struct, reject it
+			if ( !IsArray(arguments.querySelector) && !IsStruct( arguments.querySelector ) )
+				throw( "querySelector argument must be a struct or array." );
+			else {
+				//Turn this into a single member array if there are no other members
+				if ( IsStruct( arguments.querySelector ) )
+					ArrayAppend( QUERY_SELECTIONS, arguments.querySelector );	
+				else {	
+					QUERY_SELECTIONS = arguments.querySelector;
+				}
+
+				//Loop and check for 'dom' and 'event'
+				for ( st in QUERY_SELECTIONS ) {
+					if ( !StructKeyExists( st, "dom" ) && !StructKeyExists( st, "event" ) ) {
+						throw( "Missing required keys 'dom' and 'event' for querySelector parameter." );
+					}
+				}
+			}
+
+			//expects keys: "dom", "event", "send" is an optional parameter so no crazy callbacks are needed
+ 			//,querySelector = { querySelector = "#sendThatWaffle", event = "click", send = "input[ name=waffle ]" }
+		}
+
 		//Output debugging code from the server if need be.
 		JS_DEBUG 	= 1;
 		TRAVERSE = ( StructKeyExists( arguments, 'traverse' ) ) ? 1 : 0;
@@ -238,27 +349,28 @@ component {
 		LOCATION 	= "#arguments.location#";
 		ASYNC 		= true;
 		HEADER_TYPE = "application/x-www-form-urlencoded" /*multipart/form-data*/;
-		QUERY_SELECTION = "#arguments.querySelector#";
-		DOM_EVENT = "#arguments.event#";
-		READY_STATE_CHANGE_FUNCTION = "function () { if ( this.readyState == 4 ) ( this.status == 200 ) ? console.log( this.responseText ) : #FAIL#; }";
-		
+		if ( !this.DebugMe )
+			READY_STATE_CHANGE_FUNCTION = "function () { if ( this.readyState == 4 ) ( this.status == 200 ) ? console.log( this.responseText ) : #FAIL#; }";
+		else {
+			READY_STATE_CHANGE_FUNCTION = "function () { if ( this.readyState == 4 ) if ( this.status == 200 ) { _LOG( this.responseText );console.log(this.responseText);} else { #FAIL#; } }";
+		}
+	
 		//Save all the additional values that ought to be sent too
 		ADDITIONAL_VALUES = "";
 		if ( !StructKeyExists( arguments, "additional" ) ) 
 			ADDITIONAL_VALUES = "[]";
 		else {
 			c = 0;
-			if ( IsStruct( arguments.additional ) ) {
+			if ( IsArray( arguments.additional ) ) {
+				for ( aa in arguments.additional ) {
+					ADDITIONAL_VALUES &= '{ name: "#StructFind( aa, 'name' )#", value: "#StructFind( aa, 'value' )#" },';
+				}
+			}	
+			else if ( IsStruct( arguments.additional ) ) {
 				ADDITIONAL_VALUES &= '{ name: "#StructFind( arguments.additional, 'name' )#", value: "#StructFind( arguments.additional, 'value' )#" },';
 			}
 			ADDITIONAL_VALUES = "[" & RemoveChars( ADDITIONAL_VALUES, Len(ADDITIONAL_VALUES), 1 ) & "]";
 		}
-
-		//A callback more than likely that translates feeds desired values to the subBack function
-		SENDER_OVERRIDE = "input[ name=comp1 ], input[ name=comp2 ]";
-
-		//There should be a request log too.  This way we can see what was successful and wasn't.
-		//...
 
 		//This won't work in EVERY situation, but it should
 		//* Be able to work with a DOM element and the common list of DOM events
@@ -267,16 +379,32 @@ component {
 		//Generate a function and do this...	
 		savecontent variable="AllThatJS" {
 			writeoutput( "<script>
-				document.addEventListener('DOMContentLoaded',function(ev) {
-					el = [].slice.call( document.querySelectorAll( '#QUERY_SELECTION#' ) );
-					( #JS_DEBUG# && #JS_DEBUG_DUMP_EL# ) ? console.log( el ) : 0;
-					for ( i=0; i<el.length; i++ ) {
-						el[i].addEventListener( '#DOM_EVENT#', function (ev) {
-							ev.preventDefault(); 
+				document.addEventListener('DOMContentLoaded',function(ev) {" );
+
+			//Loop through and figure out each place on the dom...
+			for ( qss in #QUERY_SELECTIONS# ) {
+				varname = 'a' & _randnum( 9 );
+
+				writeoutput( "
+					#varname# = [].slice.call( document.querySelectorAll( '#qss.dom#' ) );
+					( #JS_DEBUG# && #JS_DEBUG_DUMP_EL# ) ? console.log( #varname# ) : 0;
+					for ( i=0; i < #varname#.length; i++ ) {
+						#varname#[i].addEventListener( '#qss.event#', function (ev) {
+							( #(StructKeyExists(qss,'noPreventDefault'))?0:1# ) ? ev.preventDefault() : 0; 
 							arrVal = []; 
 							( #JS_DEBUG# ) ? console.log( 'Event ' + ev + ' was registered.' ) : 0;
-							if ( !#TRAVERSE# ) mv = [{ name: ev.target.name, value: ev.target.value }];
-							else { mv = (#TRAVERSAL_FUNCTION#)( ev ) }
+					");
+
+				//Negotiate how to get DOM elements 
+				if ( StructKeyExists( qss, "send" ) )
+					writeoutput( "		mv = document.querySelectorAll( '#qss.send#' );" ); 
+				else if ( StructKeyExists( qss, "callback" ) )
+					writeoutput( "		mv = (#qss.callback#)( ev );" ); 
+				else { 
+					writeoutput( "		mv = [{ name: ev.target.name, value: ev.target.value }];" );
+				}
+
+				writeoutput( "
 							( #JS_DEBUG# ) ? console.log( mv ) : 0;
 							mv.forEach( function(el){ arrVal.push(  el.name + '=' + el.value	) } );
 							av = (#iif(StructKeyExists(arguments,"additional"),1,0)#) ? #ADDITIONAL_VALUES# : [];
@@ -291,13 +419,13 @@ component {
 							(0) ? 0 : 0; //Use this to set additional headers.
 							x.send(Vals);
 						}	);
-					}
-				}	);</script>
-			" );
+					} " );
+			}
+
+			writeoutput( "}	);</script>" );
 		};
 
-		//Bla bla bla mcbla...
-
+		//Return the JS to the client
 		return "#AllThatJS#";
 	}
 
@@ -309,6 +437,7 @@ component {
 		,Required String ds
 		,String using = "SQLServer"
 		,only  //this can be a table or a string, but only a few values should come through here... 
+		,insertWhere
 		,where
 		,all
 		,String insertOn 
@@ -318,6 +447,7 @@ component {
 		,Boolean noConstraint = 0
 	)
 	{
+
 		this.table = arguments.table;    //Set datasource
 		this.datasource = arguments.ds;  //...and table
 		flow = "0";  //Track where we are within this little cycle
@@ -412,7 +542,8 @@ component {
 				nr = nq.execute( sql = "SELECT COLUMN_NAME, DATA_TYPE FROM sourceQuery WHERE COLUMN_NAME IN :col" );
 				 */
 				//I want ONE loop and ONE data structure... figs it out, brah...
-				for ( n in t ) {
+				for ( n in t ) 
+				{
 					//Then check that's it's in the query returned	
 					nq = new Query();
 					nq.setName( "myJuniorQuery" );
@@ -476,114 +607,103 @@ component {
 			}
 
 
-			if ( next ) {
+			//insert whatever the thing is you're trying to insert.... yah
+			if ( next && Evaluate( insertOn ) ) {
 				flow = "insert";
 
-				//Define whether or not to INSERT or UPDATE
-				if ( Evaluate( insertOn ) ) 
-				{
-					//This next step will need a query regardless
-					nq = new Query();
-					nq.setDatasource( "#arguments.ds#" );
-					nq.setName( "modify" );
+				//This next step will need a query regardless
+				nq = new Query();
+				nq.setDatasource( "#arguments.ds#" );
+				nq.setName( "modify" );
+				sql_stmt = "";
+				COLUMNS = "";
+				VALUES  = "";
 
-					//mq.addParam( "col", #field#, "varchar" );
-					//aggregate all field names that "shipped" with this request
-					COLUMNS = "";
-					//aggregate all field values that "shipped" with this request
-					VALUES  = "";
-
-					//Attempt an insert
-					if ( StructKeyExists( arguments, "insertStmt" ) ) 
-						nq.execute( sql = arguments.insertStmt );
-					else {
-						nq.execute( sql = "INSERT INTO #table# ( #COLUMNS# ) VALUES ( #VALUES# )" ); 
-					}
-					//check the status of query
-					//results should be there...	
-					//writedump( nq );
-				}
+				//Attempt an insert
+				if ( StructKeyExists( arguments, "insertStmt" ) ) 
+					sql_stmt = arguments.insertStmt;
 				else {
-					//This next step will need a query regardless
-					nq = new Query();
-					nq.setDatasource( "#arguments.ds#" );
-					nq.setName( "modify" );
+					sql_stmt = "INSERT INTO #table# ( #COLUMNS# ) VALUES ( #VALUES# )"; 
+				}
 
-					//A custom UPDATE can be specified here... it's going to need similar logic...	
-					//
-
-					//Loop through the scope and bind each field (this is where it'd be helpful to have something a bit different for names)
-					SQL_STRING = "UPDATE #table# SET";
-
-					//Start with some basic update mess the following assumes I've created a struct during the field checking step
-					for ( n in cv ) {
-						nq.addParam( name = n, value = cv[ n ][ "value" ] , cfsqltype = cv[ n ][ "type" ] );
-						SQL_STRING &= " #n# = :#n#,";
+				//Go through things and bind
+				if ( StructKeyExists( arguments, "insPredicate" ) ) {
+					for ( k in arguments.insPredicate ) {
+						a = checkBindType( arguments.insPredicate, k );  
+						nq.addParam( name = a.name, value = a.value, cfsqltype = a.type );
 					}
+				}
 
-					//Need some way to bind from here too
-					SQL_STRING = RemoveChars( SQL_STRING, Len(SQL_STRING), 1 );
-		
-					//If arguments.where is a string, do something
-					//If not, then do the structKeyExists dance
-					if ( StructKeyExists( arguments, "where" ) ) {
-						if ( !IsStruct( arguments.where ) )
-							SQL_STRING &= " WHERE " & arguments.where;
+				//After the initial write, I really need to attempt to update again, since that is the real value.
+				nrr = nq.execute( sql = sql_stmt ); 
+//writedump( nrr );
+//abort;
+				//If this fails, it will just throw an exception.
+				next = 1;
+			}
+
+
+			//...
+			if ( next ) {
+				flow = "update";
+				//This next step will need a query regardless
+				nq = new Query();
+				nq.setDatasource( "#arguments.ds#" );
+				nq.setName( "modify" );
+
+				//A custom UPDATE can be specified here... it's going to need similar logic...	
+				//
+
+				//Loop through the scope and bind each field (this is where it'd be helpful to have something a bit different for names)
+				SQL_STRING = "UPDATE #table# SET";
+
+				//Start with some basic update mess the following assumes I've created a struct during the field checking step
+				for ( n in cv ) {
+					nq.addParam( name = n, value = cv[ n ][ "value" ] , cfsqltype = cv[ n ][ "type" ] );
+					SQL_STRING &= " #n# = :#n#,";
+				}
+
+				//Need some way to bind from here too
+				SQL_STRING = RemoveChars( SQL_STRING, Len(SQL_STRING), 1 );
+	
+				//If arguments.where is a string, do something
+				//If not, then do the structKeyExists dance
+				if ( StructKeyExists( arguments, "where" ) ) {
+					if ( !IsStruct( arguments.where ) )
+						SQL_STRING &= " WHERE " & arguments.where;
+					else {
+						if ( !StructKeyExists( arguments.where, "clause" ) ) {
+							next = 0;
+							err.ufMessage = "No clause specified for UPDATE statement.";			
+						}	
 						else {
-							if ( !StructKeyExists( arguments.where, "clause" ) ) {
-								next = 0;
-								err.ufMessage = "No clause specified for UPDATE statement.";			
-							}	
-							else {
-								SQL_STRING &= " WHERE " & arguments.where.clause;
-								ap = arguments.where.predicate;
+							SQL_STRING &= " WHERE " & arguments.where.clause;
 
-								//If the value is just a single simple value, guess at type and bind it.
-								if ( !IsStruct( ap ) ) {
-									value = ( Left(ap,1) eq '##' && Right(ap,1) eq '##' ) ? Evaluate( ap ) : ap;
-									try {	__ = value + 1;type = "integer";}catch (any e) {type = "varchar";}//Super ugly type conversion catch code
-									throw( message = 'Predicates composed of one simple value have not been fully implemented yet.  Please specify { predicate = { ##field_name## = ##field_value## } } until ths changes' );
-									//TODO: Fixme
-									//nq.addParam( name = n, value = value, cfsqltype = type );
+							if ( !StructKeyExists( arguments.where, "predicate" ) )
+								0;
+							else {
+								ap = arguments.where.predicate;
+								app = {};
+								if ( IsStruct( ap ) )
+									for ( n in ap ) { app = checkBindType( ap, n ); nq.addParam( name = app.name, value = app.value, cfsqltype = app.type ); }
+								else {
+									app.value = ( Left(ap,1) eq '##' && Right(ap,1) eq '##' ) ? Evaluate( ap ) : ap;
+									try {	__ = app.value + 1;app.type = "integer";}catch (any e) {app.type = "varchar";}//Super ugly type conversion catch code
+									throw( message = 'Predicates composed of one simple value have not been fully implemented yet.  Please specify { predicate = { ##field_name## = ##field_value## } } until this changes' );
+									nq.addParam( name = app.name, value = app.value, cfsqltype = app.type );
 								}
-								else { 
-									for ( n in ap ) {	
-										if ( !IsStruct( ap[ n ] ) ) {
-											value = ( Left(ap[n],1) eq '##' && Right(ap[n],1) eq '##' ) ? Evaluate( ap[n] ) : ap[n];
-											try {	__ = value + 1;type = "integer";}catch (any e) {type = "varchar";}//Super ugly type conversion catch code
-										}
-										else {
-											if ( StructKeyExists( ap[ n ], "value" ) )
-												value = ( Left(ap[n]["value"],1) eq '##' && Right(ap[n]["value"],1) eq '##' ) ? Evaluate( ap[n]["value"] ) : ap[n]["value"];
-												//value = Evaluate( ap[ n ][ "value" ] );
-											if ( StructKeyExists( ap[ n ], "type" ) )
-												type = ap[ n ][ "type" ];
-											else {
-												next = 0;
-												err.ufMessage = "Required struct key 'type' not specified for predicate key '#n#' in object where.predicate.";
-											}
-										}
-										nq.addParam( name = n, value = value, cfsqltype = type );
-									}
-								}
-							}
+							}	
 						}
 					}
-		
-					//Finally, do the query and return the number of results modified using the prefix
-					nr = nq.execute( sql = SQL_STRING );
-					//writedump( nr );
-
-					//check the status of query
-					//results should be there...	
-					nrResults = nr.getPrefix();
-					//writedump( nrResults );
-
-					//this also gets tricky, b/c there may be no rows modified, but this doesn't necessarily mean its an error...
-					if ( nrResults.recordCount gt 0 ) {
-						err.ufMessage = "#nrResults.recordCount# rows in table #table# were successfully updated.";
-					}	
 				}
+	
+				//Finally, do the query and return the number of results modified using the prefix
+				nr = nq.execute( sql = SQL_STRING );
+				nrResults = nr.getPrefix();
+				//this also gets tricky, b/c there may be no rows modified, but this doesn't necessarily mean its an error...
+				if ( nrResults.recordCount gt 0 ) {
+					err.ufMessage = "#nrResults.recordCount# rows in table #table# were successfully updated.";
+				}	
 			}
 		}
 		catch ( any e ) {

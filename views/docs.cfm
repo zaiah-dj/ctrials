@@ -6,7 +6,6 @@
 --->
 </cfoutput>
 <style type="text/css">
-h3 + p { dispalay: 
 </style>
 
 <cfoutput>
