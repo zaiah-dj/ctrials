@@ -80,10 +80,11 @@
 <!--- Resistance --->
 <cfelseif part.p_exercise eq "2">
 	<cfscript>
+	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
 	reExList=qu.exec( string="SELECT * FROM ac_mtr_re_exercise_list", datasource="#data.source#" );
 	reExSel =qu.exec( string="SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = :et_id", 
 		datasource = "#data.source#",
-		bindArgs={ et_id = (StructKeyExists(url,"extype")) ? url.extype : 1 } );
+		bindArgs={ et_id = type } );
 
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" ) 
