@@ -1,52 +1,19 @@
 <!--- resistance.cfm --->
-<cfset pid = #url.id#>
-<cfquery name="reExList" datasource="#data.source#">
-SELECT * FROM ac_mtr_re_exercise_list
-</cfquery>
-
-<cfif !isDefined( "url.extype" )>
-	<cfset type = 1>
-<cfelse>
-	<cfset type = #url.extype#>
-</cfif>
-
-<cfquery name="reExSel" datasource="#data.source#">
-SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = <cfqueryparam cfsqltype="cf_sql_integer" value="#type#">
-</cfquery>
-
-<!--- ... --->
-<cfset clijs = CreateObject( "component", "components.writeback" )>
-
-<cfset DebugClientCode = clijs.ClientDebug()>
-
-<cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
-	location = link( "update.cfm" ) 
- ,additional = [ 
-		{ name = "this", value = "resistance" }
-	 ,{ name = "sess_id", value = "#session.iv_motrpac_transact_id#" }
-	 ,{ name = "pid", value = "#pid#" }
-	]
- ,querySelector = {
-		dom = "##participant_list li, .participant-info-nav li, .inner-selection li"
-	 ,event = "click"
-	 ,send = ".slider"
-	}
-)>
-
 <cfoutput>
+	<!--- Show front-end initialization code --->
+	<cfif data.debug eq 1>
+		<cfset DebugClientCode = clijs.ClientDebug()>
+	</cfif>
+
 	<!--- Let's see all of these in a list --->
 	<ul class="inner-selection">
-	<cfloop query = "#reExList#"> 
-	<cfif type eq et_id> 
-		<a href="#link( 'input.cfm?id=#url.id#' & '&extype=#et_id#' )#"><li class="selected">#et_name#</li></a>
-	<cfelse> 
-		<a href="#link( 'input.cfm?id=#url.id#' & '&extype=#et_id#' )#"><li>#et_name#</li></a>
-	</cfif> 
+	<cfloop query = "#reExList.results#"> 
+		<a href="#link( 'input.cfm?id=#url.id#&extype=#et_id#' )#"><li #iif(type eq et_id, DE('class="selected"'),DE(''))#>#et_name#</li></a>
 	</cfloop>
 	</ul>
 
 	<div class="selection">
-	<cfloop query = "reExSel"> 
+	<cfloop query = "#reExSel.results#"> 
 		<table class="table table-striped participant-entry">
 			<thead>
 				<th>Exercise</th> <!--- add a colspan --->
@@ -59,16 +26,16 @@ SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = <cfqueryparam cfsqltype="cf_
 				<!--- Global Things --->
 				<tr>
 					<td class="title" rowspan="7">#et_name#</td>
+					<input type="hidden" value="1" name="el_re_extype">
 				</tr>
 
 				<cfloop list="1,2,3" index="listy">
 				<tr>
-					<input type="hidden" value="#listy#" name="set_index">
 					<td>Set #listy#</td>
 					<td>
 						<div class="row">
 							<div class="col-sm-8">
-								<input type="range" min="0" max="50" class="slider" value="0" defaultvalue="0" name="#Replace( LCase( et_name ), " ", "_" )#_reps_#listy#">
+								<input type="range" min="0" max="50" class="slider" value="0" defaultvalue="0" name="el_re_reps#listy#">
 							</div>
 							<div class="catch cc col-sm-2">0</div>
 						</div>
@@ -79,7 +46,7 @@ SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = <cfqueryparam cfsqltype="cf_
 					<td>
 						<div class="row">
 							<div class="col-sm-8">
-								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0" name="#Replace( LCase( et_name ), " ", "_" )#_weight_#listy#">
+								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0" name="el_re_weight#listy#">
 							</div>
 							<div class="catch cc col-sm-2">0</div> lb
 						</div>

@@ -1,87 +1,41 @@
 <!--- endurance.cfm --->
-
-<!--- Client side init code --->
-<cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
-	location = link( "update.cfm" )
- ,querySelector = [{
-		dom = "##participant_list li, .participant-info-nav li, .inner-selection li"
-	 ,noPreventDefault = true
-	 ,event = "click"
-	 ,send = "input[name^=el_], select[name^=el_]" 
-	}]
- ,additional = [ 
-	{ name="this", value= "endurance" }
- ,{ name="pid", value= "#url.id#" }
- ,{ name="sess_id", value= "#sess.key#" }
-	]
-)>
-
-<!--- Populate the exercise time range menu --->
-<cfscript>arry1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) arry1[ ii++ ]	= /*i - 4 & */"< " & i;</cfscript>
-<cfscript>arry2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) arry2[ ii++ ]	=/* i - 4 & */"< " & i;</cfscript>
-
-<!--- Data --->
-<cfscript>
-values = [
-//Cycle only
- { label = "RPM",           uom = "",    min = 5, max = 80, def = 0, step = 2, name = "el_ee_rpm" }
-,{ label = "Watts/Resistance", 
-													  uom = "",    min = 0, max = 80, def = 0, step = 1, name = "el_ee_watts_resistance" }
-//Treadmill only
-,{ label = "Speed",         uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "el_ee_speed"}
-,{ label = "Percent Grade", uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "el_ee_grade"}
-
-//All others
-/*,{ label = "Heart Rate",    uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}
-,{ label = "Blood Pressure",uom = "mph", min = 0, max = 80, def = 0, step = 1, name = "speed"}*/
-,{ label = "Perceived Exertion Rating",    
-													  uom = "mph", min = 0, max = 5, def = 0, step = 1, name = "el_ee_perceived_exertion"}
-];
-</cfscript>
-
-<script>
- document.addEventListener("DOMContentLoaded", function (ev) {
-	//a=[].slice.call( document.querySelectorAll("#participant_list li, .participant-info-nav li, ul.inner-selection li") );
-	a=[].slice.call( document.querySelectorAll( "input[name^=el_], select[name^=el_]" ) );
-	console.log( a ); });
-</script>
-
 <cfoutput>
+	<!--- Set a time --->
+	<input type="hidden" value="#defaultTimeblock#" name="el_ee_timeblock">
+
+
+	<!--- TODO: This shouldn't take two loops.  Think about it more. --->
 	<div class="inner-selection">
 		<ul class="inner-selection">
 		<cfset ii=5>
-		<cfloop array=#arry1# index=ind> 
-		<cfif isDefined("url.time") && ii eq url.time>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="selected">#ind#</li></a>
-		<cfelseif isDefined("url.time") && ii lt url.time>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="completed">#ind#</li></a>
+		<cfloop array=#times1# index=ind> 
+		<cfif ii eq defaultTimeblock>
+			<a href="#link( 'input.cfm?id=#defaultTimeblock#&time=#ii#' )#"><li class="selected">#ind#</li></a>
+		<cfelseif ii lt defaultTimeblock>
+			<a href="#link( 'input.cfm?id=#defaultTimeblock#&time=#ii#' )#"><li class="completed">#ind#</li></a>
 		<cfelse>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li>#ind#</li></a>
+			<a href="#link( 'input.cfm?id=#defaultTimeblock#&time=#ii#' )#"><li>#ind#</li></a>
 		</cfif>
 		<cfset ii += 5>
 		</cfloop>
 		</ul>
 		
 		<ul class="inner-selection">
-		<cfloop array=#arry2# index=ind> 
-		<cfif isDefined("url.time") && ii eq url.time>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="selected">#ind#</li></a>
-		<cfelseif isDefined("url.time") && ii lt url.time>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="completed">#ind#</li></a>
+		<cfloop array=#times2# index=ind> 
+		<cfif ii eq defaultTimeblock>
+			<a href="#link( 'input.cfm?id=#defaultTimeblock#&time=#ii#' )#"><li class="selected">#ind#</li></a>
+		<cfelseif ii lt defaultTimeblock>
+			<a href="#link( 'input.cfm?id=#defaultTimeblock#&time=#ii#' )#"><li class="completed">#ind#</li></a>
 		<cfelse>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#'  )#"><li>#ind#</li></a>
+			<a href="#link( 'input.cfm?id=#defaultTimeblock#&time=#ii#'  )#"><li>#ind#</li></a>
 		</cfif>
 		<cfset ii += 5>
 		</cfloop>
 		</ul>
 	</div>
 
-	<cfif StructKeyExists( url, "time" )>
-		<input type="hidden" value="#url.time#" name="el_ee_timeblock">
-	<cfelse>
-		<input type="hidden" value="5" name="el_ee_timeblock">
-	</cfif>
-
+	
+	<!--- Now generate the list of exercises --->
 	<table class="table">
 		<tbody>
 			<tr>
@@ -103,10 +57,10 @@ values = [
 					<div class="row">
 						<div class="cc col-sm-8">
 							<cfif !structKeyExists( val, "type" )>
-							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="0" defaultvalue="#val.def#" name="#val.name#" data-attr-table="ee">
+							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#val.def#" defaultvalue="#val.def#" name="#val.name#" data-attr-table="ee">
 							</cfif>
 						</div>
-						<div class="catch cc col-sm-2">0</div>
+						<div class="catch cc col-sm-2">#val.def#</div>
 					</div>
 				</td>
 			</tr>

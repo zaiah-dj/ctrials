@@ -146,11 +146,11 @@ Values received here will be saved to one of the following tables.
 		<cfelseif erType eq 2>
 			<!--- Check fields: --->
 			<cfset check=cc.checkFields( form, "sess_id", "pid", 
-				"el_re_set_index", 
-				"el_re_equipment", 
-				"el_re_reps1", "el_re_weight1"
-				"el_re_reps2", "el_re_weight2"
-				"el_re_reps3", "el_re_weight3"
+				"el_re_set_index" 
+				,"el_re_equipment"
+				,"el_re_reps1", "el_re_weight1"
+				,"el_re_reps2", "el_re_weight2"
+				,"el_re_reps3", "el_re_weight3"
 			)>
 
 		</cfif>

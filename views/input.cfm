@@ -1,6 +1,5 @@
 	<!--- Keep this the simplest possible template in the universe --->
 	<div class="container-body">
-
 		<!--- Include control --->
 		<cfif #part.p_exercise# eq "0">
 			<cfinclude template="participant-stubs/control.cfm">

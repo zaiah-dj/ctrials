@@ -223,42 +223,6 @@ CREATE TABLE ac_mtr_exercise_log_ee (
 
 
 /*
- ----------------------------
-ac_mtr_checkinstatus
-
-What condition is the patient
-in during the visit?
-
-ps_id                 Unique ID
-ps_session_id         The session ID that this participant was tested during.
-ps_before             Was this done before or after the exercises?
-ps_weight             How heavy is patient at start?
-
-ps_day                What day of the week were they looked at?
-ps_date_time_assessed When was the person assessed
-ps_droppedout         Did the participant opt out this time?
-ps_dropout_reason     Why?
-ps_notes              Other notes concerning the patient's condition.
- ----------------------------
- */
-IF OBJECT_ID( N'ac_mtr_checkinstatus', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_checkinstatus;
-END
-CREATE TABLE ac_mtr_checkinstatus (	
-	 ps_id INT IDENTITY(1,1) NOT NULL
-	,ps_pid int
-	,ps_session_id VARCHAR(64)
-	,ps_before bit
-	,ps_weight int
-	,ps_day int
-	,ps_next_sched datetime
-	,ps_date_time_assessed datetime
-	,ps_notes varchar(max)
-);
-
-
-/*
  ----------------------------------
 ac_mtr_participant_transaction_set
 
@@ -436,6 +400,42 @@ INSERT INTO ac_mtr_participants VALUES ( 'Wallets', 'Getstolen', 'Always', 2, '4
 INSERT INTO ac_mtr_participants VALUES ( 'Jarius', 'Richardson', '', 1, 'acc51db689572c1c443c6ba9e95636de', 121.0, 46.0, 0, '/assets/jc_avatar.jpg', 0, 0 , 90, '' );
 INSERT INTO ac_mtr_participants VALUES ( 'Avagard', 'Reva', '', 3, '7e227a123d9d520b7e63d4ef13de3f29', 96.0, 54.0, 0, '/assets/jc_avatar.jpg', 0, 0 , 87, '' );
 INSERT INTO ac_mtr_participants VALUES ( 'Doctor', 'Monty', 'Julius', 3, '09f6cfc5d626c2c14dadc09c6aaac41d', 184.0, 87.0, 0, '/assets/jc_avatar.jpg', 0, 0 , 83, '' );
+
+
+/*
+ ----------------------------
+ac_mtr_checkinstatus
+
+What condition is the patient
+in during the visit?
+
+ps_id                 Unique ID
+ps_session_id         The session ID that this participant was tested during.
+ps_before             Was this done before or after the exercises?
+ps_weight             How heavy is patient at start?
+
+ps_day                What day of the week were they looked at?
+ps_date_time_assessed When was the person assessed
+ps_droppedout         Did the participant opt out this time?
+ps_dropout_reason     Why?
+ps_notes              Other notes concerning the patient's condition.
+ ----------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_checkinstatus', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_checkinstatus;
+END
+CREATE TABLE ac_mtr_checkinstatus (	
+	 ps_id INT IDENTITY(1,1) NOT NULL
+	,ps_pid int
+	,ps_session_id VARCHAR(64)
+	,ps_before bit
+	,ps_day int
+	,ps_next_sched datetime
+	,ps_date_time_assessed datetime
+	,ps_notes varchar(max)
+);
+
 
 /*
  ----------------------------

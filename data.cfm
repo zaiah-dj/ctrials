@@ -98,7 +98,7 @@ I can do more with this concept...
 
 	,"input"  = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
-	 ,"model" = [ "session/check", "chosen", "participant" ]
+	 ,"model" = [ "session/check", "chosen", "participant", "input" ]
 	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] 
 		}
 

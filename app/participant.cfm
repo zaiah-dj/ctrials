@@ -143,18 +143,4 @@ ON ALLPART.participantGUID = SCREEN.aduscr_participant_id
 <cfabort>
 --->
 
-<cfscript>
-model = {};
-model.participant_fname = "Antonio";
-model.participant_mname = "Ramar";
-model.active_tab = "Ramar";
-model.participant_lname = "Collins";
-model.participant_initial_weight = 176; 
-model.participant_initial_height = 12 * 6 + 2; 
-model.participant_avatar = "/assets/jc_avatar.jpg";
-model.greeting = "Hello, there!";
-model.addText = "And welcome to ColdMVC!";
-</cfscript>
-
-
 <!--- Do different things depending on the randomized exercise type --->

@@ -20,11 +20,3 @@
 	ON CurrentTransactionIDList.p_pid = amp.p_id;
 	</cfquery>
 </cfif>
-
-
-<cfif data.debug eq 2>
-	<cfdump var=#session#>
-	<cfdump var=#sess#>
-	<!---<cfdump var=#part_list#>--->
-	<cfabort>
-</cfif>
