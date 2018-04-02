@@ -55,12 +55,16 @@
 				<td class="title">#val.label#</td>
 				<td>
 					<div class="row">
-						<div class="cc col-sm-8">
+						<div class="cc col-sm-7">
 							<cfif !structKeyExists( val, "type" )>
 							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#val.def#" defaultvalue="#val.def#" name="#val.name#" data-attr-table="ee">
 							</cfif>
 						</div>
 						<div class="catch cc col-sm-2">#val.def#</div>
+						<div class="col-sm-1">
+							<button class="inc-button">+</button>
+							<button class="inc-button">-</button>
+						</div>
 					</div>
 				</td>
 			</tr>

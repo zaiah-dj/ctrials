@@ -103,22 +103,22 @@
 	//Generate the form from either db or something else...
 	if ( !pop.prefix.recordCount ) { 
 		values = [
-			 {label="Set 1", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps1" } 
-		  ,{label="", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight1" } 
-			,{label="Set 2", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps2" } 
-		  ,{label="", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight2" } 
-			,{label="Set 3", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps3" } 
-		  ,{label="", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight3" } 
+		   {label="Set 1", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight1" } 
+			,{label="", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps1" } 
+		  ,{label="Set 2", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight2" } 
+			,{label="", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps2" } 
+		  ,{label="Set 3", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight3" } 
+			,{label="", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps3" } 
 		];
 	}
 	else {
 		values = [
-			 {label="Set 1", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps1, step = 1, name = "el_re_reps1" } 
-		  ,{label="", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight1, step = 5, name = "el_re_weight1" } 
-			,{label="Set 2", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps2, step = 1, name = "el_re_reps2" } 
-		  ,{label="", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight2, step = 5, name = "el_re_weight2" } 
-			,{label="Set 3", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps3, step = 1, name = "el_re_reps3" } 
-		  ,{label="", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight3, step = 5, name = "el_re_weight3" } 
+		   {label="Set 1", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight1, step = 5, name = "el_re_weight1" } 
+			,{label="", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps1, step = 1, name = "el_re_reps1" } 
+		  ,{label="Set 2", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight2, step = 5, name = "el_re_weight2" } 
+			,{label="", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps2, step = 1, name = "el_re_reps2" } 
+		  ,{label="Set 3", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight3, step = 5, name = "el_re_weight3" } 
+			,{label="", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps3, step = 1, name = "el_re_reps3" } 
 		];
 	}
 	

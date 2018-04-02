@@ -88,10 +88,13 @@
 				<tr>
 					<td>
 						<div class="row">
-							<div class="col-sm-8">
+							<div class="col-sm-7">
 								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0" name="el_re_weight#listy#">
 							</div>
 							<div class="catch cc col-sm-2">0</div> lb
+							<div class="col-sm-1">
+								<button class="inc-button">hi</button>
+							</div>
 						</div>
 					</td>
 				</tr>
