@@ -61,7 +61,7 @@
 
 	// Initialize client side AJAX code 
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
-		location = link( "update2.cfm" )
+		location = link( "update.cfm" )
 	 ,querySelector = [{
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li"
 		 ,noPreventDefault = true
@@ -124,7 +124,7 @@
 	
 	//Initialize AJAX
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
-		location = link( "update2.cfm" ) 
+		location = link( "update.cfm" ) 
 	 ,additional = [ 
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }

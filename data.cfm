@@ -39,16 +39,8 @@ I can do more with this concept...
 	}
 
 	,"update" = { 
-		"hint"  =  "This acts as the server side endpoint for values edited via AJAX.  It will break up a block of JSON and store data in the proper tables."
+		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
 	 ,"model" = "update"
-	 ,"content_type"  
-						= "application/json"
-	 ,"view"  =  "update" 
-	}
-
-	,"update2"= { 
-		"hint"  =  "This acts as the server side endpoint for values edited via AJAX."
-	 ,"model" = "update2"
 	 ,"content_type"  
 						= "application/json"
 	 ,"view"  =  "update" 

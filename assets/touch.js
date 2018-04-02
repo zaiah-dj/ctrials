@@ -159,7 +159,7 @@ LOG( "X: " + curX + ", Y: " + curY );
 
 			// tHis is made all the more ugly because I'm using GETs when I should be using POSTs
 			if ( 1 ) {
-				xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update2.cfm", true );
+				xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 				xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 				xhr.send( payload );
 				/* 
