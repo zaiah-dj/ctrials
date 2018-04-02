@@ -182,6 +182,7 @@ CREATE TABLE ac_mtr_exercise_log_re (
 	,el_re_weight3 INT
 	,el_re_extype INT
 	,el_re_datetime DATETIME
+	,el_re_datetime_modified DATETIME
 );
 
 /*
@@ -219,6 +220,7 @@ CREATE TABLE ac_mtr_exercise_log_ee (
 	,el_ee_grade INT
 	,el_ee_perceived_exertion INT
 	,el_ee_datetime DATETIME
+	,el_ee_datetime_modified DATETIME
 );
 
 
@@ -345,6 +347,46 @@ CREATE TABLE ac_mtr_days_tracker
 	,dt_week_visit_index INT
 );
 
+
+/*
+ ----------------------------
+ac_mtr_exercise_sensible_defaults
+
+Sensible default values for exercise data.
+ ----------------------------
+*/
+IF OBJECT_ID( N'ac_mtr_exercise_sensible_defaults', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_exercise_sensible_defaults;
+END
+CREATE TABLE ac_mtr_exercise_sensible_defaults
+(
+	 el_ee_rpm INT
+	,el_ee_watts_resistance INT
+	,el_ee_speed INT
+	,el_ee_grade INT
+	,el_ee_perceived_exertion INT
+	,el_re_reps1 INT
+	,el_re_weight1 INT
+	,el_re_reps2 INT
+	,el_re_weight2 INT
+	,el_re_reps3 INT
+	,el_re_weight3 INT
+);
+
+INSERT INTO ac_mtr_exercise_sensible_defaults VALUES ( 
+	 2   /* el_ee_rpm */
+	,2   /* ,el_ee_watts_resistance */
+	,2   /* ,el_ee_speed */
+	,2   /* ,el_ee_grade */
+	,2   /* ,el_ee_perceived_exertion */
+	,0   /* ,el_re_reps1 */
+	,50  /* ,el_re_weight1 */
+	,0   /* ,el_re_reps2 */
+	,50  /* ,el_re_weight2 */
+	,0   /* ,el_re_reps3 */
+	,50  /* ,el_re_weight3 */
+);
 
 /*
  ----------------------------

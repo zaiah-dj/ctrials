@@ -13,6 +13,44 @@
 	</ul>
 
 	<div class="selection">
+		<table class="table table-striped participant-entry">
+	<cfloop array="#values#" index="vv">
+		<cfif #vv.label# neq "">
+		<tr><td><b>#vv.label#</b></td></tr>
+		</cfif>
+		<tr>
+			<td>
+				<div class="row">
+					<div class="col-sm-8">
+						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#vv.def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
+					</div>
+					<div class="catch cc col-sm-2">#vv.def#</div>#vv.uom#
+				</div>
+			</td>
+		</tr>
+		<cfif #vv.label# eq "">
+		<tr></tr>	
+		</cfif>
+	</cfloop> 
+		</table>
+	</div>
+<!---
+		<tr>
+			<td>
+				<div class="row">
+					<div class="col-sm-8">
+						<input type="range" step="5" min="10" max="200" class="slider" value="0" defaultvalue="10" name="el_re_weight#listy#">
+					</div>
+					<div class="catch cc col-sm-2">0</div> lb
+				</div>
+			</td>
+		</tr>
+--->
+<!---
+		</cfloop> 
+	</cfloop> 
+--->
+<!---
 	<cfloop query = "#reExSel.results#"> 
 		<table class="table table-striped participant-entry">
 			<thead>
@@ -56,7 +94,7 @@
 			</tbody>
 		</table>
 	</cfloop>
-	</div>
+	--->
 
 <!--- Real ugly front end initialization code --->
 #AjaxClientInitCode#

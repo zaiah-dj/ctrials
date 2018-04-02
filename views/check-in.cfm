@@ -92,7 +92,7 @@
 									<br />
 								</cfloop>
 							<cfelse>
-								<cfset el=ListToArray( ValueList( exercises.et_name, "," ))>
+								<cfset el=ListToArray( ValueList( Q.exercises.results.et_name, "," ))>
 								<ul>
 									<li>
 										<label><cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop></label>

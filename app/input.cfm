@@ -30,7 +30,7 @@
 		});
 
 	//Generate the form from either db or something else...
-	if ( !req.status ) { 
+	if ( !req.prefix.recordCount ) { 
 		values = [
 			 { label = "RPM",           
 					uom = "",    min = 5, max = 80, def = 0, step = 2, name = "el_ee_rpm" }
@@ -81,17 +81,55 @@
 <cfelseif part.p_exercise eq "2">
 	<cfscript>
 	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
+
+	//Pull all exercises	
 	reExList=qu.exec( string="SELECT * FROM ac_mtr_re_exercise_list", datasource="#data.source#" );
+
+	//Pull one exercise
 	reExSel =qu.exec( string="SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = :et_id", 
 		datasource = "#data.source#",
 		bindArgs={ et_id = type } );
 
+	//Get the entries in the table.
+	pop = qu.exec(
+		string = "SELECT * FROM ac_mtr_exercise_log_re WHERE el_re_pid = :pid AND el_re_ex_session_id = :sid AND el_re_extype = :extype"
+	 ,datasource = "#data.source#"
+	 ,bindArgs = {
+			pid = "#url.id#"
+		 ,sid = "#sess.key#"
+		 ,extype = "#type#"
+		});
+
+	//Generate the form from either db or something else...
+	if ( !pop.prefix.recordCount ) { 
+		values = [
+			 {label="Set 1", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps1" } 
+		  ,{label="", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight1" } 
+			,{label="Set 2", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps2" } 
+		  ,{label="", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight2" } 
+			,{label="Set 3", uom="reps",min = 0, max = 30, def = 0, step = 1, name = "el_re_reps3" } 
+		  ,{label="", uom="lb",min = 5, max = 100, def = 50, step = 5, name = "el_re_weight3" } 
+		];
+	}
+	else {
+		values = [
+			 {label="Set 1", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps1, step = 1, name = "el_re_reps1" } 
+		  ,{label="", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight1, step = 5, name = "el_re_weight1" } 
+			,{label="Set 2", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps2, step = 1, name = "el_re_reps2" } 
+		  ,{label="", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight2, step = 5, name = "el_re_weight2" } 
+			,{label="Set 3", uom="reps",min = 0, max = 30, def = pop.results.el_re_reps3, step = 1, name = "el_re_reps3" } 
+		  ,{label="", uom="lb",min = 5, max = 100, def = pop.results.el_re_weight3, step = 5, name = "el_re_weight3" } 
+		];
+	}
+	
+	//Initialize AJAX
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
-		location = link( "update.cfm" ) 
+		location = link( "update2.cfm" ) 
 	 ,additional = [ 
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }
 		 ,{ name = "pid", value = "#pid#" }
+		 ,{ name = "el_re_extype", value = "#type#" }
 		]
 	 ,querySelector = {
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li"

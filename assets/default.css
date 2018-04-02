@@ -996,6 +996,11 @@ table.table textarea {
 	float: left;
 }
 
+.selection {
+	width: 80%;
+	margin: 0 auto;
+	border: 2px solid blue;
+}
 
 
 

@@ -4,7 +4,6 @@ qu = createObject( "component", "components.quella" );
 cc = createObject( "component", "components.checkFields" );
 ex = createObject( "component", "components.exceptRequest" );
 
-
 //Check
 if ( !IsDefined( "form" ) || !IsDefined( "session" ) || !IsStruct( form ) ) {
 
