@@ -120,5 +120,6 @@
 			<input type="submit" value="Next!"></input>
 		</form>
 	</div>
+	</div>
 </cfoutput>
 </cfif>

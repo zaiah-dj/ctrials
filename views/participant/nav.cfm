@@ -1,12 +1,14 @@
 <cfscript>
+exName = (part.p_exercise eq "1") ? "Endurance" : "Resistance";
 container_nav = [
 	{ title = "Check-In", href = "check-in.cfm" }
- ,{ title = "Exercise Data", href = "input.cfm" }
+ ,{ title = "#exName# Data", href = "input.cfm" }
  ,{ title = "Compare Data", href = "compare.cfm" }
- ,{ title = "Information", href = "info.cfm" }
+/* ,{ title = "Information", href = "info.cfm" }*/
 ];
 </cfscript>
 
+<div class="container-navAndBodyWrapper">
 <div class="container-nav">
 <cfoutput query="part" >
 	<ul class="participant-info-nav">

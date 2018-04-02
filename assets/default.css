@@ -56,32 +56,6 @@ a.selected {
 	text-shadow: 2px 2px 5px #fff;
 }
 
-
-/*This is a somewhat strange concept that I'm going to try out for these nested interfaces*/
-.nselect {
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-gecko-border-radius: 10px;
-}
-
-.nselect-1 
-{ 
-	border: 10px solid cyan;
-	background-color: cyan;
-}
-
-.nselect-2 
-{ 
-	border: 10px solid cyan;
-	background-color: cyan;
-}
-
-.nselect-3
-{ 
-	border: 10px solid cyan;
-	background-color: cyan;
-}
-
 .container {
 	position: relative;
 	background-color: #fff;
@@ -89,15 +63,19 @@ a.selected {
 	padding-top: 10px;
 	padding-bottom: 10px;
 	height: 85%;
-	border: 1px solid gray;
 
-	width: 95%;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-gecko-border-radius: 5px;
-	box-shadow: 10px 10px 5px gray;
+	width: 100%;
+	/*box-shadow: 10px 10px 5px gray;*/
 
 	overflow: hidden;
+}
+
+.container-navAndBodyWrapper {
+	background-color: #ced6e4; 
+	padding-top: 20px;
+	padding-bottom: 20px;
+	position: relative;
+	z-index: 99;
 }
 
 /*This only exists as an element to test against the container-header*/
@@ -106,12 +84,7 @@ a.selected {
 	height: 0px;
 }
 
-/*All participants sit here.*/
-.container-header {
-	height: 15%;
-	min-height: 100px; 
-	border-bottom: 5px solid black;
-}
+
 
 /*Intermediate navigation between parts of data entry go here.*/
 .container-nav {
@@ -121,6 +94,24 @@ a.selected {
 	padding-bottom: 2.5px;
 	padding-left: 10px;
 	padding-right: 10px;
+	width: 95%;
+	margin: 0 auto;
+}
+
+/*
+.container-nav::before {
+	content: "<div style='background-color:'#ced6e4'>";
+}
+
+.container-body::after {
+	content: "</div>";
+}
+*/
+
+/*All participants sit here.*/
+.container-header {
+	height: 12%;
+	min-height: 85px; 
 }
 
 /*All info goes here.*/
@@ -132,7 +123,7 @@ a.selected {
 	overflow: hidden;
 	overflow-Y: scroll;
 	height: 80%;
-	border: 5px solid black;
+	border: 3px solid black;
 	padding-left: 20px;
 	padding-right: 20px;
 }
@@ -143,11 +134,14 @@ a.selected {
 
 .container-nav + .container-body {
 	height: 70%;
+	width: 95%;
 	overflow: hidden;
 	overflow-Y: scroll;
 	padding: 20px;
 	overflow: hidden;
 	overflow-Y: scroll;
+	margin: 0 auto;
+	margin-bottom: 30px;
 }
 
 .container-header li
@@ -156,11 +150,11 @@ a.selected {
 	z-index: 0;
 	display: inline-block;
 
-	font-size: 1.3em;
+	font-size: 1.0em;
 	text-align: center;
+	left: 10px;
 
 	height: 100%;
-	margin-top: 10%;
 	width: 130px;
 
 	padding: 10px;
@@ -169,9 +163,14 @@ a.selected {
 	border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
 	-gecko-border-radius: 5px 5px 0px 0px;
-
+/*
+	border-top: 5px solid black;
+	border-left: 5px solid black;
+	border-right: 5px solid black;
+	border-bottom: 5px solid black;
+*/
 	color: white;
-	background-color: #4b0082;
+	background-color: #728ab2;
 
 	transition: 
 		background-color 0.2s,
@@ -179,16 +178,26 @@ a.selected {
 	;
 
 	margin: 0px;
+	top: 5px;
 }
 
 .container-header li:hover {
-	background-color: #9370db;
+	font-size: 1.3em;
+	background-color: #e6f2ff;
+/*	border-bottom: 5px solid #e6f2ff; */
+	color: black;
 }
 
 .container-header li.selected {
-	background-color: #dda0dd; 
+	font-size: 1.3em;
+	background-color: #ced6e4; 
+/*	border-bottom: 5px solid #ced6e4; */
+	z-index: 99;
 }
 
+.container-header li.selected:hover {
+	color: white; 
+}
 
 /*2nd-level navigation (Switch between endurance and resistance data)*/
 .container-nav ul li 
@@ -201,27 +210,28 @@ a.selected {
 
 	font-weight: bold;
 
-	border-top: 5px solid hidden;
-	border-left: 5px solid hidden;
-	border-right: 5px solid hidden;
+	border-top: 3px solid hidden;
+	border-left: 3px solid hidden;
+	border-right: 3px solid hidden;
+	border-bottom: 3px solid white;
 
 	color: white;
 
 	margin-right: 10px;
 	height: 100%;
-	width: 140px;
+	width: 150px;
 
 	padding: 10px;
 
 	color: #ddd;
-	background-color: purple;
+	background-color: #728ab2;
 
 	transition: 
 		background-color 0.2s,
 		color 0.2s;
 	;
 
-	top: 8px;
+	top: 6px;
 }
 
 .container-body {
@@ -229,14 +239,18 @@ a.selected {
 }
 
 .container-nav ul li:hover {
-	background-color: #e5bdfb;	
-	color: cyan;
+	background-color: #e6f2ff;
+	color: black;
 }
 
 .container-nav ul li.selected {
-	border-top: 5px solid black;
-	border-left: 5px solid black;
-	border-right: 5px solid black;
+	border-top: 3px solid black;
+	border-left: 3px solid black;
+	border-right: 3px solid black;
+
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-gecko-border-radius: 5px 5px 0px 0px;
 
 	background-color: white;
 	color: black;
@@ -254,23 +268,16 @@ div.inner-selection {
 }
 
 ul.inner-selection {
-	
-/*
-	-ms-column-count: 2;
-	-o-column-count: 2;
-	-moz-column-count: 2;
-	-khtml-column-count: 2;
-	column-count: 2;
-*/
 	position: relative;
-	width: 80%;
+	width: 95%;
 	min-width: 300px;
 	margin: 0 auto;
+	margin-bottom: 10px;
 }
 
 .container-body .inner-selection li {
 	min-width: 70px;
-	width: 10%;
+	width: 25%;
 	font-weight: bold;
 	text-align: center;
 	font-size: 0.9em;
@@ -288,7 +295,7 @@ ul.inner-selection {
 }
 
 .container-body .inner-selection li.selected {
-	background-color: #e5bdfb;
+	background-color: #728ab2;
 	color: black; 
 }
 
@@ -353,7 +360,7 @@ ul.dasch {
 
 ul.dasch li {
 	display: inline-block;
-	background-color: #aaa;
+	background-color: #728ab2;
 	color: black;
 	margin-right: 5px;
 	min-width: 50px;
@@ -364,14 +371,14 @@ ul.dasch li {
 }
 
 ul.dasch li.selected {
-	background-color: purple;
+	background-color: #ced6e4; 
 	color: white;
 	font-weight: bold;
 	text-shadow: 2px 2px 2px white;
 }
 
 ul.dasch li:hover {
-	background-color: #00ffff;
+	background-color: #e6f2ff;
 }
 
 ul.endurance li {
@@ -896,9 +903,10 @@ a.tiny-link {
 	right: 20px;
 }
 
-input[type=submit] { margin-top: 10px; 
+input[type=submit] { 
+	margin-top: 10px; 
 	font-size: 1.2em; 
-	background-color: #ccc; 
+	background-color: #728ab2;
 	border-radius: 5px; 
 	-moz-border-radius: 5px; 
 	-gecko-border-radius: 5px; 
@@ -911,7 +919,10 @@ input[type=submit] { margin-top: 10px;
 	color 0.2s; 
 }
 
-input[type=submit]:hover { background-color: cyan; color: white; }
+input[type=submit]:hover { 
+	background-color: #e6f2ff;
+	color: white; 
+}
 
 input[type=search] { 
 /*	border: 0px; 
@@ -996,13 +1007,51 @@ table.table textarea {
 	float: left;
 }
 
-.selection {
-	width: 80%;
-	margin: 0 auto;
-	border: 2px solid blue;
+table.participant-entry tr.heading {
+	background-color: #bbb;
+	height: 10px;	
+	text-align: center;
 }
 
+.selection {
+	width: 90%;
+	min-width: 300px;
+	margin: 0 auto;
+}
 
+.row .col-sm-1,
+.row .col-sm-2,
+.row .col-sm-7,
+.row .col-sm-8
+{
+	display: inline-block;
+	position: relative;
+	top: 0;
+	padding-top: 10px;
+	height: 50px;
+}
+
+.row .col-sm-8 {
+	width: 80%;
+	float: left;
+}
+
+.row .col-sm-7 {
+	width: 80%;
+	float: left;
+}
+
+.row .col-sm-2 {
+	width: 20%;
+	float: right;
+}
+
+.row .col-sm-1 {
+	width: 20%;
+	float: right;
+	height: 10px;
+	top: -30px;
+}
 
 
 

@@ -7,8 +7,12 @@
 
 	<!--- Let's see all of these in a list --->
 	<ul class="inner-selection">
+	<cfset cnt=0>
 	<cfloop query = "#reExList.results#"> 
 		<a href="#link( 'input.cfm?id=#url.id#&extype=#et_id#' )#"><li #iif(type eq et_id, DE('class="selected"'),DE(''))#>#et_name#</li></a>
+		<cfif ++cnt eq 4>
+			<br />
+		</cfif> 
 	</cfloop>
 	</ul>
 
@@ -16,15 +20,16 @@
 		<table class="table table-striped participant-entry">
 	<cfloop array="#values#" index="vv">
 		<cfif #vv.label# neq "">
-		<tr><td><b>#vv.label#</b></td></tr>
+		<tr class="heading"><td><b>#vv.label#</b></td></tr>
 		</cfif>
 		<tr>
 			<td>
 				<div class="row">
-					<div class="col-sm-8">
+					<div class="col-sm-7">
 						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#vv.def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
 					</div>
-					<div class="catch cc col-sm-2">#vv.def#</div>#vv.uom#
+					<div class="catch cc col-sm-2">#vv.def#</div>
+					<div class="col-sm-1">#vv.uom#</div>
 				</div>
 			</td>
 		</tr>
