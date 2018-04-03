@@ -63,7 +63,7 @@
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" )
 	 ,querySelector = [{
-			dom = "##participant_list li, .participant-info-nav li, .inner-selection li"
+			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
 		 ,noPreventDefault = true
 		 ,event = "click"
 		 ,send = "input[name^=el_], select[name^=el_]" 
@@ -132,7 +132,7 @@
 		 ,{ name = "el_re_extype", value = "#type#" }
 		]
 	 ,querySelector = {
-			dom = "##participant_list li, .participant-info-nav li, .inner-selection li"
+			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
 		 ,noPreventDefault = true
 		 ,event = "click"
 		 ,send = ".slider"

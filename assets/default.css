@@ -1008,9 +1008,10 @@ table.table textarea {
 	width: 30%;
 }
 
-.table.table label.sameline {
-	display: inline-block;
-	width: 50px !important;
+span.sameline {
+	display: block;
+	border: 1px solid red;
+	width: 50px;
 	float: left;
 }
 
@@ -1024,6 +1025,14 @@ table.participant-entry tr.heading {
 	width: 90%;
 	min-width: 300px;
 	margin: 0 auto;
+}
+
+.row {
+	position: relative;
+	width: 100%;
+	left: 10px;
+	height: 60px;
+	padding: 0px;
 }
 
 .row .col-sm-1,
@@ -1040,13 +1049,10 @@ table.participant-entry tr.heading {
 
 .row .col-sm-8 {
 	width: 80%;
-	float: left;
 }
 
 .row .col-sm-7 {
 	width: 70%;
-	left: 5%;
-	float: left;
 }
 
 .row .col-sm-7,
@@ -1066,14 +1072,16 @@ table.participant-entry tr.heading {
 
 .row .col-sm-2 {
 	width: 20%;
-	float: right;
 }
 
 .row .col-sm-1 {
-	width: 20%;
-	float: right;
-	height: 10px;
-	top: -30px;
+	width: 10%;
+/*	float: right;*/
+}
+
+.catch {
+	padding-top: 20px;
+	font-size: 1.3em;
 }
 
 .inc-button {
@@ -1083,10 +1091,12 @@ table.participant-entry tr.heading {
 	display: block;
 }
 
-.col-sm-2 + .col-sm-1 {
-	top: -20px;
+.participant-entry .col-sm-7,
+.participant-entry .col-sm-2,
+.participant-entry .col-sm-1
+{
+	left: 10px;	
 }
-
 
 
 

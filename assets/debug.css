@@ -24,7 +24,8 @@
 }
 
 .debug2 {
-	width: 120px;
+	width: 20%;
+	min-width: 200px;
 	height: auto;
 	color: white;
 	display: block;
@@ -33,7 +34,7 @@
 	position: fixed;
 	z-index: 99;
 	left: 0px;
-	top: 50%;
+	bottom: 0%;
 	padding: 10px;
 }
 

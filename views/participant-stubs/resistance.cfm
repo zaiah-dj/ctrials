@@ -20,7 +20,7 @@
 		<table class="table table-striped participant-entry">
 	<cfloop array="#values#" index="vv">
 		<cfif #vv.label# neq "">
-		<tr class="heading"><td><b>#vv.label#</b></td></tr>
+		<tr class="heading"><td><b>#vv.label# - #reExSel.results.et_name#</b></td></tr>
 		</cfif>
 		<tr>
 			<td>
@@ -28,7 +28,7 @@
 					<div class="col-sm-7">
 						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#vv.def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
 					</div>
-					<div class="catch cc col-sm-2">#vv.def#</div>
+					<div class="catch cc col-sm-1">#vv.def#</div>
 					<div class="col-sm-1">#vv.uom#</div>
 				</div>
 			</td>
@@ -39,70 +39,9 @@
 	</cfloop> 
 		</table>
 	</div>
-<!---
-		<tr>
-			<td>
-				<div class="row">
-					<div class="col-sm-8">
-						<input type="range" step="5" min="10" max="200" class="slider" value="0" defaultvalue="10" name="el_re_weight#listy#">
-					</div>
-					<div class="catch cc col-sm-2">0</div> lb
-				</div>
-			</td>
-		</tr>
---->
-<!---
-		</cfloop> 
-	</cfloop> 
---->
-<!---
-	<cfloop query = "#reExSel.results#"> 
-		<table class="table table-striped participant-entry">
-			<thead>
-				<th>Exercise</th> <!--- add a colspan --->
-				<th>Set ##</th>
-				<th>Repetitions<br /><small>(50 lb max)</small></th>
-				<th>Weight Lifted<br /><small>(300 lb max)</small></th>
-			</thead>
 
-			<tbody>
-				<!--- Global Things --->
-				<tr>
-					<td class="title" rowspan="7">#et_name#</td>
-					<input type="hidden" value="1" name="el_re_extype">
-				</tr>
 
-				<cfloop list="1,2,3" index="listy">
-				<tr>
-					<td>Set #listy#</td>
-					<td>
-						<div class="row">
-							<div class="col-sm-8">
-								<input type="range" min="0" max="50" class="slider" value="0" defaultvalue="0" name="el_re_reps#listy#">
-							</div>
-							<div class="catch cc col-sm-2">0</div>
-						</div>
-					</td>
-				</tr>
-
-				<tr>
-					<td>
-						<div class="row">
-							<div class="col-sm-7">
-								<input type="range" min="0" max="300" class="slider" value="0" defaultvalue="0" name="el_re_weight#listy#">
-							</div>
-							<div class="catch cc col-sm-2">0</div> lb
-							<div class="col-sm-1">
-								<button class="inc-button">hi</button>
-							</div>
-						</div>
-					</td>
-				</tr>
-			</cfloop>
-			</tbody>
-		</table>
-	</cfloop>
-	--->
+	<input id="sendPageVals" type="submit" value="Save Changes" style="width: 200px;color:white;"></input>
 
 <!--- Real ugly front end initialization code --->
 #AjaxClientInitCode#

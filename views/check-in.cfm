@@ -47,29 +47,48 @@
 					<tr>
 						<td class="title">Blood Pressure</td>
 						<td>
+
+						<!--- Figure blood pressure --->
+						<cfset sys_bp=#iif( model.currentBpSystolic lt 60, 60, model.currentBpSystolic )#>
+						<cfset dia_bp=#iif( model.currentBpDiastolic lt 60, 60, model.currentBpDiastolic )#>
+
 						<cfif !model.needsNewBp>
 							<span class=huge>180</span> / <span class=huge>90</span>
 							<i>(*No further readings need to be taken at this time)</i>
 							<input type="hidden" value="#model.currentBpSystolic#" name="bp_systolic">
 							<input type="hidden" value="#model.currentBpDiastolic#" name="bp_diastolic">
+
 						<cfelse>
 							<div>
 							<span class=huge>#model.currentBpSystolic#</span> / <span class=huge>#model.currentBpDiastolic#</span>
 							<blink>A new blood pressure reading is required for this participant.</blink>
-							<div>
+
+							<div> 
 								<label class="sameline">Systolic</label>
-								<div class="cc w200">
-									<input type="range" min="90" max="180" class="slider" value="#model.currentBpSystolic#" name="bp_systolic" required>
+								<div class="row">
+									<div class="cc col-sm-7">
+										<input type="range" min="60" max="300" class="slider" value="#sys_bp#" name="bp_systolic" required>
+									</div>
+									<div class="catch cc col-sm-1">#sys_bp#</div>
+									<div class="col-sm-1">
+										<button class="inc-button">+</button>
+										<button class="inc-button">-</button>
+									</div>
 								</div>
-								<div class="cc w100">0</div>
 							</div>
-							</div><br />
+
 							<div>
 								<label class="sameline">Diastolic</label>
-								<div class="cc w200">
-									<input type="range" min="90" max="180" class="slider" value="#model.currentBpDiastolic#" name="bp_diastolic" required>
+								<div class="row">
+									<div class="cc col-sm-7">
+										<input type="range" min="60" max="300" class="slider" value="#dia_bp#" name="bp_diastolic" required>
+									</div>
+									<div class="catch cc col-sm-1">#dia_bp#</div>
+									<div class="col-sm-1">
+										<button class="inc-button">+</button>
+										<button class="inc-button">-</button>
+									</div>
 								</div>
-								<div class="cc w100">0</div>
 							</div>
 						</cfif>
 						</td>
