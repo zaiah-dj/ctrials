@@ -30,6 +30,10 @@
 					</div>
 					<div class="catch cc col-sm-1">#vv.def#</div>
 					<div class="col-sm-1">#vv.uom#</div>
+						<div class="col-sm-1">
+							<button class="inc-button">+</button>
+							<button class="inc-button">-</button>
+						</div>
 				</div>
 			</td>
 		</tr>
