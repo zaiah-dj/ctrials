@@ -66,18 +66,18 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
 			} );
 
-			aac = b[i].parentElement.parentElement.childNodes[7];
-			console.log(aac.childNodes[1]);console.log(aac.childNodes[3]);
+			if (( aac = b[i].parentElement.parentElement.childNodes[7] ) ) {
+				console.log(aac.childNodes[1]);console.log(aac.childNodes[3]);
 
-			aac.childNodes[1].addEventListener( "click", function (ev) {
-				aav = ev.target.parentElement.parentElement.childNodes[3];
-				ev.target.value = aav.innerHTML = ++(aav.innerHTML); //console.log( v);
-			} ); 
-			aac.childNodes[3].addEventListener( "click", function (ev) {
-				aav = ev.target.parentElement.parentElement.childNodes[3];
-				ev.target.value = aav.innerHTML=--(aav.innerHTML); //console.log( v);
-			} ); 
-
+				aac.childNodes[1].addEventListener( "click", function (ev) {
+					aav = ev.target.parentElement.parentElement.childNodes[3];
+					ev.target.value = aav.innerHTML = ++(aav.innerHTML); //console.log( v);
+				} ); 
+				aac.childNodes[3].addEventListener( "click", function (ev) {
+					aav = ev.target.parentElement.parentElement.childNodes[3];
+					ev.target.value = aav.innerHTML=--(aav.innerHTML); //console.log( v);
+				} ); 
+			}
 		}
 	}
 })
