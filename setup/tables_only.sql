@@ -253,9 +253,10 @@ END
 CREATE TABLE ac_mtr_participant_transaction_set (
 	 p_uuid INT IDENTITY(1,1) NOT NULL
 	,p_transaction_id VARCHAR(64)
-	,p_expires BIT
 	,p_currentDateTime DATETIME
 	,p_lastUpdateTime DATETIME
+	,p_current_pid INT
+	,p_progress_tracker VARCHAR(MAX)
 );
 
 /*

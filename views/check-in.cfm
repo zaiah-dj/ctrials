@@ -53,7 +53,7 @@
 						<cfset dia_bp=#iif( model.currentBpDiastolic lt 60, 60, model.currentBpDiastolic )#>
 
 						<cfif !model.needsNewBp>
-							<span class=huge>180</span> / <span class=huge>90</span>
+							<span class=huge>#sys_bp#</span> / <span class=huge>#dia_bp#</span>
 							<i>(*No further readings need to be taken at this time)</i>
 							<input type="hidden" value="#model.currentBpSystolic#" name="bp_systolic">
 							<input type="hidden" value="#model.currentBpDiastolic#" name="bp_diastolic">

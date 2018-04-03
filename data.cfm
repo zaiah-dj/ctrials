@@ -10,6 +10,7 @@ I can do more with this concept...
 ,"base"   = "/motrpac/web/secure/dataentry/iv/"
 ,"Home"   = "tmp"
 ,"name"   = "iv"
+,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
 ,"debug"  =  1
 ,"ajaxEveryTime"  =  1
@@ -67,7 +68,7 @@ I can do more with this concept...
 	,"chosen" = { 
 		"hint"  =  "See all chosen participants in a session."
 	 ,"model" = [ "session/check", "chosen" ]
-	 ,"view"  = [ "master/head", "participant/list", "master/tail" ] 
+	 ,"view"  = [ "master/head", "participant/list", "chosen", "master/tail" ] 
 		}
 
 	,"info"   = { 
@@ -93,6 +94,12 @@ I can do more with this concept...
 	 ,"model" = [ "session/check", "chosen", "participant", "input" ]
 	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] 
 		}
+
+	,"refresh-session" = { 
+		"model" =  "refresh-session"
+	 ,"view"  = [ "master/head", "refresh-session", "master/tail" ] 
+	 ,"hint"  =  "Refresh a user session."
+	 	}
 
 	,"logout" = { 
 		"model" = "session/kill"

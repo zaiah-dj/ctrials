@@ -27,6 +27,14 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		}});
 	}
 
+	//i'll kill yer face...
+	/*nb = [].slice.call( document.querySelectorAll( ".container-navAndBodyWrapper" ) );
+	if ( nb.length ) {
+		console.log( nb[0].className );
+		nb[0].className += " " + "mool"; 
+		console.log( nb[0].className );
+	}*/
+
 	//???What is this?
 	a = [].slice.call( document.querySelectorAll( ".participants li" ) );
 	for ( i = 0 ; i < a.length; i++ ) {

@@ -70,13 +70,29 @@ a.selected {
 	overflow: hidden;
 }
 
+@keyframes cnbwHeight {
+	from {
+		height: 0px;
+	}
+	to {
+		height: 80%; 
+	}
+}
+
 .container-navAndBodyWrapper {
 	background-color: #ced6e4; 
 	padding-top: 20px;
 	padding-bottom: 20px;
 	position: relative;
 	z-index: 99;
+	height: 0px;
+	overflow: hidden;
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+	animation-name: cnbwHeight;
 }
+
+
 
 /*This only exists as an element to test against the container-header*/
 .container-is-single {
@@ -122,7 +138,7 @@ a.selected {
 	/*overflow-Y: scroll;*/
 	overflow: hidden;
 	overflow-Y: scroll;
-	height: 80%;
+	height: 90%;
 	border: 3px solid black;
 	padding-left: 20px;
 	padding-right: 20px;
@@ -133,7 +149,7 @@ a.selected {
 }
 
 .container-nav + .container-body {
-	height: 70%;
+	height: 85%;
 	width: 95%;
 	overflow: hidden;
 	overflow-Y: scroll;
