@@ -13,7 +13,7 @@ I can do more with this concept...
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
 ,"debug"  =  0
-,"ajaxEveryTime"  =  1
+,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {}
 ,"css"    = []

@@ -3,6 +3,9 @@
 	<!--- Set a time --->
 	<input type="hidden" value="#defaultTimeblock#" name="el_ee_timeblock">
 
+	<cfif data.debug eq 1>
+		<cfset DebugClientCode = clijs.ClientDebug()>
+	</cfif>
 
 	<!--- TODO: This shouldn't take two loops.  Think about it more. --->
 	<div class="inner-selection">

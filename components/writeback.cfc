@@ -340,7 +340,7 @@ component {
 		}
 
 		//Output debugging code from the server if need be.
-		JS_DEBUG 	= 1;
+		JS_DEBUG 	= ( StructKeyExists(arguments,"showDebug") ) ? 1 : 0;
 		TRAVERSE = ( StructKeyExists( arguments, 'traverse' ) ) ? 1 : 0;
 		TRAVERSAL_FUNCTION = "function (evt) { return evt.target.parentElement.children[0]; }";
 		JS_DEBUG_DUMP_EL 	= 1;
