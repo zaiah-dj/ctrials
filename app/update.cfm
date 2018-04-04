@@ -1,13 +1,22 @@
 <cffunction name="sendRequest">
 	<cfargument name="status">
 	<cfargument name="message">
+
+	<cfset aa = CreateObject("component", "components.requestLogger" )
+		.init(table = "ac_mtr_serverlog", ds="#data.source#")
+		.append(message = "#arguments.message#")>
+
 	<cfcontent type="application/json">
-	<cfoutput>{ "status": #arguments.status#, "message": "#arguments.message#" }</cfoutput>  
+		<cfoutput>{ "status": #arguments.status#, "message": "#arguments.message#" }</cfoutput>  
 	</cfcontent>
 	<cfabort>
+
 </cffunction>
 
-
+<!---
+<cfset aa = CreateObject("component", "components.requestLogger" )
+	.init(table = "ac_mtr_serverlog", ds="#data.source#").append()>
+	--->
 
 <cfscript>
 /* ----------------------- *
@@ -25,12 +34,14 @@ Values received here will be saved to one of the following tables.
 *ac_mtr_exercise_log  - Log of current participants exercise progress.
 *ac_mtr_patientstatus - Log of patient's current health (track per day?).
 
- ------------------------- */
+* ------------------------- */
 
 //Block any requests that are not POST
 if ( !isDefined( "form" ) || StructIsEmpty( form ) )
 	sendRequest( status = 0, message = "This resource does not currently answer to request types other than POST." );
 
+//To make this easier to debug, add 'cgi.script_name' (of the client) to the request
+//and, probably also need to write the fields sent
 
 //This is (right now) how I'm going about using the same page for all AJAX updates.
 if ( !StructKeyExists( form, "this" ) )
@@ -44,7 +55,7 @@ qu = createObject("component", "components.quella");
 if ( form.this eq "startSession" ) {
 	exist = cc.checkFields( form, "transact_id", 	"staffer_id", "list" );
 	if ( !exist.status ) {
-		sendRequest( status = 0, message = "#exist.message# - Either 'transact_id', 'staffer_id' or 'list' fields are missing from request)" );
+		sendRequest( status = 0, message = "START SESSION AFTER PARTICIPANT DROP - #exist.message# - Either 'transact_id', 'staffer_id' or 'list' fields are missing from request)" );
 	}
 
 	try {
@@ -80,7 +91,11 @@ if ( form.this eq "startSession" ) {
 		}
 	}
 	catch (any e) {
-		sendRequest( status=0, message="#e.message# - #data.source# - #e.detail#" );
+		sendRequest( 
+			status=0, 
+			message="FAILED TO ADD TRANSACTION MEMBERS - " & 
+				"#e.message# - #data.source# - #e.detail#" 
+		);
 	}
 }
 else if ( form.this eq "resistance" ) 
@@ -171,34 +186,6 @@ else if ( form.this eq "resistance" )
 	}
 
 	sendRequest( status = 1, message = "#upd.message#" );	
-
-/*
-	w = CreateObject( "component", "components.writeback" );
-	w.Server( 
-		listen = "form"
-		,ds    = "#data.source#"
-		,table = "ac_mtr_exercise_log_ee"
-		,using = "SQLServer"
-	  ,insertOn = '!checkFor( where = "el_ee_ex_session_id = :sid AND el_ee_pid = :pid", predicate = { sid="#form.sess_id#", pid="#form.pid#" } )'
-		,where = {
-			clause= "el_ee_ex_session_id = :sid",
-			predicate= { sid = "#form.sess_id#" }}
-		,only  = [ 
-			"pid",
-			"sess_id",
-			"el_ee_equipment",
-			"el_ee_timeblock",
-			"el_ee_rpm",
-			"el_ee_watts_resistance",
-			"el_ee_speed",
-			"el_ee_grade",
-			"el_ee_perceived_exertion",
-			"el_ee_datetime"
-		]
-	);
-
-	writeoutput( "#w#" );
-*/
 	abort;
 }
 else if ( form.this eq "endurance" ) 
@@ -279,40 +266,9 @@ else if ( form.this eq "endurance" )
 		sendRequest( status = 0, message = "#e.message# - #e.detail#" );	
 	}
 	sendRequest( status = 1, message = "#upd.message#" );	
-
-/*
-	w = CreateObject( "component", "components.writeback" );
-	w.Server( 
-		listen = "form"
-		,ds    = "#data.source#"
-		,table = "ac_mtr_exercise_log_ee"
-		,using = "SQLServer"
-	  ,insertOn = '!checkFor( where = "el_ee_ex_session_id = :sid AND el_ee_pid = :pid", predicate = { sid="#form.sess_id#", pid="#form.pid#" } )'
-		,where = {
-			clause= "el_ee_ex_session_id = :sid",
-			predicate= { sid = "#form.sess_id#" }}
-		,only  = [ 
-			"pid",
-			"sess_id",
-			"el_ee_equipment",
-			"el_ee_timeblock",
-			"el_ee_rpm",
-			"el_ee_watts_resistance",
-			"el_ee_speed",
-			"el_ee_grade",
-			"el_ee_perceived_exertion",
-			"el_ee_datetime"
-		]
-	);
-
-	writeoutput( "#w#" );
-*/
 	abort;
-	
 }
 
-
-
 //We got here...
-sendRequest( status = 1, message = "Successfully wrote to #data.source#" );
+sendRequest( status = 1, message = "Successfully began new participant session with datasource: #data.source#." );
 </cfscript>
