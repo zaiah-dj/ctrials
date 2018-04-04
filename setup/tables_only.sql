@@ -390,6 +390,68 @@ INSERT INTO ac_mtr_exercise_sensible_defaults VALUES (
 );
 
 /*
+----------------------------------
+ac_mtr_serverlog
+
+Keep track of the staff members active a session.
+
+The entire app logs here, AJAX updates will go 
+here as well:
+
+ sl_id INT IDENTITY(1,1) NOT NULL - unique ID
+,sl_method VARCHAR(10)            - GET, POST, etc.
+,sl_ip VARCHAR(128)               - IP Address making request
+,sl_dateofrequest DATETIME        - Date request made
+,sl_status INT                    - Status of request
+,sl_contentsize INT               - How big was response?
+,sl_pagerequested VARCHAR(2048)   - What was asked for?
+,sl_useragent VARCHAR(512)        - Which user agent?
+,sl_message VARCHAR(MAX)          - Custom message (AJAX here)
+----------------------------------
+ */
+IF OBJECT_ID( N'ac_mtr_serverlog', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_serverlog;
+END
+CREATE TABLE ac_mtr_serverlog 
+(
+	 sl_id INT IDENTITY(1,1) NOT NULL
+	,sl_session_id VARCHAR(64)
+	,sl_method VARCHAR(10)
+	,sl_ip VARCHAR(128)
+	,sl_pagerequested VARCHAR(2048)
+	,sl_useragent VARCHAR(512)
+	,sl_message VARCHAR(MAX)
+);
+
+
+IF OBJECT_ID( N'ac_mtr_logging_progress_tracker', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_logging_progress_tracker;
+END
+CREATE TABLE ac_mtr_logging_progress_tracker 
+(
+	 active_pid INT
+	,session_id VARCHAR(64)
+	,el_ee_rpm INT
+	,el_ee_watts_resistance INT
+	,el_ee_speed INT
+	,el_ee_grade INT
+	,el_ee_perceived_exertion INT
+	,el_ee_equipment INT
+	,el_ee_timeblock INT
+	,el_re_reps1 INT
+	,el_re_weight1 INT
+	,el_re_reps2 INT
+	,el_re_weight2 INT
+	,el_re_reps3 INT
+	,el_re_weight3 INT
+);
+
+
+
+
+/*
  ----------------------------
 ac_mtr_participants
 

@@ -35,8 +35,8 @@ I can do more with this concept...
 
 	,"test"   = { 
 		"hint"  =  "Test how new HTML5 controls look."
-	 ,"model" = [ "session/check", "chosen", "participant" ]
-	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "test", "master/tail" ] 
+	 ,"model" = [ "test", "session/check", "chosen", "participant" ]
+	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "tests/test", "master/tail" ] 
 	}
 
 	,"update" = { 

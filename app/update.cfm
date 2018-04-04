@@ -7,6 +7,8 @@
 	<cfabort>
 </cffunction>
 
+
+
 <cfscript>
 /* ----------------------- *
 update.cfm
@@ -80,11 +82,7 @@ if ( form.this eq "startSession" ) {
 	catch (any e) {
 		sendRequest( status=0, message="#e.message# - #data.source# - #e.detail#" );
 	}
-
-
 }
-
-
 else if ( form.this eq "resistance" ) 
 {
 	try {
@@ -202,9 +200,7 @@ else if ( form.this eq "resistance" )
 	writeoutput( "#w#" );
 */
 	abort;
-	
 }
-
 else if ( form.this eq "endurance" ) 
 {
 	try {
