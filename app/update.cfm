@@ -40,9 +40,6 @@ Values received here will be saved to one of the following tables.
 if ( !isDefined( "form" ) || StructIsEmpty( form ) )
 	sendRequest( status = 0, message = "This resource does not currently answer to request types other than POST." );
 
-//To make this easier to debug, add 'cgi.script_name' (of the client) to the request
-//and, probably also need to write the fields sent
-
 //This is (right now) how I'm going about using the same page for all AJAX updates.
 if ( !StructKeyExists( form, "this" ) )
 	sendRequest( status = 0, message = "Bad request (missing key 'this')" );
@@ -50,6 +47,73 @@ if ( !StructKeyExists( form, "this" ) )
 //...
 cc = createObject("component", "components.checkFields");
 qu = createObject("component", "components.quella");
+ck = createObject("component", "components.quella");
+
+try {
+	if ( StructKeyExists( form, "sess_id" ) ) 
+	{
+		//Check the thing
+		ckr = ck.exec( 
+			bindArgs = { sid=form.sess_id },
+			datasource="#data.source#",
+			string = "SELECT TOP 1 * FROM 
+			ac_mtr_logging_progress_tracker WHERE session_id = :sid" );
+
+		//If no records exist...
+		if ( !ckr.prefix.recordCount ) 
+		{
+			//I insert a dummy record here because I'm going to update to change my tracker...
+			insertStmt = "
+			INSERT INTO
+				ac_mtr_logging_progress_tracker 
+			VALUES ( 
+				 :aid
+  			,:sid
+				,:ee_rpm
+				,:ee_watts_resistance, :ee_speed
+				,:ee_grade, :ee_perceived_exertion
+				,:ee_equipment, :ee_timeblock
+				,:re_reps1
+				,:re_weight1
+				,:re_reps2
+				,:re_weight2
+				,:re_reps3
+				,:re_weight3
+				,:re_extype
+				,:dt
+			)"
+			;
+
+			ck.exec( 
+			 datasource="#data.source#"
+			,string = insertStmt
+			,bindArgs = {
+				 aid=0
+				,sid=0
+				,ee_rpm=0
+				,ee_watts_resistance=0
+				,ee_speed=0
+				,ee_grade=0
+				,ee_perceived_exertion=0
+				,ee_equipment=0
+				,ee_timeblock=0
+				,re_reps1=0
+				,re_weight1=0
+				,re_reps2=0
+				,re_weight2=0
+				,re_reps3=0
+				,re_weight3=0
+				,re_extype=0
+				,dt={value=DateTimeFormat(Now(),"YYYY-MM-DD HH:nn:ss"),type="cf_sql_datetime"}
+				}
+			);
+		}
+	}
+}
+catch (any e) {
+	sendRequest( status = 0, message = "#e.message# - #e.detail#" );	
+	abort;
+}
 
 //After initial participant selectrion 
 if ( form.this eq "startSession" ) {
@@ -101,6 +165,22 @@ if ( form.this eq "startSession" ) {
 else if ( form.this eq "resistance" ) 
 {
 	try {
+		//Define a progress statement
+		progressStmt =
+		"UPDATE 
+			ac_mtr_logging_progress_tracker 
+		SET 
+			re_reps1 = :re_reps1,
+			re_weight1 = :re_weight1,
+			re_reps2 = :re_reps2,
+			re_weight2 = :re_weight2,
+			re_reps3 = :re_reps3,
+			re_weight3 = :re_weight3,
+			re_extype = :re_extype 
+		WHERE 
+			active_pid = :aid AND session_id = :sid"
+		;
+
 		//check fields
 		fields = cc.checkFields( form, 
 			"pid", "sess_id",
@@ -162,6 +242,7 @@ else if ( form.this eq "resistance" )
 					el_re_extype = :extype
 				AND
 					el_re_pid = :pid",
+
 				datasource = "#data.source#",
 
 				bindArgs = {
@@ -177,9 +258,25 @@ else if ( form.this eq "resistance" )
 
 				 ,extype="#form.el_re_extype#" 
 				 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
-				} 
+				}
 			);	
 		}
+
+		//Progress tracking
+		qu.exec( 
+			string = progressStmt
+		 ,datasource = "#data.source#"
+		 ,bindArgs = {
+				aid = form.pid
+			 ,sid = form.sess_id
+			 ,re_reps1 = form.el_re_reps1
+			 ,re_weight1 = form.el_re_weight1
+			 ,re_reps2 = form.el_re_reps2
+			 ,re_weight2 = form.el_re_weight2
+			 ,re_reps3 = form.el_re_reps3
+			 ,re_weight3 = form.el_re_weight3
+			}
+		);
 	}
 	catch (any e) {
 		sendRequest( status = 0, message = "#e.message# - #e.detail#" );
@@ -191,6 +288,21 @@ else if ( form.this eq "resistance" )
 else if ( form.this eq "endurance" ) 
 {
 	try {
+		//Define a progress statement
+		progressStmt =
+		"UPDATE 
+			ac_mtr_logging_progress_tracker 
+		SET 
+			 ee_rpm = :ee_rpm 
+			,ee_speed = :ee_speed 
+			,ee_grade = :ee_grade 
+			,ee_perceived_exertion = :ee_perceived_exertion 
+			,ee_equipment = :ee_equipment
+			,ee_watts_resistance = :ee_watts_resistance
+		WHERE 
+			active_pid = :aid AND session_id = :sid"
+		;
+	
 		//check fields
 		fields = cc.checkFields( form, 
 			"pid", "sess_id","el_ee_equipment",
@@ -212,7 +324,8 @@ else if ( form.this eq "endurance" )
 		if ( !upd.prefix.recordCount ) {
 			upd = qu.exec( 
 				datasource = "#data.source#",
-				string = "INSERT INTO ac_mtr_exercise_log_ee VALUES ( :pid,:sid,:eq,:tb,:rpm,:wr,:speed,:grade,:pe,:dt,:mdt )",
+				string = "INSERT INTO ac_mtr_exercise_log_ee VALUES 
+					( :pid,:sid,:eq,:tb,:rpm,:wr,:speed,:grade,:pe,:dt,:mdt )",
 				bindArgs = {
 					sid="#form.sess_id#"
 				 ,pid="#form.pid#" 
@@ -261,6 +374,23 @@ else if ( form.this eq "endurance" )
 				}
 			);	
 		}
+
+		//Also save progress (but the thing needs to be checked)
+		qu.exec(
+			string = progressStmt
+		 ,datasource = "#data.source#"
+		 ,bindArgs = {
+				aid = form.pid
+			 ,sid = form.sess_id
+			 ,ee_rpm = form.el_ee_rpm
+			 ,ee_watts_resistance = form.el_ee_watts_resistance
+			 ,ee_speed = form.el_ee_speed
+			 ,ee_grade = form.el_ee_grade
+			 ,ee_perceived_exertion = form.el_ee_perceived_exertion
+			 ,ee_equipment = form.el_ee_equipment
+		 }
+		);
+		
 	}
 	catch (any e) {
 		sendRequest( status = 0, message = "#e.message# - #e.detail#" );	

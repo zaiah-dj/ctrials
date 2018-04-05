@@ -33,6 +33,12 @@ I can do more with this concept...
 	 ,"hint"  =  "This just documents this app." 
 	}
 
+	,"log"   = { 
+		"hint"  =  "See the access log."
+	 ,"model" =  "log"
+	 ,"view"  =  "log"
+	}
+
 	,"test"   = { 
 		"hint"  =  "Test how new HTML5 controls look."
 	 ,"model" = [ "test", "session/check", "chosen", "participant" ]
