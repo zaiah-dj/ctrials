@@ -24,12 +24,11 @@ to reorganize participants.
 
 	<div class="container-header">
 		<div class="container-header-inner">
+			<!---
 			<div class="container-header-left">
 				<!--- Search for names --->
 				<label>Search Names</label> <input id="bigly-search" type="search">
 			</div>
-
-			<!--- Legend --->
 			<div class="container-header-right">
 				<label>Legend</label>
 				<div class="legend">
@@ -39,6 +38,17 @@ to reorganize participants.
 					<div>
 					<div class="box resistance-class"></div> Resistance
 					</div>
+				</div>
+			</div>
+				--->
+			<!--- Legend --->
+			<label>Legend</label>
+			<div class="legend" style="position:relative; left: 100px; top:-30px;">
+				<div>
+				<div class="box endurance-class"></div> Endurance
+				</div>
+				<div>
+				<div class="box resistance-class"></div> Resistance
 				</div>
 			</div>
 		</div>
