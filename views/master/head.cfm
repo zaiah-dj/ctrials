@@ -95,7 +95,7 @@
 	<div class="persistent-nav">
 		<a href="/motrpac/web/secure/dataentry">Back to Motrpac</a>
 		<a href="#link( "default.cfm" )#">Select</a>
-		<a href="#link( "save.cfm" )#">Save Session</a>
+		<!---<a href="#link( "save.cfm" )#">Save Session</a>--->
 		<a href="#link( "logout.cfm" )#">Logout</a>
 		<a href="#link( "chosen.cfm" )#">Input</a>
 	</div>
