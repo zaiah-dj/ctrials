@@ -1,4 +1,7 @@
 <!--- | --->
+<cfif StructKeyeXists( url, "ids" )>
+</cfif>
+
 <cfif sess.status gt 1>
 	<cfquery datasource = "#data.source#" name = "part_list">
 	SELECT

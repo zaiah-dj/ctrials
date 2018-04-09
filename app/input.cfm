@@ -62,10 +62,11 @@
 	// Initialize client side AJAX code 
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" )
+	 /*,showDebug = true*/
 	 ,querySelector = [{
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
-		 ,noPreventDefault = true
 		 ,event = "click"
+		 ,noPreventDefault = true
 		 ,send = "input[name^=el_], select[name^=el_]" 
 		}]
 	 ,additional = [ 
@@ -125,6 +126,7 @@
 	//Initialize AJAX
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" ) 
+	 /*,showDebug = true*/
 	 ,additional = [ 
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }
@@ -133,8 +135,8 @@
 		]
 	 ,querySelector = {
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
-		 ,noPreventDefault = true
 		 ,event = "click"
+		 ,noPreventDefault = true
 		 ,send = ".slider"
 		}
 	);

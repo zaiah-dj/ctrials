@@ -13,6 +13,17 @@ function LOG( text ) {
 }
 
 
+//Log things to XHR on devices that this seems to be incredibly hard on...
+function xlogger ( message ) {
+	var x = new XMLHttpRequest();
+	x.onreadystatechange = function () {if ( this.readyState = 4 ) { 0; }};
+	msg = ( message ) ? message : "someone did something with javascript.";
+	x.open( "POST", "/motrpac/web/secure/dataentry/iv/robocop.cfm", true );
+	x.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	x.send( "message=" + msg );
+}
+
+
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 	//Basic filter search works
@@ -42,7 +53,6 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		} );
 	}
 
-
 	//Create a ghetto router
 	locarr = location.href.split( "/" ) ;
 	loc = locarr[ locarr.length - 1 ];
@@ -56,6 +66,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		for ( i = 0; i < b.length; i++ ) {
 			b[i].addEventListener( "input", function (ev) {
 				ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+				xlogger( "Slider value changed to: " + ev.target.value );
 			} );
 
 			if (( aac = b[i].parentElement.parentElement.childNodes[7] ) ) {

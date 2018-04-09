@@ -39,6 +39,12 @@ I can do more with this concept...
 	 ,"view"  =  "log"
 	}
 
+	,"robocop"   = { 
+		"hint"  =  "Log XHR requests."
+	 ,"model" =  "robocop"
+	 ,"view"  =  "robocop"
+	}
+
 	,"test"   = { 
 		"hint"  =  "Test how new HTML5 controls look."
 	 ,"model" = [ "test", "session/check", "chosen", "participant" ]
@@ -63,6 +69,12 @@ I can do more with this concept...
 		"hint"  =  "The thing of the thing."
 	 ,"model" = [ "session/check", "default", "chosen", "reconcile" ]
 	 ,"view"  = [ "master/head", "default", "master/tail" ] 
+	}
+
+	,"hack"= { 
+		"hint"  =  "Allows me to choose participants by either form field or url string."
+	 ,"model" = [ "session/check", "hack" ]
+	 ,"view"  = [ "master/head", "hack", "master/tail" ] 
 	}
 
 	,"check-in-complete"= { 

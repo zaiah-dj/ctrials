@@ -60,7 +60,7 @@
 					<div class="row">
 						<div class="cc col-sm-7">
 							<cfif !structKeyExists( val, "type" )>
-							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#val.def#" defaultvalue="#val.def#" name="#val.name#" data-attr-table="ee">
+							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#val.def#" defaultvalue="#val.def#" name="#val.name#">
 							</cfif>
 						</div>
 						<div class="catch cc col-sm-2">#val.def#</div>

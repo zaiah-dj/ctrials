@@ -5,7 +5,12 @@ table tr td { border: 1px solid black; }
 table th { text-align: left; }
 table tr:nth-child(even) {background-color: #aaa;}
 </style>
+
+<meta http-equiv="refresh" content="5">
+
 <cfoutput>
+Only showing top #resultCount# results
+
 <table>
 	<thead>
 		<th>Time</th>

@@ -350,7 +350,7 @@ component {
 		ASYNC 		= true;
 		HEADER_TYPE = "application/x-www-form-urlencoded" /*multipart/form-data*/;
 		if ( !this.DebugMe )
-			READY_STATE_CHANGE_FUNCTION = "function () { if ( this.readyState == 4 ) ( this.status == 200 ) ? console.log( this.responseText ) : #FAIL#; }";
+			READY_STATE_CHANGE_FUNCTION = "function () { if ( this.readyState == 4 ) { if ( this.status == 200 ) { console.log(this.responseText);}  } else { #FAIL#; } }";
 		else {
 			READY_STATE_CHANGE_FUNCTION = "function () { if ( this.readyState == 4 ) if ( this.status == 200 ) { _LOG( this.responseText );console.log(this.responseText);} else { #FAIL#; } }";
 		}
@@ -379,7 +379,9 @@ component {
 		//Generate a function and do this...	
 		savecontent variable="AllThatJS" {
 			writeoutput( "<script>
-				document.addEventListener('DOMContentLoaded',function(ev) {" );
+				document.addEventListener('DOMContentLoaded',function(ev) {
+					console.log( navigator.userAgent );
+			" );
 
 			//Loop through and figure out each place on the dom...
 			for ( qss in #QUERY_SELECTIONS# ) {
@@ -406,18 +408,20 @@ component {
 
 				writeoutput( "
 							( #JS_DEBUG# ) ? console.log( mv ) : 0;
-							mv.forEach( function(el){ arrVal.push(  el.name + '=' + el.value	) } );
+							for (i=0;i<mv.length;i++) { arrVal.push( mv[i].name + '=' + mv[i].value ); };
 							av = (#iif(StructKeyExists(arguments,"additional"),1,0)#) ? #ADDITIONAL_VALUES# : [];
-							av.forEach( function(el){ arrVal.push(  el.name + '=' + el.value	) } );
+							for (i=0;i<av.length;i++) { arrVal.push( av[i].name + '=' + av[i].value ); };
 							( #JS_DEBUG# ) ? console.log( av ) : 0;
 							Vals = arrVal.join( '&' );
 							( #JS_DEBUG# ) ? console.log( Vals ) : 0;
+							xlogger( 'Sending values ' + arrVal.join(' & ') + ' to #LOCATION#' );
 							x = new XMLHttpRequest();
-							x.onreadystatechange = #READY_STATE_CHANGE_FUNCTION#;
-							x.open( '#METHOD#', '#LOCATION#', #ASYNC# );
+							//x.onreadystatechange = #READY_STATE_CHANGE_FUNCTION#;
+							//x.open( '#METHOD#', '#LOCATION#', #ASYNC# );
+							x.open( '#METHOD#', '#LOCATION#', false );
 							x.setRequestHeader( 'Content-Type', '#HEADER_TYPE#' );
-							(0) ? 0 : 0; //Use this to set additional headers.
 							x.send(Vals);
+							return false;
 						}	);
 					} " );
 			}

@@ -18,4 +18,8 @@ Application.cfc
 <cfscript>
 	coldmvc = createObject("component", "coldmvc").init({});
 	coldmvc.make_index(coldmvc);
+	if ( coldmvc.app.page neq "log" ) {
+		log = CreateObject("component", "components.requestLogger" )
+			.init(table = "ac_mtr_serverlog", ds="#coldmvc.app.source#").append();
+	}
 </cfscript>

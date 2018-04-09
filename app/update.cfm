@@ -116,7 +116,10 @@ catch (any e) {
 }
 
 //After initial participant selectrion 
-if ( form.this eq "startSession" ) {
+if ( 
+	form.this eq "startSession" 
+	|| form.this eq "macDebugStartSession" /*For iPad issues.*/
+) {
 	exist = cc.checkFields( form, "transact_id", 	"staffer_id", "list" );
 	if ( !exist.status ) {
 		sendRequest( status = 0, message = "START SESSION AFTER PARTICIPANT DROP - #exist.message# - Either 'transact_id', 'staffer_id' or 'list' fields are missing from request)" );
@@ -160,6 +163,10 @@ if ( form.this eq "startSession" ) {
 			message="FAILED TO ADD TRANSACTION MEMBERS - " & 
 				"#e.message# - #data.source# - #e.detail#" 
 		);
+	}
+
+	if ( form.this eq "macDebugStartSession" ) {
+		location( url=link( "chosen.cfm" ), addtoken="no" );
 	}
 }
 else if ( form.this eq "resistance" ) 

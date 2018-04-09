@@ -24,7 +24,7 @@ component {
 		try {
 			checkStmt = "SELECT TOP 1 * FROM #this.table#";
 			r = q.execute( sql=checkStmt );
-			writedump( r );
+			//writedump( r );
 		}
 		catch (any e) {
 			writeoutput( e.message );
@@ -43,7 +43,7 @@ component {
 				);";
 
 			r = q.execute( sql=sqlCreate );
-			writedump( r );
+			//writedump( r );
 		}
 
 		return this;
@@ -53,8 +53,9 @@ component {
 	public Boolean function append( String message )
 	{
 		//...
-		msgExists = (StructKeyExists(arguments,"message") && IsSimpleValue(arguments.message));
-		msg = msgExists ? arguments.message : "";
+		if (StructKeyExists(arguments,"message"))
+			msg = arguments.message;
+		else { msg = ""; }
 		sqInsert = "INSERT INTO #this.table# VALUES (:md, :dt, :ip, :page, :ua, :msg)";
 	
 		//Add query
