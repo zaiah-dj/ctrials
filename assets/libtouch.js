@@ -1,1 +1,0 @@
-/*libtouch.js - Touch library*/

@@ -139,12 +139,31 @@ a.selected {
 	width: 100%;
 	white-space: nowrap;
 	/*overflow-Y: scroll;*/
-	overflow: hidden;
+	overflow: auto;
 	overflow-Y: scroll;
+	overflow-X: none;
 	height: 90%;
-	border: 3px solid black;
-	padding-left: 20px;
-	padding-right: 20px;
+	padding-left: 40px;
+	padding-right: 40px;
+	padding-top: 30px;
+	padding-bottom: 70px;
+
+	background-color: white;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+}
+
+.container-body > .footer {
+	position: fixed;
+	width: 100%;
+	height: 15%;
+	min-height: 40px;
+	display: inline-block;
+	z-index:99;
+	left: 0px;
+	bottom: 0px;
+	background: linear-gradient( to top, rgba(255,255,255,1), rgba(255,255,255,0));
 }
 
 .container-header ~ .container-body {
@@ -156,9 +175,7 @@ a.selected {
 	width: 95%;
 	overflow: hidden;
 	overflow-Y: scroll;
-	padding: 20px;
-	overflow: hidden;
-	overflow-Y: scroll;
+
 	margin: 0 auto;
 	margin-bottom: 30px;
 }
@@ -253,9 +270,6 @@ a.selected {
 	top: 6px;
 }
 
-.container-body {
-	background-color: white;
-}
 
 .container-nav ul li:hover {
 	background-color: #e6f2ff;
@@ -263,10 +277,11 @@ a.selected {
 }
 
 .container-nav ul li.selected {
+	/*
 	border-top: 3px solid black;
 	border-left: 3px solid black;
 	border-right: 3px solid black;
-
+	*/
 	border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
 	-gecko-border-radius: 5px 5px 0px 0px;
@@ -294,7 +309,8 @@ ul.inner-selection {
 	margin-bottom: 10px;
 }
 
-.container-body .inner-selection li {
+.container-body .inner-selection li 
+{
 	position: relative;
 	min-width: 70px;
 	width: 16%;
@@ -804,19 +820,22 @@ ul.part-drop-list li span:nth-child(2) ,
 { background-color: #b3c6ef; }
 
 .resistance-class:hover
-{ background-color: #f2cef3; }
+{ background-color: #ffc1ee; }
 
 .control-class:hover
 { background-color: #fac0b0; }
 
+/*#cddc39 - pukey green */
+/*#009688 - teal*/
+
 .endurance-class
-{ background-color: #7da1ee; }
+{ background-color: #7da1ee; /*staid blue*/ }
 
 .resistance-class
-{ background-color: #dc79f9; }
+{ background-color: #ffc107; /*yellow*/ }
 
 .control-class
-{ background-color: #e74f2f; }
+{ background-color: #aaaaaa; /*something "controlly"*/ }
 
 
 a.tiny-link { 
@@ -1120,5 +1139,22 @@ table.participant-entry tr.heading {
 }
 
 
+/*This was on the 'default' page*/
+.short-list { 
+	position: relative; border/*-bottom*/: 2px solid black; margin-bottom: 10px; width: 100%; 
+}
+
+.short-list ul li { 
+	width: 50px;
+	display: inline-block;
+	background: black;
+	padding-left: 10px;
+}
+
+.short-list ul li:hover 
+	{ background: white; }
+
+.wash input[type=text] 
+	{ display: none; }
 
 /*end of stylesheet ;) */

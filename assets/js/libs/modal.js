@@ -1,4 +1,5 @@
 /*modal.js - Add everything with this modal class*/
+/*
 document.addEventListener( "DOMContentLoaded", function (ev) {
 	// Get the modal
 	var modal = document.getElementById('myModal');
@@ -19,3 +20,6 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 			modal.style.display = "none";
 	}
 });
+*/
+
+//make things modal by not sucking...

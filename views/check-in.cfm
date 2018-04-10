@@ -1,6 +1,8 @@
 <cfif part.p_exercise lt 3>
 <cfoutput>
 	<div class="container-body">
+	<div class="footer">
+	</div>
 		<form name="checkInForm" action="#link( 'check-in-complete.cfm' )#" method="POST">
 			<table class="table">
 				<tbody>
@@ -19,9 +21,11 @@
 					<tr>
 						<td class="title">Exercise Session</td>
 						<td>
+						<!---
 							<cfloop from=1 to=4 index = "d">
 								<input type="radio" name="ps_day" value="#d#" required>Day #d#
 							</cfloop>
+							--->
 						
 							<cfset today = LCase( DateTimeFormat( Now(), "EEE" ))>
 							<ul class="dasch">
@@ -138,7 +142,7 @@
 			<input type="hidden" name="ps_pid" value="#url.id#">
 			<input type="submit" value="Next!"></input>
 		</form>
-	</div>
+	</div> <!--- container-body --->
 	</div>
 </cfoutput>
 </cfif>

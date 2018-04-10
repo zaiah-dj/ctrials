@@ -7,21 +7,7 @@ The first page that staff members see, allowing them
 to reorganize participants.
 
 --->
-<style type="text/css">
-.short-list { position: relative; border/*-bottom*/: 2px solid black; margin-bottom: 10px; width: 100%; }
-.wash input[type=text] { display: none; }
-.short-list ul li { width: 50px; display: inline-block; background: black; padding-left: 10px; }
-.short-list ul li:hover { background: white; }
-
-
-</style>
-
-
 <cfoutput>
-<!--- Include the requirements for touch --->
-<script type="text/javascript" src="#link( 'assets/touch.js' )#"></script>
-
-
 	<div class="container-header">
 		<div class="container-header-inner">
 			<!---

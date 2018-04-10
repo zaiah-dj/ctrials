@@ -16,8 +16,29 @@ I can do more with this concept...
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {}
-,"css"    = []
-,"js"     = []
+,"css"    = [
+ "zero.css"
+,"c3.min.css"
+,"chart.css"
+,"debug.css"
+,"default.css"
+]
+,"js"     = [
+ "libs/c3.min.js"
+,"libs/swipesensejs.js"
+,"libs/droppable.js"
+,"libs/sliders.js"
+,"libs/touch.js"
+,"libs/debug.js"
+,"proc/debug.js"
+,"proc/index.js"
+]
+,"meta"   = [
+  { "http-equiv"="content-type", content="text/html; charset=utf-8" }
+ ,{ name="viewport", content="minimum-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" }
+ ,{ name="apple-mobile-web-app-capable", content="yes" } 
+ ,{ name="apple-mobile-web-app-status-bar-style", content="black-translucent" } 
+]
 ,"localOverride" = {
 	 "4xx"    = 0
 	,"5xx"    = 0

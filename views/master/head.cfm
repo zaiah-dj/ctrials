@@ -4,15 +4,13 @@
 	<!-- Seems like other metas ought to be needed -->
 	<title>#data.title#</title>
 
-	<!-- All CSS and whatnot -->
-	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
-	
-	<!-- custom fonts -->	
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
 	<!-- Bootstrap: Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+<!---
+	<!-- All CSS and whatnot -->
+	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
+	
 	<!-- C3 css -->
 	<link rel="stylesheet" href="#link( "assets/css/c3.min.css" )#">
 
@@ -25,17 +23,34 @@
 <!--[if gte IE 9]>
 	<link rel="stylesheet" href="#link( "assets/default-ie.css" )#">
 <![endif]-->
+--->
+
+	<!-- custom fonts -->	
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
 	<!-- D3.js - Needed by c3 below -->
 	<script src="https://d3js.org/d3.v3.js"></script>       <!-- D3.js is a dependency -->
-	<!-- C3.js - Easy charts -->
-	<script src="#link( "assets/js/c3.min.js" )#"></script>
 
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+	<!--- All the CSS files --->
+<cfloop array=#data.css# index="cssFile">
+	<link rel="stylesheet" href="#link( "assets/css/" & cssFile )#"> 
+</cfloop>
+
+	<!--- All the Javascript files --->
+<cfloop array=#data.js# index="jsFile">
+	<script src="#link( "assets/js/" & jsFile )#" type="text/javascript"></script>
+</cfloop>
+
+<!---
+	<!-- C3.js - Easy charts -->
+	<script src="#link( "assets/js/c3.min.js" )#"></script>
 
 	<!-- iPad JS -->
 	<script type="text/javascript" src="#link("assets/js/swipesensejs.js")#"></script>
@@ -45,6 +60,7 @@
 
 	<!-- Our JS -->
 	<script type="text/javascript" src="#link("assets/index.js")#"></script>
+--->
 
 	<cfif data.debug eq 1>
 	<!-- CSS Debug stylesheet -->
