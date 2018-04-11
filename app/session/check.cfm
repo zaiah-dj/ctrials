@@ -14,6 +14,12 @@ sess = {
 	,expiresAfterInactive = 2 * 60 * 60
 };
 
+//Here are some controls that might help me test
+if ( data.debug eq 1 ) {
+	refreshTime = (StructKeyExists( url, "refreshTime" )) ? url.refreshTime : refreshTime;
+	expireTime = (StructKeyExists( url, "expireTime" )) ? url.expireTime : expireTime;
+}
+
 //Check if the user is in a staff database...
 
 //Get the last session key in the browser or make a new one.

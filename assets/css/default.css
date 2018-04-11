@@ -440,129 +440,6 @@ textarea.width {
 }
 
 
-
-/* **************************************** *
- * **************************************** *
- * **************************************** *
-   SLIDER 
-
- * **************************************** *
- * **************************************** *
- * **************************************** */
-
-/*Slider*/
-.slidecontainer {
-	width: 100%; /* Width of the outside container */
-}
-
-/* The slider itself */
-.slider {
-	position: relative;
-	top: 10px;
-	-webkit-appearance: none;  /* Override default CSS styles */
-	appearance: none;
-	width: 100%; /* Full-width */
-	height: 10px; /* Specified height */
-	background: #d3d3d3; /* Grey background */
-	outline: none; /* Remove outline */
-	opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-	-webkit-transition: .2s; /* 0.2 seconds transition on hover */
-	transition: opacity .2s;
-}
-
-/* Mouse-over effects */
-.slider:hover {
-	opacity: 1; /* Fully shown on mouse-over */
-}
-
-/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
-.slider::-webkit-slider-thumb {
-	-webkit-appearance: none; /* Override default look */
-	appearance: none;
-	width: 25px; /* Set a specific slider handle width */
-	height: 35px; /* Slider handle height */
-	cursor: pointer; /* Cursor on hover */
-	-moz-border-radius: 5px;	
-	-gecko-border-radius: 5px;	
-	border-radius: 5px;	
-	background-color: #e6f2ff;
-	border: 5px solid #728ab2; 
-	box-shadow: 5px 5px 5px gray;
-}
-
-
-.slider::-moz-range-thumb {
-	width: 25px; /* Set a specific slider handle width */
-	height: 25px; /* Slider handle height */
-	background: #4CAF50; /* Green background */
-	cursor: pointer; /* Cursor on hover */
-	background-color: #e6f2ff;
-	border: 5px solid #728ab2; 
-	box-shadow: 5px 5px 5px gray;
-}
-
-
-.slider::-moz-range-thumb::after,
-.slider::-webkit-slider-thumb::after {
-	-moz-border-radius: 5px;	
-	-gecko-border-radius: 5px;	
-	border-radius: 5px;	
-	height: 10px;
-	width: 10px;
-	background-color: #e6f2ff;
-	border: 5px solid #728ab2; 
-	box-shadow: 10px 10px 5px gray;
-}
-
-
-/* **************************************** *
- * **************************************** *
- * **************************************** *
-   MODAL 
-
- * **************************************** *
- * **************************************** *
- * **************************************** */
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* The Close Button */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
 /* **************************************** *
  * **************************************** *
  * **************************************** *
@@ -583,20 +460,7 @@ textarea.width {
 }
 
 
-/* **************************************** *
- * **************************************** *
- * **************************************** *
-   MODAL FORM 
 
- * **************************************** *
- * **************************************** *
- * **************************************** */
-.modal-content textarea
-{
-	width: 100%;
-	height: 200px;
-	font-size: 1.2em;
-}
 
 /*mobile*/
 @media ( max-width: 736px ) {
@@ -1156,5 +1020,4 @@ table.participant-entry tr.heading {
 
 .wash input[type=text] 
 	{ display: none; }
-
 /*end of stylesheet ;) */

@@ -17,21 +17,24 @@ I can do more with this concept...
 ,"master-post" = false
 ,"data"   = {}
 ,"css"    = [
- "zero.css"
-,"c3.min.css"
-,"chart.css"
-,"debug.css"
-,"default.css"
+	 "zero.css"
+	,"c3.min.css"
+	,"chart.css"
+	,"debug.css"
+	,"default.css"
+	,"modals.css"
+	,"sliders.css"
+	,"checkbox-radio.css"
 ]
 ,"js"     = [
- "libs/c3.min.js"
-,"libs/swipesensejs.js"
-,"libs/droppable.js"
-,"libs/sliders.js"
-,"libs/touch.js"
-,"libs/debug.js"
-,"proc/debug.js"
-,"proc/index.js"
+	 "libs/c3.min.js"
+	,"libs/swipesensejs.js"
+	,"libs/droppable.js"
+	,"libs/sliders.js"
+	,"libs/touch.js"
+	,"libs/debug.js"
+	,"proc/debug.js"
+	,"proc/index.js"
 ]
 ,"meta"   = [
   { "http-equiv"="content-type", content="text/html; charset=utf-8" }

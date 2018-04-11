@@ -110,9 +110,12 @@
 						<td>
 							<cfif part.p_exercise eq 1>
 								<cfloop query=#Q.machines.results#> 
-									<label>#et_name#</label>
+								<div class="clabel">
+									#et_name#<!---<label>#et_name#</label>--->
 									<input type="radio" name="machine_value" value="#et_name#" required>
+									<span class="checkmark"></span>
 									<br />
+								</div>
 								</cfloop>
 							<cfelse>
 								<cfset el=ListToArray( ValueList( Q.exercises.results.et_name, "," ))>
