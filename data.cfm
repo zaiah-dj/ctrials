@@ -18,6 +18,10 @@ I can do more with this concept...
 ,"data"   = {}
 ,"css"    = [
 	 "zero.css"
+
+	,"https://fonts.googleapis.com/css?family=Montserrat"
+	,"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+
 	,"c3.min.css"
 	,"chart.css"
 	,"debug.css"
@@ -27,7 +31,11 @@ I can do more with this concept...
 	,"checkbox-radio.css"
 ]
 ,"js"     = [
-	 "libs/c3.min.js"
+	 "https://d3js.org/d3.v3.js"
+	,"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+	,"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+
+	,"libs/c3.min.js"
 	,"libs/swipesensejs.js"
 	,"libs/droppable.js"
 	,"libs/sliders.js"
@@ -137,9 +145,15 @@ I can do more with this concept...
 	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] 
 		}
 
-	,"refresh-session" = { 
-		"model" =  "refresh-session"
-	 ,"view"  = [ "master/head", "refresh-session", "master/tail" ] 
+	,"stale" = { 
+		"model" =  "stale"
+	 ,"view"  = [ "master/head", "stale", "master/tail" ] 
+	 ,"hint"  =  "Refresh a user session."
+	 	}
+
+	,"refresh" = { 
+		"model" =  "refresh"
+	 ,"view"  = [ "master/head", "refresh", "master/tail" ] 
 	 ,"hint"  =  "Refresh a user session."
 	 	}
 

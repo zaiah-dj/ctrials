@@ -2,7 +2,8 @@
 qu = createObject( "component", "components.quella" );
 expireTime = 60 /*secs*/ * 60 /*minutes*/ * 2 /*hours*/;
 refreshTime = 60 /*secs*/ * 15 /*minutes*/; 
-refreshTime = data.neverExpire;
+refreshTime = 20;
+superExpire = -1;
 sess = {
 	 key = 0
 	,exists = 1
@@ -52,28 +53,33 @@ if ( !cs.prefix.recordCount ) {
 	);
 }
 else {
+	writeoutput("session = " & session.iv_motrpac_transact_id); 
+	writeoutput("check dot cfm, user said yes, we should be here...");
+	/*
+	abort;
+	*/
+
 	//DateDiff
 	unixTime = DateDiff( "s", CreateDate(1970,1,1), CreateODBCDateTime(Now()));
 	updateTime = DateDiff( "s", CreateDate(1970,1,1), cs.results.p_lastUpdateTime);
 	timePassed = unixTime - updateTime;
-	/*
+
 	//This is all here in case you forget how to do math.
-	writeoutput( unixTime );
+	writeoutput( 'Unix Time: ' & unixTime );
 	writeoutput( "<br />" );
-	writeoutput( updateTime );
+	writeoutput( 'Update Time: ' & updateTime );
 	writeoutput( "<br />" );
-	writeoutput( timePassed );
+	writeoutput( 'Time Passed: ' & timePassed );
 	writeoutput( "<br />" );
-	writeoutput( timePassed & " secs" );
+	writeoutput( 'Time Passed in Seconds: ' & timePassed & " secs" );
 	writeoutput( "<br />" );
-	writeoutput(( timePassed / 60 ) & " minutes" );
+	writeoutput( 'Time Passed (minutes): ' & ( timePassed / 60 ) & " minutes" );
 	writeoutput( "<br />" );
-	writeoutput((( timePassed / 60 ) / 60 ) & " hours" );
-	abort;
-	*/
+	writeoutput( 'Time passed (hours): ' & (( timePassed / 60 ) / 60 ) & " hours" );
+	if ( data.debug eq 3 ) abort;
 
 	//after 2 hours (or whatever expireTime is), the session needs to completely expire
-	if ( timePassed >= expireTime ) {
+	if ( superExpire neq -1 && timePassed >= expireTime ) {
 		//writeoutput( "#expireTime# seconds have passed.  Kill the session..." );abort;
 		if ( StructKeyExists( session, "iv_motrpac_transact_id" ) ) {
 			//really doesn't matter if this fails.
@@ -84,6 +90,10 @@ else {
 			);
 			StructDelete( session, "iv_motrpac_transact_id" );
 		}
+
+		writeoutput( "Did I get here?" );
+		abort;
+
 		//This staff member needs to run checkin again
 		location( url="#link( '' )#", addtoken="no" );
 	}
@@ -93,7 +103,7 @@ else {
 		//writeoutput( "#refreshTime# seconds have passed.  Refresh the session..." );abort;
 		sess.needsRefresh = 1;
 		//
-		location( url="#link( 'refresh-session.cfm' )#", addtoken="no" );
+		location( url="#link( 'stale.cfm' )#", addtoken="no" );
 	}
 
 	//if neither of these has happened, then update the lastMod field in transaction_set

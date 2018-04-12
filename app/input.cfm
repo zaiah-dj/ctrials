@@ -9,8 +9,10 @@ if ( part.p_exercise eq 0 ) {
 }
 else if ( part.p_exercise eq 1 ) { 
 	//Generate the time blocks for endurance exercises.
-	times1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) times1[ ii++ ]	= i - 4 & " - " & /*"< " &*/ i & " min";
-	times2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) times2[ ii++ ]	=i - 4 & " - " & /*"< " &*/ i & " min";
+	times1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) times1[ ii++ ]	= /*i - 4 & " - " & */"< " & i & " min";
+	times2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) times2[ ii++ ]	= /*i - 4 & " - " & */"< " & i & " min";
+	//times1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) times1[ ii++ ]	= i - 4 & " - " & /*"< " &*/ i & " min";
+	//times2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) times2[ ii++ ]	=i - 4 & " - " & /*"< " &*/ i & " min";
 
 	//Generate a default time.
 	defaultTimeblock = ( StructKeyExists( url, "time" ) ) ? url.time : 5;

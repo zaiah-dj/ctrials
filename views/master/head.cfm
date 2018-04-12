@@ -4,63 +4,23 @@
 	<!-- Seems like other metas ought to be needed -->
 	<title>#data.title#</title>
 
-	<!-- Bootstrap: Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-<!---
-	<!-- All CSS and whatnot -->
-	<link rel="stylesheet" href="#link( "assets/zero.css" )#">
-	
-	<!-- C3 css -->
-	<link rel="stylesheet" href="#link( "assets/css/c3.min.css" )#">
-
-	<!-- My chart styles --> 
-	<link rel="stylesheet" href="#link( "assets/chart.css" )#">
-
-	<!-- My styles -->
-	<link rel="stylesheet" href="#link( "assets/default.css" )#">
-
-<!--[if gte IE 9]>
-	<link rel="stylesheet" href="#link( "assets/default-ie.css" )#">
-<![endif]-->
---->
-
-	<!-- custom fonts -->	
-	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
-	<!-- D3.js - Needed by c3 below -->
-	<script src="https://d3js.org/d3.v3.js"></script>       <!-- D3.js is a dependency -->
-
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
 	<!--- All the CSS files --->
 <cfloop array=#data.css# index="cssFile">
+	<cfif (Left(cssFile,4) eq "http") or (Left(cssFile,5) eq "https")>
+	<link rel="stylesheet" href="#cssFile#"> 
+	<cfelse>
 	<link rel="stylesheet" href="#link( "assets/css/" & cssFile )#"> 
+	</cfif>
 </cfloop>
 
 	<!--- All the Javascript files --->
 <cfloop array=#data.js# index="jsFile">
+	<cfif (Left(jsFile,4) eq "http") or (Left(jsFile,5) eq "https")>
+	<script src="#jsFile#" type="text/javascript"></script>
+	<cfelse>
 	<script src="#link( "assets/js/" & jsFile )#" type="text/javascript"></script>
+	</cfif>
 </cfloop>
-
-<!---
-	<!-- C3.js - Easy charts -->
-	<script src="#link( "assets/js/c3.min.js" )#"></script>
-
-	<!-- iPad JS -->
-	<script type="text/javascript" src="#link("assets/js/swipesensejs.js")#"></script>
-	
-	<!-- Drag and Drop JS -->
-	<script type="text/javascript" src="#link("assets/js/droppable.js")#"></script>
-
-	<!-- Our JS -->
-	<script type="text/javascript" src="#link("assets/index.js")#"></script>
---->
 
 	<cfif data.debug eq 1>
 	<!-- CSS Debug stylesheet -->
@@ -68,32 +28,24 @@
 	<script type="text/javascript" src="#link("assets/debug.js")#"></script>
 	</cfif>
 
-	<!---
-	<!-- Jquery mobile if needed -->
-	<link rel="stylesheet" type="text/css" href="#link( 'assets/css/mobileSelect.css' )#">
-	<script src="#link( 'assets/js/mobileSelect.js' )#" type="text/javascript"></script>
-		--->
-
-	<!-- iPad Stuff -->
+	<!--- iPad Stuff --->
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-	<!-- iPad Setup -->
+	<!--- iPad Setup --->
 	<meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-	<!-- Reset iPad touch event data -->	
+	<!--- Reset iPad touch event data --->	
 	<script type="text/javascript">
 		// TOUCH-EVENTS SINGLE-FINGER SWIPE-SENSING JAVASCRIPT
 		// Courtesy of PADILICIOUS.COM and MACOSXAUTOMATION.COM
 		var fingerCount = 0;
 		var startX = 0;
 	</script>
-
 </head>
 
 <body>
-
 	<cfif data.debug eq 1>
 <!---
 	<div class="debug" id="mega-debug">
@@ -109,7 +61,7 @@
 	</cfif>
 
 	<div class="persistent-nav">
-		<a href="/motrpac/web/secure/dataentry">Back to Motrpac</a>
+		<a href="/motrpac/web/secure/dataentry">Back to MoTrPAC</a>
 		<a href="#link( "default.cfm" )#">Select</a>
 		<!---<a href="#link( "save.cfm" )#">Save Session</a>--->
 		<a href="#link( "logout.cfm" )#">Logout</a>

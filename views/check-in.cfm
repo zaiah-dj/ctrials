@@ -53,8 +53,8 @@
 						<td>
 
 						<!--- Figure blood pressure --->
-						<cfset sys_bp=#iif( model.currentBpSystolic lt 60, 60, model.currentBpSystolic )#>
-						<cfset dia_bp=#iif( model.currentBpDiastolic lt 60, 60, model.currentBpDiastolic )#>
+						<cfset sys_bp=#iif( model.currentBpSystolic lt 60, 80, model.currentBpSystolic )#>
+						<cfset dia_bp=#iif( model.currentBpDiastolic lt 50, 80, model.currentBpDiastolic )#>
 
 						<cfif !model.needsNewBp>
 							<span class=huge>#sys_bp#</span> / <span class=huge>#dia_bp#</span>
@@ -71,7 +71,7 @@
 								<label class="sameline">Systolic</label>
 								<div class="row">
 									<div class="cc col-sm-7">
-										<input type="range" min="60" max="300" class="slider" value="#sys_bp#" name="bp_systolic" required>
+										<input type="range" min="60" max="180" class="slider" value="#sys_bp#" name="bp_systolic" required>
 									</div>
 									<div class="catch cc col-sm-1">#sys_bp#</div>
 									<div class="col-sm-1">
@@ -85,7 +85,7 @@
 								<label class="sameline">Diastolic</label>
 								<div class="row">
 									<div class="cc col-sm-7">
-										<input type="range" min="60" max="300" class="slider" value="#dia_bp#" name="bp_diastolic" required>
+										<input type="range" min="50" max="110" class="slider" value="#dia_bp#" name="bp_diastolic" required>
 									</div>
 									<div class="catch cc col-sm-1">#dia_bp#</div>
 									<div class="col-sm-1">
@@ -101,7 +101,13 @@
 					<tr>
 						<td class="title">Target Heart Rate</td>
 						<td>
-							#model.targetHeartRate# BPM
+							<!---
+							<cfif model.targetHeartRate>
+								<cfset minTR=model.targetHeartRate * 0.65>
+								<cfset maxTR=model.targetHeartRate * 0.75>
+							</cfif>
+							--->
+							#model.targetHeartRate# BPM <!---( Variances between #minTR# - #maxTR# BPM are allowed )--->
 						</td>
 					</tr>
 
@@ -119,16 +125,16 @@
 								</cfloop>
 							<cfelse>
 								<cfset el=ListToArray( ValueList( Q.exercises.results.et_name, "," ))>
-								<ul>
-									<li>
-										<label><cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop></label>
-										<input type="radio" name="exset" value="5"><br />
-									</li>
-									<li>
-										<label><cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop></label>
-										<input type="radio" name="exset" value="6">
-									</li>
-								</ul>
+								<div class="clabel">
+									<cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop>
+									<input type="radio" name="exset" value="5"><br />
+									<span class="checkmark"></span>
+								</div>
+								<div class="clabel">
+									<cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop>
+									<input type="radio" name="exset" value="6">
+									<span class="checkmark"></span>
+								</div>
 							</cfif>
 						</td>
 					</tr>

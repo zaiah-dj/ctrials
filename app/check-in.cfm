@@ -1,4 +1,5 @@
 <cfscript>
+//Objects
 db = createObject("component", "components.quella");
 wb = createObject("component", "components.writeback");
 er = createObject("component", "components.exceptRequest");
@@ -49,12 +50,6 @@ else {
 	 ,nextSchedVisit = DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" )
 	};
 }
-
-/*
-writedump( Q );
-writedump( model );
-abort;
-*/
 </cfscript>
 <cfoutput>
 </cfoutput>
