@@ -10,9 +10,8 @@
 	<!--- TODO: This shouldn't take two loops.  Think about it more. --->
 	<div class="inner-selection">
 		<ul class="inner-selection">
-		<cfset ii=5>
-
 		<cfloop array=#times# index=ind>
+		<cfif ind.index eq 30><br /></cfif>
 		<cfif ind.index eq defaultTimeblock>
 			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#"><li class="selected">#ind.text#</li></a>
 		<cfelseif ind.index lt defaultTimeblock>
@@ -21,31 +20,6 @@
 			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#"><li>#ind.text#</li></a>
 		</cfif>
 		</cfloop>
-<!---
-		<cfloop array=#times1# index=ind> 
-		<cfif ii eq defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="selected">#ind#</li></a>
-		<cfelseif ii lt defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="completed">#ind#</li></a>
-		<cfelse>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li>#ind#</li></a>
-		</cfif>
-		<cfset ii += 5>
-		</cfloop>
-		</ul>
-		
-		<ul class="inner-selection">
-		<cfloop array=#times2# index=ind> 
-		<cfif ii eq defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="selected">#ind#</li></a>
-		<cfelseif ii lt defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#' )#"><li class="completed">#ind#</li></a>
-		<cfelse>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ii#'  )#"><li>#ind#</li></a>
-		</cfif>
-		<cfset ii += 5>
-		</cfloop>
---->
 		</ul>
 	</div>
 
