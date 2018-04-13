@@ -110,8 +110,9 @@ else {
 	else {
 		ds = qu.exec( 
 			string = "UPDATE ac_mtr_participant_transaction_set
-				SET p_lastUpdateTime = 
+				SET p_lastUpdateTime = :dut
 				WHERE p_transaction_id = :sid",
+			datasource = "#data.source#",
 			bindArgs = {
 				sid = sess.key 
 			 ,dut = { 
@@ -124,7 +125,7 @@ else {
 		//If this fails, it's kind of a problem...
 		if ( !ds.status ) {
 			0;
-			throw "DEATH TO ALL!";
+			throw "DEATH AT SESSION UPDATE - #ds.message#";
 		}
 	}
 }

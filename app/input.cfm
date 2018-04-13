@@ -14,6 +14,22 @@ else if ( part.p_exercise eq 1 ) {
 	//times1=[]; ii=1;for ( i = 5; i <= 30; i += 5 ) times1[ ii++ ]	= i - 4 & " - " & i & " min";
 	//times2=[]; ii=1;for ( i = 35; i <= 60; i += 5 ) times2[ ii++ ]	=i - 4 & " - " & i & " min";
 
+	times = [
+		 { index=0,  text="Warm-Up" }
+		,{ index=5,  text='<5m'  }
+		,{ index=10, text='<10m' }
+		,{ index=15, text='<15m' }
+		,{ index=20, text='<20m' }
+		,{ index=25, text='<25m' }
+
+		,{ index=30, text='<30m' }
+		,{ index=35, text='<35m' }
+		,{ index=40, text='<40m' }
+		,{ index=45, text='<45m' }
+		,{ index=50, text='<50m' }
+		,{ index=55, text='Recovery' }
+	];
+
 	//Generate a default time.
 	defaultTimeblock = ( StructKeyExists( url, "time" ) ) ? url.time : 5;
 
@@ -41,14 +57,14 @@ else if ( part.p_exercise eq 1 ) {
 		  ,def = "#(!rc) ? 0 : iif((req.results.el_ee_grade eq ""),0,req.results.el_ee_grade)#" }
 	 ,{ label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "el_ee_perceived_exertion"
 		  ,def = "#(!rc) ? 0 : iif((req.results.el_ee_perceived_exertion eq ""),0,req.results.el_ee_perceived_exertion)#" }
-	 ,{ label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "el_ee_perceived_exertion"
+	 ,{ label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "el_ee_affect"
 		  ,def = 0/*"#(!rc) ? 0 : iif((req.results.el_ee_perceived_exertion eq ""),0,req.results.el_ee_perceived_exertion)#"*/ }
 	];
 
 	// Initialize client side AJAX code 
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" )
-	 /*,showDebug = true*/
+	 ,showDebug = true
 	 ,querySelector = [{
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
 		 ,event = "click"
@@ -104,6 +120,7 @@ else if ( part.p_exercise eq 2 ) {
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" ) 
 	 /*,showDebug = true*/
+	 ,showDebug = true
 	 ,additional = [ 
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }

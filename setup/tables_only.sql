@@ -200,6 +200,7 @@ Track endurance exercise results.
 ,el_ee_watts_resistance INT
 ,el_ee_speed INT
 ,el_ee_grade INT
+,el_ee_affect INT
 ,el_ee_perceived_exertion INT
 ,el_ee_datetime DATETIME
  ----------------------------
@@ -218,6 +219,7 @@ CREATE TABLE ac_mtr_exercise_log_ee (
 	,el_ee_watts_resistance INT
 	,el_ee_speed INT
 	,el_ee_grade INT
+	,el_ee_affect INT
 	,el_ee_perceived_exertion INT
 	,el_ee_datetime DATETIME
 	,el_ee_datetime_modified DATETIME
@@ -608,4 +610,121 @@ SET IDENTITY_INSERT ac_mtr_ee_machine_list ON;
 SET IDENTITY_INSERT ac_mtr_fail_visit_reasons ON;
 */
 
-
+IF OBJECT_ID( N'ac_mtr_giantexercisetable ', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_giantexercisetable ;
+END
+CREATE TABLE ac_mtr_giantexercisetable (
+	[rec_id]           int IDENTITY(1,1) NOT NULL,
+	[recordthread]     varchar(50) NOT NULL DEFAULT (newid()),
+	[d_inserted]       datetime NOT NULL DEFAULT (getdate()),
+	[insertedBy]       varchar(50) NOT NULL,
+	[deleted]          int NULL,
+	[deleteReason]     varchar(max) NULL,
+	[participantGUID]  varchar(50) NULL,
+	[visitGUID]        varchar(50) NULL,
+	[d_visit]          date NULL,
+	[staffID]          varchar(10) NULL,
+	[dayofwk]          int NULL,
+	[Hrworking]        int NULL,
+	[m10_exhr]         int NULL,
+	[m10_exoth1]       int NULL,
+	[m10_exoth2]       int NULL,
+	[m10_exprctgrade]  numeric(18,0) NULL,
+	[m10_exrpm]        int NULL,
+	[m10_exspeed]      numeric(18,0) NULL,
+	[m10_exwatres]     int NULL,
+	[m15_exhr]         int NULL,
+	[m15_exoth1]       int NULL,
+	[m15_exoth2]       int NULL,
+	[m15_exprctgrade]  numeric(18,0) NULL,
+	[m15_exrpm]        int NULL,
+	[m15_exspeed]      numeric(18,0) NULL,
+	[m15_exwatres]     int NULL,
+	[m20_exhr]         int NULL,
+	[m20_exoth1]       int NULL,
+	[m20_exoth2]       int NULL,
+	[m20_exOthafct]    int NULL,
+	[m20_exprctgrade]  numeric(18,0) NULL,
+	[m20_exrpe]        int NULL,
+	[m20_exrpm]        int NULL,
+	[m20_exspeed]      numeric(18,0) NULL,
+	[m20_exwatres]     int NULL,
+	[m25_exhr]         int NULL,
+	[m25_exoth1]       int NULL,
+	[m25_exoth2]       int NULL,
+	[m25_exprctgrade]  numeric(18,0) NULL,
+	[m25_exrpm]        int NULL,
+	[m25_exspeed]      numeric(18,0) NULL,
+	[m25_exwatres]     int NULL,
+	[m30_exhr]         int NULL,
+	[m30_exoth1]       int NULL,
+	[m30_exoth2]       int NULL,
+	[m30_exprctgrade]  numeric(18,0) NULL,
+	[m30_exrpm]        int NULL,
+	[m30_exspeed]      numeric(18,0) NULL,
+	[m30_exwatres]     int NULL,
+	[m35_exhr]         int NULL,
+	[m35_exoth1]       int NULL,
+	[m35_exoth2]       int NULL,
+	[m35_exprctgrade]  numeric(18,0) NULL,
+	[m35_exrpm]        int NULL,
+	[m35_exspeed]      numeric(18,0) NULL,
+	[m35_exwatres]     int NULL,
+	[m40_exhr]         int NULL,
+	[m40_exoth1]       int NULL,
+	[m40_exoth2]       int NULL,
+	[m40_exprctgrade]  numeric(18,0) NULL,
+	[m40_exspeed]      numeric(18,0) NULL,
+	[m40_exwatres]     int NULL,
+	[m40_rpm]          int NULL,
+	[m45_exhr]         int NULL,
+	[m45_exoth1]       int NULL,
+	[m45_exoth2]       int NULL,
+	[m45_exOthafct]    int NULL,
+	[m45_exprctgrade]  numeric(18,0) NULL,
+	[m45_exrpe]        int NULL,
+	[m45_exrpm]        int NULL,
+	[m45_exspeed]      numeric(18,0) NULL,
+	[m45_exwatres]     int NULL,
+	[m5_exhr]          int NULL,
+	[m5_exoth1]        int NULL,
+	[m5_exoth2]        int NULL,
+	[m5_exprctgrade]   numeric(18,0) NULL,
+	[m5_exrpm]         int NULL,
+	[m5_exspeed]       numeric(18,0) NULL,
+	[m5_exwatres]      int NULL,
+	[m5_rechr]         int NULL,
+	[m5_recoth1]       int NULL,
+	[m5_recoth2]       int NULL,
+	[m5_recprctgrade]  numeric(18,0) NULL,
+	[m5_recrpm]        int NULL,
+	[m5_recspeed]      numeric(18,0) NULL,
+	[m5_recwatres]     int NULL,
+	[mchntype]         int NULL,
+	[MthlyBPDia]       int NULL,
+	[MthlyBPSys]       int NULL,
+	[nomchntype]       varchar(max) NULL,
+	[nxtsesn_dt]       date NULL,
+	[othMchn1]         varchar(max) NULL,
+	[othMchn2]         varchar(max) NULL,
+	[reasnmisd]        int NULL,
+	[Sessionmisd]      int NULL,
+	[Sp_mchntype]      varchar(max) NULL,
+	[sp_reasnmisd]     varchar(max) NULL,
+	[stdywk]           int NULL,
+	[trgthr1]          int NULL,
+	[trgthr2]          int NULL,
+	[typedata]         int NULL,
+	[weight]           numeric(18,0) NULL,
+	[wrmup_hr]         int NULL,
+	[wrmup_oth1]       int NULL,
+	[wrmup_oth2]       int NULL,
+	[wrmup_othafct]    int NULL,
+	[wrmup_prctgrade]  numeric(18,0) NULL,
+	[wrmup_rpe]        int NULL,
+	[wrmup_rpm]        int NULL,
+	[wrmup_speed]      numeric(18,0) NULL,
+	[wrmup_watres]     int NULL,
+	[breaks]           int NULL 
+);

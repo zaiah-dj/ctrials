@@ -70,9 +70,12 @@ try {
 				 :aid
   			,:sid
 				,:ee_rpm
-				,:ee_watts_resistance, :ee_speed
-				,:ee_grade, :ee_perceived_exertion
-				,:ee_equipment, :ee_timeblock
+				,:ee_watts_resistance
+				,:ee_speed
+				,:ee_grade
+				,:ee_perceived_exertion
+				,:ee_equipment
+				,:ee_timeblock
 				,:re_reps1
 				,:re_weight1
 				,:re_reps2
@@ -305,6 +308,7 @@ else if ( form.this eq "endurance" )
 			,ee_grade = :ee_grade 
 			,ee_perceived_exertion = :ee_perceived_exertion 
 			,ee_equipment = :ee_equipment
+			,ee_affect = :ee_affect
 			,ee_watts_resistance = :ee_watts_resistance
 		WHERE 
 			active_pid = :aid AND session_id = :sid"
@@ -312,7 +316,7 @@ else if ( form.this eq "endurance" )
 	
 		//check fields
 		fields = cc.checkFields( form, 
-			"pid", "sess_id","el_ee_equipment",
+			"pid", "sess_id","el_ee_equipment", "el_ee_affect",
 			"el_ee_timeblock","el_ee_rpm","el_ee_watts_resistance",
 			"el_ee_speed","el_ee_grade","el_ee_perceived_exertion" );
 
@@ -332,7 +336,7 @@ else if ( form.this eq "endurance" )
 			upd = qu.exec( 
 				datasource = "#data.source#",
 				string = "INSERT INTO ac_mtr_exercise_log_ee VALUES 
-					( :pid,:sid,:eq,:tb,:rpm,:wr,:speed,:grade,:pe,:dt,:mdt )",
+					( :pid,:sid,:eq,:tb,:rpm,:wr,:speed,:grade,:af,:pe,:dt,:mdt )",
 				bindArgs = {
 					sid="#form.sess_id#"
 				 ,pid="#form.pid#" 
@@ -342,6 +346,7 @@ else if ( form.this eq "endurance" )
 				 ,wr="#form.el_ee_watts_resistance#" 
 				 ,speed="#form.el_ee_speed#" 
 				 ,grade="#form.el_ee_grade#" 
+				 ,af="#form.el_ee_affect#" 
 				 ,pe="#form.el_ee_perceived_exertion#" 
 				 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
 				 ,mdt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
@@ -358,6 +363,7 @@ else if ( form.this eq "endurance" )
 					el_ee_watts_resistance = :wr,
 					el_ee_speed = :speed,
 					el_ee_grade = :grade,
+					el_ee_affect = :af,
 					el_ee_perceived_exertion = :pe,
 					el_ee_datetime_modified = :dt
 				WHERE
@@ -373,6 +379,7 @@ else if ( form.this eq "endurance" )
 					"eq" = "#form.el_ee_equipment#" ,
 					tb = "#form.el_ee_timeblock#" ,
 					rpm = "#form.el_ee_rpm#" ,
+				  af="#form.el_ee_affect#",
 					wr = "#form.el_ee_watts_resistance#" ,
 					speed = "#form.el_ee_speed#" ,
 					grade = "#form.el_ee_grade#" ,
@@ -390,9 +397,11 @@ else if ( form.this eq "endurance" )
 				aid = form.pid
 			 ,sid = form.sess_id
 			 ,ee_rpm = form.el_ee_rpm
+			 ,ee_rpm = form.el_ee_rpm
 			 ,ee_watts_resistance = form.el_ee_watts_resistance
 			 ,ee_speed = form.el_ee_speed
 			 ,ee_grade = form.el_ee_grade
+			 ,ee_affect = form.el_ee_affect
 			 ,ee_perceived_exertion = form.el_ee_perceived_exertion
 			 ,ee_equipment = form.el_ee_equipment
 		 }
