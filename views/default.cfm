@@ -6,7 +6,12 @@ default.cfm
 The first page that staff members see, allowing them
 to reorganize participants.
 
+
+<cfdump var = "Sess status: #sess.status#">
+<cfdump var = #part_list#>
+<cfabort>
 --->
+
 <cfoutput>
 	<div class="container-header">
 		<div class="container-header-inner">
@@ -45,7 +50,7 @@ to reorganize participants.
 			<div class="bigly bigly-left">
 				<div class="listing">
 					<ul class="part-drop-list">
-						<cfloop query = "all_part_list">
+						<cfloop query = "antiPartList.results">
 							<li class="#iif( p_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
 								<span>#p_fname# #p_lname#</span>
 								<span>#p_id#</span>
@@ -58,7 +63,7 @@ to reorganize participants.
 			<div class="bigly bigly-right" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
 				<div class="listing listing-drop">
 					<ul> 
-				<cfif sess.status gt 2>
+				<cfif sess.status gte 2>
 					<cfloop query = "part_list">
 						<li>
 							<span>#p_fname# #p_lname#</span>

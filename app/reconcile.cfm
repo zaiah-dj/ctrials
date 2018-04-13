@@ -1,14 +1,39 @@
 <!--- reconcile 'part_list' vs 'all_part_list' --->
-<cfif sess.status gt 1>
-	<cfset notList = "( '#ValueList( part_list.p_lname, "', '" )#' )">
-	<cfoutput>#notList#</cfoutput>
-	<cfsavecontent variable="gig">
-		SELECT 
-			* 
-		FROM
-			ac_mtr_participants
-		WHERE
-			p_lname IN ( :in_lim )
-		ORDER BY p_lname ASC
-	</cfsavecontent>
-</cfif>
+<cfscript>
+if ( sess.status gt 1 ) {
+	notList = "'#ValueList( part_list.p_lname, "', '" )#'";
+	qu = createObject("Component", "components.quella" );
+
+	antiPartList = qu.exec( 
+		string = "
+		SELECT * FROM 
+			ac_mtr_participants 
+		WHERE p_id NOT IN (
+		  SELECT DISTINCT p_pid FROM 
+				ac_mtr_participant_transaction_members
+			WHERE 
+				p_transaction_id = :sid 
+		) ORDER BY p_lname ASC"
+	 ,datasource = "#data.source#"
+	 ,bindArgs = {
+			sid = sess.key
+		}
+	);
+
+	partList = qu.exec( 
+		string = "SELECT * FROM
+		( SELECT p_pid FROM 
+				ac_mtr_participant_transaction_members
+			WHERE 
+				p_transaction_id = :sid ) AS CurrentTransactionIDList
+		LEFT JOIN
+		( SELECT * FROM
+				ac_mtr_participants ) AS amp
+		ON CurrentTransactionIDList.p_pid = amp.p_id"
+	 ,datasource = "#data.source#"
+	 ,bindArgs = {
+			sid = sess.key
+		}
+	);
+}
+</cfscript>
