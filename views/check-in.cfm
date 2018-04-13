@@ -71,7 +71,7 @@
 								<label class="sameline">Systolic</label>
 								<div class="row">
 									<div class="cc col-sm-7">
-										<input type="range" min="60" max="180" class="slider" value="#sys_bp#" name="bp_systolic" required>
+										<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" value="#sys_bp#" name="bp_systolic" required>
 									</div>
 									<div class="catch cc col-sm-1">#sys_bp#</div>
 									<div class="col-sm-1">
@@ -85,7 +85,7 @@
 								<label class="sameline">Diastolic</label>
 								<div class="row">
 									<div class="cc col-sm-7">
-										<input type="range" min="50" max="110" class="slider" value="#dia_bp#" name="bp_diastolic" required>
+										<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" value="#dia_bp#" name="bp_diastolic" required>
 									</div>
 									<div class="catch cc col-sm-1">#dia_bp#</div>
 									<div class="col-sm-1">

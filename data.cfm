@@ -145,18 +145,6 @@ I can do more with this concept...
 	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] 
 		}
 
-	,"stale" = { 
-		"model" =  "stale"
-	 ,"view"  = [ "master/head", "stale", "master/tail" ] 
-	 ,"hint"  =  "Refresh a user session."
-	 	}
-
-	,"refresh" = { 
-		"model" =  "refresh"
-	 ,"view"  = [ "master/head", "refresh", "master/tail" ] 
-	 ,"hint"  =  "Refresh a user session."
-	 	}
-
 	,"logout" = { 
 		"model" = "session/kill"
 	 ,"view"  =  "logout"

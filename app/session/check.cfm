@@ -103,7 +103,7 @@ else {
 		//writeoutput( "#refreshTime# seconds have passed.  Refresh the session..." );abort;
 		sess.needsRefresh = 1;
 		//
-		location( url="#link( 'stale.cfm' )#", addtoken="no" );
+		//location( url="#link( 'stale.cfm' )#", addtoken="no" );
 	}
 
 	//if neither of these has happened, then update the lastMod field in transaction_set

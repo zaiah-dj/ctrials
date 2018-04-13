@@ -40,6 +40,10 @@ if ( Q.pbp.prefix.recordCount )
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
 	 ,targetHeartRate = part_list.p_targetheartrate
 	 ,nextSchedVisit = DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" )
+	 ,minBPS = 40
+	 ,maxBPS = 210
+	 ,minBPD = 20
+	 ,maxBPD = 120
 	};
 else {
 	model = {
@@ -48,6 +52,10 @@ else {
 	 ,currentBpDiastolic = 0
 	 ,targetHeartRate = part_list.p_targetheartrate
 	 ,nextSchedVisit = DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" )
+	 ,minBPS = 40
+	 ,maxBPS = 210
+	 ,minBPD = 20
+	 ,maxBPD = 120
 	};
 }
 </cfscript>

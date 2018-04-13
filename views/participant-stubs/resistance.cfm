@@ -17,12 +17,18 @@
 	</ul>
 
 	<div class="selection">
-		<table class="table table-striped participant-entry">
+		<table class="table table-striped participant-entry resistance">
 	<cfloop array="#values#" index="vv">
 		<cfif #vv.label# neq "">
-		<tr class="heading"><td><b>#vv.label# - #reExSel.results.et_name#</b></td></tr>
+		<tr class="heading">
+			<td class="chopt">Last Visit's Results</td>
+			<td><b>#vv.label# - #reExSel.results.et_name#</b></td>
+		</tr>
 		</cfif>
 		<tr>
+			<td> 
+				0 #vv.uom#	
+			</td>
 			<td>
 				<div class="row">
 					<div class="col-sm-7">
