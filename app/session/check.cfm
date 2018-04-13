@@ -110,14 +110,22 @@ else {
 	else {
 		ds = qu.exec( 
 			string = "UPDATE ac_mtr_participant_transaction_set
-				SET p_lastUpdateTime = #DateTimeFormat( Now(), "YYYY-MM-DD" )#
-				WHERE p_uuid = :sid",
-			bindArgs = { sid = sess.key }
+				SET p_lastUpdateTime = 
+				WHERE p_transaction_id = :sid",
+			bindArgs = {
+				sid = sess.key 
+			 ,dut = { 
+				 type  = "cf_sql_datetime"
+			 	,value = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ) 
+				}
+			}
 		);
 
 		//If this fails, it's kind of a problem...
-		if ( !ds.status )
+		if ( !ds.status ) {
 			0;
+			throw "DEATH TO ALL!";
+		}
 	}
 }
 </cfscript>
