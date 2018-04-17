@@ -141,7 +141,15 @@
 					<tr>
 						<td class="title">Participant Notes</td>
 						<td>
-							<textarea name="ps_notes"></textarea>
+							<!---<textarea class="modal-activate" name="ps_notes"></textarea>--->
+							<button class="modal-activate">Add New Note</button>
+							<div id="myModal" class="modal">
+								<div class="modal-content">
+									<span class="close">&times;</span>
+									<p>Text in the modal</p>
+									<textarea name="ps_notes"></textarea>
+								</div>	
+							</div>
 						</td>
 					</tr>
 

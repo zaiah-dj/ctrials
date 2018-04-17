@@ -46,10 +46,18 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				} ); 
 				aac.childNodes[3].addEventListener( "click", function (ev) {
 					aav = ev.target.parentElement.parentElement.childNodes[3];
-					ev.target.value = aav.innerHTML=--(aav.innerHTML); //console.log( v);
+					ev.target.value = aav.innerHTML = --(aav.innerHTML);
 				} ); 
 			}
 		}
+
+		//Initialize all modals
+		var modals = [].slice.call( document.querySelectorAll( ".modal-activate" ) );  
+		if ( modals.length ) {
+			for ( i=0; i < modals.length; i++ ) {
+				modals[i].addEventListener( "focus", makeModal );
+			}
+		}	
 	}
 
 	//Start listening out for touch events

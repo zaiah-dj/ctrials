@@ -289,7 +289,7 @@ a.selected {
 	background-color: white;
 	color: black;
 	/*text-shadow: 2px 2px 5px white;	*/
-	z-index: 99;
+	z-index: 0;
 }
 
 /*Inner navigation*/
@@ -1031,5 +1031,12 @@ table.resistance tr td:nth-child(1) {
 table.resistance tr td.chopt {
 	padding-top: 5px;
 	background-color: #ccc;
+}
+
+.modal-activate {
+	width: 50%;
+	height: 50px;
+	margin: 0 auto;
+	position: relative;
 }
 /*end of stylesheet ;) */

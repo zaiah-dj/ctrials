@@ -39,6 +39,7 @@ I can do more with this concept...
 	,"libs/swipesensejs.js"
 	,"libs/droppable.js"
 	,"libs/sliders.js"
+	,"libs/modal.js"
 	,"libs/touch.js"
 	,"libs/debug.js"
 	,"proc/debug.js"

@@ -118,15 +118,14 @@ document.addEventListener( "DOMContentLoaded", function (ev) {
 			<td>Modal Pop-Up Value</td>
 			<td> 
 				<button id="myBtn">Edit Me</button>
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<span class="close">&times;</span>
+						<p>Text in the modal</p>
+						<textarea name="myTextArea"></textarea>
+					</div>	
+				</div>
 			</td>
-
-			<div id="myModal" class="modal">
-				<div class="modal-content">
-					<span class="close">&times;</span>
-					<p>Text in the modal</p>
-					<textarea name="myTextArea"></textarea>
-				</div>	
-			</div>
 		</tr>
 
 		<tr>
