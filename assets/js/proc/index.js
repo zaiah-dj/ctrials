@@ -113,6 +113,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				xhr.onreadystatechange = function () {
 					if ( this.readyState == 4 && this.status == 200 ) {
 						try {
+							console.log( this.responseText );
 							parsed = JSON.parse( this.responseText );
 						}
 						catch (err) {
@@ -135,10 +136,13 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				console.log( payload );
 
 				// tHis is made all the more ugly because I'm using GETs when I should be using POSTs
-				if ( 1 ) {
+				if ( 0 )
+					this.submit();
+				else {
 					xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 					xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 					xhr.send( payload );
+					console.log( xhr.responseText );
 					/* 
 						"staffer_id=" + this.staffer_id.value +
 						"&transact_id=" + this.transact_id.value +

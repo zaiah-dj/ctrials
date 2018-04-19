@@ -611,7 +611,7 @@ SET IDENTITY_INSERT ac_mtr_fail_visit_reasons ON;
 */
 
 IF OBJECT_ID( N'ac_mtr_giantexercisetable ', N'U') IS NOT NULL
-BEGIN
+BEGI0N
 	DROP TABLE ac_mtr_giantexercisetable ;
 END
 CREATE TABLE ac_mtr_giantexercisetable (
@@ -627,6 +627,7 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[staffID]          varchar(10) NULL,
 	[dayofwk]          int NULL,
 	[Hrworking]        int NULL,
+	
 	[m10_exhr]         int NULL,
 	[m10_exoth1]       int NULL,
 	[m10_exoth2]       int NULL,
@@ -634,6 +635,7 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[m10_exrpm]        int NULL,
 	[m10_exspeed]      numeric(18,0) NULL,
 	[m10_exwatres]     int NULL,
+	
 	[m15_exhr]         int NULL,
 	[m15_exoth1]       int NULL,
 	[m15_exoth2]       int NULL,
@@ -641,6 +643,7 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[m15_exrpm]        int NULL,
 	[m15_exspeed]      numeric(18,0) NULL,
 	[m15_exwatres]     int NULL,
+	
 	[m20_exhr]         int NULL,
 	[m20_exoth1]       int NULL,
 	[m20_exoth2]       int NULL,
@@ -650,6 +653,7 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[m20_exrpm]        int NULL,
 	[m20_exspeed]      numeric(18,0) NULL,
 	[m20_exwatres]     int NULL,
+	
 	[m25_exhr]         int NULL,
 	[m25_exoth1]       int NULL,
 	[m25_exoth2]       int NULL,
@@ -687,6 +691,7 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[m45_exrpm]        int NULL,
 	[m45_exspeed]      numeric(18,0) NULL,
 	[m45_exwatres]     int NULL,
+	
 	[m5_exhr]          int NULL,
 	[m5_exoth1]        int NULL,
 	[m5_exoth2]        int NULL,
@@ -694,6 +699,8 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[m5_exrpm]         int NULL,
 	[m5_exspeed]       numeric(18,0) NULL,
 	[m5_exwatres]      int NULL,
+	
+	/*Recovery column*/
 	[m5_rechr]         int NULL,
 	[m5_recoth1]       int NULL,
 	[m5_recoth2]       int NULL,
@@ -701,22 +708,25 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[m5_recrpm]        int NULL,
 	[m5_recspeed]      numeric(18,0) NULL,
 	[m5_recwatres]     int NULL,
+	
 	[mchntype]         int NULL,
 	[MthlyBPDia]       int NULL,
 	[MthlyBPSys]       int NULL,
 	[nomchntype]       varchar(max) NULL,
+	
 	[nxtsesn_dt]       date NULL,
 	[othMchn1]         varchar(max) NULL,
 	[othMchn2]         varchar(max) NULL,
 	[reasnmisd]        int NULL,
 	[Sessionmisd]      int NULL,
-	[Sp_mchntype]      varchar(max) NULL,
+	[Sp_mchntype]      varchar(max) NULL,:s/
 	[sp_reasnmisd]     varchar(max) NULL,
 	[stdywk]           int NULL,
 	[trgthr1]          int NULL,
 	[trgthr2]          int NULL,
 	[typedata]         int NULL,
 	[weight]           numeric(18,0) NULL,
+	
 	[wrmup_hr]         int NULL,
 	[wrmup_oth1]       int NULL,
 	[wrmup_oth2]       int NULL,

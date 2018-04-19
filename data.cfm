@@ -92,6 +92,15 @@ I can do more with this concept...
 	 ,"view"  =  "update" 
 	}
 
+
+	,"update2" = { 
+		"hint"  =  "This will help transition from the old table to Debbie's New Table."
+	 ,"model" = "update"
+	 ,"content_type"  
+						= "application/json"
+	 ,"view"  =  "update" 
+	}
+
 	,"expired"= { 
 		"hint"  =  "The thing of the thing."
 	 ,"model" = [ "session/check", "default", "expired", "chosen", "reconcile" ]
@@ -156,6 +165,12 @@ I can do more with this concept...
 		"model" = "_none"
 	 ,"view"  =  "dumply"
 	 ,"hint"  =  "Use this endpoint to see all values." 
+		}
+
+	,"test-debendtab"   = { 
+		"model" =  "test-debendtab"
+	 ,"view"  =  "test-debendtab"
+	 ,"hint"  =  "Test against Debbie's new table." 
 		}
 
 	,"save"   = { 

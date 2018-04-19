@@ -78,7 +78,6 @@ TODO
 - Client: give a way to query the results of XHR calls (has to interact with stuff)
 
 */
-
 component {
 
 	//datasource and table should be part of the component
@@ -421,6 +420,7 @@ component {
 							x.open( '#METHOD#', '#LOCATION#', false );
 							x.setRequestHeader( 'Content-Type', '#HEADER_TYPE#' );
 							x.send(Vals);
+							( #JS_DEBUG# ) ? console.log( x.responseText ) : 0;
 							return false;
 						}	);
 					} " );
@@ -451,11 +451,11 @@ component {
 		,Boolean noConstraint = 0
 	)
 	{
-
-		this.table = arguments.table;    //Set datasource
-		this.datasource = arguments.ds;  //...and table
-		flow = "0";  //Track where we are within this little cycle
-		next = 1;    //Only move on if this is good
+		//Set datasource and table name.  Also set markers for flow control
+		this.table = arguments.table;
+		this.datasource = arguments.ds;
+		flow = "0";
+		next = 1;
 
 		//A spot for a user friendly failure message.	
 		err = {	
@@ -463,8 +463,8 @@ component {
 		 ,status = 1
 		};
 
+		//Start by trying to get the schema.
 		try {
-
 			flow = "getSchema"; 
 			cv = {};
 
@@ -485,6 +485,13 @@ component {
 			nq.addParam( name = "tname", value = arguments.table, cfsqltype = "varchar" );
 			schemaObj = nq.execute( sql = schemaQuery );
 			schemaResults = schemaObj.getResult();
+
+//
+include "components/sendRequest.cfm";
+writeoutput( schemaObj );
+lsendRequest( "jakes" );
+abort;
+
 
 			//check the status of query
 			//results should be there...	
@@ -545,7 +552,6 @@ component {
 				//This would be so much more efficient.
 				nr = nq.execute( sql = "SELECT COLUMN_NAME, DATA_TYPE FROM sourceQuery WHERE COLUMN_NAME IN :col" );
 				 */
-				//I want ONE loop and ONE data structure... figs it out, brah...
 				for ( n in t ) 
 				{
 					//Then check that's it's in the query returned	
@@ -627,8 +633,12 @@ component {
 				if ( StructKeyExists( arguments, "insertStmt" ) ) 
 					sql_stmt = arguments.insertStmt;
 				else {
+					//Have the engine figure it out...
 					sql_stmt = "INSERT INTO #table# ( #COLUMNS# ) VALUES ( #VALUES# )"; 
 				}
+
+lsendRequest( message=sql_stmt );
+abort;
 
 				//Go through things and bind
 				if ( StructKeyExists( arguments, "insPredicate" ) ) {

@@ -54,11 +54,10 @@ try {
 	{
 		//Check the thing
 		ckr = ck.exec( 
-			 bindArgs = { sid=form.sess_id }
-			,datasource="#data.source#"
-			,string = "SELECT TOP 1 * FROM 
-			ac_mtr_logging_progress_tracker WHERE session_id = :sid" 
-		);
+			bindArgs = { sid=form.sess_id },
+			datasource="#data.source#",
+			string = "SELECT TOP 1 * FROM 
+			ac_mtr_logging_progress_tracker WHERE session_id = :sid" );
 
 		//If no records exist...
 		if ( !ckr.prefix.recordCount ) 
@@ -199,36 +198,13 @@ else if ( form.this eq "resistance" )
 			"el_re_reps2", "el_re_weight2",
 			"el_re_reps3", "el_re_weight3",
 			"el_re_extype" );
-	
-		//Figure out the form field name 
-		desig = "";
-		if ( form.el_ee_timeblock eq 0 )
-			desig = "wrmup_";
-		else if ( form.el_ee_timeblock gt 45 )
-			desig = "m5_rec";
-		else { 
-			desig = "m#form.el_ee_timeblock#_ex";
-		}
-
-		//Then check for the right fields.	
-		fields = cc.checkFields( form, 
-			 "pid"
-			,"sess_id"
-			,"#desig#hr"
-			,"#desig#oth1"
-			,"#desig#oth2"
-			,"#desig#prctgrade"
-			,"#desig#rpm"
-			,"#desig#speed"
-			,"#desig#watres"
-		);
 
 		if ( !fields.status )
 			sendRequest( status = 0, message = "#fields.message#" );	
 		
 		//then insert or update if the row is not there...
 		upd = qu.exec( 
-			string = "SELECT * FROM ac_mtr_giantexercisetable WHERE el_re_ex_session_id = :sid AND el_re_pid = :pid AND el_re_extype = :extype",
+			string = "SELECT * FROM ac_mtr_exercise_log_re WHERE el_re_ex_session_id = :sid AND el_re_pid = :pid AND el_re_extype = :extype",
 		  datasource="#data.source#",
 		  bindArgs = { sid="#form.sess_id#", pid="#form.pid#", extype="#form.el_re_extype#" } 
 		);
@@ -239,22 +215,20 @@ else if ( form.this eq "resistance" )
 		if ( !upd.prefix.recordCount ) {
 			upd = qu.exec( 
 				datasource = "#data.source#",
-				string = "INSERT INTO ac_mtr_giantexercisetable 
-					( participantGUID, #desig#hr, #desig#oth1, #desig#oth2, #desig#prctgrade, #desig#rpm, #design#speed, #desig#watres )
-					VALUES
-					( :pid,          ,:r1       ,:w1         , :r2        , :w2             , :r3       , :w3          ,:extype, :dt, :mdt );",
+				string = "INSERT INTO ac_mtr_exercise_log_re VALUES
+					( :pid,:sid,:r1,:w1,:r2,:w2,:r3,:w3,:extype, :dt, :mdt );",
 				bindArgs = {
 					pid="#form.pid#" 
 				 ,sid="#form.sess_id#"
 
-				 ,hr="#form.el_re_reps1#" 
-				 ,oth1="#form.el_re_weight1#" 
-				 ,oth2="#form.el_re_reps2#" 
-				 ,prctgrade="#form.el_re_weight2#" 
-				 ,rpm="#form.el_re_reps3#" 
-				 ,speed="#form.el_re_weight3#" 
-				 ,watres="#form.el_re_extype#" 
+				 ,r1="#form.el_re_reps1#" 
+				 ,w1="#form.el_re_weight1#" 
+				 ,r2="#form.el_re_reps2#" 
+				 ,w2="#form.el_re_weight2#" 
+				 ,r3="#form.el_re_reps3#" 
+				 ,w3="#form.el_re_weight3#" 
 
+				 ,extype="#form.el_re_extype#" 
 				 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
 				 ,mdt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
 				} 
@@ -277,11 +251,11 @@ else if ( form.this eq "resistance" )
 				AND
 					el_re_extype = :extype
 				AND
-					el_re_pid = :pid"
+					el_re_pid = :pid",
 
-				,datasource = "#data.source#"
+				datasource = "#data.source#",
 
-				,bindArgs = {
+				bindArgs = {
 					pid="#form.pid#" 
 				 ,sid="#form.sess_id#"
 
@@ -321,10 +295,6 @@ else if ( form.this eq "resistance" )
 	sendRequest( status = 1, message = "#upd.message#" );	
 	abort;
 }
-
-
-
-
 else if ( form.this eq "endurance" ) 
 {
 	try {
@@ -364,79 +334,57 @@ else if ( form.this eq "endurance" )
 
 		if ( !upd.prefix.recordCount ) {
 			upd = qu.exec( 
-				datasource = "#data.source#"
-				,string = "INSERT INTO ac_mtr_giantexercisetable
-					( participantGUID, 
-					 ,mchntype
-					 ,#desig#oth1
-					 ,#desig#oth2
-					 ,#desig#prctgrade
-					 ,#desig#rpm
-					 ,#desig#speed
-					 ,#desig#watres  
-					)
-					VALUES
-					(  :pid
-						,:machine_type
-						,:oth1
-						,:oth2
-						,:prctgrade
-						,:rpm
-						,:speed
-						,:watres
-					)"
-				,bindArgs = {
-
-				  pid="#form.pid#" 
-				 ,machinetype="#form.el_ee_equipment#"
-				 ,oth1="0"
-				 ,oth2="0"
-				 ,prctgrade="#form.el_ee_grade#"
-				 ,rpm="#form.el_ee_rpm#"
-				 ,speed="#form.el_ee_speed#"
-			   ,watres="#form.el_ee_watts_resistance#"
-
-				 /*,
-				 "eq"="#form.el_ee_equipment#" 
+				datasource = "#data.source#",
+				string = "INSERT INTO ac_mtr_exercise_log_ee VALUES 
+					( :pid,:sid,:eq,:tb,:rpm,:wr,:speed,:grade,:af,:pe,:dt,:mdt )",
+				bindArgs = {
+					sid="#form.sess_id#"
+				 ,pid="#form.pid#" 
+				 ,"eq"="#form.el_ee_equipment#" 
+				 ,tb="#form.el_ee_timeblock#" 
+				 ,rpm="#form.el_ee_rpm#" 
+				 ,wr="#form.el_ee_watts_resistance#" 
+				 ,speed="#form.el_ee_speed#" 
+				 ,grade="#form.el_ee_grade#" 
 				 ,af="#form.el_ee_affect#" 
 				 ,pe="#form.el_ee_perceived_exertion#" 
-				 ,tb="#form.el_ee_timeblock#" 
 				 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
 				 ,mdt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
-					*/
 				} 
 			);
-
-			if ( !upd.status ) {
-				sendRequest( status = 0, message = "#upd.message#" );
-			}
-
 		}
 		else {
 			upd = qu.exec( 
-				string = "
-				UPDATE 
-					ac_mtr_giantexercisetable
-				SET
-					machinetype = :machine_type,
-					#desig#rpm = :rpm,
-					#desig#watres = :wr,
-					#desig#speed = :speed,
-					#desig#prctgrade = :prctgrade,
-					#desig#oth1 = :oth1,
-					#desig#oth2 = :oth2
+				string = "UPDATE ac_mtr_exercise_log_ee 
+				SET 
+					el_ee_equipment = :eq,
+					el_ee_timeblock = :tb,
+					el_ee_rpm = :rpm,
+					el_ee_watts_resistance = :wr,
+					el_ee_speed = :speed,
+					el_ee_grade = :grade,
+					el_ee_affect = :af,
+					el_ee_perceived_exertion = :pe,
+					el_ee_datetime_modified = :dt
 				WHERE
-					el_ee_pid = :pid"
-				,datasource = "#data.source#"
-				,bindArgs = { 
-					pid = "#form.pid#" 
-					,rpm = "#form.el_ee_rpm#" 
-					,watres = "#form.el_ee_watts_resistance#" 
-					,speed = "#form.el_ee_speed#" 
-					,prctgrade = "#form.el_ee_grade#" 
-				  ,oth1= "##"
-					,oth2= "##" 
-					/*,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}*/
+					el_ee_ex_session_id = :sid 
+				AND
+					el_ee_timeblock = :tb
+				AND
+					el_ee_pid = :pid",
+				datasource = "#data.source#",
+				bindArgs = { 
+					sid = "#form.sess_id#",
+					pid = "#form.pid#" ,
+					"eq" = "#form.el_ee_equipment#" ,
+					tb = "#form.el_ee_timeblock#" ,
+					rpm = "#form.el_ee_rpm#" ,
+				  af="#form.el_ee_affect#",
+					wr = "#form.el_ee_watts_resistance#" ,
+					speed = "#form.el_ee_speed#" ,
+					grade = "#form.el_ee_grade#" ,
+					pe = "#form.el_ee_perceived_exertion#" ,
+					dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
 				}
 			);	
 		}

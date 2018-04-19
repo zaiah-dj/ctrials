@@ -37,10 +37,10 @@ else {
 			SET bp_systolic = :s, bp_diastolic = :d, bp_daterecorded = :r, bp_notes = :n WHERE bp_pid = :id"
 	,bindArgs={ 
 	 id=form.ps_pid
-	,	s=form.bp_systolic
-	,	d=form.bp_diastolic
-	,	r={value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"}
-	,	n=""
+	,s=form.bp_systolic
+	,d=form.bp_diastolic
+	,r={value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"}
+	,n=""
 	});
 
 	//Add a row 
