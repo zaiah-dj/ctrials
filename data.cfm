@@ -60,99 +60,73 @@ I can do more with this concept...
 	,"addLogLine" = 0
 }
 ,"routes" = {
-	 "docs"   = { 
-		"model" = "docs"
-	 ,"view"  =  "docs"
-	 ,"hint"  =  "This just documents this app." 
-	}
-
-	,"log"   = { 
-		"hint"  =  "See the access log."
-	 ,"model" =  "log"
-	 ,"view"  =  "log"
-	}
-
-	,"robocop"   = { 
-		"hint"  =  "Log XHR requests."
-	 ,"model" =  "robocop"
-	 ,"view"  =  "robocop"
-	}
-
-	,"test"   = { 
-		"hint"  =  "Test how new HTML5 controls look."
-	 ,"model" = [ "test", "session/check", "chosen", "participant" ]
-	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "tests/test", "master/tail" ] 
+	"default"= { 
+		"hint"  =  "The participant selection page as seen by the interventionists."
+	 ,"model" = [
+			"dependencies",
+			"check_valid_session",
+			"select_all_participants", 
+			"select_chosen_participants", 
+			"select_unchosen_participants" 
+		]
+	 ,"view"  = [ 
+			"master/head", 
+			"default", 
+			"master/tail" 
+		] 
 	}
 
 	,"update" = { 
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
-	 ,"model" = "update"
-	 ,"content_type"  
-						= "application/json"
-	 ,"view"  =  "update" 
+	 ,"model" = [
+			"dependencies"
+		 ,"ajax_test"
+		 ,"ajax_start_new_session"
+		 ,"ajax_update_resistance_table"
+		 ,"ajax_update_endurance_table"
+		 ,"ajax_update_control_table"
+		]
+	 ,"view"  =  "update"
+	 ,"content_type"  = "application/json"
 	}
 
-
-	,"update2" = { 
-		"hint"  =  "This will help transition from the old table to Debbie's New Table."
-	 ,"model" = "update"
-	 ,"content_type"  
-						= "application/json"
-	 ,"view"  =  "update" 
-	}
-
-	,"expired"= { 
-		"hint"  =  "The thing of the thing."
-	 ,"model" = [ "session/check", "default", "expired", "chosen", "reconcile" ]
-	 ,"view"  = [ "master/head", "default", "master/tail" ] 
-	}
-
-	,"default"= { 
-		"hint"  =  "The thing of the thing."
-	 ,"model" = [ "session/check", "default", "chosen", "reconcile" ]
-	 ,"view"  = [ "master/head", "default", "master/tail" ] 
-	}
-
-	,"hack"= { 
-		"hint"  =  "Allows me to choose participants by either form field or url string."
-	 ,"model" = [ "session/check", "hack" ]
-	 ,"view"  = [ "master/head", "hack", "master/tail" ] 
-	}
-
-	,"check-in-complete"= { 
-		"hint"  =  "Mark a check-in as completed."
-	 ,"model" = [ "session/check", "check-in-complete" ]
-	 ,"view"  = "check-in-complete"
-	}
-
-	,"chosen" = { 
-		"hint"  =  "See all chosen participants in a session."
-	 ,"model" = [ "session/check", "chosen" ]
-	 ,"view"  = [ "master/head", "participant/list", "chosen", "master/tail" ] 
-		}
-
-	,"info"   = { 
-		"hint"  =  "See all patient data (more than you ever wanted to know)."
-	 ,"model" = [ "session/check", "chosen", "participant" ]
-	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "info", "master/tail" ] 
-		}
-
-	,"compare"= { 
-		"hint"  =  "Compare the participant's previous weeks history."
-	 ,"model" = [ "session/check", "chosen", "participant" ]
-	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "compare", "master/tail" ] 
+	,"input"  = { 
+		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
+	 ,"model" = [ 
+			 "dependencies"
+			,"check_valid_session"
+			,"select_chosen_participants"
+			,"select_single_participant"
+			,"prepare_endurance_input"
+			,"prepare_resistance_input"
+			,"prepare_control_input" 
+		]
+	 ,"view"  = [ 
+			"master/head", 
+			"participant/list", 
+			"participant/nav", 
+			"input", 
+			"master/tail" 
+		]
 		}
 
 	,"check-in" = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
-	 ,"model" = [ "session/check", "chosen", "participant", "check-in" ]
-	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "check-in", "master/tail" ] 
-		}
-
-	,"input"  = { 
-		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
-	 ,"model" = [ "session/check", "chosen", "participant", "input" ]
-	 ,"view"  = [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] 
+	 ,"model" = [ 
+			 "dependencies"
+			,"check_valid_session"
+			,"process_checkin_form"
+			,"select_chosen_participants"
+			,"select_single_participant"
+			,"select_participant_check_in_data"
+		]
+	 ,"view"  = [ 
+			 "master/head"
+			,"participant/list"
+			,"participant/nav"
+			,"check-in"
+			,"master/tail" 
+		]
 		}
 
 	,"logout" = { 
@@ -161,24 +135,39 @@ I can do more with this concept...
 	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
 	 	}
 
-	,"dumply" = { 
-		"model" = "_none"
-	 ,"view"  =  "dumply"
-	 ,"hint"  =  "Use this endpoint to see all values." 
+	,"login" = { 
+		"model" = "session/kill"
+	 ,"view"  =  "logout"
+	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
+	 	}
+
+	,"compare"= { 
+		"hint"  =  "Compare the participant's previous weeks history."
+	 ,"model" = [ 
+			 "dependencies"
+			,"check_valid_session"
+			,"select_chosen_participants"
+			,"select_single_participant"
+		]
+	 ,"view"  = [ 
+			"master/head"
+			,"participant/list" 
+			,"participant/nav"
+			,"compare"
+			,"master/tail" 
+		] 
 		}
 
-	,"test-debendtab"   = { 
-		"model" =  "test-debendtab"
-	 ,"view"  =  "test-debendtab"
-	 ,"hint"  =  "Test against Debbie's new table." 
+		,"log"   = { 
+			"hint"  =  "See the access log."
+		 ,"model" =  "dev/log"
+		 ,"view"  =  "log"
 		}
 
-	,"save"   = { 
-		"model" = "_none"
-	 ,"view"  =  "save"
-	 ,"hint"  =  "Use this endpoint to see all values." 
+		,"robocop"   = { 
+			"hint"  =  "Log XHR requests."
+		 ,"model" =  "dev/robocop"
+		 ,"view"  =  "robocop"
 		}
-
-	,"home"   = { }
 	}
 }>

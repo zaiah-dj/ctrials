@@ -10,34 +10,27 @@
 		<cfoutput>{ "status": #arguments.status#, "message": "#arguments.message#" }</cfoutput>  
 	</cfcontent>
 	<cfabort>
-
 </cffunction>
+
+
+
 
 <cfscript>
 cc = createObject("component", "components.checkFields");
 qu = createObject("component", "components.quella");
+wr = createObject("component", "components.writeback");
+
+//Check for 'this'
+fields = cc.checkFields( form, "this" );
+
+if ( !fields.status ) {
+	sendRequest( status = 0, message = "Failed." );
+} 
+
 
 if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 {
 	try {
-		//Define a progress statement
-		progressStmt =
-		"UPDATE 
-			ac_mtr_logging_progress_tracker 
-		SET
-			 ee_affect = :affect
-			,ee_equipment = :equipment
-			,ee_grade = :grade
-			,ee_perceived_exertion = :perceived_exertion
-			,ee_rpm = :rpm 
-			,ee_speed = :speed 
-			,ee_watts_resistance = :watts_resistance
-		WHERE 
-			active_pid = :aid 
-		AND 
-			session_id = :sid"
-		;
-	
 		//check fields
 		fields = cc.checkFields( form, 
 			 "pid"
@@ -49,6 +42,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 			,"affect"
 			,"percex"
 			,"equipment"
+			,"timeblock"
 		);
 			
 		//...
@@ -160,7 +154,21 @@ abort;
 
 		//Also save progress (but the thing needs to be checked)
 		qu.exec(
-			 string = progressStmt
+			 string = "UPDATE 
+				ac_mtr_logging_progress_tracker 
+			SET
+				 ee_affect = :affect
+				,ee_equipment = :equipment
+				,ee_grade = :grade
+				,ee_perceived_exertion = :perceived_exertion
+				,ee_rpm = :rpm 
+				,ee_speed = :speed 
+				,ee_watts_resistance = :watts_resistance
+			WHERE 
+				active_pid = :aid 
+			AND 
+				session_id = :sid"
+		
 			,datasource = "#data.source#"
 			,bindArgs = {
 				 aid = form.pid

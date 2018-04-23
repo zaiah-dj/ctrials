@@ -3,7 +3,7 @@
 	<div class="container-body">
 	<div class="footer">
 	</div>
-		<form name="checkInForm" action="#link( 'check-in-complete.cfm' )#" method="POST">
+		<form name="checkInForm" action="#link( 'check-in.cfm?id=#url.id#' )#" method="POST">
 			<table class="table">
 				<tbody>
 					<tr>
@@ -146,7 +146,7 @@
 							<div id="myModal" class="modal">
 								<div class="modal-content">
 									<span class="close">&times;</span>
-									<p>Text in the modal</p>
+									<p>Participant Notes</p>
 									<textarea name="ps_notes"></textarea>
 								</div>	
 							</div>

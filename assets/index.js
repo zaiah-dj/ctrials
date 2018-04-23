@@ -1,6 +1,5 @@
 var subLink = "/motrpac/web/secure/dataentry/iv/update.cfm";
 
-
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 	//Basic filter search works

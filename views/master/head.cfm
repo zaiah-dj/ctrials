@@ -65,7 +65,7 @@
 		<a href="#link( "default.cfm" )#">Select</a>
 		<!---<a href="#link( "save.cfm" )#">Save Session</a>--->
 		<a href="#link( "logout.cfm" )#">Logout</a>
-		<a href="#link( "chosen.cfm" )#">Input</a>
+		<a href="#link( "input.cfm" )#">Input</a>
 	</div>
 
 	<div class="container">

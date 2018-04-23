@@ -1,7 +1,7 @@
 <!--- endurance.cfm --->
 <cfoutput>
 	<!--- Set a time --->
-	<input type="hidden" value="#defaultTimeblock#" name="el_ee_timeblock">
+	<input type="hidden" value="#defaultTimeblock#" name="timeblock">
 
 	<cfif data.debug eq 1>
 		<cfset DebugClientCode = clijs.ClientDebug()>
@@ -13,11 +13,17 @@
 		<cfloop array=#times# index=ind>
 		<cfif ind.index eq 30><br /></cfif>
 		<cfif ind.index eq defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#"><li class="selected">#ind.text#</li></a>
+			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
+				<li class="selected">#ind.text#</li>
+			</a>
 		<cfelseif ind.index lt defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#"><li class="completed">#ind.text#</li></a>
+			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
+				<li class="completed">#ind.text#</li>
+			</a>
 		<cfelse>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#"><li>#ind.text#</li></a>
+			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
+				<li>#ind.text#</li>
+			</a>
 		</cfif>
 		</cfloop>
 		</ul>
@@ -30,7 +36,7 @@
 			<tr>
 				<td class="title">Exercise Type</td>
 				<td>
-				<select id="choose_mode" name="el_ee_equipment" disabled>
+				<select id="choose_mode" name="equipment" disabled>
 					<option value="0">This Will Already be Chosen</option>
 					<option selected value="1">Cycle</option>
 					<option value="2">Treadmill</option>

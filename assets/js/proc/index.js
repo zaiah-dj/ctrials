@@ -1,5 +1,9 @@
 var subLink = "/motrpac/web/secure/dataentry/iv/update.cfm";
 
+function onError( msg ) {
+	console.log( msg );
+}
+
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 /*
@@ -55,7 +59,8 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		var modals = [].slice.call( document.querySelectorAll( ".modal-activate" ) );  
 		if ( modals.length ) {
 			for ( i=0; i < modals.length; i++ ) {
-				modals[i].addEventListener( "focus", makeModal );
+				//modals[i].addEventListener( "focus", makeModal );
+				modals[i].addEventListener( "click", makeModal );
 			}
 		}	
 	}
@@ -85,7 +90,9 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	//Sequence all JS data (This entire sequence can be replaced with the CFWriteback thing.
 	if (( ww =document.getElementById( "wash-id" ) )) 
 	{
-		ww.addEventListener( "submit", function (ev) {
+		ww.addEventListener( "click", function (ev) 
+		{
+			//Don't let submit take place
 			ev.preventDefault();
 
 			//Serialize all the data
@@ -98,61 +105,42 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				}
 			}
 					
-			//send a list back
+			//Prepare a list from the users that have been selected. 
 			this.list.value = vv.join(',');
+			var xhr = new XMLHttpRequest();
+			var frm = this;
 
-			//I'll never really submit this, I'll AJAX it instead	
-			if ( 0 )
-				this.submit();
-			else {
-				// So, let's see if that works
-				var xhr = new XMLHttpRequest();
-				var frm = this;
-
-				//Read that XML	
-				xhr.onreadystatechange = function () {
-					if ( this.readyState == 4 && this.status == 200 ) {
-						try {
-							console.log( this.responseText );
-							parsed = JSON.parse( this.responseText );
-						}
-						catch (err) {
-							console.log( err.message );
-							console.log( this.responseText );
-							return;
-						}
-						( parsed.status ) ? frm.submit() : onError( this.responseText );
+			//Read that XML	
+			xhr.onreadystatechange = function () {
+				if ( this.readyState == 4 && this.status == 200 ) {
+					try {
+						console.log( this.responseText );
+						parsed = JSON.parse( this.responseText );
 					}
-				};
-
-				//What does the pbody look like
-				payload = [
-					 "staffer_id=" + this.staffer_id.value  
-					,"transact_id=" + this.transact_id.value 
-					,"list=" + this.list.value 
-					,"this=startSession"
-				].join( '&' );
-
-				console.log( payload );
-
-				// tHis is made all the more ugly because I'm using GETs when I should be using POSTs
-				if ( 0 )
-					this.submit();
-				else {
-					xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
-					xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
-					xhr.send( payload );
-					console.log( xhr.responseText );
-					/* 
-						"staffer_id=" + this.staffer_id.value +
-						"&transact_id=" + this.transact_id.value +
-						"&this=check-in-complete" +
-						"&list=" + this.list.value
-					);
-					*/
+					catch (err) {
+						console.log( err.message );
+						console.log( this.responseText );
+						return;
+					}
+					( parsed.status ) ? frm.submit() : onError( this.responseText );
 				}
-			}
-			return;	
+			};
+
+			//What does the pbody look like
+			payload = [
+				 "staffer_id=" + this.staffer_id.value  
+				,"transact_id=" + this.transact_id.value 
+				,"list=" + this.list.value 
+				,"this=startSession"
+			].join( '&' );
+
+			//Send a POST to the server
+			//console.log( payload );
+			xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
+			xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+			xhr.send( payload );
+			//console.log( xhr.responseText );
+			return false;
 		});
 	}
 })

@@ -77,7 +77,7 @@ to reorganize participants.
 		</div>
 
 		<!--- On submit, or next, do it. --->
-		<form id="wash-id" method="POST" action="#link('chosen.cfm')#" class="wash">
+		<form id="wash-id" method="POST" action="#link('input.cfm')#" class="wash">
 			<input type="text" name="staffer_id" value="#randnum( 8 )#">
 			<input type="text" name="transact_id" value="#sess.key#">
 			<input type="text" name="list"> <!--- make a list here --->

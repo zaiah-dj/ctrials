@@ -1,23 +1,3 @@
-<!--- Allow staff to choose a list of participants for the day. --->
-<cfscript>
-writedump( ajax );
-writedump( ezdb   );
-writedump(  rl    );
-writedump( bypass );
-writedump(  cf    );
-abort;
-</cfscript>
-
-
-<cfquery datasource="#data.source#" name="all_part_list">
-	SELECT 
-		* 
-	FROM 
-		ac_mtr_participants
-	ORDER BY p_lname ASC 
-</cfquery>
-
-
 // Initialize client side AJAX code 
 <cfset AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 	location = link( "update.cfm" )
