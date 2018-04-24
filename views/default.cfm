@@ -12,6 +12,27 @@ to reorganize participants.
 <cfabort>
 --->
 
+<cfscript>
+/*
+AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
+	querySelector = {
+		dom = "##wash-id"
+	 ,event = "click"
+	 ,noPreventDefault = true
+	 ,send = ".listing-drop ul li span:nth-child(2)"
+	}
+ ,location = link( "update.cfm" ) 
+ ,showDebug = true
+ ,additional = [ 
+		{ name = "this", value = "startSession" }
+	 ,{ name = "staffer_id", value = "#randnum(8)#" }
+	 ,{ name = "transact_id", value = "#sess.key#" }
+	]
+);
+*/
+</cfscript>
+
+
 <cfoutput>
 	<div class="container-header">
 		<div class="container-header-inner">

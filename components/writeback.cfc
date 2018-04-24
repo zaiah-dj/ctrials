@@ -440,7 +440,7 @@ component {
 		,Required String listen 	
 		,Required String ds
 		,String using = "SQLServer"
-		,only  //this can be a table or a string, but only a few values should come through here... 
+		,only 
 		,insertWhere
 		,where
 		,all
@@ -459,7 +459,7 @@ component {
 
 		//A spot for a user friendly failure message.	
 		err = {	
-			ufMessage = ""
+		 ufMessage = ""
 		 ,status = 1
 		};
 

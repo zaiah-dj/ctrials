@@ -88,28 +88,18 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	}
 
 	//Sequence all JS data (This entire sequence can be replaced with the CFWriteback thing.
-	if (( ww =document.getElementById( "wash-id" ) )) 
-	{
-		ww.addEventListener( "click", function (ev) 
-		{
-			//Don't let submit take place
+	if (( ww =document.getElementById( "wash-id" ) )) {
+		ww.addEventListener( "click", function (ev) {
 			ev.preventDefault();
-
 			//Serialize all the data
 			vv=[];
 			vals = [].slice.call(document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" )); 
-
 			if ( vals.length > 0 ) {
-				for ( i=0; i < vals.length; i++) {
-					vv[i] = vals[i].innerHTML; 
-				}
+				for ( i=0; i < vals.length; i++) vv[i] = vals[i].innerHTML; 
 			}
-					
 			//Prepare a list from the users that have been selected. 
 			this.list.value = vv.join(',');
-			var xhr = new XMLHttpRequest();
-			var frm = this;
-
+			var frm = this, xhr = new XMLHttpRequest();
 			//Read that XML	
 			xhr.onreadystatechange = function () {
 				if ( this.readyState == 4 && this.status == 200 ) {
@@ -135,11 +125,10 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			].join( '&' );
 
 			//Send a POST to the server
-			//console.log( payload );
 			xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 			xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 			xhr.send( payload );
-			//console.log( xhr.responseText );
+			//console.log( payload );console.log( xhr.responseText );
 			return false;
 		});
 	}

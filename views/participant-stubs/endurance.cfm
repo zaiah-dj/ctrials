@@ -29,7 +29,6 @@
 		</ul>
 	</div>
 
-	
 	<!--- Now generate the list of exercises --->
 	<table class="table">
 		<tbody>
@@ -47,8 +46,12 @@
 			</tr>
 		<cfloop array = #values#  index = "val">
 			<tr>
-				<td class="title">#val.label#</td>
+				<td class="title">
+					#val.label# ( 0 )
+				</td>
 				<td>
+					<div class="row">
+					</div>
 					<div class="row">
 						<div class="cc col-sm-7">
 							<cfif !structKeyExists( val, "type" )>

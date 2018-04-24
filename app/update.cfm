@@ -176,22 +176,6 @@ if (
 else if ( form.this eq "resistance" ) 
 {
 	try {
-		//Define a progress statement
-		progressStmt =
-		"UPDATE 
-			ac_mtr_logging_progress_tracker 
-		SET 
-			re_reps1 = :re_reps1,
-			re_weight1 = :re_weight1,
-			re_reps2 = :re_reps2,
-			re_weight2 = :re_weight2,
-			re_reps3 = :re_reps3,
-			re_weight3 = :re_weight3,
-			re_extype = :re_extype 
-		WHERE 
-			active_pid = :aid AND session_id = :sid"
-		;
-
 		//check fields
 		fields = cc.checkFields( form, 
 			"pid", "sess_id",
@@ -298,21 +282,6 @@ else if ( form.this eq "resistance" )
 			);	
 		}
 
-		//Progress tracking
-		qu.exec( 
-			string = progressStmt
-		 ,datasource = "#data.source#"
-		 ,bindArgs = {
-				aid = form.pid
-			 ,sid = form.sess_id
-			 ,re_reps1 = form.el_re_reps1
-			 ,re_weight1 = form.el_re_weight1
-			 ,re_reps2 = form.el_re_reps2
-			 ,re_weight2 = form.el_re_weight2
-			 ,re_reps3 = form.el_re_reps3
-			 ,re_weight3 = form.el_re_weight3
-			}
-		);
 	}
 	catch (any e) {
 		sendRequest( status = 0, message = "#e.message# - #e.detail#" );
@@ -321,29 +290,9 @@ else if ( form.this eq "resistance" )
 	sendRequest( status = 1, message = "#upd.message#" );	
 	abort;
 }
-
-
-
-
 else if ( form.this eq "endurance" ) 
 {
 	try {
-		//Define a progress statement
-		progressStmt =
-		"UPDATE 
-			ac_mtr_logging_progress_tracker 
-		SET 
-			 ee_rpm = :ee_rpm 
-			,ee_speed = :ee_speed 
-			,ee_grade = :ee_grade 
-			,ee_perceived_exertion = :ee_perceived_exertion 
-			,ee_equipment = :ee_equipment
-			,ee_affect = :ee_affect
-			,ee_watts_resistance = :ee_watts_resistance
-		WHERE 
-			active_pid = :aid AND session_id = :sid"
-		;
-	
 		//check fields
 		fields = cc.checkFields( form, 
 			"pid", "sess_id","el_ee_equipment", "el_ee_affect",
