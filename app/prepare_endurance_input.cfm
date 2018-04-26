@@ -35,7 +35,7 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	req = ezdb.exec(
 		string = "
 			SELECT * FROM
-				ac_mtr_giantexercisetable
+				#data.data.endurance#
 			WHERE
 				participantGUID = :pid"
 	 ,datasource = "#data.source#"

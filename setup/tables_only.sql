@@ -427,30 +427,7 @@ CREATE TABLE ac_mtr_serverlog
 );
 
 
-IF OBJECT_ID( N'ac_mtr_logging_progress_tracker', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_logging_progress_tracker;
-END
-CREATE TABLE ac_mtr_logging_progress_tracker 
-(
-	 active_pid INT
-	,session_id VARCHAR(64)
-	,ee_rpm INT
-	,ee_watts_resistance INT
-	,ee_speed INT
-	,ee_grade INT
-	,ee_perceived_exertion INT
-	,ee_equipment INT
-	,ee_timeblock INT
-	,re_reps1 INT
-	,re_weight1 INT
-	,re_reps2 INT
-	,re_weight2 INT
-	,re_reps3 INT
-	,re_weight3 INT
-	,re_extype INT
-	,dtimestamp DATETIME
-);
+
 
 
 
@@ -610,11 +587,18 @@ SET IDENTITY_INSERT ac_mtr_ee_machine_list ON;
 SET IDENTITY_INSERT ac_mtr_fail_visit_reasons ON;
 */
 
-IF OBJECT_ID( N'ac_mtr_giantexercisetable ', N'U') IS NOT NULL
-BEGI0N
-	DROP TABLE ac_mtr_giantexercisetable ;
+
+/* ---------------------------
+ac_mtr_endurance_new
+
+A table for endurance data
+that can be shared by other apps.
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_endurance_new', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_endurance_new ;
 END
-CREATE TABLE ac_mtr_giantexercisetable (
+CREATE TABLE ac_mtr_endurance_new (
 	[rec_id]           int IDENTITY(1,1) NOT NULL,
 	[recordthread]     varchar(50) NOT NULL DEFAULT (newid()),
 	[d_inserted]       datetime NOT NULL DEFAULT (getdate()),
@@ -719,7 +703,7 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[othMchn2]         varchar(max) NULL,
 	[reasnmisd]        int NULL,
 	[Sessionmisd]      int NULL,
-	[Sp_mchntype]      varchar(max) NULL,:s/
+	[Sp_mchntype]      varchar(max) NULL,
 	[sp_reasnmisd]     varchar(max) NULL,
 	[stdywk]           int NULL,
 	[trgthr1]          int NULL,
@@ -738,6 +722,157 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[wrmup_watres]     int NULL,
 	[breaks]           int NULL 
 );
+
+
+/* ---------------------------
+ac_mtr_resistance_new
+
+A table for resistance data
+that can be shared by other apps.
+ ---------------------------- */
+CREATE TABLE [dbo].[ac_mtr_resistance_new] (
+	[rec_id] [int] IDENTITY(1,1) NOT NULL,
+	[recordthread] [varchar](50) NOT NULL,
+	[d_inserted] [datetime] NOT NULL,
+	[insertedBy] [varchar](50) NOT NULL,
+	[deleted] [int] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[participantGUID] [varchar](50) NULL,
+	[visitGUID] [varchar](50) NULL,
+	[d_visit] [date] NULL,
+	[staffID] [varchar](10) NULL,
+	[abdominalcrunch] [int] NULL,
+	[abdominalcrunchRep1] [int] NULL,
+	[abdominalcrunchRep2] [int] NULL,
+	[abdominalcrunchRep3] [int] NULL,
+	[abdominalcrunchWt1] [int] NULL,
+	[abdominalcrunchWt2] [int] NULL,
+	[abdominalcrunchWt3] [int] NULL,
+	[bicepcurl] [int] NULL,
+	[bicepcurlRep1] [int] NULL,
+	[bicepcurlRep2] [int] NULL,
+	[bicepcurlRep3] [int] NULL,
+	[bicepcurlWt1] [int] NULL,
+	[bicepcurlWt2] [int] NULL,
+	[bicepcurlWt3] [int] NULL,
+	[bodypart] [int] NULL,
+	[bodyweight] [int] NULL,
+	[bp1set1] [int] NULL,
+	[bp1set2] [int] NULL,
+	[bp1set3] [int] NULL,
+	[bp2set1] [int] NULL,
+	[bp2set2] [int] NULL,
+	[bp2set3] [int] NULL,
+	[breaks] [int] NULL,
+	[calfpress] [int] NULL,
+	[calfpressRep1] [int] NULL,
+	[calfpressRep2] [int] NULL,
+	[calfpressRep3] [int] NULL,
+	[calfpressWt1] [int] NULL,
+	[calfpressWt2] [int] NULL,
+	[calfpressWt3] [int] NULL,
+	[chest2] [int] NULL,
+	[chest2Rep1] [int] NULL,
+	[chest2Rep2] [int] NULL,
+	[chest2Rep3] [int] NULL,
+	[chest2Wt1] [int] NULL,
+	[chest2Wt2] [int] NULL,
+	[chest2Wt3] [int] NULL,
+	[chestpress] [int] NULL,
+	[chestpressRep1] [int] NULL,
+	[chestpressRep2] [int] NULL,
+	[chestpressRep3] [int] NULL,
+	[chestpressWt1] [int] NULL,
+	[chestpressWt2] [int] NULL,
+	[chestpressWt3] [int] NULL,
+	[dayofwk] [int] NULL,
+	[dumbbellsquat] [int] NULL,
+	[dumbbellsquatRep1] [int] NULL,
+	[dumbbellsquatRep2] [int] NULL,
+	[dumbbellsquatRep3] [int] NULL,
+	[dumbbellsquatWt1] [int] NULL,
+	[dumbbellsquatWt2] [int] NULL,
+	[dumbbellsquatWt3] [int] NULL,
+	[Hrworking] [int] NULL,
+	[kneeextension] [int] NULL,
+	[kneeextensionRep1] [int] NULL,
+	[kneeextensionRep2] [int] NULL,
+	[kneeextensionRep3] [int] NULL,
+	[kneeextensionWt1] [int] NULL,
+	[kneeextensionWt2] [int] NULL,
+	[kneeextensionWt3] [int] NULL,
+	[legcurl] [int] NULL,
+	[legcurlRep1] [int] NULL,
+	[legcurlRep2] [int] NULL,
+	[legcurlRep3] [int] NULL,
+	[legcurlWt1] [int] NULL,
+	[legcurlWt2] [int] NULL,
+	[legcurlWt3] [int] NULL,
+	[legpress] [int] NULL,
+	[legpressRep1] [int] NULL,
+	[legpressRep2] [int] NULL,
+	[legpressRep3] [int] NULL,
+	[legpressWt1] [int] NULL,
+	[legpressWt2] [int] NULL,
+	[legpressWt3] [int] NULL,
+	[MthlyBPDia] [int] NULL,
+	[mthlybpsys] [int] NULL,
+	[nxtsesn_dt] [date] NULL,
+	[othMchn1] [varchar](max) NULL,
+	[othMchn2] [varchar](max) NULL,
+	[overheadpress] [int] NULL,
+	[overheadpressRep1] [int] NULL,
+	[overheadpressRep2] [int] NULL,
+	[overheadpressRep3] [int] NULL,
+	[overheadpressWt1] [int] NULL,
+	[overheadpressWt2] [int] NULL,
+	[overheadpressWt3] [int] NULL,
+	[pulldown] [int] NULL,
+	[pulldownRep1] [int] NULL,
+	[pulldownRep2] [int] NULL,
+	[pulldownRep3] [int] NULL,
+	[pulldownWt1] [int] NULL,
+	[pulldownWt2] [int] NULL,
+	[pulldownWt3] [int] NULL,
+	[reasnmisd] [int] NULL,
+	[recstrcomplete] [int] NULL,
+	[seatedrow] [int] NULL,
+	[seatedrowRep1] [int] NULL,
+	[seatedrowRep2] [int] NULL,
+	[seatedrowRep3] [int] NULL,
+	[seatedrowWt1] [int] NULL,
+	[seatedrowWt2] [int] NULL,
+	[seatedrowWt3] [int] NULL,
+	[Sessionmisd] [int] NULL,
+	[shoulder2] [int] NULL,
+	[shoulder2Rep1] [int] NULL,
+	[shoulder2Rep2] [int] NULL,
+	[shoulder2Rep3] [int] NULL,
+	[shoulder2Wt1] [int] NULL,
+	[shoulder2Wt2] [int] NULL,
+	[shoulder2Wt3] [int] NULL,
+	[sp_reasnmisd] [varchar](max) NULL,
+	[stdywk] [int] NULL,
+	[triceppress] [int] NULL,
+	[triceppressRep1] [int] NULL,
+	[triceppressRep2] [int] NULL,
+	[triceppressRep3] [int] NULL,
+	[triceppressWt1] [int] NULL,
+	[triceppressWt2] [int] NULL,
+	[triceppressWt3] [int] NULL,
+	[typedata] [int] NULL,
+	[weight] [numeric](18, 0) NULL,
+	[wrmup_hr] [int] NULL,
+	[wrmup_oth1] [int] NULL,
+	[wrmup_oth2] [int] NULL,
+	[wrmup_prctgrade] [numeric](18, 0) NULL,
+	[wrmup_rpm] [int] NULL,
+	[wrmup_speed] [numeric](18, 0) NULL,
+	[wrmup_watres] [int] NULL
+) 
+
+
+
 
 
 /*
@@ -768,5 +903,83 @@ CREATE TABLE ac_mtr_participant_notes
 (
 	 note_id INT IDENTITY(1,1) NOT NULL
 	,note_participant_match_id varchar(64)
+	,note_datetime_added DATETIME
 	,note_text varchar(max)
 );
+
+
+/* ---------------------------
+ac_mtr_logging_progress_tracker
+
+Log progress of things.
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_logging_progress_tracker', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_logging_progress_tracker;
+END
+CREATE TABLE ac_mtr_logging_progress_tracker 
+(
+	 active_pid INT
+	,session_id VARCHAR(64)
+	,ee_rpm INT
+	,ee_watts_resistance INT
+	,ee_speed INT
+	,ee_grade INT
+	,ee_perceived_exertion INT
+	,ee_equipment INT
+	,ee_timeblock INT
+	,re_reps1 INT
+	,re_weight1 INT
+	,re_reps2 INT
+	,re_weight2 INT
+	,re_reps3 INT
+	,re_weight3 INT
+	,re_extype INT
+	,dtimestamp DATETIME
+);
+
+
+
+/* ---------------------------
+ac_mtr_re_exercise_list
+
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_re_exercise_list', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_re_exercise_list;
+END
+CREATE TABLE ac_mtr_re_exercise_list 
+(
+	 et_id INT IDENTITY(1,1) NOT NULL
+	,et_name varchar(256)
+	,et_formname varchar(256)
+	,et_description varchar(max)
+);
+
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Abdominal Crunch", "abdominalcrunch", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Bicep Curl", "bicepcurl", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Calf Press", "calfpress", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Chest", "chest2", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Chest Press", "chestpress", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Dumbbell Squat", "dumbbellsquat", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Knee Extension", "kneeextension", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Leg Curl", "legcurl", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Leg Press", "legpress", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "OverheadPpress", "overheadpress", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Pulldown", "pulldown", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Seated Row", "seatedrow", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Shoulder", "shoulder2", '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Tricep Press", "triceppress", '' );
+~
+
+
+
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Presses', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Curls', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Extensions', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Seated Calf', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Bicep Curls', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Tricep Presses', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Chest Presses', '' );
+INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Seated Rows', '' );
+

@@ -15,7 +15,11 @@ I can do more with this concept...
 ,"debug"  =  0
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
-,"data"   = {}
+,"data"   = {
+	"endurance"  = "ac_mtr_endurance_new"
+ ,"resistance" = "ac_mtr_resistance_new"
+ ,"exerciseList" = "ac_mtr_resistance_exercise_list"
+}
 ,"css"    = [
 	 "zero.css"
 

@@ -2,29 +2,34 @@
 if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 {
 	try {
-		//Define a progress statement
-		progressStmt =
-		"UPDATE 
-			ac_mtr_logging_progress_tracker 
-		SET 
-			re_reps1 = :re_reps1,
-			re_weight1 = :re_weight1,
-			re_reps2 = :re_reps2,
-			re_weight2 = :re_weight2,
-			re_reps3 = :re_reps3,
-			re_weight3 = :re_weight3,
-			re_extype = :re_extype 
-		WHERE 
-			active_pid = :aid AND session_id = :sid"
-		;
-
-		//check fields
-		fields = cc.checkFields( form, 
-			"pid", "sess_id",
-			"el_re_reps1", "el_re_weight1",
-			"el_re_reps2", "el_re_weight2",
-			"el_re_reps3", "el_re_weight3",
-			"el_re_extype" );
+		if ( form.extype = 0 )
+			desig = "abdominalcrunch";
+		else if ( form.extype = 1 )
+			desig = "bicepcurl";
+		else if ( form.extype = 2 )
+			desig = "calfpress";
+		else if ( form.extype = 3 )
+			desig = "chest2";
+		else if ( form.extype = 4 )
+			desig = "chestpress";
+		else if ( form.extype = 5 )
+			desig = "dumbbellsquat";
+		else if ( form.extype = 6 )
+			desig = "kneeextension";
+		else if ( form.extype = 7 )
+			desig = "legcurl";
+		else if ( form.extype = 8 )
+			desig = "legpress";
+		else if ( form.extype = 9 )
+			desig = "overheadpress";
+		else if ( form.extype = 10 )
+			desig = "pulldown";
+		else if ( form.extype = 11 )
+			desig = "seatedrow";
+		else if ( form.extype = 12 )
+			desig = "shoulder2";
+		else if ( form.extype = 13 )
+			desig = "triceppress";
 
 		//Figure out the form field name 
 		desig = "";
@@ -32,7 +37,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 			desig = "wrmup_";
 		else if ( form.el_ee_timeblock gt 45 )
 			desig = "m5_rec";
-		else { 
+		else {
 			desig = "m#form.el_ee_timeblock#_ex";
 		}
 
@@ -40,13 +45,12 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 		fields = cc.checkFields( form, 
 			 "pid"
 			,"sess_id"
-			,"#desig#hr"
-			,"#desig#oth1"
-			,"#desig#oth2"
-			,"#desig#prctgrade"
-			,"#desig#rpm"
-			,"#desig#speed"
-			,"#desig#watres"
+			,"#desig#Rep1"
+			,"#desig#Rep2"
+			,"#desig#Rep3"
+			,"#desig#Wt1"
+			,"#desig#Wt2"
+			,"#desig#Wt3"
 		);
 
 		if ( !fields.status )

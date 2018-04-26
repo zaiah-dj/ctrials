@@ -173,6 +173,8 @@ if (
 		location( url=link( "chosen.cfm" ), addtoken="no" );
 	}
 }
+
+
 else if ( form.this eq "resistance" ) 
 {
 	try {

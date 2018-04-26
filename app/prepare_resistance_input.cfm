@@ -6,12 +6,12 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 
 	//Pull all exercises	
 	reExList=ezdb.exec( 
-		string="SELECT * FROM ac_mtr_re_exercise_list", 
+		string="SELECT * FROM #data.data.exerciseList#", 
 		datasource="#data.source#" );
 
 	//Pull one exercise
 	reExSel =ezdb.exec( 
-		string="SELECT * FROM ac_mtr_re_exercise_list WHERE et_id = :et_id", 
+		string="SELECT * FROM #data.data.exerciseList# WHERE et_id = :et_id", 
 		datasource = "#data.source#",
 		bindArgs={ et_id = type } );
 

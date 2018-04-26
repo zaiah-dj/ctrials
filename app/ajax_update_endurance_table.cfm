@@ -35,7 +35,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 		upd = ezdb.exec( 
 			string = "
 			SELECT * FROM 
-				ac_mtr_giantexercisetable 
+				#data.data.endurance#	
 			WHERE
 				participantGUID = :pid
 			 ,stdywk = :stdywk
@@ -64,7 +64,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 		if ( !upd.prefix.recordCount ) {
 			upd = ezdb.exec( 
 				datasource = "#data.source#"
-				,string = "INSERT INTO ac_mtr_giantexercisetable
+				,string = "INSERT INTO 
+				#data.data.endurance#	
 					( participantGUID
 					 ,insertedBy
 					 ,mchntype
@@ -118,7 +119,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 			upd = ezdb.exec( 
 				string = "
 				 UPDATE 
-					ac_mtr_giantexercisetable
+					#data.data.endurance#	
 				 SET
 					 mchntype = :machine_type
 					,#desig#oth1 = :oth1
@@ -234,7 +235,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 		if ( !upd.prefix.recordCount ) {
 			upd = ezdb.exec( 
 				datasource = "#data.source#"
-				,string = "INSERT INTO ac_mtr_giantexercisetable
+				,string = "INSERT INTO
+					#data.data.endurance#	
 					( participantGUID, 
 					 ,mchntype
 					 ,#desig#oth1
@@ -285,7 +287,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 			upd = ezdb.exec( 
 				string = "
 				UPDATE 
-					ac_mtr_giantexercisetable
+					#data.data.endurance#	
 				SET
 					machinetype = :machine_type,
 					#desig#rpm = :rpm,
