@@ -1,7 +1,8 @@
 <cfscript>
 if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 {
-	try {
+	try 
+	{
 		//check fields
 		fields = cf.checkFields( form, 
 			 "pid"
@@ -32,19 +33,26 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 		//then insert or update if the row is not there...
 		//add stdywk, staffid, visitguid, dayofwk, insertedby to get an accurate count
 		upd = ezdb.exec( 
-			string = "SELECT * FROM ac_mtr_giantexercisetable 
-			WHERE 
-			participantGUID = :pid"
-		/*
-			,stdywk = ?
-			,staffid = ?
-			,visitguid = ?
-			,dayofwk = ?
-			,insertedby = ?
+			string = "
+			SELECT * FROM 
+				ac_mtr_giantexercisetable 
+			WHERE
+				participantGUID = :pid
+			 ,stdywk = :stdywk
+			 ,staffid = :staffid
+			 ,visitguid = :visitguid
+			 ,dayofwk = :dayofwk
+			 ,insertedby = :insertedby
 			"
-		*/
 		 ,datasource="#data.source#"
-		 ,bindArgs = { pid="#form.pid#" } 
+		 ,bindArgs = { 
+				 pid = form.pid
+				,stdywk = form.stdywk
+				,staffid = form.staffid
+				,visitguid = form.visitguid
+				,dayofwk = form.dayofwk
+				,insertedby = form.insertedby
+			}
 		);
 
 		if ( !upd.status )
@@ -66,6 +74,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 					 ,#desig#rpm
 					 ,#desig#speed
 					 ,#desig#watres  
+					 ,dayOfwk
+					 ,stdywk
+					 ,staffid
 					)
 					VALUES
 					(  
@@ -78,6 +89,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 						,:rpm
 						,:speed
 						,:watres
+					  ,:dayOfwk
+					  ,:stdywk
+					  ,;staffid
 					)"
 				,bindArgs = {
 				  pid="#form.pid#" 
@@ -89,6 +103,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				 ,rpm="#form.rpm#"
 				 ,speed="#form.speed#"
 				 ,watres="#form.watts_resistance#"
+				,dayOfwk=1
+				,stdywk=1
+				,staffid=32423
 				} 
 			);
 

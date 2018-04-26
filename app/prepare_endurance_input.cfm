@@ -48,22 +48,21 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	//Values?
 	rc = req.prefix.recordCount;	
 	values = [
-		{ label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
+		{ show = true, label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
 			,def = req.results[ "#desig#rpm" ] } 
-	 ,{ label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
+	 ,{ show = true, label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
 			,def = req.results[ "#desig#watres" ] }
-	 ,{	label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
+	 ,{	show = true, label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
 			,def = req.results[ "#desig#speed" ] }
-	 ,{ label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
+	 ,{ show = true, label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
 			,def = req.results[ "#desig#prctgrade" ] }
-/*	 ,{ label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
+/*	 ,{ show = true, label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
 			,def = req.results[ "#desig#rpe" ] }*/
-	 ,{ label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "affect"
+	 ,{ show = true, label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "affect"
 		  ,def = 0/*"#(!rc) ? 0 : iif((req.results.el_ee_perceived_exertion eq ""),0,req.results.el_ee_perceived_exertion)#"*/ }
 	];
 
 	// Initialize client side AJAX code 
-	// ,send = "input[name^=el_], select[name^=el_]" 
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 		location = link( "update.cfm" )
 	 ,showDebug = true

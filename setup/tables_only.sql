@@ -738,3 +738,35 @@ CREATE TABLE ac_mtr_giantexercisetable (
 	[wrmup_watres]     int NULL,
 	[breaks]           int NULL 
 );
+
+
+/*
+IF OBJECT_ID( N'ac_mtr_equipment_log', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_equipment_log;
+END
+CREATE TABLE ac_mtr_equipment_log 
+(
+	 et_id INT IDENTITY(1,1) NOT NULL
+	,et_name varchar(256)
+	,et_description varchar(max)
+);
+*/
+
+
+
+/* ---------------------------
+ac_mtr_participant_notes
+
+Notes and stuff.
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_participant_notes', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_participant_notes;
+END
+CREATE TABLE ac_mtr_participant_notes 
+(
+	 note_id INT IDENTITY(1,1) NOT NULL
+	,note_participant_match_id varchar(64)
+	,note_text varchar(max)
+);
