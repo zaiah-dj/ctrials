@@ -24,7 +24,9 @@ Q = {
 
 	//Get ALL of the previous check-in data to see next scheduled visit and previous blood pressure readings?
  ,ai        = db.exec( 
-		string="SELECT TOP 1 ps_next_sched,ps_date_time_assessed FROM ac_mtr_checkinstatus WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
+		string="SELECT TOP 1 ps_next_sched,ps_date_time_assessed 
+		FROM 
+			ac_mtr_checkinstatus WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
 		bindArgs = { pid = "#part_list.p_pid#" } )
 };
 

@@ -28,8 +28,11 @@
 							--->
 						
 							<cfset today = LCase( DateTimeFormat( Now(), "EEE" ))>
+							<cfset todayNum = DayOfWeek( Now() )>
+							<input type="hidden" name="ps_day" value="#todayNum#"></input>
+
 							<ul class="dasch">
-							<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
+							<cfloop list = "Sun,Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
 								<cfif today eq LCase( day )>
 								<li class="selected">#day#</li>	
 								<cfelse>
@@ -142,6 +145,11 @@
 						<td class="title">Participant Notes</td>
 						<td>
 							<!---<textarea class="modal-activate" name="ps_notes"></textarea>--->
+							<ul class="participant-notes">
+							<cfloop query=pNotes.results>
+								<li>#DateTimeFormat(note_datetime_added,"mm/dd/yy")# - #note_text#</li>
+							</cfloop>
+							</ul>
 							<button class="modal-activate">Add New Note</button>
 							<div id="myModal" class="modal">
 								<div class="modal-content">

@@ -119,6 +119,7 @@ I can do more with this concept...
 			,"select_chosen_participants"
 			,"select_single_participant"
 			,"select_participant_check_in_data"
+			,"select_participant_notes"
 		]
 	 ,"view"  = [ 
 			 "master/head"

@@ -1039,4 +1039,14 @@ table.resistance tr td.chopt {
 	margin: 0 auto;
 	position: relative;
 }
+
+ul.participant-notes {
+	list-style-type: square;	
+	position: relative;
+	left: 30px;
+}
+
+li.participant-notes {
+	margin-bottom: 10px;
+}
 /*end of stylesheet ;) */
