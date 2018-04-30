@@ -2,150 +2,157 @@
 if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 {
 	try {
-		if ( form.extype = 0 )
+		//Auto select exercise type if it's nowhere to be found
+		if ( !StructKeyExists( form, "extype" ) )
+			form.extype = 0;
+
+		//Figure out the form type.
+		if ( form.extype == 0 )
 			desig = "abdominalcrunch";
-		else if ( form.extype = 1 )
+		else if ( form.extype == 1 )
 			desig = "bicepcurl";
-		else if ( form.extype = 2 )
+		else if ( form.extype == 2 )
 			desig = "calfpress";
-		else if ( form.extype = 3 )
+		else if ( form.extype == 3 )
 			desig = "chest2";
-		else if ( form.extype = 4 )
+		else if ( form.extype == 4 )
 			desig = "chestpress";
-		else if ( form.extype = 5 )
+		else if ( form.extype == 5 )
 			desig = "dumbbellsquat";
-		else if ( form.extype = 6 )
+		else if ( form.extype == 6 )
 			desig = "kneeextension";
-		else if ( form.extype = 7 )
+		else if ( form.extype == 7 )
 			desig = "legcurl";
-		else if ( form.extype = 8 )
+		else if ( form.extype == 8 )
 			desig = "legpress";
-		else if ( form.extype = 9 )
+		else if ( form.extype == 9 )
 			desig = "overheadpress";
-		else if ( form.extype = 10 )
+		else if ( form.extype == 10 )
 			desig = "pulldown";
-		else if ( form.extype = 11 )
+		else if ( form.extype == 11 )
 			desig = "seatedrow";
-		else if ( form.extype = 12 )
+		else if ( form.extype == 12 )
 			desig = "shoulder2";
-		else if ( form.extype = 13 )
+		else if ( form.extype == 13 )
 			desig = "triceppress";
 
-		//Figure out the form field name 
-		desig = "";
-		if ( form.el_ee_timeblock eq 0 )
-			desig = "wrmup_";
-		else if ( form.el_ee_timeblock gt 45 )
-			desig = "m5_rec";
-		else {
-			desig = "m#form.el_ee_timeblock#_ex";
-		}
-
 		//Then check for the right fields.	
-		fields = cc.checkFields( form, 
+		fields = cf.checkFields( form, 
 			 "pid"
 			,"sess_id"
-			,"#desig#Rep1"
-			,"#desig#Rep2"
-			,"#desig#Rep3"
-			,"#desig#Wt1"
-			,"#desig#Wt2"
-			,"#desig#Wt3"
+			,"reps1"
+			,"reps2"
+			,"reps3"
+			,"weight1"
+			,"weight2"
+			,"weight3"
 		);
 
 		if ( !fields.status )
-			req.sendRequest( status = 0, message = "#fields.message#" );	
+			req.sendAsJson( status = 0, message = "#fields.message#" );	
 		
 		//then insert or update if the row is not there...
-		upd = qu.exec( 
-			string = "SELECT * FROM ac_mtr_giantexercisetable WHERE el_re_ex_session_id = :sid AND el_re_pid = :pid AND el_re_extype = :extype",
-			datasource="#data.source#",
-			bindArgs = { sid="#form.sess_id#", pid="#form.pid#", extype="#form.el_re_extype#" } 
+		//pid="#form.pid#", extype="#form.el_re_extype#" 
+		upd = ezdb.exec( 
+			string = "
+			SELECT * 
+			FROM 
+				#data.data.resistance#	
+			WHERE 
+				participantGUID = :pid "
+			,bindArgs = { 
+				pid = form.pid
+			}
 		);
 
 		if ( !upd.status )
-			req.sendRequest( status = 0, message = "#upd.message#" );
+			req.sendAsJson( status = 0, message = "#upd.message#" );
+
+		//Get a new record thread
+		recordThread = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
 
 		if ( !upd.prefix.recordCount ) {
-			upd = qu.exec( 
-				datasource = "#data.source#",
-				string = "INSERT INTO ac_mtr_giantexercisetable 
-					( participantGUID, #desig#hr, #desig#oth1, #desig#oth2, #desig#prctgrade, #desig#rpm, #design#speed, #desig#watres )
+			upd = ezdb.exec( 
+				datasource = "#data.source#"
+				,string = "
+					INSERT INTO 
+						#data.data.resistance#	
+					( participantGUID
+						,recordthread
+						,insertedBy
+						,#desig#Rep1
+						,#desig#Rep2
+						,#desig#Rep3
+						,#desig#Wt1
+						,#desig#Wt2
+						,#desig#Wt3
+					)
 					VALUES
-					( :pid,          ,:r1       ,:w1         , :r2        , :w2             , :r3       , :w3          ,:extype, :dt, :mdt );",
-				bindArgs = {
-					pid="#form.pid#" 
-				 ,sid="#form.sess_id#"
-
-				 ,hr="#form.el_re_reps1#" 
-				 ,oth1="#form.el_re_weight1#" 
-				 ,oth2="#form.el_re_reps2#" 
-				 ,prctgrade="#form.el_re_weight2#" 
-				 ,rpm="#form.el_re_reps3#" 
-				 ,speed="#form.el_re_weight3#" 
-				 ,watres="#form.el_re_extype#" 
-
-				 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
-				 ,mdt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
+					(  :pid
+						,:recThr
+						,:insBy
+						,:rep1
+						,:rep2
+						,:rep3
+						,:wt1
+						,:wt2
+						,:wt3
+					);"
+				,bindArgs = {
+					pid   = "#form.pid#" 
+				 ,recThr= recordThread
+				 ,insBy = "NOBODY" 
+				 ,rep1  = "#form.reps1#" 
+				 ,rep2  = "#form.weight1#" 
+				 ,rep3  = "#form.reps2#" 
+				 ,wt1   = "#form.weight2#" 
+				 ,wt2   = "#form.reps3#" 
+				 ,wt3   = "#form.weight3#" 
 				} 
 			);
+
+				 //,sid = "#form.sess_id#"
 		}
 		else {
-			upd = qu.exec( 
-				string = "UPDATE ac_mtr_exercise_log_re 
+			upd = ezdb.exec( 
+				string = "
+				UPDATE
+					#data.data.resistance#	
 				SET 
-					el_re_reps1 = :r1,
-					el_re_weight1 = :w1,
-					el_re_reps2 = :r2,
-					el_re_weight2 = :w2,
-					el_re_reps3 = :r3,
-					el_re_weight3 = :w3,
-					el_re_extype = :extype,
-					el_re_datetime_modified = :dt
+					 #desig#Rep1 = :rep1
+					,#desig#Wt1  = :wt1
+					,#desig#Rep2 = :rep2
+					,#desig#Wt2  = :wt2
+					,#desig#Rep3 = :rep3
+					,#desig#Wt3  = :wt3
 				WHERE
 					el_re_ex_session_id = :sid 
 				AND
-					el_re_extype = :extype
+					dayofwk = :dwk
 				AND
-					el_re_pid = :pid"
+					insertedBy = :staffId
+				AND
+					participantGUID = :pid"
 
 				,datasource = "#data.source#"
 
 				,bindArgs = {
-					pid="#form.pid#" 
-				 ,sid="#form.sess_id#"
-
-				 ,r1="#form.el_re_reps1#" 
-				 ,w1="#form.el_re_weight1#" 
-				 ,r2="#form.el_re_reps2#" 
-				 ,w2="#form.el_re_weight2#" 
-				 ,r3="#form.el_re_reps3#" 
-				 ,w3="#form.el_re_weight3#" 
-
-				 ,extype="#form.el_re_extype#" 
-				 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
+					pid ="#form.pid#" 
+				 ,sid ="#form.sess_id#"
+				 ,rep1="#form.reps1#" 
+				 ,wt1 ="#form.weight1#" 
+				 ,rep2="#form.reps2#" 
+				 ,wt2 ="#form.weight2#" 
+				 ,rep3="#form.reps3#" 
+				 ,wt3 ="#form.weight3#" 
 				}
 			);	
 		}
-
-		//Progress tracking
-		qu.exec( 
-			string = progressStmt
-		 ,datasource = "#data.source#"
-		 ,bindArgs = {
-				aid = form.pid
-			 ,sid = form.sess_id
-			 ,re_reps1 = form.el_re_reps1
-			 ,re_weight1 = form.el_re_weight1
-			 ,re_reps2 = form.el_re_reps2
-			 ,re_weight2 = form.el_re_weight2
-			 ,re_reps3 = form.el_re_reps3
-			 ,re_weight3 = form.el_re_weight3
-			}
-		);
 	}
 	catch (any e) {
-		req.sendRequest( status = 0, message = "#e.message# - #e.detail#" );
+		req.sendAsJson( status = 0, message = "#e.message# - #e.detail#" );
 	}
+	req.sendAsJson( status = 1, message = "#upd.message#" );	
+	abort;
 }
 </cfscript>

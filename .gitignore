@@ -10,4 +10,7 @@
 assets/img
 assets/libs/mobileSelect.js
 TODO
-components/cfwriteback/
+components/cfwriteback
+components/cfquella
+components/cfsesseract
+components/*.cfm

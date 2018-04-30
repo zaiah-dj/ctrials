@@ -730,11 +730,15 @@ ac_mtr_resistance_new
 A table for resistance data
 that can be shared by other apps.
  ---------------------------- */
-CREATE TABLE [dbo].[ac_mtr_resistance_new] (
-	[rec_id] [int] IDENTITY(1,1) NOT NULL,
-	[recordthread] [varchar](50) NOT NULL,
-	[d_inserted] [datetime] NOT NULL,
-	[insertedBy] [varchar](50) NOT NULL,
+IF OBJECT_ID( N'ac_mtr_endurance_new', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_endurance_new ;
+END
+CREATE TABLE ac_mtr_endurance_new (
+	[rec_id]          int IDENTITY(1,1) NOT NULL,
+	[recordthread]    varchar(50) NOT NULL DEFAULT (newid()),
+	[d_inserted]      datetime NOT NULL DEFAULT (getdate()),
+	[insertedBy]      varchar(50) NOT NULL,
 	[deleted] [int] NULL,
 	[deleteReason] [varchar](max) NULL,
 	[participantGUID] [varchar](50) NULL,
@@ -869,7 +873,7 @@ CREATE TABLE [dbo].[ac_mtr_resistance_new] (
 	[wrmup_rpm] [int] NULL,
 	[wrmup_speed] [numeric](18, 0) NULL,
 	[wrmup_watres] [int] NULL
-) 
+);
 
 
 
@@ -944,11 +948,11 @@ CREATE TABLE ac_mtr_logging_progress_tracker
 ac_mtr_re_exercise_list
 
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_re_exercise_list', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_resistance_exercise_list', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_re_exercise_list;
+	DROP TABLE ac_mtr_resistance_exercise_list;
 END
-CREATE TABLE ac_mtr_re_exercise_list 
+CREATE TABLE ac_mtr_resistance_exercise_list 
 (
 	 et_id INT IDENTITY(1,1) NOT NULL
 	,et_name varchar(256)
@@ -956,30 +960,17 @@ CREATE TABLE ac_mtr_re_exercise_list
 	,et_description varchar(max)
 );
 
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Abdominal Crunch", "abdominalcrunch", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Bicep Curl", "bicepcurl", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Calf Press", "calfpress", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Chest", "chest2", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Chest Press", "chestpress", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Dumbbell Squat", "dumbbellsquat", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Knee Extension", "kneeextension", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Leg Curl", "legcurl", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Leg Press", "legpress", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "OverheadPpress", "overheadpress", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Pulldown", "pulldown", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Seated Row", "seatedrow", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Shoulder", "shoulder2", '' );
-INSERT INTO ac_mtr_resistance_exercise_list VALUES ( "Tricep Press", "triceppress", '' );
-~
-
-
-
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Presses', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Curls', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Leg Extensions', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Seated Calf', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Bicep Curls', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Tricep Presses', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Chest Presses', '' );
-INSERT INTO ac_mtr_re_exercise_list VALUES ( 'Seated Rows', '' );
-
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Abdominal Crunch', 'abdominalcrunch', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Bicep Curl', 'bicepcurl', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Calf Press', 'calfpress', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Chest', 'chest2', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Chest Press', 'chestpress', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Dumbbell Squat', 'dumbbellsquat', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Knee Extension', 'kneeextension', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Leg Curl', 'legcurl', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Leg Press', 'legpress', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'OverheadPpress', 'overheadpress', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Pulldown', 'pulldown', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Seated Row', 'seatedrow', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Shoulder', 'shoulder2', '' );
+INSERT INTO ac_mtr_resistance_exercise_list VALUES ( 'Tricep Press', 'triceppress', '' );

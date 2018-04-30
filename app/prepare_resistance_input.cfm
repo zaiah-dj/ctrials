@@ -36,17 +36,17 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 	//Generate the form from either db or something else...
 	pc = pop.prefix.recordCount;
 	values = [
-		 {label="Set 1", uom="lb",min = 5, max = 100, step = 5, name = "el_re_weight1"
+		 {label="Set 1", uom="lb",min = 5, max = 100, step = 5, name = "weight1"
 			,def = (!pc) ? 50 : pop.results.el_re_weight1 }
-		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "el_re_reps1"
+		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps1"
 			,def = (!pc) ? 0 : pop.results.el_re_reps1 }
-		,{label="Set 2", uom="lb",min = 5, max = 100, step = 5, name = "el_re_weight2"
+		,{label="Set 2", uom="lb",min = 5, max = 100, step = 5, name = "weight2"
 			,def = (!pc) ? 50 : pop.results.el_re_weight2 }
-		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "el_re_reps2" 
+		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps2" 
 			,def = (!pc) ? 0 : pop.results.el_re_reps2 }
-		,{label="Set 3", uom="lb",min = 5, max = 100, step = 5, name = "el_re_weight3"
+		,{label="Set 3", uom="lb",min = 5, max = 100, step = 5, name = "weight3"
 			,def = (!pc) ? 50 : pop.results.el_re_weight3 }
-		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "el_re_reps3"
+		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps3"
 			,def = (!pc) ? 0 : pop.results.el_re_reps3 }
 	];
 	

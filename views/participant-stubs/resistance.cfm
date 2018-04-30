@@ -10,9 +10,6 @@
 	<cfset cnt=0>
 	<cfloop query = "#reExList.results#"> 
 		<a href="#link( 'input.cfm?id=#url.id#&extype=#et_id#' )#"><li #iif(type eq et_id, DE('class="selected"'),DE(''))#>#et_name#</li></a>
-		<cfif ++cnt eq 4>
-			<br />
-		</cfif> 
 	</cfloop>
 	</ul>
 
