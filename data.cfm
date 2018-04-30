@@ -12,12 +12,13 @@ I can do more with this concept...
 ,"name"   = "iv"
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  0
+,"debug"  =  1
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
 	"endurance"  = "ac_mtr_endurance_new"
  ,"resistance" = "ac_mtr_resistance_new"
+ ,"sessionTable" = "ac_mtr_logging_progress_tracker"
  ,"exerciseList" = "ac_mtr_resistance_exercise_list"
 }
 ,"css"    = [
@@ -67,11 +68,13 @@ I can do more with this concept...
 	"default"= { 
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
-			"dependencies",
-			"check_valid_session",
-			"select_all_participants", 
-			"select_chosen_participants", 
-			"select_unchosen_participants" 
+			"dependencies"
+			,"currentId"
+			,"check_valid_session"
+			,"select_all_participants"
+			,"select_chosen_participants"
+			,"select_unchosen_participants" 
+			,"update_valid_session"
 		]
 	 ,"view"  = [ 
 			"master/head", 
@@ -98,7 +101,9 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
+			,"currentId"
 			,"check_valid_session"
+			,"update_valid_session"
 			,"select_chosen_participants"
 			,"select_single_participant"
 			,"prepare_endurance_input"
@@ -118,7 +123,9 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
+			,"currentId"
 			,"check_valid_session"
+			,"update_valid_session"
 			,"process_checkin_form"
 			,"select_chosen_participants"
 			,"select_single_participant"
@@ -174,5 +181,15 @@ I can do more with this concept...
 		 ,"model" =  "dev/robocop"
 		 ,"view"  =  "robocop"
 		}
+
+		,"sessdata" = { 
+			"model" =  [ 
+				"dependencies", 
+				"currentId", 
+				"show_valid_session" 
+			]
+		 ,"view"  =  "logout"
+		 ,"hint"  =  "An AJAX endpoint to tell me information about where the user is."
+			}
 	}
 }>

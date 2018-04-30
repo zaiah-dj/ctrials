@@ -6,23 +6,6 @@ function onError( msg ) {
 
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
-/*
-	//???What is this?
-	a = [].slice.call( document.querySelectorAll( ".participants li" ) );
-	for ( i = 0 ; i < a.length; i++ ) {
-		//make it big if clicked
-		a[i].addEventListener( "click", function ( ev ) {
-			if ( ev.target.parentElement.className.indexOf( "active" ) == -1 ) {
-				ev.target.parentElement.className += "active";
-				ev.target.parentElement.focus();
-			}	
-			else {
-				ev.target.parentElement.className = "";
-			}	
-		} );
-	}
-*/
-
 	//Create a ghetto router
 	locarr = location.href.split( "/" ) ;
 	loc = locarr[ locarr.length - 1 ];

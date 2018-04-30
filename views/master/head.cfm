@@ -22,12 +22,6 @@
 	</cfif>
 </cfloop>
 
-	<cfif data.debug eq 1>
-	<!-- CSS Debug stylesheet -->
-	<link rel="stylesheet" href="#link( "assets/debug.css" )#">
-	<script type="text/javascript" src="#link("assets/debug.js")#"></script>
-	</cfif>
-
 	<!--- iPad Stuff --->
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -58,6 +52,7 @@
 
 	<cfif data.debug eq 1>
 		<div class="debug2">#sess.key# - #sess.status#</div>
+		<div id="sessionKey" style="display:none">#sess.key#</div>
 	</cfif>
 
 	<div class="persistent-nav">

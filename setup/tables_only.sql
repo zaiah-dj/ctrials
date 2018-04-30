@@ -730,11 +730,11 @@ ac_mtr_resistance_new
 A table for resistance data
 that can be shared by other apps.
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_endurance_new', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_resistance_new', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_endurance_new ;
+	DROP TABLE ac_mtr_resistance_new ;
 END
-CREATE TABLE ac_mtr_endurance_new (
+CREATE TABLE ac_mtr_resistance_new (
 	[rec_id]          int IDENTITY(1,1) NOT NULL,
 	[recordthread]    varchar(50) NOT NULL DEFAULT (newid()),
 	[d_inserted]      datetime NOT NULL DEFAULT (getdate()),

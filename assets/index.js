@@ -2,6 +2,13 @@ var subLink = "/motrpac/web/secure/dataentry/iv/update.cfm";
 
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
+	//Do an XHR every time to a resource called 'sessdata' to see what's going on when the app changes pages.
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function ( ) {if ( this.readystate == 4 ) {console.log( this.responseText );}}
+	xhr.open( "GET", "/motrpac/web/secure/dataentry/iv/sessdata.cfm", true );
+	xhr.send( );
+	
+	
 	//Basic filter search works
 	if ( ip = document.getElementById( "bigly-search" ) ) { 
 		ip.addEventListener( "keyup", function (ev) {

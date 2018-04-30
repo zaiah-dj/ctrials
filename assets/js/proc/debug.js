@@ -1,6 +1,15 @@
 /*debug.js*/
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
+	//Do an XHR every time to a resource called 'sessdata' to see what's going on when the app changes pages.
+	if ( sid = document.getElementById( "sessionKey" ) ) { 
+		xhr = new XMLHttpRequest();
+		sid = sid.innerHTML;
+		xhr.onreadystatechange = function ( ) {if ( this.readyState == 4 ) {console.log( this.responseText );}}
+		xhr.open( "GET", "/motrpac/web/secure/dataentry/iv/sessdata.cfm?sid="+sid, true );
+		xhr.send( );
+	}
+
 	//Initialize a debugger window here...
 	if ( aa = document.getElementById( "debugger" ) ) {
 		button = document.createElement( "button" );
