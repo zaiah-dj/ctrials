@@ -1,6 +1,7 @@
 <cfscript>
 if ( isDefined( "part" ) && part.p_exercise eq 1 ) 
 {
+	clijs = CreateObject( "component", "components.writeback" );
 	//Generate the time blocks for endurance exercises.
 	times = [
 		 { index=0,  text="Warm-Up" }
@@ -41,21 +42,26 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
 			pid = "#url.id#"
-		 ,sid = "#sess.key#"
-		 ,tb  = "#defaultTimeblock#"
 		});
 
 	//Values?
+		 //,sid = "#sess.key#",tb  = "#defaultTimeblock#"
+		 
 	rc = req.prefix.recordCount;	
+	rpm = ( rc ) ? req.results[ "#desig#rpm" ] : 0;
+	watres = ( rc ) ? req.results[ "#desig#watres" ] : 0;
+	speed = ( rc ) ? req.results[ "#desig#speed" ] : 0;
+	prctgrade = ( rc ) ? req.results[ "#desig#prctgrade" ] : 0;
+
 	values = [
 		{ show = true, label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
-			,def = req.results[ "#desig#rpm" ] } 
+			,def = rpm }
 	 ,{ show = true, label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
-			,def = req.results[ "#desig#watres" ] }
+			,def = watres }
 	 ,{	show = true, label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
-			,def = req.results[ "#desig#speed" ] }
+			,def = speed }
 	 ,{ show = true, label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
-			,def = req.results[ "#desig#prctgrade" ] }
+			,def = prctgrade }
 /*	 ,{ show = true, label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
 			,def = req.results[ "#desig#rpe" ] }*/
 	 ,{ show = true, label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "affect"

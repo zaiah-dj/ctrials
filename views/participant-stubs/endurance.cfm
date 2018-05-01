@@ -4,7 +4,7 @@
 	<input type="hidden" value="#defaultTimeblock#" name="timeblock">
 
 	<cfif data.debug eq 1>
-		<cfset DebugClientCode = clijs.ClientDebug()>
+		<cfset DebugClientCode = ajax.ClientDebug()>
 	</cfif>
 
 	<!--- TODO: This shouldn't take two loops.  Think about it more. --->

@@ -925,21 +925,9 @@ CREATE TABLE ac_mtr_logging_progress_tracker
 (
 	 active_pid INT
 	,session_id VARCHAR(64)
-	,ee_rpm INT
-	,ee_watts_resistance INT
-	,ee_speed INT
-	,ee_grade INT
-	,ee_perceived_exertion INT
-	,ee_equipment INT
-	,ee_timeblock INT
-	,re_reps1 INT
-	,re_weight1 INT
-	,re_reps2 INT
-	,re_weight2 INT
-	,re_reps3 INT
-	,re_weight3 INT
-	,re_extype INT
+	,location VARCHAR(2048)
 	,dtimestamp DATETIME
+	,misc VARCHAR(MAX)
 );
 
 

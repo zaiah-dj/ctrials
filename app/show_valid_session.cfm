@@ -5,8 +5,8 @@ if ( !StructKeyExists( url, "sid" ) )
 else {
 	try {
 		a = ezdb.exec(
-			string = "SELECT * FROM #data.data.sessionTable# WHERE session_id = :sid"
-			,bindArgs = { sid = url.sid }
+			string = "SELECT * FROM #data.data.sessionTable# WHERE session_id = :sid",
+			bindArgs = { sid = url.sid }
 		);
 
 		if ( !a.status )
@@ -14,7 +14,7 @@ else {
 
 		req.sendAsJson( 
 			status = 1, 
-			message = "cid = #currentId#, sid = #a.results.session_id#, pid = #a.results.active_pid#, location = #a.results.location#"
+			message = "cid = #currentId#, sid = #a.results.session_id#, pid = #a.results.active_pid#, location = #a.results.location#, json = #a.results.misc#"
 		);
 	}
 	catch (any e) {

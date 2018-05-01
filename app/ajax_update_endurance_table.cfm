@@ -47,10 +47,10 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 		 ,datasource="#data.source#"
 		 ,bindArgs = { 
 				 pid = form.pid
-				,stdywk = form.stdywk
+				,stdywk = 1 
+				,dayofwk = 1 
 				,staffid = form.staffid
 				,visitguid = form.visitguid
-				,dayofwk = form.dayofwk
 				,insertedby = form.insertedby
 			}
 		);
@@ -80,8 +80,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 					 ,staffid
 					)
 					VALUES
-					(  
-						 :pid
+					(  :pid
 						,:insertedby
 						,:machine_type
 						,:oth1
@@ -104,9 +103,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				 ,rpm="#form.rpm#"
 				 ,speed="#form.speed#"
 				 ,watres="#form.watts_resistance#"
-				,dayOfwk=1
-				,stdywk=1
-				,staffid=32423
+				 ,dayOfwk=1
+				 ,stdywk=1
+				 ,staffid=32423
 				} 
 			);
 
@@ -129,17 +128,17 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 					,#desig#speed = :speed
 					,#desig#watres = :watres
 				 WHERE
-				 participantGUID = :pid"
+				 	participantGUID = :pid"
 				,datasource = "#data.source#"
 				,bindArgs = { 
-					 pid = "#form.pid#" 
+					 pid = form.pid
 					,machine_type = form.equipment
-					,oth1= "0"
-					,oth2= "0" 
-					,prctgrade = "#form.grade#" 
-					,rpm = "#form.rpm#" 
-					,speed = "#form.speed#" 
-					,watres = "#form.watts_resistance#"
+					,oth1 = "0"
+					,oth2 = "0" 
+					,prctgrade = form.grade 
+					,rpm = form.rpm 
+					,speed = form.speed 
+					,watres = form.watts_resistance
 				}
 			);	
 		}

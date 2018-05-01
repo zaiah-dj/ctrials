@@ -48,12 +48,15 @@ component {
 		return v; 
 	}
 
+
 	this.datasource = "";
+
 
 	public function setDs ( required String datasource ) 
 	{
 		this.datasource = datasource;
 	}
+
 
 	public function exec ( String datasource = "#this.datasource#", String filename, String string, bindArgs ) 
 	{

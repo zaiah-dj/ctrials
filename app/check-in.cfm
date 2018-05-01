@@ -4,7 +4,6 @@ db = createObject("component", "components.quella");
 wb = createObject("component", "components.writeback");
 er = createObject("component", "components.exceptRequest");
 
-
 //Do all the queries here.	
 db.setDs( "#data.source#" );
 Q = {
@@ -13,26 +12,26 @@ Q = {
  ,failReason= db.exec( string="SELECT et_name FROM ac_mtr_fail_visit_reasons" )
 
 	//See today's blood pressure
- ,pbp       = db.exec( 
+ ,pbp = db.exec( 
 		string="SELECT * FROM ac_mtr_bloodpressure WHERE bp_pid = :pid", 
 		bindArgs = { pid = "#part_list.p_pid#" } )
 
 	//See just today's check in status
- ,ci        = db.exec( 
+ ,ci = db.exec( 
 		string="SELECT * FROM ac_mtr_checkinstatus WHERE ps_session_id = :sid AND ps_pid = :pid", 
 		bindArgs = { pid = "#part_list.p_pid#", sid = "#sess.key#" } )
 
 	//Get ALL of the previous check-in data to see next scheduled visit and previous blood pressure readings?
- ,ai        = db.exec( 
-		string="SELECT TOP 1 ps_next_sched,ps_date_time_assessed 
-		FROM 
+ ,ai = db.exec( 
+		string="SELECT TOP 1 ps_next_sched, ps_date_time_assessed 
+		 FROM 
 			ac_mtr_checkinstatus WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
 		bindArgs = { pid = "#part_list.p_pid#" } )
 };
 
 
 //Getting the next scheduled visit is not super straightforward if it's not recorded in patient table.
-nextScheduledVisit = ( Q.ai.prefix.recordCount ) ? Q.ai.results.ps_next_sched : Now(); 
+nextScheduledVisit = ( Q.ai.prefix.recordCount ) ? Q.ai.results.ps_next_sched : Now();
 
 //Blood pressure needs some help.
 if ( Q.pbp.prefix.recordCount ) 

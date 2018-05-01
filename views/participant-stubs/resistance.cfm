@@ -2,7 +2,7 @@
 <cfoutput>
 	<!--- Show front-end initialization code --->
 	<cfif data.debug eq 1>
-		<cfset DebugClientCode = clijs.ClientDebug()>
+		<cfset DebugClientCode = ajax.ClientDebug()>
 	</cfif>
 
 	<!--- Let's see all of these in a list --->

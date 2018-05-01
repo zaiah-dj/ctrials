@@ -69,8 +69,8 @@ I can do more with this concept...
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
 			"dependencies"
-			,"currentId"
 			,"check_valid_session"
+			,"currentId"
 			,"select_all_participants"
 			,"select_chosen_participants"
 			,"select_unchosen_participants" 
@@ -101,8 +101,8 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
-			,"currentId"
 			,"check_valid_session"
+			,"currentId"
 			,"update_valid_session"
 			,"select_chosen_participants"
 			,"select_single_participant"
@@ -123,8 +123,8 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
-			,"currentId"
 			,"check_valid_session"
+			,"currentId"
 			,"update_valid_session"
 			,"process_checkin_form"
 			,"select_chosen_participants"

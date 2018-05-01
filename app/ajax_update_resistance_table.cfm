@@ -77,9 +77,10 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 				,string = "
 					INSERT INTO 
 						#data.data.resistance#	
-					( participantGUID
+					(  participantGUID
 						,recordthread
 						,insertedBy
+						,dayofwk
 						,#desig#Rep1
 						,#desig#Rep2
 						,#desig#Rep3
@@ -91,6 +92,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 					(  :pid
 						,:recThr
 						,:insBy
+						,:dwk
 						,:rep1
 						,:rep2
 						,:rep3
@@ -102,6 +104,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 					pid   = "#form.pid#" 
 				 ,recThr= recordThread
 				 ,insBy = "NOBODY" 
+				 ,dwk   = 1
 				 ,rep1  = "#form.reps1#" 
 				 ,rep2  = "#form.weight1#" 
 				 ,rep3  = "#form.reps2#" 
