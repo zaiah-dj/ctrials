@@ -11,7 +11,6 @@
 	<div class="inner-selection">
 		<ul class="inner-selection">
 		<cfloop array=#times# index=ind>
-		<cfif ind.index eq 30><br /></cfif>
 		<cfif ind.index eq defaultTimeblock>
 			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
 				<li class="selected">#ind.text#</li>

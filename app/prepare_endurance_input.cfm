@@ -1,3 +1,5 @@
+<cfparam name="url.id" default="">
+<cfparam name="session.id" default="">
 <cfscript>
 if ( isDefined( "part" ) && part.p_exercise eq 1 ) 
 {
@@ -41,7 +43,7 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 				participantGUID = :pid"
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
-			pid = "#url.id#"
+			pid = "#listfirst( "#session.id#", "#url.id#" )#"
 		});
 
 	//Values?

@@ -18,7 +18,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 			
 		//...
 		if ( !fields.status )
-			req.sendAsJson( status = 0, message = "#fields.message#" );	
+			req.sendAsJson( status = 0, message = "ENDURANCE - #fields.message#" );	
 		
 		//Figure out the form field name 
 		desig = "";
@@ -32,6 +32,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 
 		//then insert or update if the row is not there...
 		//add stdywk, staffid, visitguid, dayofwk, insertedby to get an accurate count
+			 //,visitguid = :visitguid
+				//,visitguid = sess.key
 		upd = ezdb.exec( 
 			string = "
 			SELECT * FROM 
@@ -40,23 +42,21 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				participantGUID = :pid
 			 ,stdywk = :stdywk
 			 ,staffid = :staffid
-			 ,visitguid = :visitguid
 			 ,dayofwk = :dayofwk
 			 ,insertedby = :insertedby
 			"
 		 ,datasource="#data.source#"
 		 ,bindArgs = { 
 				 pid = form.pid
-				,stdywk = 1 
-				,dayofwk = 1 
-				,staffid = form.staffid
-				,visitguid = form.visitguid
-				,insertedby = form.insertedby
+				,stdywk = old_ws.ps_week
+				,staffid = 1
+				,dayofwk = old_ws.ps_day
+				,insertedby = "NOBODY"
 			}
 		);
 
 		if ( !upd.status )
-			req.sendAsJson( status = 0, message = "#upd.message#" );
+			req.sendAsJson( status = 0, message = "ENDURANCE - #upd.message#" );
 	
 		//....	
 		//writedump( upd );
@@ -103,16 +103,11 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				 ,rpm="#form.rpm#"
 				 ,speed="#form.speed#"
 				 ,watres="#form.watts_resistance#"
-				 ,dayOfwk=1
-				 ,stdywk=1
-				 ,staffid=32423
+				 ,dayOfwk=old_ws.ps_day
+				 ,stdywk=old_ws.ps_week
+				 ,staffid=1
 				} 
 			);
-
-			if ( !upd.status ) {
-				req.sendAsJson( status = 0, message = "#upd.message#" );
-			}
-
 		}
 		else {
 			upd = ezdb.exec( 
@@ -128,13 +123,20 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 					,#desig#speed = :speed
 					,#desig#watres = :watres
 				 WHERE
-				 	participantGUID = :pid"
+				 	participantGUID = :pid
+				 AND
+					dayOfWk = :dwk
+				 AND
+					stdywk = :stdywk
+				"
 				,datasource = "#data.source#"
 				,bindArgs = { 
 					 pid = form.pid
 					,machine_type = form.equipment
 					,oth1 = "0"
 					,oth2 = "0" 
+				  ,dwk =old_ws.ps_day
+				  ,stdywk=old_ws.ps_week
 					,prctgrade = form.grade 
 					,rpm = form.rpm 
 					,speed = form.speed 
@@ -142,42 +144,16 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				}
 			);	
 		}
-
-/*
-		//Also save progress (but the thing needs to be checked)
-		ezdb.exec(
-			 string = "UPDATE 
-				ac_mtr_logging_progress_tracker 
-			SET
-				 ee_affect = :affect
-				,ee_equipment = :equipment
-				,ee_grade = :grade
-				,ee_rpm = :rpm 
-				,ee_speed = :speed 
-				,ee_watts_resistance = :watts_resistance
-			WHERE 
-				active_pid = :aid 
-			AND 
-				session_id = :sid"
-		
-			,datasource = "#data.source#"
-			,bindArgs = {
-				 aid = form.pid
-				,sid = form.sess_id
-				,affect = form.affect
-				,equipment = form.equipment
-				,grade = form.grade
-				,rpm = form.rpm
-				,speed = form.speed
-				,watts_resistance = form.watts_resistance
-			 }
-		);
-*/
+		if ( !upd.status ) {
+			req.sendAsJson( status = 0, message = "ENDURANCE - #upd.message#" );
+			abort;
+		}
 	}
 	catch (any e) {
-		req.sendAsJson( status = 0, message = "#e.message# - #e.detail#" );	
+		req.sendAsJson( status = 0, message = "ENDURANCE UPDATE FAILED - #e.message# - #e.detail# " );	
+		abort;
 	}
-	req.sendAsJson( status = 1, message = "#upd.message#" );	
+	req.sendAsJson( status = 1, message = "ENDURANCE - #upd.message#" );	
 	abort;
 }
 

@@ -141,10 +141,10 @@ Right now, it's just some fake thing.
 	ON ALLPART.participantGUID = SCREEN.aduscr_participant_id
 	</cfquery>
 
-	<!---
+	<cfset session.id = url.id> 
+<!---
 	<cfdump var = #willis#>
 	<cfabort>
-	--->
-
+--->
 	<!--- Do different things depending on the randomized exercise type --->
 </cfif>

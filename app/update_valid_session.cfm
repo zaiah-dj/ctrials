@@ -1,34 +1,22 @@
 <cfscript>
 try {
-	//Select from the progress table and use this to prefill fields that don't exist
-	p = ezdb.exec( 
-		string = 
-		"SELECT * FROM
-			#data.data.sessionTable#	
-		 WHERE
-			active_pid = :pid 
-		 AND
-			session_id = :sid"
-	 ,bindArgs = {
-			pid = { type="cfsqlinteger", value=currentId } 
-		 ,sid = sess.key
+	if ( isDefined('old_ws') ) {
+	new_ws = {};
+	//Add keys from POST or GET
+	for ( nn in [ "ps_day", "ps_week", "ps_next_sched", "staffer_id"  ] )
+		if ( StructKeyExists(form, nn) ) StructInsert( new_ws, nn, form[ nn ] );
+	for ( nn in [ "id", "extype", "time" ] )
+		if ( StructKeyExists(url, nn)) StructInsert( new_ws, nn, url[ nn ] );
+
+	//Check against old_ws, assume ws is already here
+	if ( !StructIsEmpty(old_ws) ) {
+		for ( nn in old_ws ) {
+			//if element is only in old_ws, add it to new_ws
+			if ( !StructKeyExists( new_ws, nn ) ) {
+				StructInsert( new_ws, nn, old_ws[nn] );
+			}
 		}
-	);
-
-	//There was an error
-	if ( !p.status ) {
-		writedump( p );
-		abort;
 	}
-
-
-	//If it's full of stuff, write a new row...	
-	ws = {};
-	for ( nn in [ "ps_day", "ps_week", "ps_next_sched", "timeblock"  ] )
-		if ( StructKeyExists(form, nn) ) StructInsert( ws, nn, form[ nn ] );
-	for ( nn in [ "extype", "timeblock" ] )
-		if ( StructKeyExists(url, nn)) StructInsert( ws, nn, url[ nn ] );
-	misc = ( !StructIsEmpty( ws ) ) ? SerializeJSON( ws ) : "{}";
 
 	//There are simply no values, so write a new one
 	if ( !p.prefix.recordCount ) {
@@ -38,13 +26,10 @@ try {
 		 ,bindArgs = {
 			 aid = currentId 
 			,sid = sess.key 
-			,misc = misc
-			,loc = "#cgi.script_name#"
+			,misc = SerializeJSON( new_ws )
+			,loc = "#cgi.script_name#?#cgi.query_string#"
 			,tmp = {type = "cf_sql_datetime", value = DateTimeFormat(Now(),"YYYY-MM-DD HH:nn:ss")}
-			}
-		);
-
-		if ( !p.status ) { writedump( p ); abort; }
+			});
 	}
 	else {
 		//Now update the progress table
@@ -53,26 +38,28 @@ try {
 			"UPDATE 
 				#data.data.sessionTable#	
 			SET 
-				location = :location
+				location = :loc
 			 ,misc = :misc
 			 ,active_pid = :aid 
 			WHERE 
 				session_id = :sid"
 		 ,bindArgs = {
-				aid = currentId
+			  loc = "#cgi.script_name#?#cgi.query_string#"
 			 ,sid = sess.key
-			 ,misc = misc
-			 ,location = cgi.script_name
+			 ,misc = SerializeJSON( new_ws ) 
+			 ,aid = currentId
 			}
 		);
-
-		if ( !p.status ) { writedump( p ); abort; }
 	}
-	writedump( ws );abort;
+
+	//Use these throughout...
+	globalValues = new_ws;
+	}
 }
 catch (any e) {
 	writeoutput( "session write did not work... " );
 	writeoutput(e.message);
+	writedump( e );
 	abort;	
 }
 </cfscript>
