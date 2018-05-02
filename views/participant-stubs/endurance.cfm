@@ -29,7 +29,7 @@
 	</div>
 
 	<!--- Now generate the list of exercises --->
-	<table class="table">
+	<table class="table table-striped">
 		<tbody>
 			<tr>
 				<td class="title">Exercise Type</td>
@@ -43,21 +43,32 @@
 				</select>
 				</td>
 			</tr>
+		</tbody>
+	</table>
 		<cfloop array = #values#  index = "val">
+	<table class="table table-striped endurance">
+		<tbody>
+			<tr class="heading">
+				<td class="chopt">
+					Last Visit's Results
+				</td>
+				<td> 
+					<center><b>#val.label#</b></center>
+				</td>
+			</tr>
 			<tr>
 				<td class="title">
-					#val.label# ( 0 )
+					#val.prv# lb
 				</td>
 				<td>
-					<div class="row">
-					</div>
 					<div class="row">
 						<div class="cc col-sm-7">
 							<cfif !structKeyExists( val, "type" )>
 							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#val.def#" defaultvalue="#val.def#" name="#val.name#">
 							</cfif>
 						</div>
-						<div class="catch cc col-sm-2">#val.def#</div>
+						<div class="catch cc col-sm-1">#val.def#</div>
+						<div class="col-sm-1">lb</div>
 						<div class="col-sm-1">
 							<button class="inc-button">+</button>
 							<button class="inc-button">-</button>

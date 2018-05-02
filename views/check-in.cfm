@@ -115,6 +115,22 @@
 					</tr>
 
 					<tr>
+						<td class="title">Weight</td>
+						<td>
+							<div class="row">
+								<div class="cc col-sm-7">
+									<input type="range" min="0" max="300" class="slider" name="ps_weight" required>
+								</div>
+								<div class="catch cc col-sm-1"></div>lb
+								<div class="col-sm-1">
+									<button class="inc-button">+</button>
+									<button class="inc-button">-</button>
+								</div>
+							</div>
+						</td>
+					</tr>
+
+					<tr>
 						<td class="title">#iif( part.p_exercise eq 1, DE("Machine Selection"),DE("Exercise Selection"))#</td>
 						<td>
 							<cfif part.p_exercise eq 1>

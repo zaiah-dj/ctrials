@@ -21,7 +21,7 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	];
 
 	//Generate a default time.
-	defaultTimeblock = ( StructKeyExists( url, "time" ) ) ? url.time : 5;
+	defaultTimeblock = ( StructKeyExists( url, "time" ) ) ? url.time : 0;
 
 	//Figure out the form field name 
 	desig = "";
@@ -35,39 +35,63 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 
 	//Get queries for recall
 	ezdb.setDs = "#data.source#";
+	prv = ezdb.exec(
+		string = "
+			SELECT * FROM
+				#data.data.endurance#
+			WHERE
+				participantGUID = :pid
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk
+		"
+	 ,datasource = "#data.source#"
+	 ,bindArgs = {
+			pid = currentId
+		 ,stdywk = old_ws.ps_week - 1 
+		 ,dayofwk = old_ws.ps_day
+		});
+
 	req = ezdb.exec(
 		string = "
 			SELECT * FROM
 				#data.data.endurance#
 			WHERE
-				participantGUID = :pid"
+				participantGUID = :pid
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk
+		"
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
-			pid = "#listfirst( "#session.id#", "#url.id#" )#"
+			pid = currentId
+		 ,stdywk = old_ws.ps_week 
+		 ,dayofwk = old_ws.ps_day
 		});
 
-	//Values?
-		 //,sid = "#sess.key#",tb  = "#defaultTimeblock#"
-		 
+	//Prefill any values that need to be prefilled	 
+//writedump( req );writedump( prv );abort;
 	rc = req.prefix.recordCount;	
 	rpm = ( rc ) ? req.results[ "#desig#rpm" ] : 0;
 	watres = ( rc ) ? req.results[ "#desig#watres" ] : 0;
 	speed = ( rc ) ? req.results[ "#desig#speed" ] : 0;
 	prctgrade = ( rc ) ? req.results[ "#desig#prctgrade" ] : 0;
+	prpm = ( rc ) ? prv.results[ "#desig#rpm" ] : 0;
+	pwatres = ( rc ) ? prv.results[ "#desig#watres" ] : 0;
+	pspeed = ( rc ) ? prv.results[ "#desig#speed" ] : 0;
+	pprctgrade = ( rc ) ? prv.results[ "#desig#prctgrade" ] : 0;
 
 	values = [
 		{ show = true, label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
-			,def = rpm }
+			,def = rpm, prv = prpm }
 	 ,{ show = true, label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
-			,def = watres }
+			,def = watres, prv = pwatres }
 	 ,{	show = true, label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
-			,def = speed }
+			,def = speed, prv = pspeed }
 	 ,{ show = true, label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
-			,def = prctgrade }
+			,def = prctgrade, prv = pprctgrade }
 /*	 ,{ show = true, label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
 			,def = req.results[ "#desig#rpe" ] }*/
 	 ,{ show = true, label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "affect"
-		  ,def = 0/*"#(!rc) ? 0 : iif((req.results.el_ee_perceived_exertion eq ""),0,req.results.el_ee_perceived_exertion)#"*/ }
+		  ,def = 0, prv = 0 }
 	];
 
 	// Initialize client side AJAX code 
@@ -83,6 +107,8 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	 ,additional = [ 
 		{ name="this", value= "endurance" }
 	 ,{ name="pid", value= "#url.id#" }
+	 ,{ name="dayofwk", value= "#old_ws.ps_day#" }
+	 ,{ name="stdywk", value= "#old_ws.ps_week#" }
 	 ,{ name="sess_id", value= "#sess.key#" }
 		]
 	);

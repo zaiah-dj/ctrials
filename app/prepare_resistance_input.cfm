@@ -42,34 +42,35 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 	else if ( type == 14 )
 		desig = "triceppress";
 
-	//Get the entries in the table.
-	pop = ezdb.exec(
+	prv = ezdb.exec(
 		string = "
 		SELECT * FROM 
-			ac_mtr_exercise_log_re 
+			#data.data.resistance#	
 		WHERE 
-			el_re_pid = :pid 
-		AND 
-			el_re_ex_session_id = :sid 
-		AND 
-			el_re_extype = :extype"
+			participantGUID = :pid 
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk
+		"
 	 ,bindArgs = {
-			pid = "#pid#"
-		 ,sid = "#sess.key#"
-		 ,extype = "#type#"
+			pid = currentId
+		 ,stdywk = old_ws.ps_week - 1 
+		 ,dayofwk = old_ws.ps_day
 		});
 
-
+	//Get the entries in the table.
 	pop = ezdb.exec(
 		string = "
 		SELECT * FROM 
 			#data.data.resistance#	
 		WHERE 
 			participantGUID = :pid 
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk
 		"
 	 ,bindArgs = {
-			pid = "#pid#"
-		 ,extype = "#type#"
+			pid = currentId
+		 ,stdywk = old_ws.ps_week 
+		 ,dayofwk = old_ws.ps_day
 		});
 
 	//Generate the form from either db or something else...
@@ -80,20 +81,26 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 	r1 = ( pc ) ? pop.results[ "#desig#Rep1" ] : 0;
 	r2 = ( pc ) ? pop.results[ "#desig#Rep2" ] : 0;
 	r3 = ( pc ) ? pop.results[ "#desig#Rep3" ] : 0;
+	pw1 = ( pc ) ? prv.results[ "#desig#Wt1" ] : 0;
+	pw2 = ( pc ) ? prv.results[ "#desig#Wt2" ] : 0;
+	pw3 = ( pc ) ? prv.results[ "#desig#Wt3" ] : 0;
+	pr1 = ( pc ) ? prv.results[ "#desig#Rep1" ] : 0;
+	pr2 = ( pc ) ? prv.results[ "#desig#Rep2" ] : 0;
+	pr3 = ( pc ) ? prv.results[ "#desig#Rep3" ] : 0;
 
 	values = [
 		 {label="Set 1", uom="lb",min = 5, max = 100, step = 5, name = "weight1"
-			,def = w1 }
+			,def = w1, prv = pw1 }
 		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps1"
-			,def = r1 }
+			,def = r1, prv = pr1 }
 		,{label="Set 2", uom="lb",min = 5, max = 100, step = 5, name = "weight2"
-			,def = w2 }
+			,def = w2, prv = pw2 }
 		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps2" 
-			,def = r2 }
+			,def = r2, prv = pr2 }
 		,{label="Set 3", uom="lb",min = 5, max = 100, step = 5, name = "weight3"
-			,def = w3 }
+			,def = w3, prv = pw3 }
 		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps3"
-			,def = r3 }
+			,def = r3, prv = pr3 }
 	];
 	
 	//Initialize AJAX
@@ -105,6 +112,8 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }
 		 ,{ name = "pid", value = "#pid#" }
+		 ,{ name = "dayofwk", value= "#old_ws.ps_day#" }
+		 ,{ name = "stdywk", value= "#old_ws.ps_week#" }
 		 ,{ name = "extype", value = "#type#" }
 		]
 	 ,querySelector = {

@@ -137,7 +137,6 @@ a.selected {
 .container-body {
 	position: relative;
 	width: 100%;
-	white-space: nowrap;
 	/*overflow-Y: scroll;*/
 	overflow: auto;
 	overflow-Y: scroll;
@@ -294,17 +293,14 @@ a.selected {
 
 /*Inner navigation*/
 div.inner-selection {
+	position: relative;
 	width : 100%;
 	overflow: hidden;
-	white-space: nowrap;
 	position: relative;
 }
 
 ul.inner-selection {
 	position: relative;
-	width: 95%;
-	min-width: 300px;
-	margin: 0 auto;
 	margin-bottom: 10px;
 }
 
@@ -312,14 +308,16 @@ ul.inner-selection {
 {
 	position: relative;
 	min-width: 70px;
+	min-height: 50px;
 	width: 16%;
 	left: 0.5%;
 	font-weight: bold;
 	text-align: center;
 	font-size: 0.9em;
 	padding: 5px; 
+	padding-top: 15px; 
 	margin-bottom: 5px;
-	display: block; 
+	display: inline-block; 
 	background-color: #333; 
 	color: white;
 	transition: background-color 0.2s, color 0.2s;
@@ -988,10 +986,32 @@ table.participant-entry tr.heading {
 }
 
 .inc-button {
-	background-color: #d3d3d3;
-	width: 50px;
-	height: 20px;
+	background-color: #ced6e4; 
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	appearance: none;
+	width: 100%;
+	min-width: 50px;
+	height: 30px;
 	display: block;
+	font-size: 1.5em;
+	border: 0px;
+	position: relative;
+	top: -10px;
+	margin-bottom: 5px;
+	padding: 0px;
+	padding-bottom: 5px;
+	font-weight: bold;
+}
+
+.inc-button:hover {
+	background-color: #e6f2ff;
+}
+
+.inc-button:active {
+	background-color: white;
+	border: 0px;
 }
 
 .participant-entry .col-sm-7,
@@ -1020,6 +1040,12 @@ table.participant-entry tr.heading {
 .wash input[type=text] 
 	{ display: none; }
 
+table.endurance tr, 
+table.resistance tr {
+	height: 80px;
+} 
+
+table.endurance tr td:nth-child(1) ,
 table.resistance tr td:nth-child(1) {
 	background-color: #eee;
 	text-align: center;
@@ -1027,7 +1053,8 @@ table.resistance tr td:nth-child(1) {
 	width: 120px;
 }
 
-table.resistance tr td.chopt {
+table.resistance tr td.chopt,
+table.endurance tr td.chopt {
 	padding-top: 5px;
 	background-color: #ccc;
 }

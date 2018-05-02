@@ -59,11 +59,18 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 			FROM 
 				#data.data.resistance#	
 			WHERE 
-				participantGUID = :pid "
+				participantGUID = :pid
+				AND stdywk = :stdywk
+				AND dayofwk = :dayofwk
+			"
 			,bindArgs = { 
 				pid = form.pid
+			 ,stdywk = form.stdywk
+			 ,dayofwk = form.dayofwk
 			}
 		);
+
+		//req.sendAsJson( status=1, message="Failmatic: #SerializeJSON( upd )#" );
 
 		if ( !upd.status )
 			req.sendAsJson( status = 0, message = "RESISTANCE - #upd.message#" );
@@ -81,6 +88,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 						,recordthread
 						,insertedBy
 						,dayofwk
+						,stdywk
 						,#desig#Rep1
 						,#desig#Rep2
 						,#desig#Rep3
@@ -93,6 +101,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 						,:recThr
 						,:insBy
 						,:dwk
+						,:swk
 						,:rep1
 						,:rep2
 						,:rep3
@@ -104,7 +113,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 					pid   = "#form.pid#" 
 				 ,recThr= recordThread
 				 ,insBy = "NOBODY" 
-				 ,dwk   = old_ws.ps_day 
+				 ,dwk   = "#form.dayofwk#"
+				 ,swk   = "#form.stdywk#"
 				 ,rep1  = "#form.reps1#" 
 				 ,rep2  = "#form.weight1#" 
 				 ,rep3  = "#form.reps2#" 
@@ -128,13 +138,18 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 					,#desig#Wt3  = :wt3
 				WHERE
 					participantGUID = :pid
+				AND
+					stdywk = :swk
+				AND
+					dayofwk = :dwk
 				"
 				,datasource = "#data.source#"
 
 				,bindArgs = {
 					pid ="#form.pid#" 
 				 ,sid ="#form.sess_id#"
-				 ,dwk = old_ws.ps_day 
+				 ,dwk = "#form.dayofwk#"
+				 ,swk = "#form.stdywk#"
 				 ,staffId = 1
 				 ,rep1="#form.reps1#" 
 				 ,wt1 ="#form.weight1#" 
@@ -146,8 +161,6 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 			);	
 		}
 
-		aaa = SerializeJSON( upd );
-
 		if ( !upd.status ) {
 			req.sendAsJson( status = 0, message = "RESISTANCE - #upd.message#" );
 		}
@@ -155,7 +168,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 	catch (any e) {
 		req.sendAsJson( status = 0, message = "RESISTANCE - #e.message# - #e.detail#" );
 	}
-	req.sendAsJson( status = 1, message = "RESISTANCE - #upd.message# - #aaa#" );	
+	req.sendAsJson( status = 1, message = "RESISTANCE - #upd.message#" );	
 	abort;
 }
 </cfscript>

@@ -40,27 +40,20 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				#data.data.endurance#	
 			WHERE
 				participantGUID = :pid
-			 ,stdywk = :stdywk
-			 ,staffid = :staffid
-			 ,dayofwk = :dayofwk
-			 ,insertedby = :insertedby
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk
 			"
 		 ,datasource="#data.source#"
 		 ,bindArgs = { 
 				 pid = form.pid
-				,stdywk = old_ws.ps_week
-				,staffid = 1
-				,dayofwk = old_ws.ps_day
-				,insertedby = "NOBODY"
+				,stdywk = form.stdywk
+				,dayofwk = form.dayofwk
 			}
 		);
 
 		if ( !upd.status )
 			req.sendAsJson( status = 0, message = "ENDURANCE - #upd.message#" );
 	
-		//....	
-		//writedump( upd );
-
 		if ( !upd.prefix.recordCount ) {
 			upd = ezdb.exec( 
 				datasource = "#data.source#"
@@ -75,7 +68,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 					 ,#desig#rpm
 					 ,#desig#speed
 					 ,#desig#watres  
-					 ,dayOfwk
+					 ,dayofwk
 					 ,stdywk
 					 ,staffid
 					)
@@ -89,9 +82,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 						,:rpm
 						,:speed
 						,:watres
-					  ,:dayOfwk
-					  ,:stdywk
-					  ,;staffid
+					  ,:dwk
+					  ,:swk
+					  ,:staffid
 					)"
 				,bindArgs = {
 				  pid="#form.pid#" 
@@ -103,8 +96,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				 ,rpm="#form.rpm#"
 				 ,speed="#form.speed#"
 				 ,watres="#form.watts_resistance#"
-				 ,dayOfwk=old_ws.ps_day
-				 ,stdywk=old_ws.ps_week
+				 ,dwk = "#form.dayofwk#"
+				 ,swk = "#form.stdywk#"
 				 ,staffid=1
 				} 
 			);
@@ -125,9 +118,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 				 WHERE
 				 	participantGUID = :pid
 				 AND
-					dayOfWk = :dwk
+					dayofwk = :dwk
 				 AND
-					stdywk = :stdywk
+					stdywk = :swk
 				"
 				,datasource = "#data.source#"
 				,bindArgs = { 
@@ -135,8 +128,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 					,machine_type = form.equipment
 					,oth1 = "0"
 					,oth2 = "0" 
-				  ,dwk =old_ws.ps_day
-				  ,stdywk=old_ws.ps_week
+					,dwk = "#form.dayofwk#"
+					,swk = "#form.stdywk#"
 					,prctgrade = form.grade 
 					,rpm = form.rpm 
 					,speed = form.speed 

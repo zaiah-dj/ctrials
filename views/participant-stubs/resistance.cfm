@@ -24,7 +24,7 @@
 		</cfif>
 		<tr>
 			<td> 
-				0 #vv.uom#	
+				#vv.prv# #vv.uom#	
 			</td>
 			<td>
 				<div class="row">

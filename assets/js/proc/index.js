@@ -1,8 +1,10 @@
 var subLink = "/motrpac/web/secure/dataentry/iv/update.cfm";
 
+
 function onError( msg ) {
 	console.log( msg );
 }
+
 
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
@@ -21,18 +23,22 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		for ( i = 0; i < b.length; i++ ) {
 			b[i].addEventListener( "input", function (ev) {
 				ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
-				xlogger( "Slider value changed to: " + ev.target.value );
+				//xlogger( "Slider value changed to: " + ev.target.value );
 			} );
+		}
 
+		//Get the buttons
+		for ( i = 0; i < b.length; i++ ) {
+			//I think these are buttons
 			if (( aac = b[i].parentElement.parentElement.childNodes[7] ) ) {
-				//console.log(aac.childNodes[1]);console.log(aac.childNodes[3]);
-
 				aac.childNodes[1].addEventListener( "click", function (ev) {
 					aav = ev.target.parentElement.parentElement.childNodes[3];
-					ev.target.value = aav.innerHTML = ++(aav.innerHTML); //console.log( v);
-				} ); 
+console.log( aav );
+					ev.target.value = aav.innerHTML = ++(aav.innerHTML);
+				} );
 				aac.childNodes[3].addEventListener( "click", function (ev) {
 					aav = ev.target.parentElement.parentElement.childNodes[3];
+console.log( aav );
 					ev.target.value = aav.innerHTML = --(aav.innerHTML);
 				} ); 
 			}
@@ -45,7 +51,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				//modals[i].addEventListener( "focus", makeModal );
 				modals[i].addEventListener( "click", makeModal );
 			}
-		}	
+		}
 	}
 
 	//Start listening out for touch events
