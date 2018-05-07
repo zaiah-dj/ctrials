@@ -21,7 +21,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		}});
 	}
 
-	//???What is this?
+	//What is this?
 	a = [].slice.call( document.querySelectorAll( ".participants li" ) );
 	for ( i = 0 ; i < a.length; i++ ) {
 		//make it big if clicked
@@ -36,7 +36,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		} );
 	}
 
-	//Create a ghetto router
+	//Create a quick router
 	locarr = location.href.split( "/" ) ;
 	loc = locarr[ locarr.length - 1 ];
 
@@ -56,10 +56,12 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 				//console.log(aac.childNodes[1]);console.log(aac.childNodes[3]);
 
 				aac.childNodes[1].addEventListener( "click", function (ev) {
+					ev.preventDefault();
 					aav = ev.target.parentElement.parentElement.childNodes[3];
 					ev.target.value = aav.innerHTML = ++(aav.innerHTML); //console.log( v);
 				} ); 
 				aac.childNodes[3].addEventListener( "click", function (ev) {
+					ev.preventDefault();
 					aav = ev.target.parentElement.parentElement.childNodes[3];
 					ev.target.value = aav.innerHTML=--(aav.innerHTML); //console.log( v);
 				} ); 

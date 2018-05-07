@@ -12,6 +12,42 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	locarr = location.href.split( "/" ) ;
 	loc = locarr[ locarr.length - 1 ];
 
+	//AJAX notes
+	if ( loc.indexOf( "check-in.cfm" ) > -1 ) {
+		var butt = document.getElementById("ps_note_save");
+		butt.addEventListener( "click", function (ev) {
+			ev.preventDefault();
+			var pid = [].slice.call( 
+				document.querySelectorAll("input[name=ps_pid]") );
+			var note = [].slice.call( 
+				document.querySelectorAll("textarea[name=ps_notes]") );
+			var noteValue = note[0]["value"];
+			var xhr = new XMLHttpRequest();	
+			xhr.onreadystatechange = function (ev) { 
+				if ( this.readyState == 4 && this.status == 200 ) {
+					try {
+						console.log( this.responseText );
+						parsed = JSON.parse( this.responseText );
+						var par = [].slice.call( 
+							document.querySelectorAll("ul.participant-notes") );
+						var li = document.createElement( "li" );
+						li.innerHTML = noteValue;
+						par[0].appendChild( li ); 
+					}
+					catch (err) {
+						console.log( err.message );console.log( this.responseText );
+						return;
+					}
+				}
+			}
+			xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update-note.cfm", true );
+			xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+			xhr.send( 
+				"note=" + note.innerHTML + 
+				"&pid=" + pid.value 
+			);
+		});
+	}
 
 	//input only will initialize this...
 	if ( loc.indexOf( "input.cfm" ) > -1 || loc.indexOf( "check-in.cfm" ) > -1 )
@@ -32,11 +68,13 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			//I think these are buttons
 			if (( aac = b[i].parentElement.parentElement.childNodes[7] ) ) {
 				aac.childNodes[1].addEventListener( "click", function (ev) {
+					ev.preventDefault();
 					aav = ev.target.parentElement.parentElement.childNodes[3];
 console.log( aav );
 					ev.target.value = aav.innerHTML = ++(aav.innerHTML);
 				} );
 				aac.childNodes[3].addEventListener( "click", function (ev) {
+					ev.preventDefault();
 					aav = ev.target.parentElement.parentElement.childNodes[3];
 console.log( aav );
 					ev.target.value = aav.innerHTML = --(aav.innerHTML);

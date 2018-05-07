@@ -29,9 +29,10 @@
 			<td>
 				<div class="row">
 					<div class="col-sm-7">
-						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#vv.def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
+						<cfset def=iif( vv.def eq "", 0, vv.def )>
+						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
 					</div>
-					<div class="catch cc col-sm-1">#vv.def#</div>
+					<div class="catch cc col-sm-1">#def#</div>
 					<div class="col-sm-1">#vv.uom#</div>
 						<div class="col-sm-1">
 							<button class="inc-button">+</button>

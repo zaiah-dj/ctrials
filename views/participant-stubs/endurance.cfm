@@ -62,12 +62,13 @@
 				</td>
 				<td>
 					<div class="row">
+						<cfset def=iif( val.def eq "", 0, val.def )>
 						<div class="cc col-sm-7">
 							<cfif !structKeyExists( val, "type" )>
-							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#val.def#" defaultvalue="#val.def#" name="#val.name#">
+							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#def#" defaultvalue="#def#" name="#val.name#">
 							</cfif>
 						</div>
-						<div class="catch cc col-sm-1">#val.def#</div>
+						<div class="catch cc col-sm-1">#def#</div>
 						<div class="col-sm-1">lb</div>
 						<div class="col-sm-1">
 							<button class="inc-button">+</button>
@@ -80,6 +81,7 @@
 		</tbody>
 	</table>
 
+	<input id="sendPageVals" type="submit" value="Save Changes" style="width: 200px;color:white;"></input>
 	<!--- Real ugly front end initialization code --->
 	#AjaxClientInitCode#
 

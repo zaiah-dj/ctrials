@@ -121,7 +121,8 @@
 								<div class="cc col-sm-7">
 									<input type="range" min="0" max="300" class="slider" name="ps_weight" required>
 								</div>
-								<div class="catch cc col-sm-1"></div>lb
+								<div class="catch cc col-sm-1">0</div>
+								<div class="col-sm-1">lb</div>
 								<div class="col-sm-1">
 									<button class="inc-button">+</button>
 									<button class="inc-button">-</button>
@@ -172,6 +173,7 @@
 									<span class="close">&times;</span>
 									<p>Participant Notes</p>
 									<textarea name="ps_notes"></textarea>
+									<button class="inc-button" id="ps_note_save">Save</button>
 								</div>	
 							</div>
 						</td>

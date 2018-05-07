@@ -3,6 +3,8 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 {
 	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
 	pid = url.id;
+	aweek = StructKeyExists( old_ws, "ps_week" ) ? old_ws.ps_week : 1;
+	aday = StructKeyExists( old_ws, "ps_day" ) ? old_ws.ps_day : 1;
 
 	//Pull all exercises	
 	reExList=ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
@@ -53,8 +55,8 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 		"
 	 ,bindArgs = {
 			pid = currentId
-		 ,stdywk = old_ws.ps_week - 1 
-		 ,dayofwk = old_ws.ps_day
+		 ,stdywk = aweek - 1 
+		 ,dayofwk = aday
 		});
 
 	//Get the entries in the table.
@@ -69,8 +71,8 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 		"
 	 ,bindArgs = {
 			pid = currentId
-		 ,stdywk = old_ws.ps_week 
-		 ,dayofwk = old_ws.ps_day
+		 ,stdywk = aweek
+		 ,dayofwk = aday
 		});
 
 	//Generate the form from either db or something else...
@@ -112,8 +114,8 @@ if ( isDefined("part") && part.p_exercise eq 2 )
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }
 		 ,{ name = "pid", value = "#pid#" }
-		 ,{ name = "dayofwk", value= "#old_ws.ps_day#" }
-		 ,{ name = "stdywk", value= "#old_ws.ps_week#" }
+		 ,{ name = "dayofwk", value= "#aday#" }
+		 ,{ name = "stdywk", value= "#aweek#" }
 		 ,{ name = "extype", value = "#type#" }
 		]
 	 ,querySelector = {
