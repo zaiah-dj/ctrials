@@ -164,7 +164,8 @@ try {
 
 	//There was an error
 	if ( !p.status ) {
-		writedump( p );abort;
+		writedump( p );
+		abort;
 	}
 
 	old_ws = {};
@@ -177,7 +178,6 @@ try {
 catch (any e) {
 	req.sendAsJSON( status = 0, message = "#e.message#" );
 }
-</cfscript>
 /*
 //Initialize the session variables
 session.ps_day = StructKeyExists( form, "ps_day") ? form.ps_day : session.ps_day ;

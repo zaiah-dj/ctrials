@@ -518,6 +518,7 @@ CREATE TABLE ac_mtr_checkinstatus (
 	,ps_before bit
 	,ps_day int
 	,ps_next_sched datetime
+	,ps_weight int
 	,ps_date_time_assessed datetime
 	,ps_notes varchar(max)
 );

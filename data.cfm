@@ -12,7 +12,7 @@ I can do more with this concept...
 ,"name"   = "iv"
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  0
+,"debug"  =  1
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
@@ -69,12 +69,11 @@ I can do more with this concept...
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
 			"dependencies"
-			,"check_valid_session"
-			,"currentId"
-			,"select_all_participants"
-			,"select_chosen_participants"
-			,"select_unchosen_participants" 
-			,"update_valid_session"
+		 ,"initialize_session_and_current_id"
+		 ,"select_all_participants"
+		 ,"select_chosen_participants"
+		 ,"select_unchosen_participants" 
+		 ,"update_valid_session"
 		]
 	 ,"view"  = [ 
 			"master/head", 
@@ -87,10 +86,7 @@ I can do more with this concept...
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
 	 ,"model" = [
 			"dependencies"
-		 ,"ajax_test"
-		 ,"check_valid_session"
-		 ,"currentId"
-		 ,"recall_valid_session"
+		 ,"initialize_session_and_current_id"
 		 ,"ajax_start_new_session"
 		 ,"ajax_update_resistance_table"
 		 ,"ajax_update_endurance_table"
@@ -110,9 +106,7 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
-			,"check_valid_session"
-			,"currentId"
-			,"recall_valid_session"
+			,"initialize_session_and_current_id"
 			,"update_valid_session"
 			,"select_chosen_participants"
 			,"select_single_participant"
@@ -133,9 +127,7 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
-			,"check_valid_session"
-			,"currentId"
-			,"recall_valid_session"
+			,"initialize_session_and_current_id"
 			,"update_valid_session"
 			,"process_checkin_form"
 			,"select_chosen_participants"
@@ -168,7 +160,7 @@ I can do more with this concept...
 		"hint"  =  "Compare the participant's previous weeks history."
 	 ,"model" = [ 
 			 "dependencies"
-			,"check_valid_session"
+			,"initialize_session_and_current_id"
 			,"select_chosen_participants"
 			,"select_single_participant"
 		]

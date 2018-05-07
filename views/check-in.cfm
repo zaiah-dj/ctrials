@@ -12,7 +12,11 @@
 							<cfset sc=1>
 							<select name="ps_week" required>
 							<cfloop from=1 to=14 index = "d">
+								<cfif #model.currentWeek# eq #d#>
+								<option selected value=#d#>Week #d#</option>	
+								<cfelse>
 								<option value=#d#>Week #d#</option>	
+								</cfif>
 							</cfloop>
 							</select>
 						</td>
@@ -21,16 +25,9 @@
 					<tr>
 						<td class="title">Exercise Session</td>
 						<td>
-						<!---
-							<cfloop from=1 to=4 index = "d">
-								<input type="radio" name="ps_day" value="#d#" required>Day #d#
-							</cfloop>
-							--->
-						
 							<cfset today = LCase( DateTimeFormat( Now(), "EEE" ))>
 							<cfset todayNum = DayOfWeek( Now() )>
 							<input type="hidden" name="ps_day" value="#todayNum#"></input>
-
 							<ul class="dasch">
 							<cfloop list = "Sun,Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
 								<cfif today eq LCase( day )>
@@ -110,7 +107,7 @@
 								<cfset maxTR=model.targetHeartRate * 0.75>
 							</cfif>
 							--->
-							#model.targetHeartRate# BPM <!---( Variances between #minTR# - #maxTR# BPM are allowed )--->
+							#model.targetHeartRate# - #model.targetHeartRate# BPM <!---( Variances between #minTR# - #maxTR# BPM are allowed )--->
 						</td>
 					</tr>
 
@@ -119,9 +116,9 @@
 						<td>
 							<div class="row">
 								<div class="cc col-sm-7">
-									<input type="range" min="0" max="300" class="slider" name="ps_weight" required>
+									<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#model.weight#" required>
 								</div>
-								<div class="catch cc col-sm-1">0</div>
+								<div class="catch cc col-sm-1">#model.weight#</div>
 								<div class="col-sm-1">lb</div>
 								<div class="col-sm-1">
 									<button class="inc-button">+</button>
@@ -138,7 +135,11 @@
 								<cfloop query=#Q.machines.results#> 
 								<div class="clabel">
 									#et_name#<!---<label>#et_name#</label>--->
-									<input type="radio" name="machine_value" value="#et_name#" required>
+									<cfif #model.machineValue# eq "#et_name#">
+									<input type="radio" name="ps_machine_value" value="#et_name#" required checked>
+									<cfelse>
+									<input type="radio" name="ps_machine_value" value="#et_name#" required>
+									</cfif>
 									<span class="checkmark"></span>
 									<br />
 								</div>
@@ -161,12 +162,6 @@
 					<tr>
 						<td class="title">Participant Notes</td>
 						<td>
-							<!---<textarea class="modal-activate" name="ps_notes"></textarea>--->
-							<ul class="participant-notes">
-							<cfloop query=pNotes.results>
-								<li>#DateTimeFormat(note_datetime_added,"mm/dd/yy")# - #note_text#</li>
-							</cfloop>
-							</ul>
 							<button class="modal-activate">Add New Note</button>
 							<div id="myModal" class="modal">
 								<div class="modal-content">
@@ -176,6 +171,12 @@
 									<button class="inc-button" id="ps_note_save">Save</button>
 								</div>	
 							</div>
+							<!---<textarea class="modal-activate" name="ps_notes"></textarea>--->
+							<ul class="participant-notes">
+							<cfloop query=pNotes.results>
+								<li>#DateTimeFormat(note_datetime_added,"mm/dd/yy")# - #note_text#</li>
+							</cfloop>
+							</ul>
 						</td>
 					</tr>
 

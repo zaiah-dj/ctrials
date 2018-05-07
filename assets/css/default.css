@@ -1072,7 +1072,10 @@ ul.participant-notes {
 	left: 30px;
 }
 
-li.participant-notes {
+ul.participant-notes li {
+	width: 80%;
+	text-align: justify;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 /*end of stylesheet ;) */

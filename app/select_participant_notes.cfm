@@ -1,8 +1,6 @@
 <!--- select participant notes --->
 <cfscript>
-if ( isDefined( "url.id" ) ) {
-	myPid = url.id;
-
+try {
 	pNotes = ezdb.exec(
 		string = "
 			SELECT
@@ -16,7 +14,16 @@ if ( isDefined( "url.id" ) ) {
 			"
 	 ,datasource = "#data.source#" 
 	 ,bindArgs = {
-			pid = myPid
+			pid = currentId 
 		});
+
+	if ( !pNotes.status ) {
+		writedump( pNotes.message );
+		abort;	
+	}	
+}
+catch (any e) {
+	writedump( e );
+ABORT;	
 }
 </cfscript>
