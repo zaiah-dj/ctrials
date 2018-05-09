@@ -32,8 +32,8 @@ component {
 			break;
 		// DEVELOPMENT ---
 		case "dev1cf16.phs.wakehealth.edu":
-			This.applicationTimeout = "#createtimespan(0,0,0,1)#";
-			This.sessionTimeout = "#createtimespan(0,8,0,0)#";
+			This.applicationTimeout = "#createtimespan(1,0,0,0)#";
+			This.sessionTimeout = "#createtimespan(0,0,20,0)#";
 			request.whichserver = "dev";
 			application.dsn = "motrpac";
 			break;
@@ -52,8 +52,7 @@ component {
 	}
 
 	function appInit() {
-
-
+		0;
 	}
 
 	function onRequestStart (string Page) {
