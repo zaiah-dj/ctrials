@@ -15,6 +15,7 @@ sess = {
 	,expiresAfterInactive = 2 * 60 * 60
 };
 
+
 //Here are some controls that might help me test
 if ( data.debug eq 1 ) {
 	refreshTime = (StructKeyExists( url, "refreshTime" )) ? url.refreshTime : refreshTime;
@@ -30,6 +31,7 @@ else {
 }
 
 sess.status = 2;
+writedump( session );abort;
 
 //get the data from the session
 cs = ezdb.exec(
@@ -56,6 +58,7 @@ else {
 	updateTime = DateDiff( "s", CreateDate(1970,1,1), cs.results.p_lastUpdateTime);
 	timePassed = unixTime - updateTime;
 
+	/*
 	//This is all here in case you forget how to do math.
 	writeoutput( 'Unix Time: ' & unixTime );
 	writeoutput( "<br />" );
@@ -68,6 +71,7 @@ else {
 	writeoutput( 'Time Passed (minutes): ' & ( timePassed / 60 ) & " minutes" );
 	writeoutput( "<br />" );
 	writeoutput( 'Time passed (hours): ' & (( timePassed / 60 ) / 60 ) & " hours" );
+	*/
 	if ( data.debug eq 3 ) abort;
 
 	//after 2 hours (or whatever expireTime is), the session needs to completely expire
@@ -171,9 +175,9 @@ try {
 	old_ws = {};
 	
 	//Deserialize the old records
-	if ( p.prefix.recordCount )
+	if ( p.prefix.recordCount ) {
 		old_ws = DeserializeJSON( p.results.misc );
-
+	}
 }
 catch (any e) {
 	req.sendAsJSON( status = 0, message = "#e.message#" );
