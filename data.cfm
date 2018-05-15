@@ -69,6 +69,7 @@ I can do more with this concept...
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
 			"dependencies"
+		 ,"currentWeek"
 		 ,"initialize_session_and_current_id"
 		 ,"select_all_participants"
 		 ,"select_chosen_participants"
@@ -86,6 +87,7 @@ I can do more with this concept...
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
 	 ,"model" = [
 			"dependencies"
+		 ,"currentWeek"
 		 ,"initialize_session_and_current_id"
 		 ,"ajax_start_new_session"
 		 ,"ajax_update_resistance_table"
@@ -106,6 +108,7 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
+		 ,"currentWeek"
 			,"initialize_session_and_current_id"
 			,"update_valid_session"
 			,"select_chosen_participants"
@@ -127,6 +130,7 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "dependencies"
+		 ,"currentWeek"
 			,"initialize_session_and_current_id"
 			,"update_valid_session"
 			,"process_checkin_form"
@@ -160,6 +164,7 @@ I can do more with this concept...
 		"hint"  =  "Compare the participant's previous weeks history."
 	 ,"model" = [ 
 			 "dependencies"
+		 ,"currentWeek"
 			,"initialize_session_and_current_id"
 			,"select_chosen_participants"
 			,"select_single_participant"
@@ -188,6 +193,7 @@ I can do more with this concept...
 		,"sessdata" = { 
 			"model" =  [ 
 				"dependencies", 
+		  "currentWeek",
 				"currentId", 
 				"show_valid_session" 
 			]

@@ -31,7 +31,7 @@ else {
 }
 
 sess.status = 2;
-writedump( session );abort;
+//writedump( session );abort;
 
 //get the data from the session
 cs = ezdb.exec(

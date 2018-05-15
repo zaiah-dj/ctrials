@@ -96,5 +96,3 @@ else {
 }
 */
 </cfscript>
-<cfoutput>
-</cfoutput>

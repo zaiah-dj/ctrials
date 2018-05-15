@@ -41,17 +41,10 @@
 
 <body>
 	<cfif data.debug eq 1>
-<!---
-	<div class="debug" id="mega-debug">
-		<button class="op">open</button>
-		<button class="cl">close</button>
-		<cfinclude template="../tests/dumply.cfm">
-	</div><!--- class="debug" id="mega-debug" --->
---->
-	</cfif>	
-
-	<cfif data.debug eq 1>
-		<div class="debug2">#sess.key# - #sess.status#</div>
+		<div class="debug2">
+			Session Data: #sess.key# - #sess.status#
+			<div>Current Week: #date#</div>
+		</div>
 		<div id="sessionKey" style="display:none">#sess.key#</div>
 	</cfif>
 
