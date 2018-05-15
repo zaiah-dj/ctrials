@@ -66,7 +66,6 @@ else {
 	 ,maxBPD = 120
 	};
 }
-
 /*
 //Blood pressure needs some help.
 if ( Q.pbp.prefix.recordCount ) 

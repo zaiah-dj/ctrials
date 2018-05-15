@@ -43,6 +43,66 @@ if ( !StructIsEmpty( form ) ) {
 					,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime" }
 				});
 
+			//Add a row to the check in status table
+			qr = qu.exec( 
+				string="INSERT INTO ac_mtr_checkinstatus VALUES (
+					 :ps_pid
+					,:ps_session_id
+					,:ps_week
+					,:ps_day
+					,:ps_next_sched
+					,:ps_weight
+					,:ps_reex_type
+					,:datestamp
+				)"
+			 ,bindArgs = {
+				 ps_pid  = form.ps_pid
+				,ps_session_id = sess_id	
+				,ps_week = currentWeek
+				,ps_day = currentDay
+				,ps_next_sched = { value=DateTimeFormat( form.ps_next_sched, "YYYY-MM-DD" ),type="cfsqldatetime" }
+				,ps_weight = form.ps_weight
+				,ps_reex_type = (StructKeyExists( form, "exset" )) ? form.exset : 0
+				,datestamp = {value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"} 
+			});
+
+			//Update the proper table with weight info
+			if ( part.p_exercise eq 1 ) {
+				qh = qu.exec( 
+					string = "UPDATE ac_mtr_endurance_new 
+						SET weight = :w 
+					WHERE
+					participantGUID = :pid
+					dayofwk = :dwk
+					studywk = :swk"
+
+					,bindArgs = {
+						w = form.ps_weight
+					 ,pid = form.ps_pid
+					 ,dwk = currentDay
+					 ,swk = currentWeek
+					}
+				);
+			}
+			else if ( part.p_exercise eq 2 ) {
+				qh = qu.exec( 
+					string = "UPDATE ac_mtr_resistance_new 
+						SET weight = :w 
+					WHERE
+					participantGUID = :pid
+					dayofwk = :dwk
+					studywk = :swk"
+
+					,bindArgs = {
+						w = form.ps_weight
+					 ,pid = form.ps_pid
+					 ,dwk = currentDay
+					 ,swk = currentWeek
+					}
+				);
+			}
+
+	/*
 			//Add a row to the check in status table.
 			qr = ezdb.exec( 
 				string="INSERT INTO ac_mtr_checkinstatus VALUES (:id,:sid,1,:day,:ns,:ds,:nt)"
@@ -54,7 +114,6 @@ if ( !StructIsEmpty( form ) ) {
 				,ds  ={value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
 				,nt  = nt
 			});
-
 			//Finally, add a row to the notes table if notes were specified.
 			if ( StructKeyExists( form, "ps_notes" ) && form.ps_notes neq "" ) {
 				note = ezdb.exec( 
@@ -66,12 +125,14 @@ if ( !StructIsEmpty( form ) ) {
 					}
 				);	
 			}
+		*/
 
 			//Check the queries and see if they failed
 			message = qr.message;
 		}
 	}
 	catch (any e) {
+		writeoutput( "process_checkin_form.cfm" );
 		writeoutput( e.message );
 		abort;
 	}

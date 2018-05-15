@@ -27,4 +27,7 @@ else {
 //Current Week should also be carried through the whole app.
 currentWeek = DateDiff( "ww", startDate, date ) + 1;
 
+currentDay = DayOfWeek( Now() ); 
+
+currentDayName = DateTimeFormat( Now(), "EEE" ); 
 </cfscript>

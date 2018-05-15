@@ -43,10 +43,6 @@ if ( StructKeyExists( form, "this" ) && form.this eq "startSession" )
 			nq.addParam( name = "listing", value=listing, cfsqltype="cf_sql_int" );
 			r = nq.execute( sql = stmt );
 		}
-
-		if ( form.this eq "macDebugStartSession" ) {
-			location( url=link( "chosen.cfm" ), addtoken="no" );
-		}
 	}
 	catch (any e) {
 		req.sendAsJson( 

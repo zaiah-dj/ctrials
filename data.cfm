@@ -138,6 +138,7 @@ I can do more with this concept...
 			,"select_single_participant"
 			,"select_participant_check_in_data"
 			,"select_participant_notes"
+			,"check-in"
 		]
 	 ,"view"  = [ 
 			 "master/head"
@@ -157,6 +158,25 @@ I can do more with this concept...
 	,"login" = { 
 		"model" = "session/kill"
 	 ,"view"  =  "logout"
+	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
+	 	}
+
+	,"recovery" = { 
+		"model" = [ 
+			 "dependencies"
+		  ,"currentWeek"
+			,"initialize_session_and_current_id"
+			,"update_valid_session"
+			,"select_chosen_participants"
+			,"select_single_participant"
+		]
+	 ,"view"  = [ 
+			"master/head"
+			,"participant/list" 
+			,"participant/nav"
+			,"recovery"
+			,"master/tail" 
+		] 
 	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
 	 	}
 

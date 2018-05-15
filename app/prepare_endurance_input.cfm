@@ -47,8 +47,8 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
 			pid = currentId
-		 ,stdywk = old_ws.ps_week - 1 
-		 ,dayofwk = old_ws.ps_day
+		 ,stdywk = currentWeek
+		 ,dayofwk = currentDay
 		});
 
 	req = ezdb.exec(
@@ -63,8 +63,8 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
 			pid = currentId
-		 ,stdywk = old_ws.ps_week 
-		 ,dayofwk = old_ws.ps_day
+		 ,stdywk = currentWeek
+		 ,dayofwk = currentDay
 		});
 
 	//Prefill any values that need to be prefilled	 
@@ -107,8 +107,8 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 	 ,additional = [ 
 		{ name="this", value= "endurance" }
 	 ,{ name="pid", value= "#url.id#" }
-	 ,{ name="dayofwk", value= "#old_ws.ps_day#" }
-	 ,{ name="stdywk", value= "#old_ws.ps_week#" }
+	 ,{ name="dayofwk", value= "#currentDay#" }
+	 ,{ name="stdywk", value= "#currentWeek#" }
 	 ,{ name="sess_id", value= "#sess.key#" }
 		]
 	);
