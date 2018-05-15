@@ -14,14 +14,21 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 
 	//AJAX notes
 	if ( loc.indexOf( "check-in.cfm" ) > -1 ) {
+
 		var butt = document.getElementById("ps_note_save");
+
 		butt.addEventListener( "click", function (ev) {
 			ev.preventDefault();
-			var pid = [].slice.call( 
+
+			var pidDom = [].slice.call( 
 				document.querySelectorAll("input[name=ps_pid]") );
+				
 			var note = [].slice.call( 
 				document.querySelectorAll("textarea[name=ps_notes]") );
+
+			var pidValue = pidDom[0]["value"];
 			var noteValue = note[0]["value"];
+
 			var xhr = new XMLHttpRequest();	
 			xhr.onreadystatechange = function (ev) { 
 				if ( this.readyState == 4 && this.status == 200 ) {
@@ -43,8 +50,8 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 			xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update-note.cfm", true );
 			xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 			xhr.send( 
-				"note=" + note.innerHTML + 
-				"&pid=" + pid.value 
+				"note=" + noteValue + 
+				"&pid=" + pidValue 
 			);
 		});
 	}
