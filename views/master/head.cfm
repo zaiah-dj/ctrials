@@ -43,7 +43,10 @@
 	<cfif data.debug eq 1>
 		<div class="debug2">
 			Session Data: #sess.key# - #sess.status#
-			<div>Current Week: #date#</div>
+			<div>Current Date: #date#</div>
+			<div>Current Day: #DayOfWeek(Now())#</div>
+			<div>Start Week: #startDate#</div>
+			<div>Current Week: #currentWeek#</div>
 		</div>
 		<div id="sessionKey" style="display:none">#sess.key#</div>
 	</cfif>

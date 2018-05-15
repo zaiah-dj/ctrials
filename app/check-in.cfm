@@ -44,7 +44,7 @@ if ( Q.pbp.prefix.recordCount ) {
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
 	 ,targetHeartRate = part_list.p_targetheartrate
 	 ,nextSchedVisit = ListFirst( old_ws.ps_next_sched, DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" ) )
-	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
+	 ,currentWeek = currentWeek
 	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
 	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )

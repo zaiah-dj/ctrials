@@ -29,7 +29,7 @@
 							<cfset todayNum = DayOfWeek( Now() )>
 							<input type="hidden" name="ps_day" value="#todayNum#"></input>
 							<ul class="dasch">
-							<cfloop list = "Sun,Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
+							<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
 								<cfif today eq LCase( day )>
 								<li class="selected">#day#</li>	
 								<cfelse>
@@ -43,7 +43,7 @@
 					<tr>
 						<td class="title">Next Scheduled Visit</td>
 						<td>
-							<input type="date" name="ps_next_sched" value="#model.nextSchedVisit#">
+							<input type="date" name="ps_next_sched" value="#model.nextSchedVisit#" required>
 							<div>( e.g. 01/01/1991 )</div>
 						</td>
 					</tr>
