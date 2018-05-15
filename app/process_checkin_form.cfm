@@ -44,7 +44,7 @@ if ( !StructIsEmpty( form ) ) {
 				});
 
 			//Add a row to the check in status table
-			qr = qu.exec( 
+			qr = ezdb.exec( 
 				string="INSERT INTO ac_mtr_checkinstatus VALUES (
 					 :ps_pid
 					,:ps_session_id
@@ -66,9 +66,15 @@ if ( !StructIsEmpty( form ) ) {
 				,datestamp = {value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"} 
 			});
 
+			//Exercise type
+		 	extype = ezdb.exec( 
+				string = "SELECT p_exercise FROM #data.data.participants# WHERE p_id = :pid"
+		   ,bindArgs = { pid = form.ps_pid }
+			).results.p_exercise;
+
 			//Update the proper table with weight info
-			if ( part.p_exercise eq 1 ) {
-				qh = qu.exec( 
+			if ( extype eq 1 ) {
+				qh = ezdb.exec( 
 					string = "UPDATE ac_mtr_endurance_new 
 						SET weight = :w 
 					WHERE
@@ -84,8 +90,8 @@ if ( !StructIsEmpty( form ) ) {
 					}
 				);
 			}
-			else if ( part.p_exercise eq 2 ) {
-				qh = qu.exec( 
+			else if ( extype eq 2 ) {
+				qh = ezdb.exec( 
 					string = "UPDATE ac_mtr_resistance_new 
 						SET weight = :w 
 					WHERE
@@ -101,31 +107,6 @@ if ( !StructIsEmpty( form ) ) {
 					}
 				);
 			}
-
-	/*
-			//Add a row to the check in status table.
-			qr = ezdb.exec( 
-				string="INSERT INTO ac_mtr_checkinstatus VALUES (:id,:sid,1,:day,:ns,:ds,:nt)"
-			 ,bindArgs = {
-				 id  = form.ps_pid
-				,sid = sess_id	
-				,day = form.ps_day 
-				,ns  ={value=DateTimeFormat( Now()+2, "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
-				,ds  ={value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
-				,nt  = nt
-			});
-			//Finally, add a row to the notes table if notes were specified.
-			if ( StructKeyExists( form, "ps_notes" ) && form.ps_notes neq "" ) {
-				note = ezdb.exec( 
-					string="INSERT INTO ac_mtr_participant_notes VALUES ( :pid, :dt, :note )"
-				 ,bindArgs= {
-						pid = form.ps_pid
-					 ,dt  = {value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
-					 ,note= form.ps_notes 
-					}
-				);	
-			}
-		*/
 
 			//Check the queries and see if they failed
 			message = qr.message;

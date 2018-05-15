@@ -20,6 +20,7 @@ I can do more with this concept...
  ,"resistance" = "ac_mtr_resistance_new"
  ,"sessionTable" = "ac_mtr_logging_progress_tracker"
  ,"exerciseList" = "ac_mtr_resistance_exercise_list"
+ ,"participants" = "ac_mtr_participants"
 }
 ,"css"    = [
 	 "zero.css"
@@ -68,9 +69,7 @@ I can do more with this concept...
 	"default"= { 
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
-			"dependencies"
-		 ,"currentWeek"
-		 ,"initialize_session_and_current_id"
+		  "initialize_session_and_current_id"
 		 ,"select_all_participants"
 		 ,"select_chosen_participants"
 		 ,"select_unchosen_participants" 
@@ -86,9 +85,7 @@ I can do more with this concept...
 	,"update" = { 
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
 	 ,"model" = [
-			"dependencies"
-		 ,"currentWeek"
-		 ,"initialize_session_and_current_id"
+		  "initialize_session_and_current_id"
 		 ,"ajax_start_new_session"
 		 ,"ajax_update_resistance_table"
 		 ,"ajax_update_endurance_table"
@@ -107,9 +104,7 @@ I can do more with this concept...
 	,"input"  = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
-			 "dependencies"
-		 ,"currentWeek"
-			,"initialize_session_and_current_id"
+			 "initialize_session_and_current_id"
 			,"update_valid_session"
 			,"select_chosen_participants"
 			,"select_single_participant"
@@ -129,9 +124,7 @@ I can do more with this concept...
 	,"check-in" = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
-			 "dependencies"
-		 ,"currentWeek"
-			,"initialize_session_and_current_id"
+			 "initialize_session_and_current_id"
 			,"update_valid_session"
 			,"process_checkin_form"
 			,"select_chosen_participants"
@@ -163,9 +156,7 @@ I can do more with this concept...
 
 	,"recovery" = { 
 		"model" = [ 
-			 "dependencies"
-		  ,"currentWeek"
-			,"initialize_session_and_current_id"
+			 "initialize_session_and_current_id"
 			,"update_valid_session"
 			,"select_chosen_participants"
 			,"select_single_participant"
@@ -183,9 +174,7 @@ I can do more with this concept...
 	,"compare"= { 
 		"hint"  =  "Compare the participant's previous weeks history."
 	 ,"model" = [ 
-			 "dependencies"
-		 ,"currentWeek"
-			,"initialize_session_and_current_id"
+			 "initialize_session_and_current_id"
 			,"select_chosen_participants"
 			,"select_single_participant"
 		]
@@ -212,10 +201,8 @@ I can do more with this concept...
 
 		,"sessdata" = { 
 			"model" =  [ 
-				"dependencies", 
-		  "currentWeek",
-				"currentId", 
-				"show_valid_session" 
+				"initialize_session_and_current_id"
+			 ,"show_valid_session" 
 			]
 		 ,"view"  =  "logout"
 		 ,"hint"  =  "An AJAX endpoint to tell me information about where the user is."
