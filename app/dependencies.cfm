@@ -7,8 +7,3 @@ cf    = CreateObject( "component", "components.checkFields" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 ezdb.setDs( datasource = "#data.source#" );
 </cfscript>
-/*
-			,"ajax_update_resistance_table"
-			,"ajax_update_endurance_table"
-			,"ajax_update_control_table"
-*/

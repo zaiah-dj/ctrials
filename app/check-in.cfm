@@ -1,7 +1,5 @@
 <cfscript>
 //Objects
-param name="old_ws.ps_week" default="0";
-param name="old_ws.ps_day" default="0";
 param name="old_ws.ps_next_sched" default="0";
 param name="old_ws.ps_weight" default="0";
 param name="old_ws.ps_machine_value" default="0";
@@ -34,7 +32,9 @@ Q = {
 
 //Getting the next scheduled visit is not super straightforward if it's not recorded in patient table.
 nextScheduledVisit = ( Q.ai.prefix.recordCount ) ? Q.ai.results.ps_next_sched : Now();
-
+/*writeoutput( ListFirst( old_ws.ps_next_sched, DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" )  ));
+writeoutput( old_ws.ps_next_sched );
+abort;*/
 
 //Blood pressure needs some help.
 if ( Q.pbp.prefix.recordCount ) {
@@ -43,9 +43,9 @@ if ( Q.pbp.prefix.recordCount ) {
 	 ,currentBpSystolic = Q.pbp.results.bp_systolic
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
 	 ,targetHeartRate = part_list.p_targetheartrate
-	 ,nextSchedVisit = ListFirst( old_ws.ps_next_sched, DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" ) )
-	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
-	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
+	 ,nextSchedVisit = DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" )
+	 ,currentWeek = currentWeek
+	 ,currentDay = DayOfWeek( Now() )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
 	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
 	 ,minBPS = 40
@@ -54,15 +54,17 @@ if ( Q.pbp.prefix.recordCount ) {
 	 ,maxBPD = 120
 	};
 }
+//??:
 else {
 	model = {
 		needsNewBp = true
 	 ,currentBpSystolic = 0
 	 ,currentBpDiastolic = 0
 	 ,targetHeartRate = part_list.p_targetheartrate
-	 ,nextSchedVisit = ListFirst( old_ws.ps_next_sched, DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" ) )
-	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
-	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
+	 //,nextSchedVisit = ListFirst( old_ws.ps_next_sched, DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" ) )
+	 ,nextSchedVisit = DateTimeFormat( Q.ci.results.ps_next_sched, "YYYY-MM-DD" )
+	 ,currentWeek = currentWeek
+	 ,currentDay = DayOfWeek( Now() )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
 	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
 	 ,minBPS = 40

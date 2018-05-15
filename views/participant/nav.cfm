@@ -4,7 +4,8 @@ exName = (part.p_exercise eq "1") ? "Endurance" : "Resistance";
 container_nav = [
 	{ title = "Check-In", href = "check-in.cfm" }
  ,{ title = "#exName# Data", href = "input.cfm" }
- ,{ title = "Compare Data", href = "compare.cfm" }
+ ,{ title = "Recovery", href = "recovery.cfm" }
+/*,{ title = "Compare Data", href = "compare.cfm" }*/
 /* ,{ title = "Information", href = "info.cfm" }*/
 ];
 </cfscript>

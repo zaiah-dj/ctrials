@@ -504,6 +504,7 @@ ps_day                What day of the week were they looked at?
 ps_date_time_assessed When was the person assessed
 ps_droppedout         Did the participant opt out this time?
 ps_dropout_reason     Why?
+ps_session_ex_type	  0 = n/a, 1 = legs, 2 = biceps
 ps_notes              Other notes concerning the patient's condition.
  ----------------------------
  */
@@ -515,12 +516,12 @@ CREATE TABLE ac_mtr_checkinstatus (
 	 ps_id INT IDENTITY(1,1) NOT NULL
 	,ps_pid int
 	,ps_session_id VARCHAR(64)
-	,ps_before bit
+	,ps_week int
 	,ps_day int
 	,ps_next_sched datetime
 	,ps_weight int
+	,ps_reex_type int
 	,ps_date_time_assessed datetime
-	,ps_notes varchar(max)
 );
 
 

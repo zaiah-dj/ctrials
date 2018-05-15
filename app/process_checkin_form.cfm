@@ -43,28 +43,69 @@ if ( !StructIsEmpty( form ) ) {
 					,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime" }
 				});
 
-			//Add a row to the check in status table.
+			//Add a row to the check in status table
 			qr = ezdb.exec( 
-				string="INSERT INTO ac_mtr_checkinstatus VALUES (:id,:sid,1,:day,:ns,:ds,:nt)"
+				string="INSERT INTO ac_mtr_checkinstatus VALUES (
+					 :ps_pid
+					,:ps_session_id
+					,:ps_week
+					,:ps_day
+					,:ps_next_sched
+					,:ps_weight
+					,:ps_reex_type
+					,:datestamp
+				)"
 			 ,bindArgs = {
-				 id  = form.ps_pid
-				,sid = sess_id	
-				,day = form.ps_day 
-				,ns  ={value=DateTimeFormat( Now()+2, "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
-				,ds  ={value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
-				,nt  = nt
+				 ps_pid  = form.ps_pid
+				,ps_session_id = sess_id	
+				,ps_week = currentWeek
+				,ps_day = currentDay
+				,ps_next_sched = { value=DateTimeFormat( form.ps_next_sched, "YYYY-MM-DD" ),type="cfsqldatetime" }
+				,ps_weight = form.ps_weight
+				,ps_reex_type = (StructKeyExists( form, "exset" )) ? form.exset : 0
+				,datestamp = {value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"} 
 			});
 
-			//Finally, add a row to the notes table if notes were specified.
-			if ( StructKeyExists( form, "ps_notes" ) && form.ps_notes neq "" ) {
-				note = ezdb.exec( 
-					string="INSERT INTO ac_mtr_participant_notes VALUES ( :pid, :dt, :note )"
-				 ,bindArgs= {
-						pid = form.ps_pid
-					 ,dt  = {value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cfsqldatetime"}
-					 ,note= form.ps_notes 
+			//Exercise type
+		 	extype = ezdb.exec( 
+				string = "SELECT p_exercise FROM #data.data.participants# WHERE p_id = :pid"
+		   ,bindArgs = { pid = form.ps_pid }
+			).results.p_exercise;
+
+			//Update the proper table with weight info
+			if ( extype eq 1 ) {
+				qh = ezdb.exec( 
+					string = "UPDATE ac_mtr_endurance_new 
+						SET weight = :w 
+					WHERE
+					participantGUID = :pid
+					dayofwk = :dwk
+					studywk = :swk"
+
+					,bindArgs = {
+						w = form.ps_weight
+					 ,pid = form.ps_pid
+					 ,dwk = currentDay
+					 ,swk = currentWeek
 					}
-				);	
+				);
+			}
+			else if ( extype eq 2 ) {
+				qh = ezdb.exec( 
+					string = "UPDATE ac_mtr_resistance_new 
+						SET weight = :w 
+					WHERE
+					participantGUID = :pid
+					dayofwk = :dwk
+					studywk = :swk"
+
+					,bindArgs = {
+						w = form.ps_weight
+					 ,pid = form.ps_pid
+					 ,dwk = currentDay
+					 ,swk = currentWeek
+					}
+				);
 			}
 
 			//Check the queries and see if they failed
@@ -72,6 +113,7 @@ if ( !StructIsEmpty( form ) ) {
 		}
 	}
 	catch (any e) {
+		writeoutput( "process_checkin_form.cfm" );
 		writeoutput( e.message );
 		abort;
 	}

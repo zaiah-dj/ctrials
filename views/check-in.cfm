@@ -25,16 +25,11 @@
 					<tr>
 						<td class="title">Exercise Session</td>
 						<td>
-							<cfset today = LCase( DateTimeFormat( Now(), "EEE" ))>
-							<cfset todayNum = DayOfWeek( Now() )>
-							<input type="hidden" name="ps_day" value="#todayNum#"></input>
+							<input type="hidden" name="ps_day" value="#currentDay#"></input>
+
 							<ul class="dasch">
-							<cfloop list = "Sun,Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
-								<cfif today eq LCase( day )>
-								<li class="selected">#day#</li>	
-								<cfelse>
-								<li>#day#</li>	
-								</cfif>
+							<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
+								<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>#day#</li>
 							</cfloop>
 							</ul>
 						</td>
@@ -43,7 +38,7 @@
 					<tr>
 						<td class="title">Next Scheduled Visit</td>
 						<td>
-							<input type="date" name="ps_next_sched" value="#model.nextSchedVisit#">
+							<input type="date" name="ps_next_sched" value="#model.nextSchedVisit#" required>
 							<div>( e.g. 01/01/1991 )</div>
 						</td>
 					</tr>
@@ -101,13 +96,12 @@
 					<tr>
 						<td class="title">Target Heart Rate</td>
 						<td>
-							<!---
 							<cfif model.targetHeartRate>
-								<cfset minTR=model.targetHeartRate * 0.65>
-								<cfset maxTR=model.targetHeartRate * 0.75>
+							#model.targetHeartRate# BPM
+							(Variance allowed between 
+								#model.targetHeartRate - (model.targetHeartRate * 0.05)# and 
+								#model.targetHeartRate + (model.targetHeartRate * 0.05)# BPM )
 							</cfif>
-							--->
-							#model.targetHeartRate# - #model.targetHeartRate# BPM <!---( Variances between #minTR# - #maxTR# BPM are allowed )--->
 						</td>
 					</tr>
 
