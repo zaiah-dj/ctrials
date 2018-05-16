@@ -8,9 +8,11 @@
 	<!--- Let's see all of these in a list --->
 	<ul class="inner-selection">
 	<cfset cnt=0>
+		<a href="#link( 'input.cfm?id=#url.id#' )#"><li>5 Minute Warmup</li></a>
 	<cfloop query = "#reExList.results#"> 
 		<a href="#link( 'input.cfm?id=#url.id#&extype=#et_id#' )#"><li #iif(type eq et_id, DE('class="selected"'),DE(''))#>#et_name#</li></a>
 	</cfloop>
+		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li>Recovery</li></a>
 	</ul>
 
 	<div class="selection">
