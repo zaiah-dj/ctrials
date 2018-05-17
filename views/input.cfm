@@ -4,15 +4,15 @@
 			<cfinclude template="participant-stubs/nothing.cfm">
 		<cfelse>
 			<!--- Include control --->
-			<cfif #part.p_exercise# eq "0">
+			<cfif #part.randomGroupCode# eq "0">
 				<cfinclude template="participant-stubs/control.cfm">
 
 			<!--- Include endurance --->
-			<cfelseif #part.p_exercise# eq "1">
+			<cfelseif #part.randomGroupCode# eq ENDURANCE>
 				<cfinclude template="participant-stubs/endurance.cfm">
 
 			<!--- Include resistance --->
-			<cfelseif part.p_exercise eq "2">
+			<cfelseif part.randomGroupCode eq RESISTANCE>
 				<cfinclude template="participant-stubs/resistance.cfm">
 		
 			<!--- Include --->	

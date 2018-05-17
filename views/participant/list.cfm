@@ -3,15 +3,15 @@
 	<div class="container-header">
 		<ul id="participant_list">
 		 <cfif isDefined("part_list")>
-		  <cfloop query="part_list" >
+		  <cfloop query="part_list.results" >
 
-			<cfif IsDefined("url.id") and #url.id# eq #p_id#>
-				<a class="selected" href="#link( "check-in.cfm?id=#p_id#" )#">
-					<li class="selected">#p_fname# <br/>#p_lname#</li>
+			<cfif IsDefined("url.id") and #url.id# eq #participantGUID#>
+				<a class="selected" href="#link( "check-in.cfm?id=#participantGUID#" )#">
+					<li class="selected">#firstname# <br/>#lastname#</li>
 				</a>
 			<cfelse>	
-				<a class="" href="#link( "check-in.cfm?id=#p_id#" )#">
-					<li>#p_fname# <br/>#p_lname#</li>
+				<a class="" href="#link( "check-in.cfm?id=#participantGUID#" )#">
+					<li>#firstname# <br/>#lastname#</li>
 				</a>
 			</cfif>	
 				

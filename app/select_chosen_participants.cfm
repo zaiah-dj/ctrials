@@ -1,3 +1,4 @@
+<!---
 <cfif sess.status gt 1>
 	<cfquery datasource = "#data.source#" name = "part_list">
 	SELECT
@@ -19,3 +20,35 @@
 	ON CurrentTransactionIDList.p_pid = amp.p_id;
 	</cfquery>
 </cfif>
+--->
+
+<cfscript>
+if ( sess.status gt 1 ) {
+	part_list = ezdb.exec( 
+		string = "
+		SELECT
+			*
+		FROM
+		( SELECT 
+				p_pid, p_participantGUID
+			FROM 
+				#data.data.sessionMembers#	
+			WHERE 
+				p_transaction_id = :sid	
+		) AS CurrentTransactionIDList
+		LEFT JOIN
+		( SELECT
+				* 
+			FROM 
+				#data.data.participants#	
+		) AS amp
+		ON CurrentTransactionIDList.p_participantGUID = amp.participantGUID;
+		"
+		,bindArgs = {
+			sid = sess.key
+		}	
+	);
+}
+</cfscript>
+<!---
+--->

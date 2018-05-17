@@ -14,7 +14,7 @@ abort;
 		* 
 	FROM 
 		#data.data.participants#	
-	ORDER BY p_lname ASC 
+	ORDER BY lastname ASC 
 </cfquery>
 
 

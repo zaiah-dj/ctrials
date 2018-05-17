@@ -7,6 +7,9 @@ cf    = CreateObject( "component", "components.checkFields" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 ezdb.setDs( datasource = "#data.source#" );
 
+//Set labels from over here somewhere
+ENDURANCE = "GO1";
+RESISTANCE = "GO4";
 
 //Always start new weeks on Sunday
 if ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) {

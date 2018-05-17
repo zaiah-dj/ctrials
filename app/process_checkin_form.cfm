@@ -68,7 +68,8 @@ if ( !StructIsEmpty( form ) ) {
 
 			//Exercise type
 		 	extype = ezdb.exec( 
-				string = "SELECT p_exercise FROM #data.data.participants# WHERE p_id = :pid"
+				string = "SELECT randomGroupCode FROM 
+					#data.data.participants# WHERE participantGUID = :pid"
 		   ,bindArgs = { pid = form.ps_pid }
 			).results.p_exercise;
 

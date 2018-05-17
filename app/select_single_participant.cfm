@@ -9,13 +9,14 @@ Right now, it's just some fake thing.
 <cfif isDefined("url.id")>
 	<cfset myPid=url.id>
 
+<!---
 	<cfquery datasource=#data.source# name=part>
 	SELECT * FROM 
 		#data.data.participants# 
 	WHERE 
 		p_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#myPid#">;
 	</cfquery>
-
+--->
 
 	<!--- Query for a lot of participant data 
 	(Consider using a view to speed things up)

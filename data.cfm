@@ -19,8 +19,9 @@ I can do more with this concept...
 	"endurance"  = "ac_mtr_endurance_new"
  ,"resistance" = "ac_mtr_resistance_new"
  ,"sessionTable" = "ac_mtr_logging_progress_tracker"
+ ,"sessionMembers" = "ac_mtr_participant_transaction_members"
  ,"exerciseList" = "ac_mtr_resistance_exercise_list"
- ,"participants" = "ac_mtr_participants"
+ ,"participants" = "ac_mtr_participants_v2"
 }
 ,"css"    = [
 	 "zero.css"

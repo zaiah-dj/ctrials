@@ -1,7 +1,7 @@
 <cfparam name="url.id" default="">
 <cfparam name="session.id" default="">
 <cfscript>
-if ( isDefined( "part" ) && part.p_exercise eq 1 ) 
+if ( isDefined( "part" ) && part.randomGroupCode eq ENDURANCE ) 
 {
 	clijs = CreateObject( "component", "components.writeback" );
 	//Generate the time blocks for endurance exercises.
@@ -106,7 +106,7 @@ if ( isDefined( "part" ) && part.p_exercise eq 1 )
 		}]
 	 ,additional = [ 
 		{ name="this", value= "endurance" }
-	 ,{ name="pid", value= "#url.id#" }
+	 ,{ name="pid", value= "#currentId#" }
 	 ,{ name="dayofwk", value= "#currentDay#" }
 	 ,{ name="stdywk", value= "#currentWeek#" }
 	 ,{ name="sess_id", value= "#sess.key#" }

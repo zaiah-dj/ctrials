@@ -1,8 +1,5 @@
-<cfif part.p_exercise lt 3>
 <cfoutput>
-	<div class="container-body">
-	<div class="footer">
-	</div>
+<div class="container-body">
 		<form name="checkInForm" action="#link( 'check-in.cfm?id=#url.id#' )#" method="POST">
 			<table class="table">
 				<tbody>
@@ -123,9 +120,9 @@
 					</tr>
 
 					<tr>
-						<td class="title">#iif( part.p_exercise eq 1, DE("Machine Selection"),DE("Exercise Selection"))#</td>
+						<td class="title">#iif( part_list.results.randomGroupCode eq ENDURANCE, DE("Machine Selection"),DE("Exercise Selection"))#</td>
 						<td>
-							<cfif part.p_exercise eq 1>
+							<cfif part_list.results.randomGroupCode eq ENDURANCE>
 								<cfloop query=#Q.machines.results#> 
 								<div class="clabel">
 									#et_name#<!---<label>#et_name#</label>--->
@@ -177,10 +174,9 @@
 				</tbody>
 			</table>
 
-			<input type="hidden" name="ps_pid" value="#url.id#">
+			<input type="hidden" name="ps_pid" value="#currentId#">
 			<input type="submit" value="Next!"></input>
 		</form>
 	</div> <!--- container-body --->
-	</div>
+</div>
 </cfoutput>
-</cfif>
