@@ -19,9 +19,11 @@ I can do more with this concept...
 	"endurance"  = "ac_mtr_endurance_new"
  ,"resistance" = "ac_mtr_resistance_new"
  ,"sessionTable" = "ac_mtr_logging_progress_tracker"
- ,"sessionMembers" = "ac_mtr_participant_transaction_members"
+ ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
  ,"exerciseList" = "ac_mtr_resistance_exercise_list"
  ,"participants" = "ac_mtr_participants_v2"
+ ,"checkin" = "ac_mtr_checkinstatus_v2"
+ ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
 }
 ,"css"    = [
 	 "zero.css"
@@ -132,7 +134,6 @@ I can do more with this concept...
 			,"select_single_participant"
 			,"select_participant_check_in_data"
 			,"select_participant_notes"
-			,"check-in"
 		]
 	 ,"view"  = [ 
 			 "master/head"

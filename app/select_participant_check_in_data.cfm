@@ -14,19 +14,26 @@ Q = {
 
 	//See today's blood pressure
  ,pbp       = ezdb.exec( 
-		string="SELECT * FROM ac_mtr_bloodpressure WHERE bp_pid = :pid", 
+		string="SELECT * FROM #data.data.bloodpressure# WHERE bp_pid = :pid", 
 		bindArgs = { pid = "#part_list.results.participantGUID#" } )
 
 	//See just today's check in status
  ,ci        = ezdb.exec( 
-		string="SELECT * FROM ac_mtr_checkinstatus WHERE ps_session_id = :sid AND ps_pid = :pid", 
+		string="SELECT * FROM 
+			#data.data.checkin#	
+		WHERE ps_session_id = :sid AND ps_pid = :pid", 
 		bindArgs = { pid = "#part_list.results.participantGUID#", sid = "#sess.key#" } )
 
 	//Get ALL of the previous check-in data to see next scheduled visit and previous blood pressure readings?
  ,ai        = ezdb.exec( 
-		string="SELECT TOP 1 ps_next_sched,ps_date_time_assessed FROM ac_mtr_checkinstatus WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
+		string="SELECT TOP 1 ps_next_sched,ps_date_time_assessed 
+		FROM 
+			#data.data.checkin#	
+		WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
 		bindArgs = { pid = "#part_list.results.participantGUID#" } )
 };
+
+
 
 
 //Getting the next scheduled visit is not super straightforward if it's not recorded in patient table.
