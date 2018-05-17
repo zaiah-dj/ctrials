@@ -10,8 +10,10 @@ Right now, it's just some fake thing.
 	<cfset myPid=url.id>
 
 	<cfquery datasource=#data.source# name=part>
-	SELECT * FROM ac_mtr_participants 
-	WHERE p_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#myPid#">;
+	SELECT * FROM 
+		#data.data.participants# 
+	WHERE 
+		p_id = <cfqueryparam CFSQLType="CF_SQL_INTEGER" value="#myPid#">;
 	</cfquery>
 
 

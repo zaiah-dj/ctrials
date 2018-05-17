@@ -11,10 +11,10 @@
 			p_transaction_id = <cfqueryparam value="#sess.key#" cfsqltype="cf_sql_nvarchar"> 
 	) AS CurrentTransactionIDList
 	LEFT JOIN
-	( SELECT 
+	( SELECT
 			* 
 		FROM 
-			ac_mtr_participants 
+			#data.data.participants#	
 	) AS amp
 	ON CurrentTransactionIDList.p_pid = amp.p_id;
 	</cfquery>

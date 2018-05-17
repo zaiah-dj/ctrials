@@ -7,7 +7,7 @@ if ( sess.status gt 1 ) {
 	antiPartList = qu.exec( 
 		string = "
 		SELECT * FROM 
-			ac_mtr_participants 
+			#data.data.participants# 
 		WHERE p_id NOT IN (
 		  SELECT DISTINCT p_pid FROM 
 				ac_mtr_participant_transaction_members
@@ -28,7 +28,7 @@ if ( sess.status gt 1 ) {
 				p_transaction_id = :sid ) AS CurrentTransactionIDList
 		LEFT JOIN
 		( SELECT * FROM
-				ac_mtr_participants ) AS amp
+				#data.data.participants# ) AS amp
 		ON CurrentTransactionIDList.p_pid = amp.p_id"
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {

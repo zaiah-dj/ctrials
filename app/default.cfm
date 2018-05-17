@@ -13,7 +13,7 @@ abort;
 	SELECT 
 		* 
 	FROM 
-		ac_mtr_participants
+		#data.data.participants#	
 	ORDER BY p_lname ASC 
 </cfquery>
 

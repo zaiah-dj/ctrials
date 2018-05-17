@@ -451,6 +451,23 @@ END
 CREATE TABLE ac_mtr_participants
 (
 	 p_id INT IDENTITY(1,1) NOT NULL
+	 
+	 /*Version 2*/
+	,participantGUID     varchar(50) NOT NULL DEFAULT (newid()),
+	,firstname varchar(256)
+	,lastname varchar(256)
+	,acrostic int
+	,randomGroupGUID varchar(50)
+	,randomGroupCode varchar(50)
+	,randomGroupDescription varchar(50)
+	
+	,siteID int
+	,siteName varchar(256)
+	,siteGUID varchar(256)
+	,d_session datetime
+	
+	 /*Version 1*/
+	 /*
 	,p_fname varchar(256)
 	,p_lname varchar(256)
 	,p_mname varchar(256)
@@ -464,6 +481,7 @@ CREATE TABLE ac_mtr_participants
 	,p_date_modified DATETIME
     ,p_targetheartrate INT
 	,p_notes VARCHAR(max)
+	*/
 );
 
 INSERT INTO ac_mtr_participants VALUES ( 'Robert', 'Beasely', 'M', 1, '7999573dd86773e000769f8fc6ef81fb', 236.0, 72.0, 0, '/assets/jc_avatar.jpg', 0, 0 , 80, '' );
