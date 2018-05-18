@@ -193,6 +193,8 @@ else {
 
 //Recall the last valid session data
 try {
+writeoutput( currentId );
+writeoutput( currentId );
 	//Select from the progress table and use this to prefill fields that don't exist
 	p = ezdb.exec( 
 		string = 
@@ -223,6 +225,7 @@ try {
 }
 catch (any e) {
 	req.sendAsJSON( status = 0, message = "#e.message#" );
+abort;
 }
 /*
 //Initialize the session variables

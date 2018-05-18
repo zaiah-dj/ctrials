@@ -1,8 +1,6 @@
 <cfscript>
-if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
-{
-	try 
-	{
+if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) {
+	try {
 		//check fields
 		fields = cf.checkFields( form, 
 			 "pid"
@@ -45,9 +43,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 			"
 		 ,datasource="#data.source#"
 		 ,bindArgs = { 
-				 pid = form.pid
-				,stdywk = form.stdywk
-				,dayofwk = form.dayofwk
+			 pid = form.pid
+			,stdywk = form.stdywk
+			,dayofwk = form.dayofwk
 			}
 		);
 
