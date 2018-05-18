@@ -949,6 +949,23 @@ CREATE TABLE ac_mtr_logging_progress_tracker
 	,misc VARCHAR(MAX)
 );
 
+/* ---------------------------
+ac_mtr_logging_progress_tracker
+
+Log progress of things.
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_logging_progress_tracker_v2', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_logging_progress_tracker_v2;
+END
+CREATE TABLE ac_mtr_logging_progress_tracker_v2
+(
+	 active_pid VARCHAR(64)
+	,session_id VARCHAR(64)
+	,location VARCHAR(2048)
+	,dtimestamp DATETIME
+	,misc VARCHAR(MAX)
+);
 
 
 /* ---------------------------

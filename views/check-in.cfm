@@ -1,5 +1,7 @@
 <cfoutput>
 <div class="container-body">
+	<div class="footer">
+	</div>
 	<form name="checkInForm" action="#link( 'check-in.cfm?id=#url.id#' )#" method="POST">
 		<table class="table">
 			<tbody>
