@@ -71,10 +71,10 @@ if ( !StructIsEmpty( form ) ) {
 				string = "SELECT randomGroupCode FROM 
 					#data.data.participants# WHERE participantGUID = :pid"
 		   ,bindArgs = { pid = form.ps_pid }
-			).results.p_exercise;
+			).results.randomGroupCode;
 
 			//Update the proper table with weight info
-			if ( extype eq 1 ) {
+			if ( extype eq ENDURANCE ) {
 				qh = ezdb.exec( 
 					string = "UPDATE ac_mtr_endurance_new 
 						SET weight = :w 
@@ -91,7 +91,7 @@ if ( !StructIsEmpty( form ) ) {
 					}
 				);
 			}
-			else if ( extype eq 2 ) {
+			else if ( extype eq RESISTANCE ) {
 				qh = ezdb.exec( 
 					string = "UPDATE ac_mtr_resistance_new 
 						SET weight = :w 
