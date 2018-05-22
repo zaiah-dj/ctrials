@@ -12,7 +12,7 @@ I can do more with this concept...
 ,"name"   = "iv"
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  0
+,"debug"  =  1
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
@@ -83,6 +83,16 @@ I can do more with this concept...
 			"default", 
 			"master/tail" 
 		] 
+	}
+
+	,"modal-results" = { 
+		"hint"  =  "Results for previous weeks go here." 
+	 ,"model" = [
+		  "initialize_session_and_current_id"
+		 ,"ajax_display_previous"
+		]
+	 ,"view"  =  "nothing"
+	 ,"content_type"  = "application/json"
 	}
 
 	,"update" = { 

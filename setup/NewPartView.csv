@@ -1,0 +1,23 @@
+participantGUID,firstname,lastname,middlename,acrostic,randonGroupGUID,randomGroupCode,randomGroupDescription,siteID,siteName,siteGUID,d_session
+newid(),'Jarius', 'Richardson', '',1018,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,1,Wake Forest,6DFFFF04-DD11-424A-9CFA-142CE9247E34,43238
+newid(),'Antonio', 'Collins', 'Ramar',1008,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,1,Wake Forest,6DFFFF04-DD11-424A-9CFA-142CE9247E35,43239
+newid(),'Avagard', 'Reva', '',1019,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,1,Wake Forest,6DFFFF04-DD11-424A-9CFA-142CE9247E36,43240
+newid(),'Fat', 'Man', '',1009,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,1,Wake Forest,6DFFFF04-DD11-424A-9CFA-142CE9247E37,43241
+newid(),'Robert', 'Beasely', 'M',1001,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43242
+newid(),'Wellesly', 'Chapel', 'Elliott',1002,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43243
+newid(),'Durn', 'Furn', 'The',1003,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43244
+newid(),'Durham', 'Bigly', 'O',1004,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43245
+newid(),'Heidi', 'Woe', 'Woe',1012,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43246
+newid(),'Dell', 'Jackson', 'Michael',1013,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43247
+newid(),'Michael', 'Jackson', 'Joe',1014,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43248
+newid(),'Smarty', 'Jopeep', '',1015,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,2,Duke,748C9CC6-D8BB-462F-AF2C-1949612D53CA,43249
+newid(),'Peter', 'Rabbit', '',1016,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,3,Massachusetts Institute of Technology,96E87679-155E-4212-8710-14C7C6C45DF9,43250
+newid(),'Gonzaga', 'Montroni', '',1006,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,3,Massachusetts Institute of Technology,96E87679-155E-4212-8710-14C7C6C45DF9,43251
+newid(),'Wallets', 'Getstolen', 'Always',1017,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,3,Massachusetts Institute of Technology,96E87679-155E-4212-8710-14C7C6C45DF9,43252
+newid(),'Jim', 'Fashionista', '',1007,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,3,Massachusetts Institute of Technology,96E87679-155E-4212-8710-14C7C6C45DF9,43253
+newid(),'Virginia', 'Tellurude', '',1005,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,3,Massachusetts Institute of Technology,96E87679-155E-4212-8710-14C7C6C45DF9,43254
+newid(),Peter,Paulson, '',1020,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,4,University of Central Florida,C8D7AEB1-564A-4E79-8E2C-F0FE71D58D30,43255
+newid(),'Little', 'Boy', '',1010,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,4,University of Central Florida,C8D7AEB1-564A-4E79-8E2C-F0FE71D58D30,43256
+newid(),Joanna,Hoffman, '',1021,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,4,University of Central Florida,C8D7AEB1-564A-4E79-8E2C-F0FE71D58D30,43257
+newid(),'Hiroshima', 'Marketplace', 'The',1011,E42063F-BA19-4B39-9EF3-140CC4ECE485,END,Endurance participant,4,University of Central Florida,C8D7AEB1-564A-4E79-8E2C-F0FE71D58D30,43258
+newid(),Richard,Skeykunk, '',1022,ADEB361D-965E-4631-8510-75F1F06F830A,RES,Resistance participant,4,University of Central Florida,C8D7AEB1-564A-4E79-8E2C-F0FE71D58D30,43259

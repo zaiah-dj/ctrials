@@ -11,7 +11,7 @@
 						<cfset sc=1>
 						<select name="ps_week" required>
 						<cfloop from=1 to=14 index = "d">
-							<cfif #model.currentWeek# eq #d#>
+							<cfif #currentWeek# eq #d#>
 							<option selected value=#d#>Week #d#</option>	
 							<cfelse>
 							<option value=#d#>Week #d#</option>	
@@ -25,10 +25,16 @@
 					<td class="title">Exercise Session</td>
 					<td>
 						<input type="hidden" name="ps_day" value="#currentDay#"></input>
-
+						<!---
+						<button class="inc-button">See Previous Week Results</button>
+						--->
+						<a href="">See Previous Week Results</a>
 						<ul class="dasch">
 						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
-							<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>#day#</li>
+							<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
+								#day#
+								<br /><a href="">See Results</a>
+							</li>
 						</cfloop>
 						</ul>
 					</td>

@@ -12,7 +12,8 @@
 	<cfloop query = "#reExList.results#"> 
 		<a href="#link( 'input.cfm?id=#url.id#&extype=#et_id#' )#"><li #iif(type eq et_id, DE('class="selected"'),DE(''))#>#et_name#</li></a>
 	</cfloop>
-		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li>Recovery</li></a>
+		<a href="#link( 'recovery.cfm?id=#url.id#' )#">
+			<li class="bg-red">Stop Session</li></a>
 	</ul>
 
 	<div class="selection">

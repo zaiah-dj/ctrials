@@ -1,3 +1,4 @@
+<cfif isDefined( "part" )>
 <cfscript>
 exName = (part.results.randomGroupCode eq ENDURANCE) ? "Endurance" : "Resistance";
 container_nav = [
@@ -33,3 +34,4 @@ container_nav = [
 		</ul>
 	</cfoutput>
 	</div>
+</cfif>

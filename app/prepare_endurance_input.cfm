@@ -17,7 +17,7 @@ if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE )
 		,{ index=40, text='<40m' }
 		,{ index=45, text='<45m' }
 		,{ index=50, text='<50m' }
-		,{ index=55, text='Recovery' }
+		//,{ index=55, text='Recovery' }
 	];
 
 	//Generate a default time.
