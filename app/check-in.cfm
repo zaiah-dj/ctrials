@@ -14,19 +14,19 @@ Q = {
 	//See today's blood pressure
  ,pbp = ezdb.exec( 
 		string="SELECT * FROM ac_mtr_bloodpressure WHERE bp_pid = :pid", 
-		bindArgs = { pid = "#part_list.p_pid#" } )
+		bindArgs = { pid = "#part_list.results.participantGUID#" } )
 
 	//See just today's check in status
  ,ci = ezdb.exec( 
 		string="SELECT * FROM ac_mtr_checkinstatus WHERE ps_session_id = :sid AND ps_pid = :pid", 
-		bindArgs = { pid = "#part_list.p_pid#", sid = "#sess.key#" } )
+		bindArgs = { pid = "#part_list.results.participantGUID#", sid = "#sess.key#" } )
 
 	//Get ALL of the previous check-in data to see next scheduled visit and previous blood pressure readings?
  ,ai = ezdb.exec( 
 		string="SELECT TOP 1 ps_next_sched, ps_date_time_assessed 
 		 FROM 
 			ac_mtr_checkinstatus WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
-		bindArgs = { pid = "#part_list.p_pid#" } )
+		bindArgs = { pid = "#part_list.results.participantGUID#" } )
 };
 
 
@@ -42,7 +42,7 @@ if ( Q.pbp.prefix.recordCount ) {
 		needsNewBp = ( DateDiff( "d", Q.pbp.results.bp_daterecorded, Now() ) > 30 ) ? true : false
 	 ,currentBpSystolic = Q.pbp.results.bp_systolic
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
-	 ,targetHeartRate = part_list.p_targetheartrate
+	 ,targetHeartRate = 0 //part_list.results.p_targetheartrate
 	 ,nextSchedVisit = DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" )
 	 ,currentWeek = currentWeek
 	 ,currentDay = DayOfWeek( Now() )
@@ -60,7 +60,7 @@ else {
 		needsNewBp = true
 	 ,currentBpSystolic = 0
 	 ,currentBpDiastolic = 0
-	 ,targetHeartRate = part_list.p_targetheartrate
+	 ,targetHeartRate = 0 //part_list.results.p_targetheartrate
 	 //,nextSchedVisit = ListFirst( old_ws.ps_next_sched, DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" ) )
 	 ,nextSchedVisit = DateTimeFormat( Q.ci.results.ps_next_sched, "YYYY-MM-DD" )
 	 ,currentWeek = currentWeek

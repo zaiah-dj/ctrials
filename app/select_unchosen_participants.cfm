@@ -1,36 +1,31 @@
 <!--- reconcile 'part_list' vs 'all_part_list' --->
 <cfscript>
 if ( sess.status gt 1 ) {
-	notList = "'#ValueList( part_list.p_lname, "', '" )#'";
-	qu = createObject("Component", "components.quella" );
-
-	antiPartList = qu.exec( 
+	antiPartList = ezdb.exec( 
 		string = "
 		SELECT * FROM 
-			ac_mtr_participants 
-		WHERE p_id NOT IN (
+			#data.data.participants# 
+		WHERE participantGUID NOT IN (
 		  SELECT DISTINCT p_pid FROM 
-				ac_mtr_participant_transaction_members
+				#data.data.sessionMembers#	
 			WHERE 
 				p_transaction_id = :sid 
-		) ORDER BY p_lname ASC"
-	 ,datasource = "#data.source#"
+		) ORDER BY lastname ASC"
 	 ,bindArgs = {
 			sid = sess.key
 		}
 	);
 
-	partList = qu.exec( 
+	partList = ezdb.exec( 
 		string = "SELECT * FROM
-		( SELECT p_pid FROM 
+		( SELECT p_pid, p_participantGUID FROM 
 				ac_mtr_participant_transaction_members
 			WHERE 
 				p_transaction_id = :sid ) AS CurrentTransactionIDList
 		LEFT JOIN
 		( SELECT * FROM
-				ac_mtr_participants ) AS amp
-		ON CurrentTransactionIDList.p_pid = amp.p_id"
-	 ,datasource = "#data.source#"
+				#data.data.participants# ) AS amp
+		ON CurrentTransactionIDList.p_participantGUID = amp.participantGUID"
 	 ,bindArgs = {
 			sid = sess.key
 		}

@@ -25,6 +25,9 @@
 			</a>
 		</cfif>
 		</cfloop>
+			<a href="#link( 'recovery.cfm?id=#url.id#' )#">
+				<li class="bg-red">Stop Session</li>
+			</a>
 		</ul>
 	</div>
 

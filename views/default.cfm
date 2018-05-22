@@ -72,9 +72,9 @@ AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client(
 				<div class="listing">
 					<ul class="part-drop-list">
 						<cfloop query = "antiPartList.results">
-							<li class="#iif( p_exercise eq 1, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
-								<span>#p_fname# #p_lname#</span>
-								<span>#p_id#</span>
+							<li class="#iif( randomGroupCode eq ENDURANCE, DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
+								<span>#firstname# #lastname#</span>
+								<span>#participantGUID#</span>
 							</li>	
 						</cfloop>
 					</ul>
@@ -85,10 +85,10 @@ AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client(
 				<div class="listing listing-drop">
 					<ul> 
 				<cfif sess.status gte 2>
-					<cfloop query = "part_list">
+					<cfloop query = "part_list.results">
 						<li>
-							<span>#p_fname# #p_lname#</span>
-							<span>#p_id#</span>
+							<span>#firstname# #lastname#</span>
+							<span>#partcipantGUID#</span>
 						</li>	
 					</cfloop>
 				</cfif>

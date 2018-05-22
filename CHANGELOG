@@ -1,2 +1,14 @@
+Mon, May 21, 2018  2:24:46 PM
+	 -Weeks track automatically and change as we progress forward in time (oooOOooOOh)
+	 -The week can be changed in development versions by using week=YYYY-MM-DD in the URL.
+	 -Scuse me: that's startweek=YYYY-MM-DD
+	 -Perhaps I need to add something else that can delete this test data.
+	 -Still working on adding a modal window that can display all previous weeks results.
+	 -Will add a CSV or a straight up SQL file that can populate in a way that I can test this correctly.
+	 -Changed participant IDs to use SQL Server's newid() function to generate unique identifiers.  This is only important for testing.
+	 -Changed all table names in SQL queries to variables.  This makes it easy to switch backends.
+	 -Updated the check-in page to use #currentWeek# instead of
+	 #model.currentWeek#
+
 2018-02-20
 	- Created this project.

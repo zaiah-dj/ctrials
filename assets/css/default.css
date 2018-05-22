@@ -1079,6 +1079,14 @@ ul.participant-notes li {
 	margin-bottom: 10px;
 }
 
+.bg-red  {
+	background-color: #b30000 !important;
+}
+
+.bg-red:hover  {
+	background-color: #ff8080 !important;
+}
+
 /*
 .endurance {
 

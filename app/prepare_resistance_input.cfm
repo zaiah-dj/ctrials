@@ -1,8 +1,8 @@
 <cfscript>
-if ( isDefined("part") && part.p_exercise eq 2 ) 
+if ( isDefined("part") && part.results.randomGroupCode eq RESISTANCE ) 
 {
 	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
-	pid = url.id;
+	pid = currentId; 
 	aweek = StructKeyExists( old_ws, "ps_week" ) ? old_ws.ps_week : 1;
 	aday = StructKeyExists( old_ws, "ps_day" ) ? old_ws.ps_day : 1;
 

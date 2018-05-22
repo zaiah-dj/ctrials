@@ -2,6 +2,6 @@
 	SELECT 
 		* 
 	FROM 
-		ac_mtr_participants
-	ORDER BY p_lname ASC 
+		#data.data.participants#	
+	ORDER BY lastname ASC 
 </cfquery>

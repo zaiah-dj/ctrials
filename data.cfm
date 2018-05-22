@@ -12,15 +12,18 @@ I can do more with this concept...
 ,"name"   = "iv"
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  0
+,"debug"  =  1
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
 	"endurance"  = "ac_mtr_endurance_new"
  ,"resistance" = "ac_mtr_resistance_new"
- ,"sessionTable" = "ac_mtr_logging_progress_tracker"
+ ,"sessionTable" = "ac_mtr_logging_progress_tracker_v2"
+ ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
  ,"exerciseList" = "ac_mtr_resistance_exercise_list"
- ,"participants" = "ac_mtr_participants"
+ ,"participants" = "ac_mtr_participants_v2"
+ ,"checkin" = "ac_mtr_checkinstatus_v2"
+ ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
 }
 ,"css"    = [
 	 "zero.css"
@@ -82,6 +85,16 @@ I can do more with this concept...
 		] 
 	}
 
+	,"modal-results" = { 
+		"hint"  =  "Results for previous weeks go here." 
+	 ,"model" = [
+		  "initialize_session_and_current_id"
+		 ,"ajax_display_previous"
+		]
+	 ,"view"  =  "nothing"
+	 ,"content_type"  = "application/json"
+	}
+
 	,"update" = { 
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
 	 ,"model" = [
@@ -131,7 +144,6 @@ I can do more with this concept...
 			,"select_single_participant"
 			,"select_participant_check_in_data"
 			,"select_participant_notes"
-			,"check-in"
 		]
 	 ,"view"  = [ 
 			 "master/head"

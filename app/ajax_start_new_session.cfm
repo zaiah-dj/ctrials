@@ -32,15 +32,17 @@ if ( StructKeyExists( form, "this" ) && form.this eq "startSession" )
 			case "sun":
 				todayDay = 7; break;
 		}	
-		
+	
+		//Save each participantGUID to its own row and wait for recall.	
 		for ( listing in ListToArray( form.list )) {	
-			stmt = "INSERT INTO ac_mtr_participant_transaction_members VALUES ( :mid, :dom, :day, :listing )";
+			stmt = "INSERT INTO #data.data.sessionMembers# 
+				VALUES ( :mid, :dom, :day, 0, :listing )";
 			nq = new Query( );
 			nq.setDatasource( "#data.source#" );
 			nq.addParam( name = "mid", value=form.transact_id, cfsqltype="cf_sql_nvarchar" );
 			nq.addParam( name = "dom", value=todayDom, cfsqltype="cf_sql_int" );
 			nq.addParam( name = "day", value=todayDay, cfsqltype="cf_sql_int" );
-			nq.addParam( name = "listing", value=listing, cfsqltype="cf_sql_int" );
+			nq.addParam( name = "listing", value=listing, cfsqltype="cf_sql_nvarchar" );
 			r = nq.execute( sql = stmt );
 		}
 	}
