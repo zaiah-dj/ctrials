@@ -18,6 +18,6 @@ newid(),'Jim', 'Fashionista', '',1007,'E42063F-BA19-4B39-9EF3-140CC4ECE485', 'GO
 newid(),'Virginia', 'Tellurude', '',1005,'E42063F-BA19-4B39-9EF3-140CC4ECE485', 'GO1', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'
 newid(), 'Peter', 'Paulson', '',1020,'ADEB361D-965E-4631-8510-75F1F06F830A', 'GO4', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'
 newid(),'Little', 'Boy', '',1010,'E42063F-BA19-4B39-9EF3-140CC4ECE485', 'GO1', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'
-newid(), 'Joanna', 'Hoffman, '',1021,'ADEB361D-965E-4631-8510-75F1F06F830A', 'GO4', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'
+newid(), 'Joanna', 'Hoffman', '',1021,'ADEB361D-965E-4631-8510-75F1F06F830A', 'GO4', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'
 newid(),'Hiroshima', 'Marketplace', 'The',1011,'E42063F-BA19-4B39-9EF3-140CC4ECE485', 'GO1', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'
 newid(), 'Richard', 'Skeykunk', '',1022,'ADEB361D-965E-4631-8510-75F1F06F830A', 'GO4', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16'

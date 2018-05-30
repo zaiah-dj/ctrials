@@ -28,12 +28,12 @@
 						<!---
 						<button class="inc-button">See Previous Week Results</button>
 						--->
-						<a href="">See Previous Week Results</a>
+						<a href="#link('modal-results.cfm?id=#currentId#&all=true')#">See Previous Week Results</a>
 						<ul class="dasch">
 						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
 							<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
 								#day#
-								<br /><a href="">See Results</a>
+								<br /><a href="#link('modal-results.cfm?id=#currentId#')#">See Results</a>
 							</li>
 						</cfloop>
 						</ul>
