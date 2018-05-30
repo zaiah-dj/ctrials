@@ -219,5 +219,8 @@ I can do more with this concept...
 		 ,"view"  =  "logout"
 		 ,"hint"  =  "An AJAX endpoint to tell me information about where the user is."
 			}
+		,"eqlog"= { 
+			"model" =  [ "dependencies", "eqlog" ], "view" = "eqlog"
+		}
 	}
 }>
