@@ -1,5 +1,6 @@
 <cfscript>
 /*Include all CFCs here*/
+include "globals.cfm";
 ajax  = CreateObject( "component", "components.writeback" );
 ezdb  = CreateObject( "component", "components.quella" );
 rl    = CreateObject( "component", "components.requestLogger" );
