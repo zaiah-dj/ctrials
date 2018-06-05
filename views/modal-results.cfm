@@ -6,7 +6,7 @@
 <table>
 <cfif ( part.results.randomGroupCode eq ENDURANCE )>
 	<thead>
-		<th>???</th>
+		<th>Endurance Exercises</th>
 	<cfloop array="#times#" index="tx"><th>#tx.text#</th></cfloop>
 	</thead>
 	<cfloop query = ee.results >
@@ -30,14 +30,39 @@
 		</cfloop>
 	</cfloop>
 <cfelseif ( part.results.randomGroupCode eq RESISTANCE )>
+	<!--- Create a seperate list for looping --->
+	<cfset NameList=[]>
+	<Cfloop query=reExList.results>
+		<cfset ArrayAppend( NameList, "#et_formname#" )>
+	</cfloop>
+
+	<!--- Create the column header --->
 	<thead>
+		<th>Resistance Exercises</th>
 	<cfloop query = reExList.results >
-		<th></th>
+		<th style="width:6.5%">#et_name#</th>
 	</cfloop>
 	</thead>
 
+	<!--- Now loop through and generate the table's values --->
 	<cfloop query = rr.results >
-
+		<cfloop list="Wt1,Rep1,Wt2,Rep2,Wt3,Rep3" index="ind">
+		<tr>
+			<td>
+			<cfswitch expression=#ind#>
+				<cfcase value="Wt1">Set 1 Weight</cfcase>
+				<cfcase value="Rep1">Set 1: Repetitions</cfcase>
+				<cfcase value="Wt2">Set 2: Weight</cfcase>
+				<cfcase value="Rep2">Set 2: Repetitions</cfcase>
+				<cfcase value="Wt3">Set 3: Weight</cfcase>
+				<cfcase value="Rep3">Set 3: Repetitions</cfcase>
+			</cfswitch>
+			</td>
+			<cfloop array = "#NameList#" index="fm" >
+			<td style="width:6.5%">#Evaluate( fm & ind )#</td>
+			</cfloop>
+		</tr>
+		</cfloop>
 	</cfloop>
 </cfif>
 </table>

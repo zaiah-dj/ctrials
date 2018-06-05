@@ -115,6 +115,12 @@ I can do more with this concept...
 		,"view" = "nothing"
 	}
 
+	,"recovery-done" = {
+		"hint" = "Used to mark the end of a session for a user."
+		,"model" = [ "dependencies", "currentId", "recovery-done" ]
+		,"view" = "recovery-done"
+	}
+
 	,"input"  = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 

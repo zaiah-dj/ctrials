@@ -17,6 +17,27 @@
 	</ul>
 
 	<div class="selection">
+		<table class="table table-striped">
+			<tbody>
+				<tr>
+					<td class="title">See Machine Settings</td>
+					<td>
+						<a class="modal-activate" href="#link( '' )#">Machine Settings</a>
+						<div class="modal">
+							<div class="modal-content">
+								<span class="close">&times;</span>
+								<p>Equipment Log</p>
+								<div id="feed">
+									<cfinclude template="../../app/eqlog.cfm">
+									<cfinclude template="../eqlog.cfm">
+								</div>	
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 		<table class="table table-striped participant-entry resistance">
 	<cfloop array="#values#" index="vv">
 		<cfif #vv.label# neq "">
@@ -27,7 +48,7 @@
 		</cfif>
 		<tr>
 			<td> 
-				#vv.prv# #vv.uom#	
+				<cfif #vv.prv# eq "">*<cfelse>#vv.prv# #vv.uom#</cfif>
 			</td>
 			<td>
 				<div class="row">

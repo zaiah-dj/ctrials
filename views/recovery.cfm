@@ -50,18 +50,13 @@
 		<td>Was the session stopped early?</td>
 		<td>
 			<div class="clabel">
-				0
+				No	
 				<input type=radio name=breaksTaken value="0"></input>
 				<span class="checkmark"></span>
 			</div>
 			<div class="clabel">
-				1
+				Yes	
 				<input type=radio name=breaksTaken value="1"></input>
-				<span class="checkmark"></span>
-			</div>
-			<div class="clabel">
-				More than 1
-				<input type=radio name=breaksTaken value=">1"></input>
 				<span class="checkmark"></span>
 			</div>
 		</td>
@@ -69,30 +64,77 @@
 	<tr>
 		<td>Specify reason stopped early:</td>
 		<td>
-			<textarea name=reasonStoppedEarly></textarea>
+			<button class="modal-activate">Add Reason</a>
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<p>Equipment Log</p>
+					<textarea name="reasonStoppedEarly"></textarea>
+					<!--- 
+						<button class="inc-button" id="el_reason_save">Save</button>
+						--->
+				</div>
+			</div>
 		</td>
 	</tr>
 	<tr>
 		<td>Record the Heart Rate, RPE and Affect here if stopped early</td>
 		<td>
+			<style type="text/css">
+			table.innard { width: 100%; }
+			table.innard tr { height: 70px; }
+			table.innard td.thin { width: 10%; }
+			</style>
+			<table class="innard"> 
 			<tr>
-				<td>HR:</td>
+				<td class="thin">HR:</td>
 				<td>
-					<input type=text name=hrStoppedEarly></input>
+					<div class="row">
+						<div class="cc col-sm-7">
+							<input type="range" min="0" max="100" class="slider" value="50" name="recoveryHR">
+						</div>
+						<div class="catch cc col-sm-1">0</div>
+						<div class="col-sm-1">(uom)</div>
+						<div class="col-sm-1">
+							<button class="inc-button">+</button>
+							<button class="inc-button">-</button>
+						</div>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<td>RPE:</td>
+				<td class="thin">RPE:</td>
 				<td>
-					<input type=text name=rpeStoppedEarly></input>
+					<div class="row">
+						<div class="cc col-sm-7">
+							<input type="range" min="0" max="100" class="slider" value="50" name="recoveryRPE">
+						</div>
+						<div class="catch cc col-sm-1">0</div>
+						<div class="col-sm-1">(uom)</div>
+						<div class="col-sm-1">
+							<button class="inc-button">+</button>
+							<button class="inc-button">-</button>
+						</div>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<td>Affect:</td>
+				<td class="thin">Affect:</td>
 				<td>
-					<input type=text name=affectStoppedEarly></input>
+					<div class="row">
+						<div class="cc col-sm-7">
+							<input type="range" min="0" max="100" class="slider" value="50" name="recoveryAffect">
+						</div>
+						<div class="catch cc col-sm-1">0</div>
+						<div class="col-sm-1">(uom)</div>
+						<div class="col-sm-1">
+							<button class="inc-button">+</button>
+							<button class="inc-button">-</button>
+						</div>
+					</div>
 				</td>
 			</tr>
+			</table>
 		</td>
 	</tr>
 	</cfif>

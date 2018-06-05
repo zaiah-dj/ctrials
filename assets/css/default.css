@@ -1087,36 +1087,6 @@ ul.participant-notes li {
 	background-color: #ff8080 !important;
 }
 
-/*
-.endurance {
-
-}
-
-.resistance {
-
-}
-
-.availableAssigned {
-
-}
-
-.availableUnassigned {
-
-}
-
-.checkedIn {
-
-}
-
-.checkedOut {
-
-}
-
-.noShow {
-
-}
-*/
-
 /*end of stylesheet ;) */
 
 .modal-content h3 {
@@ -1138,4 +1108,8 @@ ul.participant-notes li {
 
 .modal-content tr:nth-child(even) {
 	background-color: #eee;
+}
+
+.modal-content td {
+	text-align: center;
 }

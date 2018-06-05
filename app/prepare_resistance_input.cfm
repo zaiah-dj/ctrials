@@ -62,18 +62,44 @@ if ( isDefined("part") && part.results.randomGroupCode eq RESISTANCE )
 	//Get the entries in the table.
 	pop = ezdb.exec(
 		string = "
-		SELECT * FROM 
-			#data.data.resistance#	
-		WHERE 
-			participantGUID = :pid 
-			AND stdywk = :stdywk
-			AND dayofwk = :dayofwk
+		SELECT * FROM
+		( SELECT
+			 [rec_id] as p_rec_id
+      ,[recordthread] as p_recordthread
+      ,[participantGUID] as pguid 
+			,[#desig#Wt1] as p_#desig#Wt1
+			,[#desig#Wt2] as p_#desig#Wt2
+			,[#desig#Wt3] as p_#desig#Wt3
+			,[#desig#Rep1] as p_#desig#Rep1
+			,[#desig#Rep2] as p_#desig#Rep2
+			,[#desig#Rep3] as p_#desig#Rep3
+			FROM 
+				#data.data.resistance#
+			WHERE 
+				participantGUID = :pid 
+				AND stdywk = :pstdywk
+				AND dayofwk = :pdayofwk
+		) AS pweek
+		INNER JOIN
+		( SELECT 
+				* 
+			FROM 
+				#data.data.resistance#	
+			WHERE 
+				participantGUID = :pid 
+				AND stdywk = :stdywk
+				AND dayofwk = :dayofwk
+		) AS cweek
+		ON pweek.pguid = cweek.participantGUID
 		"
 	 ,bindArgs = {
 			pid = currentId
 		 ,stdywk = aweek
 		 ,dayofwk = aday
+		 ,pstdywk = ((currentDay - 1) == 0) ? aweek - 1 : aweek
+		 ,pdayofwk = (( aday - 1 ) == 0) ? 4 : aday - 1
 		});
+
 
 	//Generate the form from either db or something else...
 	pc = pop.prefix.recordCount;
@@ -92,17 +118,17 @@ if ( isDefined("part") && part.results.randomGroupCode eq RESISTANCE )
 
 	values = [
 		 {label="Set 1", uom="lb",min = 5, max = 100, step = 5, name = "weight1"
-			,def = w1, prv = pw1 }
+			,def = pop.results[ "#desig#Wt1" ], prv = pop.results[ "p_#desig#Wt1" ] }
 		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps1"
-			,def = r1, prv = pr1 }
+			,def = pop.results[ "#desig#Rep1" ], prv = pop.results[ "p_#desig#Rep1" ] }
 		,{label="Set 2", uom="lb",min = 5, max = 100, step = 5, name = "weight2"
-			,def = w2, prv = pw2 }
+			,def = pop.results[ "#desig#Wt2" ], prv = pop.results[ "p_#desig#Wt2" ] }
 		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps2" 
-			,def = r2, prv = pr2 }
+			,def = pop.results[ "#desig#Rep2" ], prv = pop.results[ "p_#desig#Rep2" ] }
 		,{label="Set 3", uom="lb",min = 5, max = 100, step = 5, name = "weight3"
-			,def = w3, prv = pw3 }
+			,def = pop.results[ "#desig#Wt3" ], prv = pop.results[ "p_#desig#Wt3" ] }
 		,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps3"
-			,def = r3, prv = pr3 }
+			,def = pop.results[ "#desig#Rep3" ], prv = pop.results[ "p_#desig#Rep3" ] }
 	];
 	
 	//Initialize AJAX

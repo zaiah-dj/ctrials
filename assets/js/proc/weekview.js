@@ -37,7 +37,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	loc = locarr[ locarr.length - 1 ];
 
 	//AJAX notes
-	if ( loc.indexOf( "check-in.cfm" ) > -1 ) {
+	if ( loc.indexOf( "check-in.cfm" ) > -1 || loc.indexOf( "input.cfm" ) > -1 ) {
 		var aa = [].slice.call( 
 			document.querySelectorAll( ".modal-load" )); 
 
