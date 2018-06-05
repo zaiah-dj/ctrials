@@ -1118,3 +1118,24 @@ ul.participant-notes li {
 */
 
 /*end of stylesheet ;) */
+
+.modal-content h3 {
+	color: black;
+	font-size: 0.9em;
+}
+
+.modal-content table {
+	width: 100%;
+}
+
+.modal-content thead, .modal-content th {
+	background-color: #ccc;
+	color: white;
+	border: 1px solid black;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.modal-content tr:nth-child(even) {
+	background-color: #eee;
+}

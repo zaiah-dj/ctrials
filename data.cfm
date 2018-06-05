@@ -53,6 +53,7 @@ I can do more with this concept...
 	,"libs/debug.js"
 	,"proc/debug.js"
 	,"proc/index.js"
+	,"proc/weekview.js"
 ]
 ,"meta"   = [
   { "http-equiv"="content-type", content="text/html; charset=utf-8" }
@@ -91,7 +92,7 @@ I can do more with this concept...
 		  "initialize_session_and_current_id"
 		 ,"ajax_display_previous"
 		]
-	 ,"view"  =  "nothing"
+	 ,"view"  =  "modal-results"
 	 ,"content_type"  = "application/json"
 	}
 

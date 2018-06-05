@@ -16,7 +16,7 @@ if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE )
 		,{ index=35, text='<35m' }
 		,{ index=40, text='<40m' }
 		,{ index=45, text='<45m' }
-		,{ index=50, text='<50m' }
+		//,{ index=50, text='<50m' }
 		//,{ index=55, text='Recovery' }
 	];
 
@@ -35,9 +35,28 @@ if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE )
 
 	//Get queries for recall
 	ezdb.setDs = "#data.source#";
+	/*
+	//This will work for regular usage, if going back in time though, still not right.. 
+	ranges = ezdb.exec(
+		string = "
+			SELECT
+				MAX( stdywk ) as mstdywk 
+			 ,MAX( dayofwk ) as mdayofwk
+			FROM
+				#data.data.endurance#
+			WHERE
+				participantGUID = :pid
+			GROUP BY
+				participantGUID
+		"
+	 ,datasource = "#data.source#"
+	 ,bindArgs = { pid = currentId });
+	*/
+/*
 	prv = ezdb.exec(
 		string = "
-			SELECT * FROM
+			SELECT * 
+			FROM
 				#data.data.endurance#
 			WHERE
 				participantGUID = :pid
@@ -47,8 +66,8 @@ if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE )
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
 			pid = currentId
-		 ,stdywk = currentWeek
-		 ,dayofwk = currentDay
+		 ,stdywk = ((currentDay - 1) == 0) ? currentWeek - 1 : currentWeek
+		 ,dayofwk = (( currentDay - 1 ) == 0) ? 4 : currentDay - 1
 		});
 
 	req = ezdb.exec(
@@ -66,28 +85,65 @@ if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE )
 		 ,stdywk = currentWeek
 		 ,dayofwk = currentDay
 		});
+*/
+
+	req = ezdb.exec(
+		string = "
+		SELECT * FROM
+			( SELECT * FROM
+				#data.data.endurance#
+			WHERE
+				participantGUID = :pid
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk ) as cweek
+		INNER JOIN
+		( SELECT
+			 rec_id as p_rec_id
+      ,recordthread as p_recordthread
+      ,participantGUID as p_participantGUID
+      ,dayofwk as p_dayofwk
+      ,stdywk as p_stdywk
+      ,#desig#hr as p_#desig#hr
+      ,#desig#oth1 as p_#desig#oth1
+      ,#desig#oth2 as p_#desig#oth2
+      ,#desig#prctgrade as p_#desig#prctgrade
+      ,#desig#rpm as p_#desig#rpm
+      ,#desig#speed as p_#desig#speed
+      ,#desig#watres as p_#desig#watres
+      ,mchntype as p_mchntype
+      ,nomchntype as p_nomchntype
+      ,Sessionmisd as p_Sessionmisd
+      ,breaks as p_breaks 
+			FROM
+				#data.data.endurance#
+			WHERE
+				participantGUID = :pid
+			AND stdywk = :pstdywk
+			AND dayofwk = :pdayofwk ) as pweek
+
+		ON pweek.p_participantGUID = cweek.participantGUID
+		"
+	 ,datasource = "#data.source#"
+	 ,bindArgs = {
+			pid = currentId
+		 ,stdywk = currentWeek
+		 ,dayofwk = currentDay
+		 ,pstdywk = ((currentDay - 1) == 0) ? currentWeek - 1 : currentWeek
+		 ,pdayofwk = (( currentDay - 1 ) == 0) ? 4 : currentDay - 1
+		});
 
 	//Prefill any values that need to be prefilled	 
-//writedump( req );writedump( prv );abort;
 	rc = req.prefix.recordCount;	
-	rpm = ( rc ) ? req.results[ "#desig#rpm" ] : 0;
-	watres = ( rc ) ? req.results[ "#desig#watres" ] : 0;
-	speed = ( rc ) ? req.results[ "#desig#speed" ] : 0;
-	prctgrade = ( rc ) ? req.results[ "#desig#prctgrade" ] : 0;
-	prpm = ( rc ) ? prv.results[ "#desig#rpm" ] : 0;
-	pwatres = ( rc ) ? prv.results[ "#desig#watres" ] : 0;
-	pspeed = ( rc ) ? prv.results[ "#desig#speed" ] : 0;
-	pprctgrade = ( rc ) ? prv.results[ "#desig#prctgrade" ] : 0;
 
 	values = [
 		{ show = true, label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
-			,def = rpm, prv = prpm }
+			,def = req.results[ "#desig#rpm" ], prv = req.results[ "p_#desig#rpm" ] }
 	 ,{ show = true, label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
-			,def = watres, prv = pwatres }
+			,def = req.results[ "#desig#watres" ], prv = req.results[ "p_#desig#watres" ] }
 	 ,{	show = true, label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
-			,def = speed, prv = pspeed }
+			,def = req.results[ "#desig#speed" ], prv = req.results[ "p_#desig#speed" ] }
 	 ,{ show = true, label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
-			,def = prctgrade, prv = pprctgrade }
+			,def = req.results[ "#desig#prctgrade" ], prv = req.results[ "p_#desig#prctgrade" ] }
 /*	 ,{ show = true, label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
 			,def = req.results[ "#desig#rpe" ] }*/
 	 ,{ show = true, label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "affect"

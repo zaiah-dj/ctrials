@@ -28,13 +28,39 @@
 						<!---
 						<button class="inc-button">See Previous Week Results</button>
 						--->
-						<a href="#link('modal-results.cfm?id=#currentId#&all=true')#">See Previous Week Results</a>
+						<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">See Previous Weeks' Results</a>
+						<div class="modal">
+							<div class="modal-content">
+								<span class="close">&times;</span>
+								<p>Previous Weeks</p>
+								<div id="feed">
+									<cfset week=#currentWeek#>
+									<cfset day=#currentDay#>
+									<cfinclude template="../app/ajax_display_previous.cfm">
+									<cfinclude template="modal-results.cfm">
+								</div>	
+							</div>
+						</div>
 						<ul class="dasch">
+						<cfset daynum = 1>
 						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
 							<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
 								#day#
-								<br /><a href="#link('modal-results.cfm?id=#currentId#')#">See Results</a>
+								<br /><a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&day=#daynum#&week=#currentWeek#')#">See Results</a>
+							<div class="modal">
+								<div class="modal-content">
+									<span class="close">&times;</span>
+									<h3>Previous Weeks</h3>
+									<div id="feed">
+										<cfset week=#currentWeek#>
+										<cfset day=#daynum#>
+										<cfinclude template="../app/ajax_display_previous.cfm">
+										<cfinclude template="modal-results.cfm">
+									</div>	
+								</div>
+							</div>
 							</li>
+							<cfset daynum++>
 						</cfloop>
 						</ul>
 					</td>
