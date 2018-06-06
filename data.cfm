@@ -51,6 +51,7 @@ I can do more with this concept...
 	,"libs/modal.js"
 	,"libs/touch.js"
 	,"libs/debug.js"
+	,"libs/unhide.js"
 	,"proc/debug.js"
 	,"proc/index.js"
 	,"proc/weekview.js"
@@ -151,6 +152,7 @@ I can do more with this concept...
 			,"select_single_participant"
 			,"select_participant_check_in_data"
 			,"select_participant_notes"
+			,"select_failure_reasons"
 		]
 	 ,"view"  = [ 
 			 "master/head"

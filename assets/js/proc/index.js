@@ -15,6 +15,11 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	//AJAX notes
 	if ( loc.indexOf( "check-in.cfm" ) > -1 ) {
 
+		//Make show/hide work when clicking on 'Yes' or some other things...
+		//a = document.getElementById( "yesPat" );
+		//a.addEventListener( "click", unhide );		
+	
+		//Make note saving work...
 		var butt = document.getElementById("ps_note_save");
 
 		butt.addEventListener( "click", function (ev) {

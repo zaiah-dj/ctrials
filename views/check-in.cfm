@@ -22,6 +22,24 @@
 				</tr>
 
 				<tr>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(ev) {
+	//Find the current index... somehow
+	//Then hide the rest of the tds (I want an accordion like effect)
+});
+</script>
+					<td class="title">Did Patient Miss Visit?</td>
+					<td>
+						<select name="missedReason"> 
+							<option selected value=0>No</option>	
+						<cfloop query = missedReasons.results>
+							<option value=#et_id#>Yes - #et_name#</option>	
+						</cfloop>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
 					<td class="title">Exercise Session</td>
 					<td>
 						<input type="hidden" name="ps_day" value="#currentDay#"></input>
