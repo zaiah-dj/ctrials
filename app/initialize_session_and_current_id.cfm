@@ -6,6 +6,9 @@ ezdb  = CreateObject( "component", "components.quella" );
 rl    = CreateObject( "component", "components.requestLogger" );
 cf    = CreateObject( "component", "components.checkFields" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
+val   = CreateObject( "component", "components.validate" );
+
+val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
 
 //Set labels from over here somewhere
