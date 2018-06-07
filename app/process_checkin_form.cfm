@@ -1,12 +1,20 @@
+/*
+Only process the check-in form data when POST data has been sent by the browser.
+*/
 <cfscript>
 if ( !StructIsEmpty( form ) ) {
 	try {
-		//Regular variables
+		//A space for error messages, carried throughout this procedure.
 		message = "";
+
+		//Regular variables
 		sess_id = session.iv_motrpac_transact_id;
 		fieldsToCheck = "ps_pid,ps_day,ps_next_sched,bp_systolic,bp_diastolic";
 		bp = ( StructKeyExists( form, "ps_bp" ) ) ? form.ps_bp : 0;
 		nt = ( StructKeyExists( form, "ps_notes" ) ) ? form.ps_notes : 0;
+
+		//A lot of this can be cleaned up using the validate() function
+		
 
 		//Check for the form fields that are needed and try to insert.
 		fields = cf.checkFields( form, "ps_day", "ps_pid", "ps_next_sched", "bp_systolic", "bp_diastolic" );
