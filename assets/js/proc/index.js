@@ -1,13 +1,22 @@
+/* ------------------------------------- *
+ * ------------------------------------- */
 var subLink = "/motrpac/web/secure/dataentry/iv/update.cfm";
 
-
+//Handle errors.
 function onError( msg ) {
 	console.log( msg );
 }
 
 
+
+function save_note( msg ) {
+
+}
+
+
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
+/*
 	//Create a ghetto router
 	locarr = location.href.split( "/" ) ;
 	loc = locarr[ locarr.length - 1 ];
@@ -171,4 +180,5 @@ console.log( aav );
 			return false;
 		});
 	}
+*/
 })

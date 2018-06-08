@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 							<label class="sameline">Systolic</label>
 							<div class="row">
 								<div class="cc col-sm-7">
-									<input type="number" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" required>
+									<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" required>
 								</div>
 								<div class="catch cc col-sm-1">#sys_bp#</div>
 								<div class="col-sm-1">
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 							<label class="sameline">Diastolic</label>
 							<div class="row">
 								<div class="cc col-sm-7">
-									<input type="number" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" required>
+									<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" required>
 								</div>
 								<div class="catch cc col-sm-1">#dia_bp#</div>
 								<div class="col-sm-1">
