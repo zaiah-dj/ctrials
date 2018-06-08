@@ -109,13 +109,13 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 					<cfelse>
 						<div>
 						<span class=huge>#model.currentBpSystolic#</span> / <span class=huge>#model.currentBpDiastolic#</span>
-						<blink>A new blood pressure reading is required for this participant.</blink>
+						A new blood pressure reading is required for this participant.
 
 						<div> 
 							<label class="sameline">Systolic</label>
 							<div class="row">
 								<div class="cc col-sm-7">
-									<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" value="#sys_bp#" name="bp_systolic" required>
+									<input type="number" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" required>
 								</div>
 								<div class="catch cc col-sm-1">#sys_bp#</div>
 								<div class="col-sm-1">
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 							<label class="sameline">Diastolic</label>
 							<div class="row">
 								<div class="cc col-sm-7">
-									<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" value="#dia_bp#" name="bp_diastolic" required>
+									<input type="number" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" required>
 								</div>
 								<div class="catch cc col-sm-1">#dia_bp#</div>
 								<div class="col-sm-1">
@@ -191,12 +191,12 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 							<cfset el=ListToArray( ValueList( Q.exercises.results.et_name, "," ))>
 							<div class="clabel">
 								<cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop>
-								<input type="radio" name="exset" value="5"><br />
+								<input type="radio" name="exset" value="5" required><br />
 								<span class="checkmark"></span>
 							</div>
 							<div class="clabel">
 								<cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop>
-								<input type="radio" name="exset" value="6">
+								<input type="radio" name="exset" value="6" required>
 								<span class="checkmark"></span>
 							</div>
 						</cfif>

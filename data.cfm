@@ -55,6 +55,7 @@ I can do more with this concept...
 	,"proc/debug.js"
 	,"proc/index.js"
 	,"proc/weekview.js"
+	,"proc/indy.js"
 ]
 ,"meta"   = [
   { "http-equiv"="content-type", content="text/html; charset=utf-8" }
