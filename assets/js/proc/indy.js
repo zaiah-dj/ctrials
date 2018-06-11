@@ -15,6 +15,13 @@ var local_data = {};
 // Be really chatty
 var VERBOSE = 1;
 
+
+// printf (str, ....) - Works like the C version that you know and love.
+function printf(str) {
+	//Split on %[format strings]
+	//Check for same number of arguments
+}
+
 function checkAtSubmit( ev ) {
 	//Check that all ranges have been touched 
 }
@@ -26,9 +33,28 @@ function updateTickler( ev ) {
 }
 
 
-function alerter( ev ) {
+function updateNeighborBox ( ev ) {
 	//Save the reference somewhere
-	console.log( "Alert, alert, alert" );
+	ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+}
+
+
+function updateNeighborBoxFromSI (ev) {
+	//I think these are buttons
+	if (( aac = b[i].parentElement.parentElement.childNodes[7] ) ) {
+		aac.childNodes[1].addEventListener( "click", function (ev) {
+			ev.preventDefault();
+			aav = ev.target.parentElement.parentElement.childNodes[3];
+console.log( aav );
+			ev.target.value = aav.innerHTML = ++(aav.innerHTML);
+		} );
+		aac.childNodes[3].addEventListener( "click", function (ev) {
+			ev.preventDefault();
+			aav = ev.target.parentElement.parentElement.childNodes[3];
+console.log( aav );
+			ev.target.value = aav.innerHTML = --(aav.innerHTML);
+		} ); 
+	}
 }
 
 
@@ -145,13 +171,37 @@ function save_session_users (ev) {
 };
 
 
-//This structure handles routing
+//Simply lists what functions are being called with each listener.
+function whatFunct( f ) {
+	console.log( f );
+}
+
+
+/*
+//The Router structure is key to make interfaces work.
+//Can't wait for WASM
+typedef Router {
+
+	//What DOM selector is used to get these elements 
+	const char *domSelector;
+
+	//What event should I be listening for?
+	const char *event;
+
+	//Function (or functions) to use addEventListener with 
+	void * (*f)( Object event )[];	
+
+	//Was this particular element updated?	
+	int hit;
+	
+} 
+ */
 Router = {
 	"check-in": [
 		//In JS however, I have to use JSON for an object, meaning that I have to specify the key for each "column" I want.  This is a lot of typing... 
-		{ domSelector: "input[ type=range ]" , event: "change"  , f: updateTickler }  
+		{ domSelector: "input[ type=range ]" , event: "input"  , f: [ updateTickler, updateNeighborBox ] }  
 	 ,{ domSelector: "input[ type=submit ]", event: "click"   , f: checkAtSubmit }
-	 ,{ domSelector: "select"              , event: "click"   , f: [ alerter, updateTickler ] }
+	 ,{ domSelector: "select"              , event: "click"   , f: [ updateTickler ] }
 	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
 	 ,{ domSelector: ".modal-load"         , event: "click"   , f: modalGetNextResults }
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal }
@@ -200,6 +250,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 					//Find the DOM elements This call will only fail if the syntax of the selector was wrong.
 					//TODO: Would it be helpful to let the dev know that this has occurred and on which index?
 					dom = [].slice.call( document.querySelectorAll( tt.domSelector ) );
+					( VERBOSE ) ? console.log( "Binding to '" + tt.domSelector + "'.  Element references below:" ) : 0;
 					( VERBOSE ) ? console.log( dom ) : 0;
 				}
 				catch ( e ) {
@@ -222,17 +273,21 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 
 				//Bind function(s) to event
 				if ( typeof tt.f === 'function' && typeof tt.event === 'string' ) {
-					( VERBOSE ) ? console.log( "Time to do some single function binding..." ) : 0;
-					for ( d in dom ) dom[ d ].addEventListener( tt.event, tt.f ); 
+					( VERBOSE ) ? console.log( "Binding single function " + tt.f.name + " \n\n" ) : 0;
+					for ( d in dom ) { 
+						( VERBOSE ) ? dom[ d ].addEventListener( tt.event, (function(fname) { f = fname; return function(ev){console.log("Calling " + f); }})(tt.f.name) ) : 0;
+						dom[ d ].addEventListener( tt.event, tt.f ); 
+					}
 				}
 				else if ( typeof tt.f === 'object' && typeof tt.event === 'string' ) {
-					( VERBOSE ) ? console.log( "Time to do some object binding..." ) : 0;
+					( VERBOSE ) ? console.log( "Binding multiple functions" ) : 0;
 					for ( d in dom ) {
-						( VERBOSE ) ? console.log( "object binding: ", dom[ d ] ) : 0;
 						for ( ff in tt.f ) {
+							( VERBOSE ) ? dom[d].addEventListener( tt.event, whatFunct.bind( null, tt.f[ff].name ) ) : 0;
 							dom[d].addEventListener( tt.event, tt.f[ ff ] ); 
 						}
 					}
+					( VERBOSE ) ? console.log( "\n\n" ) : 0;
 				}
 			}
 		}
