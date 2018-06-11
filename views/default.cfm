@@ -73,7 +73,7 @@ AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client(
 					<ul class="part-drop-list">
 						<cfloop query = "antiPartList.results">
 							<li class="#iif( ListContains(ENDURANCE, randomGroupCode), DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
-								<span>#firstname# #lastname#</span>
+								<span>#firstname# #lastname# (#pid#)</span>
 								<span>#participantGUID#</span>
 							</li>	
 						</cfloop>
