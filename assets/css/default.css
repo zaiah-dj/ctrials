@@ -53,7 +53,7 @@ p {
 a.selected {
 	font-weight: bold;
 	text-decoration: underline;
-	text-shadow: 2px 2px 5px #fff;
+	color: black;
 }
 
 .container {
@@ -204,7 +204,7 @@ a.selected {
 	border-right: 5px solid black;
 	border-bottom: 5px solid black;
 */
-	color: white;
+	color: black;
 	background-color: #728ab2;
 
 	transition: 
@@ -365,7 +365,6 @@ ul.nav a {
 ul.nav a.selected {
 	background-color: #ccc;
 	display: inline-block;
-	color: white;
 }
 
 ul.nav a:hover {
@@ -406,9 +405,9 @@ ul.dasch li {
 
 ul.dasch li.selected {
 	background-color: #ced6e4; 
-	color: white;
+	color: black;
 	font-weight: bold;
-	text-shadow: 2px 2px 2px white;
+/*	text-shadow: 2px 2px 2px white;*/
 }
 
 ul.dasch li:hover {
@@ -770,7 +769,6 @@ a.tiny-link {
 {
 	margin-top: 20px; 
 	margin-bottom: 10px; 
-	color: white;
 	font-weight: bold;
 	border-bottom: 2px solid white;
 	width: 95%;
