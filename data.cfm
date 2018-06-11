@@ -21,7 +21,7 @@ I can do more with this concept...
  ,"sessionTable" = "ac_mtr_logging_progress_tracker_v2"
  ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
  ,"exerciseList" = "ac_mtr_resistance_exercise_list"
- ,"participants" = "ac_mtr_participants_v2"
+ ,"participants" = "v_ADUSessionTickler"
  ,"checkin" = "ac_mtr_checkinstatus_v2"
  ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
 }

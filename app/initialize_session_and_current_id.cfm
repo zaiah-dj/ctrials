@@ -12,7 +12,7 @@ val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
 
 //Set labels from over here somewhere
-ENDURANCE = "ADUEndur,ATHEndur";
+ENDURANCE = "ADUEndur,ATHEndur,ADUEnddur";
 RESISTANCE = "ADUResist,ATHResist";
 CONTROL = "ADUControl";
 
