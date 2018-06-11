@@ -82,7 +82,7 @@ if ( !StructIsEmpty( form ) ) {
 			).results.randomGroupCode;
 
 			//Update the proper table with weight info
-			if ( extype eq ENDURANCE ) {
+			if ( ListContains( ENDURANCE, extype ) ) {
 				qh = ezdb.exec( 
 					string = "UPDATE ac_mtr_endurance_new 
 						SET weight = :w 
@@ -99,7 +99,7 @@ if ( !StructIsEmpty( form ) ) {
 					}
 				);
 			}
-			else if ( extype eq RESISTANCE ) {
+			else if ( ListContains(RESISTANCE, extype) ) {
 				qh = ezdb.exec( 
 					string = "UPDATE ac_mtr_resistance_new 
 						SET weight = :w 

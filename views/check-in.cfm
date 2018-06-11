@@ -172,9 +172,9 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 				</tr>
 
 				<tr>
-					<td class="title">#iif( part_list.results.randomGroupCode eq ENDURANCE, DE("Machine Selection"),DE("Exercise Selection"))#</td>
+					<td class="title">#iif( ListContains(ENDURANCE, part_list.results.randomGroupCode), DE("Machine Selection"),DE("Exercise Selection"))#</td>
 					<td>
-						<cfif part_list.results.randomGroupCode eq ENDURANCE>
+						<cfif ListContains(ENDURANCE, part_list.results.randomGroupCode)>
 							<cfloop query=#Q.machines.results#> 
 							<div class="clabel">
 								#et_name#<!---<label>#et_name#</label>--->

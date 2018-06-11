@@ -1,6 +1,6 @@
 <cfif isDefined( "part" )>
 <cfscript>
-exName = (part.results.randomGroupCode eq ENDURANCE) ? "Endurance" : "Resistance";
+exName = (ListContains(ENDURANCE,part.results.randomGroupCode)) ? "Endurance" : "Resistance";
 container_nav = [
 	{ title = "Check-In", href = "check-in.cfm" }
  ,{ title = "#exName# Data", href = "input.cfm" }

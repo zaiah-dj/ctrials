@@ -1,5 +1,5 @@
 <cfscript>
-if ( isDefined("part") && part.results.randomGroupCode eq RESISTANCE ) 
+if ( isDefined("part") && ListContains(RESISTANCE,part.results.randomGroupCode) ) 
 {
 	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
 	pid = currentId; 

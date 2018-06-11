@@ -12,8 +12,15 @@ val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
 
 //Set labels from over here somewhere
-ENDURANCE = "GO1";
-RESISTANCE = "GO4";
+ENDURANCE = "ADUEndur,ATHEndur";
+RESISTANCE = "ADUResist,ATHResist";
+CONTROL = "ADUControl";
+
+//writedump( ListContains( ENDURANCE, "ADUEndur" ) );
+
+//These really need to be groups like:
+// ENDURANCE = [ "ADUEndur", "ATHEndur" ]
+// RESISTANCE = [ "ADUResist", "ATHResist" ]
 
 //Always start new weeks on Sunday
 if ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) {

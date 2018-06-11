@@ -21,7 +21,7 @@ if ( !isDefined( "part" ) ) {
 	abort;
 }
 
-if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE ) 
+if ( isDefined( "part" ) && ListContains(ENDURANCE, part.results.randomGroupCode) ) 
 {
 	times = [
 	/*	 { index=0,  text="Warm-Up" }
@@ -50,7 +50,7 @@ if ( isDefined( "part" ) && part.results.randomGroupCode eq ENDURANCE )
 	 ,bindArgs = { pid = currentId, week = week, day = day }
 	);
 }
-else if ( isDefined( "part" ) && part.results.randomGroupCode eq RESISTANCE ) 
+else if ( isDefined( "part" ) && ListContains(RESISTANCE, part.results.randomGroupCode) ) 
 {
 	reExList=ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
 	rr = ezdb.exec(
