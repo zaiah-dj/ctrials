@@ -27,34 +27,26 @@ function checkAtSubmit( ev ) {
 }
 
 
+//Just update the thing
 function updateTickler( ev ) {
 	//Save the reference somewhere
 	console.log( ev );
 }
 
 
+//Update box values when slider changes
 function updateNeighborBox ( ev ) {
 	//Save the reference somewhere
 	ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
 }
 
 
+//Handle the update of values by clicking on + and - boxes
 function updateNeighborBoxFromSI (ev) {
-	//I think these are buttons
-	if (( aac = b[i].parentElement.parentElement.childNodes[7] ) ) {
-		aac.childNodes[1].addEventListener( "click", function (ev) {
-			ev.preventDefault();
-			aav = ev.target.parentElement.parentElement.childNodes[3];
-console.log( aav );
-			ev.target.value = aav.innerHTML = ++(aav.innerHTML);
-		} );
-		aac.childNodes[3].addEventListener( "click", function (ev) {
-			ev.preventDefault();
-			aav = ev.target.parentElement.parentElement.childNodes[3];
-console.log( aav );
-			ev.target.value = aav.innerHTML = --(aav.innerHTML);
-		} ); 
-	}
+	ev.preventDefault();
+	aav = ev.target.parentElement.parentElement.childNodes[3];
+	aav.innerHTML = ( ev.target.innerHTML == '-' ) ? --( aav.innerHTML ) : ++( aav.innerHTML );
+	ev.target.parentElement.parentElement.querySelector("input").value = aav.innerHTML;
 }
 
 
@@ -86,43 +78,41 @@ function modalGetNextResults(ev) {
 
 //Save notes
 function checkInSaveNote ( ev ) {
-	butt.addEventListener( "click", function (ev) {
-		ev.preventDefault();
+	ev.preventDefault();
 
-		var pidDom = [].slice.call( 
-			document.querySelectorAll("input[name=ps_pid]") );
-			
-		var note = [].slice.call( 
-			document.querySelectorAll("textarea[name=ps_notes]") );
+	var pidDom = [].slice.call( 
+		document.querySelectorAll("input[name=ps_pid]") );
+		
+	var note = [].slice.call( 
+		document.querySelectorAll("textarea[name=ps_notes]") );
 
-		var pidValue = pidDom[0]["value"];
-		var noteValue = note[0]["value"];
+	var pidValue = pidDom[0]["value"];
+	var noteValue = note[0]["value"];
 
-		var xhr = new XMLHttpRequest();	
-		xhr.onreadystatechange = function (ev) { 
-			if ( this.readyState == 4 && this.status == 200 ) {
-				try {
-					console.log( this.responseText );
-					parsed = JSON.parse( this.responseText );
-					var par = [].slice.call( 
-						document.querySelectorAll("ul.participant-notes") );
-					var li = document.createElement( "li" );
-					li.innerHTML = noteValue;
-					par[0].appendChild( li ); 
-				}
-				catch (err) {
-					console.log( err.message );console.log( this.responseText );
-					return;
-				}
+	var xhr = new XMLHttpRequest();	
+	xhr.onreadystatechange = function (ev) { 
+		if ( this.readyState == 4 && this.status == 200 ) {
+			try {
+				console.log( this.responseText );
+				parsed = JSON.parse( this.responseText );
+				var par = [].slice.call( 
+					document.querySelectorAll("ul.participant-notes") );
+				var li = document.createElement( "li" );
+				li.innerHTML = noteValue;
+				par[0].appendChild( li ); 
+			}
+			catch (err) {
+				console.log( err.message );console.log( this.responseText );
+				return;
 			}
 		}
-		xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update-note.cfm", true );
-		xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
-		xhr.send( 
-			"note=" + noteValue + 
-			"&pid=" + pidValue 
-		);
-	});
+	}
+	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update-note.cfm", true );
+	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+	xhr.send( 
+		"note=" + noteValue + 
+		"&pid=" + pidValue 
+	);
 }
 
 
@@ -204,7 +194,8 @@ Router = {
 	 ,{ domSelector: "select"              , event: "click"   , f: [ updateTickler ] }
 	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
 	 ,{ domSelector: ".modal-load"         , event: "click"   , f: modalGetNextResults }
-	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal }
+	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: makeModal }
+	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
 	]
 
 	,"input": [

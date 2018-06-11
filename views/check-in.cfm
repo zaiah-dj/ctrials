@@ -22,12 +22,6 @@
 				</tr>
 
 				<tr>
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function(ev) {
-	//Find the current index... somehow
-	//Then hide the rest of the tds (I want an accordion like effect)
-});
-</script>
 					<td class="title">Did Patient Miss Visit?</td>
 					<td>
 						<select name="missedReason"> 
@@ -44,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 					<td>
 						<input type="hidden" name="ps_day" value="#currentDay#"></input>
 						<!---
-						<button class="inc-button">See Previous Week Results</button>
+						<button class="incrementor">See Previous Week Results</button>
 						--->
 						<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">See Previous Weeks' Results</a>
 						<div class="modal">
@@ -119,8 +113,8 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 								</div>
 								<div class="catch cc col-sm-1">#sys_bp#</div>
 								<div class="col-sm-1">
-									<button class="inc-button">+</button>
-									<button class="inc-button">-</button>
+									<button class="incrementor">+</button>
+									<button class="incrementor">-</button>
 								</div>
 							</div>
 						</div>
@@ -133,8 +127,8 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 								</div>
 								<div class="catch cc col-sm-1">#dia_bp#</div>
 								<div class="col-sm-1">
-									<button class="inc-button">+</button>
-									<button class="inc-button">-</button>
+									<button class="incrementor">+</button>
+									<button class="incrementor">-</button>
 								</div>
 							</div>
 						</div>
@@ -164,8 +158,8 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 							<div class="catch cc col-sm-1">#model.weight#</div>
 							<div class="col-sm-1">lb</div>
 							<div class="col-sm-1">
-								<button class="inc-button">+</button>
-								<button class="inc-button">-</button>
+								<button class="incrementor">+</button>
+								<button class="incrementor">-</button>
 							</div>
 						</div>
 					</td>

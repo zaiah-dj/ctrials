@@ -7,13 +7,7 @@ function onError( msg ) {
 	console.log( msg );
 }
 
-
-
-function save_note( msg ) {
-
-}
-
-
+//....
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 /*
