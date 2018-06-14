@@ -98,6 +98,12 @@ I can do more with this concept...
 	 ,"content_type"  = "application/json"
 	}
 
+	,"completed-days-results" = {
+		"hint" = "Results for completed days in a week go here."
+	 ,"model" = [ "initialize_session_and_current_id", "ajax_get_completed_days" ]
+	 ,"view" = "days-results"
+	}
+
 	,"update" = { 
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
 	 ,"model" = [

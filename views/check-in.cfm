@@ -40,7 +40,7 @@
 						<!---
 						<button class="incrementor">See Previous Week Results</button>
 						--->
-						<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">See Previous Weeks' Results</a>
+						<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">All Previous Results</a>
 						<div class="modal">
 							<div class="modal-content">
 								<span class="close">&times;</span>
@@ -58,7 +58,10 @@
 						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
 							<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
 								#day#
-								<br /><a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&day=#daynum#&week=#currentWeek#')#">See Results</a>
+								<br />
+								<cfif 0>
+								<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&day=#daynum#&week=#currentWeek#')#">See Results</a>
+								</cfif>
 							<div class="modal">
 								<div class="modal-content">
 									<span class="close">&times;</span>

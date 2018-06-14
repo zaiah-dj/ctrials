@@ -6,6 +6,10 @@ param name="old_ws.ps_next_sched" default="0";
 param name="old_ws.ps_weight" default="0";
 param name="old_ws.ps_machine_value" default="0";
 
+
+//Check more
+selectedDays = {};
+
 //Do all the queries here.	
 Q = {
 	exercises = ezdb.exec( string="SELECT et_name FROM ac_mtr_re_exercise_list" )
