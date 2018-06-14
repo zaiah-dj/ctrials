@@ -10,6 +10,15 @@ if ( !isDefined("pid") || !isDefined("week") ) {
 	aIsDefined = 0;	
 }
 else {
+	DaysArr=[
+		{ name="Mon",number=false } 
+	 ,{ name="Tue",number=false } 
+	 ,{ name="Wed",number=false } 
+	 ,{ name="Thu",number=false } 
+	 ,{ name="Fri",number=false } 
+	 ,{ name="Sat",number=false } 
+	];
+
 	a = ezdb.exec(
 		string = "
 		SELECT 
