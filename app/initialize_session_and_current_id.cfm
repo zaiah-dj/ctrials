@@ -8,7 +8,7 @@ cf    = CreateObject( "component", "components.checkFields" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 val   = CreateObject( "component", "components.validate" );
 
-val.validate( {}, {} );
+//val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
 
 //Set labels from over here somewhere
