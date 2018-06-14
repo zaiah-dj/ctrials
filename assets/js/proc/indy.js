@@ -167,6 +167,31 @@ function whatFunct( f ) {
 }
 
 
+//Update exercise session list
+function updateExerciseSession ( ev ) {
+	//Get the current PID
+	var pid, ilocarr = location.href.split("?")[1].split("=");
+	for ( n=0; n < ilocarr.length; n++ )
+		{ if ( ilocarr[n] == "id" ) pid = ilocarr[n + 1];	}
+	
+	//And finally get the field to change
+	var p = ev.target.parentElement.parentElement.parentElement;
+	var q = p.querySelector( "table tr:nth-of-type(3) td:nth-child(2) ul.dasch" );
+	
+	//Create the URL
+	var l = "/motrpac/web/secure/dataentry/iv/" 
+		+ "completed-days-results.cfm" 
+		+ "?pid=" + pid 
+		+ "&week=" + ev.target.value ;
+
+	//Send a request and replace the field
+	var x = new XMLHttpRequest();
+	//console.log( l );
+	x.open( "GET", l , false); 
+	x.send();
+	q.innerHTML = x.responseText;	
+}
+
 /*
 //The Router structure is key to make interfaces work.
 //Can't wait for WASM
@@ -196,6 +221,7 @@ Router = {
 	 ,{ domSelector: ".modal-load"         , event: "click"   , f: modalGetNextResults }
 	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: makeModal }
 	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
+	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
 	]
 
 	,"input": [

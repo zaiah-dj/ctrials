@@ -19,40 +19,58 @@ else {
 	 ,{ name="Sat",number=false } 
 	];
 
-	a = ezdb.exec(
-		string = "
-		SELECT 
-			dayofwk 
-    , participantGUID
-	  , case
-				when dayofwk = 1 then 'Mon' 
-				when dayofwk = 2 then 'Tue' 
-				when dayofwk = 3 then 'Wed' 
-				when dayofwk = 4 then 'Thu' 
-				when dayofwk = 5 then 'Fri' 
-				when dayofwk = 6 then 'Sat' 
-			end as dayName
-		FROM
-			#data.data.resistance#
-		WHERE
-			participantGUID = :pid
-		AND
-			stdywk = :week
-			"	,
-
-		bindArgs = {
-			pid = pid
-		 ,week= week
-		}
+	t = ezdb.exec(	
+		string = "SELECT randomGroupCode FROM #data.data.participants# WHERE participantGUID = :pid"
+	 ,bindArgs = { pid = pid }
 	);
 
-	if ( !a.status ) {
-		writedump( a );abort;
-		aIsDefined = 0;	
+	type = t.results.randomGroupCode;
+
+	if ( ListContains( ENDURANCE, type ) ) 
+		dbb = data.data.endurance;
+	else if ( ListContains( RESISTANCE, type ) )
+		dbb = data.data.resistance;
+	else { 
+		//send a failure, b/c i haven't written control logic and PIDs could be wrong...
+		aIsDefined = 0;
 	}
 
-	//Loop through the query and create an array of name-index of objects
-/*
-*/	
+	if ( aisDefined ) {
+		a = ezdb.exec(
+			string = "
+			SELECT 
+				dayofwk 
+			, participantGUID
+			, case
+					when dayofwk = 1 then 'Mon' 
+					when dayofwk = 2 then 'Tue' 
+					when dayofwk = 3 then 'Wed' 
+					when dayofwk = 4 then 'Thu' 
+					when dayofwk = 5 then 'Fri' 
+					when dayofwk = 6 then 'Sat' 
+				end as dayName
+			FROM
+				#dbb#
+			WHERE
+				participantGUID = :pid
+			AND
+				stdywk = :week
+				"	,
+
+			bindArgs = {
+				pid = pid
+			 ,week= week
+			}
+		);
+
+		if ( !a.status ) {
+			writedump( a );abort;
+			aIsDefined = 0;	
+		}
+
+		//Loop through the query and create an array of name-index of objects
+	/*
+	*/	
+	}
 }
-</cfscript>
+	</cfscript>

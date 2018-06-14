@@ -11,17 +11,20 @@
 </cfloop>
 
 <cfoutput>
+<tr>
+	<cfloop array=#DaysArr# index=da><td>#da.name#</td></cfloop>
+</tr>
+<tr>
 <cfloop array=#DaysArr# index=da>
-	<tr>
-		<td>#da.name#</td>
+	<td>
 	<cfif !da.number>
-		<td> - </td>
+		-
 	<cfelse>
-		<cfset go_here = link("modal-results.cfm?week=#week#&day=#da.number#")>
-		<td><a href="#go_here#">See Results</a></td>
+		<a href='#link("modal-results.cfm?week=#week#&day=#da.number#")#'>See Results</a></td>
 	</cfif>
-	</tr>	
+	</td>
 </cfloop>
+</tr>
 
 </cfoutput>
 </cfif>

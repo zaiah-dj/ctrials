@@ -50,6 +50,7 @@ I can do more with this concept...
 	,"libs/sliders.js"
 	,"libs/modal.js"
 	,"libs/touch.js"
+	,"libs/handlebars-v4.0.11.js"
 	,"libs/debug.js"
 	,"libs/unhide.js"
 	,"proc/debug.js"
