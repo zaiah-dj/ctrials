@@ -51,11 +51,9 @@ I can do more with this concept...
 	,"libs/modal.js"
 	,"libs/touch.js"
 	,"libs/handlebars-v4.0.11.js"
-	,"libs/debug.js"
 	,"libs/unhide.js"
+	,"libs/routex.js"
 	,"proc/debug.js"
-	,"proc/index.js"
-	,"proc/weekview.js"
 	,"proc/indy.js"
 ]
 ,"meta"   = [
