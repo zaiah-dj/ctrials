@@ -66,16 +66,16 @@
 				<td>
 					<div class="row">
 						<cfset def=iif( val.def eq "", 0, val.def )>
-						<div class="cc col-sm-7">
+						<div class="cc col-sm-8">
 							<cfif !structKeyExists( val, "type" )>
 							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#def#" defaultvalue="#def#" name="#val.name#">
 							</cfif>
 						</div>
-						<div class="catch cc col-sm-1">#def#</div>
-						<div class="col-sm-1">lb</div>
+						<div class="catch cc col-sm-1"><span>#def#</span><span> lb</span></div>
+						<!---<div class="col-sm-1">lb</div>--->
 						<div class="col-sm-1">
-							<button class="inc-button">+</button>
-							<button class="inc-button">-</button>
+							<button class="incrementor">+</button>
+							<button class="incrementor">-</button>
 						</div>
 					</div>
 				</td>

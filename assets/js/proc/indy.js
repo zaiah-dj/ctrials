@@ -27,10 +27,25 @@ function checkAtSubmit( ev ) {
 }
 
 
+function changeSliderNeighborValue ( ev ) {
+	//Change the whole value if the inner value has no nodes...
+	//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value; 
+
+	//console.log( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes.length );
+	if ( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes.length <= 1 ) 
+		ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+	else {
+		//console.log( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes[0].innerHTML = ev.target.value );
+		ev.target.parentElement.parentElement.childNodes[ 3 ]
+			.childNodes[0].innerHTML = ev.target.value;
+	} 
+}
+
+
 //Just update the thing
 function updateTickler( ev ) {
 	//Save the reference somewhere
-	console.log( ev );
+	//console.log( ev );
 }
 
 
@@ -44,7 +59,18 @@ function updateNeighborBox ( ev ) {
 //Handle the update of values by clicking on + and - boxes
 function updateNeighborBoxFromSI (ev) {
 	ev.preventDefault();
-	aav = ev.target.parentElement.parentElement.childNodes[3];
+	aav = 0;
+	//console.log( "clicked" );
+	//console.log( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes.length );
+	if ( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes.length <= 1 ) {
+		aav = ev.target.parentElement.parentElement.childNodes[3];
+		//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
+	}
+	else {
+		//console.log( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes[0].innerHTML = ev.target.value );
+		//ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes[0].innerHTML = ev.target.value;
+		aav = ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes[0];
+	} 
 	aav.innerHTML = ( ev.target.innerHTML == '-' ) ? --( aav.innerHTML ) : ++( aav.innerHTML );
 	ev.target.parentElement.parentElement.querySelector("input").value = aav.innerHTML;
 }
@@ -214,7 +240,7 @@ typedef Router {
 Router = {
 	"check-in": [
 		//In JS however, I have to use JSON for an object, meaning that I have to specify the key for each "column" I want.  This is a lot of typing... 
-		{ domSelector: "input[ type=range ]" , event: "input"  , f: [ updateTickler, updateNeighborBox ] }  
+		{ domSelector: "input[ type=range ]" , event: "input"  , f: [ updateTickler, changeSliderNeighborValue ] }  
 	 ,{ domSelector: "input[ type=submit ]", event: "click"   , f: checkAtSubmit }
 	 ,{ domSelector: "select"              , event: "click"   , f: [ updateTickler ] }
 	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
@@ -225,7 +251,8 @@ Router = {
 	]
 
 	,"input": [
-		{ domSelector: ".slider" , event: "input"  , f: function(ev) { ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value; } }
+		{ domSelector: ".slider"            , event: "input"   , f: changeSliderNeighborValue } 
+	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal }
 	]
 

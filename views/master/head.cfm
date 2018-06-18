@@ -8,6 +8,7 @@
 <cfloop array=#data.css# index="cssFile">
 	<cfif (Left(cssFile,4) eq "http") or (Left(cssFile,5) eq "https")>
 	<link rel="stylesheet" href="#cssFile#"> 
+	<cfelseif not data.debug and (cssFile eq "debug.css")>
 	<cfelse>
 	<link rel="stylesheet" href="#link( "assets/css/" & cssFile )#"> 
 	</cfif>
@@ -17,6 +18,7 @@
 <cfloop array=#data.js# index="jsFile">
 	<cfif (Left(jsFile,4) eq "http") or (Left(jsFile,5) eq "https")>
 	<script src="#jsFile#" type="text/javascript"></script>
+	<cfelseif not data.debug and (jsFile eq "proc/debug.js")>
 	<cfelse>
 	<script src="#link( "assets/js/" & jsFile )#" type="text/javascript"></script>
 	</cfif>

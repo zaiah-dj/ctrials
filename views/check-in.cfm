@@ -6,6 +6,18 @@
 		<table class="table">
 			<tbody>
 				<tr>
+					<td class="title">Did Patient Miss Visit?</td>
+					<td>
+						<select name="missedReason"> 
+							<option selected value=0>No</option>	
+						<cfloop query = missedReasons.results>
+							<option value=#et_id#>Yes - #et_name#</option>	
+						</cfloop>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
 					<td class="title">Study Week</td>
 					<td>
 						<cfset sc=1>
@@ -16,18 +28,6 @@
 							<cfelse>
 							<option value=#d#>Week #d#</option>	
 							</cfif>
-						</cfloop>
-						</select>
-					</td>
-				</tr>
-
-				<tr>
-					<td class="title">Did Patient Miss Visit?</td>
-					<td>
-						<select name="missedReason"> 
-							<option selected value=0>No</option>	
-						<cfloop query = missedReasons.results>
-							<option value=#et_id#>Yes - #et_name#</option>	
 						</cfloop>
 						</select>
 					</td>
@@ -106,12 +106,14 @@
 					<cfelse>
 						<div>
 						<span class=huge>#model.currentBpSystolic#</span> / <span class=huge>#model.currentBpDiastolic#</span>
-						A new blood pressure reading is required for this participant.
+						<span style="text-align: right;">
+							A new blood pressure reading is required for this participant.
+						</span>
 
 						<div> 
-							<label class="sameline">Systolic</label>
 							<div class="row">
-								<div class="cc col-sm-7">
+								<div class="cc col-sm-8">
+									<!---<span class="sameline">Systolic</span>--->
 									<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" required>
 								</div>
 								<div class="catch cc col-sm-1">#sys_bp#</div>
@@ -120,12 +122,13 @@
 									<button class="incrementor">-</button>
 								</div>
 							</div>
+							<br />
 						</div>
 
 						<div>
-							<label class="sameline">Diastolic</label>
 							<div class="row">
-								<div class="cc col-sm-7">
+								<div class="cc col-sm-8">
+									<!---<span class="sameline">Diastolic</span>--->
 									<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" required>
 								</div>
 								<div class="catch cc col-sm-1">#dia_bp#</div>
@@ -147,6 +150,18 @@
 						(Variance allowed between 
 							#model.targetHeartRate - (model.targetHeartRate * 0.05)# and 
 							#model.targetHeartRate + (model.targetHeartRate * 0.05)# BPM )
+						<cfelse>
+						<div class="row">
+							<div class="cc col-sm-8">
+								<input type="range" min="0" max="300" class="slider" name="ps_thr" value="0" required>
+							</div>
+							<div class="catch cc col-sm-1"></div>
+							<div class="col-sm-1">
+								<button class="incrementor">+</button>
+								<button class="incrementor">-</button>
+								<span>lb</span>
+							</div>
+						</div>
 						</cfif>
 					</td>
 				</tr>
@@ -155,14 +170,14 @@
 					<td class="title">Weight</td>
 					<td>
 						<div class="row">
-							<div class="cc col-sm-7">
+							<div class="cc col-sm-8">
 								<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#model.weight#" required>
 							</div>
 							<div class="catch cc col-sm-1">#model.weight#</div>
-							<div class="col-sm-1">lb</div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
+								<span>lb</span>
 							</div>
 						</div>
 					</td>

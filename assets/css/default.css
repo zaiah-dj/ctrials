@@ -59,14 +59,13 @@ a.selected {
 .container {
 	position: relative;
 	background-color: #fff;
-	top: 5%;
-	padding-top: 10px;
+	top: 2.5%;
 	padding-bottom: 10px;
-	height: 85%;
+	height: 91%;
 
-	width: 100%;
-	/*box-shadow: 10px 10px 5px gray;*/
-
+	margin: 0 auto;
+	width: 96%;
+	box-shadow: 10px 10px 5px gray;
 	overflow: hidden;
 }
 
@@ -81,12 +80,12 @@ a.selected {
 
 .container-navAndBodyWrapper {
 	background-color: #ced6e4; 
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	position: relative;
 	z-index: 99;
 	overflow: hidden;
-		height: 80%; 
+		height: 90%; 
 /*
 	height: 0px;
 	animation-duration: 0.3s;
@@ -107,9 +106,8 @@ a.selected {
 
 /*Intermediate navigation between parts of data entry go here.*/
 .container-nav {
-	height: 10%;
-	min-height: 50px; 
-	padding-top: 2.5px;
+	height: 6%;
+	min-height: 40px; 
 	padding-bottom: 2.5px;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -129,8 +127,8 @@ a.selected {
 
 /*All participants sit here.*/
 .container-header {
-	height: 12%;
-	min-height: 85px; 
+	height: 7%;
+	min-height: 60px; 
 }
 
 /*All info goes here.*/
@@ -142,11 +140,10 @@ a.selected {
 	overflow-Y: scroll;
 	overflow-X: none;
 	height: 90%;
-	padding-left: 40px;
-	padding-right: 40px;
-	padding-top: 30px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 10px;
 	padding-bottom: 70px;
-
 	background-color: white;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -170,7 +167,7 @@ a.selected {
 }
 
 .container-nav + .container-body {
-	height: 85%;
+	height: 92%;
 	width: 95%;
 	overflow: hidden;
 	overflow-Y: scroll;
@@ -185,15 +182,14 @@ a.selected {
 	z-index: 0;
 	display: inline-block;
 
-	font-size: 1.0em;
+	font-size: 0.8em;
 	text-align: center;
 	left: 10px;
 
-	height: 100%;
-	width: 130px;
+	height: 85%;
+	width: 160px;
 
-	padding: 10px;
-	padding-top: 17px;
+	padding: 5px;
 
 	border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
@@ -209,25 +205,28 @@ a.selected {
 
 	transition: 
 		background-color 0.2s,
+		font-weight 0.2s,
 		color 0.2s
 	;
 
-	margin: 0px;
-	top: 5px;
+	margin-right: 10px;
+	top: 10px;
 }
 
 .container-header li:hover {
-	font-size: 1.3em;
+	font-size: 0.9em;
+	font-weight: bold;
 	background-color: #e6f2ff;
 /*	border-bottom: 5px solid #e6f2ff; */
 	color: black;
 }
 
 .container-header li.selected {
-	font-size: 1.3em;
+	font-size: 1.0em;
 	background-color: #ced6e4; 
 /*	border-bottom: 5px solid #ced6e4; */
 	z-index: 99;
+	/*top: 10px;*/
 }
 
 .container-header li.selected:hover {
@@ -238,34 +237,27 @@ a.selected {
 .container-nav ul li 
 {
 	position: relative;
-
 	display: inline-block; 
-
-	text-align: center;
-
+	text-align: left;
+	text-decoration: underline;
 	font-weight: bold;
-
 	border-top: 3px solid hidden;
 	border-left: 3px solid hidden;
 	border-right: 3px solid hidden;
 	border-bottom: 3px solid white;
-
 	color: white;
-
 	margin-right: 10px;
 	height: 100%;
 	width: 170px;
-
 	padding: 10px;
-
+	padding-top: 7px;
+	padding-left: 12px;
 	color: #ddd;
 	background-color: #728ab2;
-
 	transition: 
 		background-color 0.2s,
 		color 0.2s;
 	;
-
 	top: 6px;
 }
 
@@ -275,21 +267,17 @@ a.selected {
 	color: black;
 }
 
+
 .container-nav ul li.selected {
-	/*
-	border-top: 3px solid black;
-	border-left: 3px solid black;
-	border-right: 3px solid black;
-	*/
 	border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
 	-gecko-border-radius: 5px 5px 0px 0px;
-
 	background-color: white;
 	color: black;
 	/*text-shadow: 2px 2px 5px white;	*/
 	z-index: 0;
 }
+
 
 /*Inner navigation*/
 div.inner-selection {
@@ -315,7 +303,7 @@ ul.inner-selection {
 	text-align: center;
 	font-size: 0.9em;
 	padding: 5px; 
-	padding-top: 15px; 
+	padding-top: 5px; 
 	margin-bottom: 5px;
 	display: inline-block; 
 	background-color: #333; 
@@ -854,7 +842,7 @@ input[type=search] {
 
 .persistent-nav {
 	position: relative;
-	top: 20px;
+	top: 10px;
 	left: 10px;
 	margin: 0;
 	display: inline-block;
@@ -869,11 +857,11 @@ input[type=search] {
 span.huge { font-weight: bold; font-size: 1.5em; }
 
 .container-body table tr td {
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 }
 
 .container-body table tr td:first-child {
-	width: 30%;
+	width: 20%;
 	font-weight: bold;
 }
 
@@ -907,11 +895,14 @@ table.table textarea {
 	width: 30%;
 }
 
-span.sameline {
+.sameline {
+	position: relative;
 	display: block;
-	border: 1px solid red;
 	width: 50px;
 	float: left;
+	top: 30px;
+	color: #bbb;
+	font-weight: lighter;
 }
 
 table.participant-entry tr.heading {
@@ -959,7 +950,6 @@ table.participant-entry tr.heading {
 	top: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
-	border: 1px solid #d3d3d3;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-gecko-border-radius: 10px;
@@ -1049,6 +1039,19 @@ table.participant-entry tr.heading {
 .wash input[type=text] 
 	{ display: none; }
 
+table.endurance tr:nth-child(1), 
+table.resistance tr:nth-child(1) {
+	height: 30px;
+}
+
+table.endurance tr:nth-child(1) td:nth-child(1),
+table.resistance tr:nth-child(1) td:nth-child(1)
+{
+	padding-top: 10px;
+	font-size: 0.8em;
+}
+ 
+ 
 table.endurance tr, 
 table.resistance tr {
 	height: 80px;
@@ -1125,4 +1128,8 @@ ul.participant-notes li {
 
 .hide {
 	
+}
+
+.cc {
+	padding: 0px;
 }

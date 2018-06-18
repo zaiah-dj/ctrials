@@ -7,11 +7,11 @@ function allowDrop(ev) {
 
 function drag(ev, optArg) {
 	if ( optArg ) {
-		LOG( "swipe complete..." );
+		console.log( "swipe complete..." );
 		return;
 	}
 	else {
-		LOG( "drag complete..." );
+		console.log( "drag complete..." );
 		//ev.dataTransfer.setData("text", ev.target.id);
 		//console.log( ev.target.innerHTML );
 		fw[fw.index] = { id: ev.target.children[1].innerHTML, string: ev.target.children[0].innerHTML };

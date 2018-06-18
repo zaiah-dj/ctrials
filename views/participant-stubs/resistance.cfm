@@ -52,16 +52,15 @@
 			</td>
 			<td>
 				<div class="row">
-					<div class="col-sm-7">
+					<div class="col-sm-8">
 						<cfset def=iif( vv.def eq "", 0, vv.def )>
 						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
 					</div>
-					<div class="catch cc col-sm-1">#def#</div>
-					<div class="col-sm-1">#vv.uom#</div>
-						<div class="col-sm-1">
-							<button class="inc-button">+</button>
-							<button class="inc-button">-</button>
-						</div>
+					<div class="catch cc col-sm-1"><span>#def#</span><span> #vv.uom#</span></div>
+					<div class="col-sm-1">
+						<button class="incrementor">+</button>
+						<button class="incrementor">-</button>
+					</div>
 				</div>
 			</td>
 		</tr>

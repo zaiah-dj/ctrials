@@ -73,3 +73,19 @@
 }
 
 
+span.samelime {
+	position: relative;
+	top: 10px;
+	float: left;
+	left: 0px;
+	font-style: italic;
+	color: pink;
+}
+
+.col-sm-1 span:nth-child(1) {
+	font-size: 0.9em;
+}
+
+.col-sm-1 span:nth-child(2) {
+	font-size: 0.6em;
+}
