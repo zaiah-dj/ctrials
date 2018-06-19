@@ -20,7 +20,7 @@
 	<cfif !da.number>
 		-
 	<cfelse>
-		<a href='#link("modal-results.cfm?week=#week#&day=#da.number#")#'>See Results</a></td>
+		<a href='#link("modal-results.cfm?id=#pid#&week=#week#&day=#da.number#")#'>See Results</a></td>
 	</cfif>
 	</td>
 </cfloop>

@@ -16,15 +16,15 @@ I can do more with this concept...
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
-	"endurance"  = "ac_mtr_endurance_new"
- ,"notes" = "ac_mtr_participant_notes"
- ,"resistance" = "ac_mtr_resistance_new"
- ,"sessionTable" = "ac_mtr_logging_progress_tracker_v2"
+	"endurance"      = "ac_mtr_endurance_new"
+ ,"resistance"     = "ac_mtr_resistance_new"
+ ,"participants"   = "ac_mtr_participants_v2"
+ ,"notes"          = "ac_mtr_participant_notes"
+ ,"sessionTable"   = "ac_mtr_logging_progress_tracker_v2"
  ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
- ,"exerciseList" = "ac_mtr_resistance_exercise_list"
- ,"participants" = "ac_mtr_participants_v2"
- ,"checkin" = "ac_mtr_checkinstatus_v2"
- ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
+ ,"exerciseList"   = "ac_mtr_resistance_exercise_list"
+ ,"checkin"        = "ac_mtr_checkinstatus_v2"
+ ,"bloodpressure"  = "ac_mtr_bloodpressure_v2"
 }
 ,"css"    = [
 	 "zero.css"

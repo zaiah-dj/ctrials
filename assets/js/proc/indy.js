@@ -76,6 +76,30 @@ function updateNeighborBoxFromSI (ev) {
 }
 
 
+
+function getNextResults(ev) {
+	ev.preventDefault();
+	//Get all modal-load links, and set xhr for each.
+	var xhr = new XMLHttpRequest();
+	var doc = document.getElementById( "feed" );
+	xhr.open( "GET", ev.target, false );
+	xhr.send();
+	doc.innerHTML = xhr.responseText;	
+	var ia = [].slice.call( 
+		document.querySelectorAll( ".modal-load" )); 
+
+	//Remove all listeners on the page	
+	for ( n in ia ) {
+		ia[n].removeEventListener( "click", getNextResults );
+	}
+
+	//Re-add all listeners on the page.
+	for ( n in ia ) {
+		ia[n].addEventListener( "click", getNextResults );
+	}
+	return 1;
+}
+
 //Handles fetching and serializing participant results from previous weeks 
 function modalGetNextResults(ev) {
 	ev.preventDefault();

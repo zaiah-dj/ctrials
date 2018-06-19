@@ -1,5 +1,6 @@
 <cfscript>
 if ( isDefined("currentParticipant") && ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) {
+	cssClassName="resistance-class";
 	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
 	pid = currentId; 
 	aweek = StructKeyExists( old_ws, "ps_week" ) ? old_ws.ps_week : 1;

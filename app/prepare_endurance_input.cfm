@@ -3,6 +3,7 @@
 <cfscript>
 if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) )
 {
+	cssClassName="endurance-class";
 	clijs = CreateObject( "component", "components.writeback" );
 	//Generate the time blocks for endurance exercises.
 	times = [
