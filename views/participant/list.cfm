@@ -2,8 +2,8 @@
 <cfoutput>
 	<div class="container-header">
 		<ul id="participant_list">
-		 <cfif isDefined("part_list")>
-		  <cfloop query="part_list.results" >
+		 <cfif isDefined("selectedParticipants")>
+		  <cfloop query = selectedParticipants.results >
 
 			<cfif Len( "#firstname# #lastname#" ) gt 23>
 				<cfset firstname="#Left(firstname,1)#.">

@@ -24,5 +24,20 @@ if ( sess.status gt 1 ) {
 			sid = sess.key
 		}	
 	);
+
+	unselectedParticipants = ezdb.exec( 
+		string = "
+		SELECT * FROM 
+			#data.data.participants# 
+		WHERE participantGUID NOT IN (
+		  SELECT DISTINCT p_pid FROM 
+				#data.data.sessionMembers#	
+			WHERE 
+				p_transaction_id = :sid 
+		) ORDER BY lastname ASC"
+	 ,bindArgs = {
+			sid = sess.key
+		}
+	);
 }
 </cfscript>

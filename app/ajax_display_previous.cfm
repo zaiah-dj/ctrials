@@ -3,7 +3,7 @@
 prev = 0;
 if ( isDefined("url.id") ) {
 	myPid=url.id;
-	part = ezdb.exec(
+	currentParticipant = ezdb.exec(
 		string = "SELECT * FROM 
 			#data.data.participants# 
 		WHERE 
@@ -16,12 +16,12 @@ if ( isDefined("url.id") ) {
 week = (!StructKeyExists( url, "week" )) ? (!isDefined("week") ? 1 : week) : url.week;
 day = (!StructKeyExists( url, "day" )) ? (!isDefined("day") ? 1 : day) : url.day;
 
-if ( !isDefined( "part" ) ) {
+if ( !isDefined( "currentParticipant" ) ) {
 	writeoutput( "no id exists for participant" );
 	abort;
 }
 
-if ( isDefined( "part" ) && ListContains(ENDURANCE, part.results.randomGroupCode) ) 
+if ( isDefined( "currentParticipant" ) && ListContains(ENDURANCE, currentParticipant.results.randomGroupCode) ) 
 {
 	times = [
 	/*	 { index=0,  text="Warm-Up" }
@@ -50,7 +50,7 @@ if ( isDefined( "part" ) && ListContains(ENDURANCE, part.results.randomGroupCode
 	 ,bindArgs = { pid = currentId, week = week, day = day }
 	);
 }
-else if ( isDefined( "part" ) && ListContains(RESISTANCE, part.results.randomGroupCode) ) 
+else if ( isDefined( "currentParticipant" ) && ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) 
 {
 	reExList=ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
 	rr = ezdb.exec(

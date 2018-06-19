@@ -4,7 +4,7 @@
 <a class="modal-load" href="#link( 'modal-results.cfm?id=#currentId#&week=#lweek#' )#">Week #lweek#</a>
 </cfloop>
 <table>
-<cfif ListContains(ENDURANCE, part.results.randomGroupCode)>
+<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 	<thead>
 		<th>Endurance Exercises</th>
 	<cfloop array="#times#" index="tx"><th>#tx.text#</th></cfloop>
@@ -29,7 +29,7 @@
 	</tr>
 		</cfloop>
 	</cfloop>
-<cfelseif ListContains(RESISTANCE, part.results.randomGroupCode)>
+<cfelseif ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)>
 	<!--- Create a seperate list for looping --->
 	<cfset NameList=[]>
 	<Cfloop query=reExList.results>

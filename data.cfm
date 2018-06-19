@@ -76,9 +76,7 @@ I can do more with this concept...
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
 		  "initialize_session_and_current_id"
-		 ,"select_all_participants"
-		 ,"select_chosen_participants"
-		 ,"select_unchosen_participants" 
+		 ,"select_participants"
 		 ,"update_valid_session"
 		]
 	 ,"view"  = [ 
@@ -134,7 +132,7 @@ I can do more with this concept...
 	 ,"model" = [ 
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
-			,"select_chosen_participants"
+			,"select_participants"
 			,"select_single_participant"
 			,"prepare_endurance_input"
 			,"prepare_resistance_input"
@@ -155,7 +153,7 @@ I can do more with this concept...
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
 			,"process_checkin_form"
-			,"select_chosen_participants"
+			,"select_participants"
 			,"select_single_participant"
 			,"select_participant_check_in_data"
 			,"select_participant_notes"
@@ -186,7 +184,7 @@ I can do more with this concept...
 		"model" = [ 
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
-			,"select_chosen_participants"
+			,"select_participants"
 			,"select_single_participant"
 		]
 	 ,"view"  = [ 
@@ -203,7 +201,7 @@ I can do more with this concept...
 		"hint"  =  "Compare the participant's previous weeks history."
 	 ,"model" = [ 
 			 "initialize_session_and_current_id"
-			,"select_chosen_participants"
+			,"select_participants"
 			,"select_single_participant"
 		]
 	 ,"view"  = [ 

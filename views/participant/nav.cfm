@@ -1,6 +1,6 @@
-<cfif isDefined( "part" )>
+<cfif isDefined( "currentParticipant" )>
 <cfscript>
-exName = (ListContains(ENDURANCE,part.results.randomGroupCode)) ? "Endurance" : "Resistance";
+exName = (ListContains(ENDURANCE,currentParticipant.results.randomGroupCode)) ? "Endurance" : "Resistance";
 container_nav = [
 	{ title = "Check-In", href = "check-in.cfm" }
  ,{ title = "#exName# Data", href = "input.cfm" }
@@ -12,7 +12,7 @@ container_nav = [
 
 <div class="container-navAndBodyWrapper">
 	<div class="container-nav">
-	<cfoutput query="part.results" >
+	<cfoutput query= currentParticipant.results >
 		<ul class="participant-info-nav">
 		<cfif isDefined( "url.id" )>
 		 <cfloop array = #container_nav# index="cn">

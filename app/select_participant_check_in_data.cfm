@@ -19,14 +19,14 @@ Q = {
 	//See today's blood pressure
  ,pbp       = ezdb.exec( 
 		string="SELECT * FROM #data.data.bloodpressure# WHERE bp_pid = :pid", 
-		bindArgs = { pid = "#part_list.results.participantGUID#" } )
+		bindArgs = { pid = "#currentParticipant.results.participantGUID#" } )
 
 	//See just today's check in status
  ,ci        = ezdb.exec( 
 		string="SELECT * FROM 
 			#data.data.checkin#	
 		WHERE ps_session_id = :sid AND ps_pid = :pid", 
-		bindArgs = { pid = "#part_list.results.participantGUID#", sid = "#sess.key#" } )
+		bindArgs = { pid = "#currentParticipant.results.participantGUID#", sid = "#sess.key#" } )
 
 	//Get ALL of the previous check-in data to see next scheduled visit and previous blood pressure readings?
  ,ai        = ezdb.exec( 
@@ -34,7 +34,7 @@ Q = {
 		FROM 
 			#data.data.checkin#	
 		WHERE ps_pid = :pid ORDER BY ps_date_time_assessed DESC", 
-		bindArgs = { pid = "#part_list.results.participantGUID#" } )
+		bindArgs = { pid = "#currentParticipant.results.participantGUID#" } )
 };
 
 
@@ -49,7 +49,7 @@ if ( Q.pbp.prefix.recordCount )
 		needsNewBp = ( DateDiff( "d", Q.pbp.results.bp_daterecorded, Now() ) > 30 ) ? true : false
 	 ,currentBpSystolic = Q.pbp.results.bp_systolic
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
-	 ,targetHeartRate = 0 //part_list.results.p_targetheartrate
+	 ,targetHeartRate = 0 //currentParticipant.results.p_targetheartrate
 	 ,nextSchedVisit = listFirst( old_ws.ps_next_sched, DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" ) )
 	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
 	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
@@ -65,7 +65,7 @@ else {
 		needsNewBp = true
 	 ,currentBpSystolic = 0
 	 ,currentBpDiastolic = 0
-	 ,targetHeartRate = 0 //part_list.results.p_targetheartrate
+	 ,targetHeartRate = 0 //currentParticipant.results.p_targetheartrate
 	 ,nextSchedVisit = listFirst( old_ws.ps_next_sched, DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" ) )
 	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
 	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
@@ -84,7 +84,7 @@ if ( Q.pbp.prefix.recordCount )
 		needsNewBp = ( DateDiff( "d", Q.pbp.results.bp_daterecorded, Now() ) > 30 ) ? true : false
 	 ,currentBpSystolic = Q.pbp.results.bp_systolic
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
-	 ,targetHeartRate = part_list.results.p_targetheartrate
+	 ,targetHeartRate = currentParticipant.results.p_targetheartrate
 	 ,nextSchedVisit = DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" )
 	 ,minBPS = 40
 	 ,maxBPS = 210
@@ -96,7 +96,7 @@ else {
 		needsNewBp = true
 	 ,currentBpSystolic = 0
 	 ,currentBpDiastolic = 0
-	 ,targetHeartRate = part_list.results.p_targetheartrate
+	 ,targetHeartRate = currentParticipant.results.p_targetheartrate
 	 ,nextSchedVisit = DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" )
 	 ,minBPS = 40
 	 ,maxBPS = 210
