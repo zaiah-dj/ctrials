@@ -15,12 +15,7 @@ ezdb.setDs( datasource = "#data.source#" );
 ENDURANCE = "ADUEndur,ATHEndur,ADUEnddur";
 RESISTANCE = "ADUResist,ATHResist";
 CONTROL = "ADUControl";
-
 //writedump( ListContains( ENDURANCE, "ADUEndur" ) );
-
-//These really need to be groups like:
-// ENDURANCE = [ "ADUEndur", "ATHEndur" ]
-// RESISTANCE = [ "ADUResist", "ATHResist" ]
 
 //Always start new weeks on Sunday
 if ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) {

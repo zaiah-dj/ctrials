@@ -46,7 +46,7 @@
 				</td>
 			</tr>
 
-			<cfif ListContains(ENDURANCE, part_list.results.randomGroupCode)>
+			<cfif ListContains(ENDURANCE, selectedParticipants.results.randomGroupCode)>
 			<tr>
 				<td>Was the session stopped early?</td>
 				<td>

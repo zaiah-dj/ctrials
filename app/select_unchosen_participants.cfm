@@ -1,7 +1,7 @@
 <!--- reconcile 'part_list' vs 'all_part_list' --->
 <cfscript>
 if ( sess.status gt 1 ) {
-	antiPartList = ezdb.exec( 
+	unselectedParticipants = ezdb.exec( 
 		string = "
 		SELECT * FROM 
 			#data.data.participants# 
@@ -16,7 +16,7 @@ if ( sess.status gt 1 ) {
 		}
 	);
 
-	partList = ezdb.exec( 
+	selectedParticipants = ezdb.exec( 
 		string = "SELECT * FROM
 		( SELECT p_pid, p_participantGUID FROM 
 				ac_mtr_participant_transaction_members

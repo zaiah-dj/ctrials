@@ -133,14 +133,11 @@ ON ALLPART.participantGUID = SCREEN.aduscr_participant_id
 
 --->
 <cfscript>
-if ( isDefined("url.id") ) {
-	myPid=url.id;
-	part = ezdb.exec(
-		string = "SELECT * FROM 
-			#data.data.participants# 
-		WHERE 
-			participantGUID = :pid" 
-	 ,bindArgs = { pid = currentId }
-	);
-}
+currentParticipant = ezdb.exec(
+	string = "SELECT * FROM 
+		#data.data.participants# 
+	WHERE 
+		participantGUID = :pid" 
+ ,bindArgs = { pid = currentId }
+);
 </cfscript>

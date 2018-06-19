@@ -6,32 +6,7 @@ default.cfm
 The first page that staff members see, allowing them
 to reorganize participants.
 
-
-<cfdump var = "Sess status: #sess.status#">
-<cfdump var = #part_list#>
-<cfabort>
 --->
-
-<cfscript>
-/*
-AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
-	querySelector = {
-		dom = "##wash-id"
-	 ,event = "click"
-	 ,noPreventDefault = true
-	 ,send = ".listing-drop ul li span:nth-child(2)"
-	}
- ,location = link( "update.cfm" ) 
- ,showDebug = true
- ,additional = [ 
-		{ name = "this", value = "startSession" }
-	 ,{ name = "staffer_id", value = "#randnum(8)#" }
-	 ,{ name = "transact_id", value = "#sess.key#" }
-	]
-);
-*/
-</cfscript>
-
 
 <cfoutput>
 	<div class="container-header">
@@ -71,8 +46,8 @@ AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client(
 			<div class="bigly bigly-left">
 				<div class="listing">
 					<ul class="part-drop-list">
-						<cfloop query = "antiPartList.results">
-							<li class="#iif( ListContains(ENDURANCE, randomGroupCode), DE("endurance"), DE("resistance"))#-class"><!--- draggable="true" ondragstart="drag(event)" --->
+						<cfloop query = unselectedParticipants.results>
+							<li class="#iif( ListContains(ENDURANCE, randomGroupCode), DE("endurance"), DE("resistance"))#-class">
 								<span>#firstname# #lastname# (#pid#)</span>
 								<span>#participantGUID#</span>
 							</li>	
@@ -85,7 +60,7 @@ AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client(
 				<div class="listing listing-drop">
 					<ul> 
 				<cfif sess.status gte 2>
-					<cfloop query = "part_list.results">
+					<cfloop query = selectedParticipants.results>
 						<li>
 							<span>#firstname# #lastname#</span>
 							<span>#partcipantGUID#</span>

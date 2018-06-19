@@ -182,9 +182,15 @@
 				</tr>
 
 				<tr>
-					<td class="title">#iif( ListContains(ENDURANCE, part_list.results.randomGroupCode), DE("Machine Selection"),DE("Exercise Selection"))#</td>
+					<td class="title">
+					<cfif ListContains(ENDURANCE, part.results.randomGroupCode)>
+						Machine Selection
+					<cfelse>
+						Exercise Selection
+					</cfif>
+					</td>
 					<td>
-						<cfif ListContains(ENDURANCE, part_list.results.randomGroupCode)>
+						<cfif ListContains(ENDURANCE, part.results.randomGroupCode)>
 							<cfloop query=#Q.machines.results#> 
 							<div class="clabel">
 								#et_name#<!---<label>#et_name#</label>--->
