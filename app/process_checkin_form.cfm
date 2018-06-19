@@ -37,7 +37,7 @@ if ( !StructIsEmpty( form ) ) {
 			//Add a row to the blood pressure table.
 			ezdb.setDs( "#data.source#" );
 			bpi = ezdb.exec(
-				string="UPDATE ac_mtr_bloodpressure 
+				string="UPDATE #data.data.bloodpressure# 
 					SET 
 						bp_systolic = :systolic
 					 ,bp_diastolic = :diastolic
@@ -53,7 +53,7 @@ if ( !StructIsEmpty( form ) ) {
 
 			//Add a row to the check in status table
 			qr = ezdb.exec( 
-				string="INSERT INTO ac_mtr_checkinstatus VALUES (
+				string="INSERT INTO #data.data.checkin# VALUES (
 					 :ps_pid
 					,:ps_session_id
 					,:ps_week
@@ -84,7 +84,7 @@ if ( !StructIsEmpty( form ) ) {
 			//Update the proper table with weight info
 			if ( ListContains( ENDURANCE, extype ) ) {
 				qh = ezdb.exec( 
-					string = "UPDATE ac_mtr_endurance_new 
+					string = "UPDATE #data.data.endurance# 
 						SET weight = :w 
 					WHERE
 					participantGUID = :pid
@@ -101,7 +101,7 @@ if ( !StructIsEmpty( form ) ) {
 			}
 			else if ( ListContains(RESISTANCE, extype) ) {
 				qh = ezdb.exec( 
-					string = "UPDATE ac_mtr_resistance_new 
+					string = "UPDATE #data.data.resistance# 
 						SET weight = :w 
 					WHERE
 					participantGUID = :pid

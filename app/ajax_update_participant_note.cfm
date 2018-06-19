@@ -3,7 +3,7 @@
 try {
 ezdb.exec( 
 	string = "INSERT INTO 
-		ac_mtr_participant_notes
+		#data.data.notes#	
 	VALUES ( :pid, :dt, :text )"
  ,bindArgs = {
 		pid = currentId

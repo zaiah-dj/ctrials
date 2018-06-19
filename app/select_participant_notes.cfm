@@ -7,7 +7,7 @@ try {
 				note_datetime_added	
 			 ,note_text	
 			FROM 
-				ac_mtr_participant_notes
+				#data.data.notes#	
 			WHERE 
 				note_participant_match_id = :pid
 			ORDER BY note_datetime_added DESC

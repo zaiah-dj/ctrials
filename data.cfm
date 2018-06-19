@@ -17,6 +17,7 @@ I can do more with this concept...
 ,"master-post" = false
 ,"data"   = {
 	"endurance"  = "ac_mtr_endurance_new"
+ ,"notes" = "ac_mtr_particiapnt_notes"
  ,"resistance" = "ac_mtr_resistance_new"
  ,"sessionTable" = "ac_mtr_logging_progress_tracker_v2"
  ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"

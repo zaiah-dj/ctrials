@@ -1,4 +1,5 @@
 <cfscript>
+/*
 try {
 	if ( StructKeyExists( form, "sess_id" ) ) 
 	{
@@ -68,4 +69,5 @@ catch (any e) {
 	req.sendRequest( status = 0, message = "#e.message# - #e.detail#" );	
 	abort;
 }
+*/
 </cfscript>
