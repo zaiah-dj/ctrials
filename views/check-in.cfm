@@ -1,7 +1,5 @@
 <cfoutput>
 <div class="container-body">
-	<div class="footer">
-	</div>
 	<form name="checkInForm" action="#link( 'check-in.cfm?id=#url.id#' )#" method="POST">
 		<table class="table">
 			<tbody>
@@ -183,14 +181,14 @@
 
 				<tr>
 					<td class="title">
-					<cfif ListContains(ENDURANCE, part.results.randomGroupCode)>
+					<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 						Machine Selection
 					<cfelse>
 						Exercise Selection
 					</cfif>
 					</td>
 					<td>
-						<cfif ListContains(ENDURANCE, part.results.randomGroupCode)>
+						<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 							<cfloop query=#Q.machines.results#> 
 							<div class="clabel">
 								#et_name#<!---<label>#et_name#</label>--->

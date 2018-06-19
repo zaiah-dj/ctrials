@@ -1,4 +1,4 @@
-<cfif isDefined( "part" )>
+<cfif isDefined( "currentParticipant" )>
 <cfscript>
 exName = (ListContains(ENDURANCE,currentParticipant.results.randomGroupCode)) ? "Endurance" : "Resistance";
 container_nav = [

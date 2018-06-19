@@ -413,7 +413,7 @@ component {
 							( #JS_DEBUG# ) ? console.log( av ) : 0;
 							Vals = arrVal.join( '&' );
 							( #JS_DEBUG# ) ? console.log( Vals ) : 0;
-							xlogger( 'Sending values ' + arrVal.join(' & ') + ' to #LOCATION#' );
+							( #JS_DEBUG# ) ? console.log( 'Sending values ' + arrVal.join(' & ') + ' to #LOCATION#' ) : 0;
 							x = new XMLHttpRequest();
 							//x.onreadystatechange = #READY_STATE_CHANGE_FUNCTION#;
 							//x.open( '#METHOD#', '#LOCATION#', #ASYNC# );
