@@ -560,7 +560,7 @@ input.collapsible:checked + div > table { display: block; }
 .bigly-wrap {
 	position: relative;
 	margin-top: 2%;
-	height: 83%;
+	height: 100%;
 }
 
 .bigly {
@@ -669,6 +669,15 @@ input.collapsible:checked + div > table { display: block; }
 	background-color: white;
 }
 
+.listing-drop:hover {
+	background-color: white;
+	transition: background-color 0.2s;
+}
+
+.listing-drop:hover {
+	background-color: #ccc;
+}
+
 
 ul.part-drop-list li span:nth-child(2) ,
 .listing li span:nth-child(2) {
@@ -695,6 +704,21 @@ ul.part-drop-list li span:nth-child(2) ,
 .control-class
 { background-color: #aaaaaa; /*something "controlly"*/ }
 
+.endurance-class-dropped
+{ text-align: center;
+	background-color: #b3d1ff; /*staid blue*/ }
+
+.resistance-class-dropped
+{ text-align: center;
+  background-color: #ffd699; /*yellow*/ }
+
+.resistance-class-dropped:hover
+{ text-align: center;
+  background-color: #ffc1ee; }
+
+.control-class-dropped
+{ text-align: center;
+  background-color: #cccccc; /*something "controlly"*/ }
 
 a.tiny-link { 
 	text-transform: uppercase;

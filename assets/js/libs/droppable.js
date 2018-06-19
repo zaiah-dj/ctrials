@@ -14,7 +14,11 @@ function drag(ev, optArg) {
 		console.log( "drag complete..." );
 		//ev.dataTransfer.setData("text", ev.target.id);
 		//console.log( ev.target.innerHTML );
-		fw[fw.index] = { id: ev.target.children[1].innerHTML, string: ev.target.children[0].innerHTML };
+		fw[fw.index] = { 
+			id: ev.target.children[1].innerHTML
+		, string: ev.target.children[0].innerHTML 
+		, className: ev.target.className
+		};
 		//console.log( fw[ fw.index ] );
 	}
 }
@@ -37,6 +41,7 @@ function drop(ev) {
 
 	//Add a new node otherwise
 	node = document.createElement( "li" );
+	node.className =  fw[fw.index].className + "-dropped";//"endurance-class-dropped"; 
 	span1 = document.createElement( "span" );
 	span1.innerHTML = fw[fw.index].string;
 	span2 = document.createElement( "span" );
