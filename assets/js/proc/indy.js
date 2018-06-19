@@ -217,6 +217,23 @@ function whatFunct( f ) {
 }
 
 
+//Update the entire list
+unselected = 0;
+function updateExerciseForm ( ev ) {
+	var p = ev.target.parentElement.parentElement.parentElement;
+	if ( !unselected ) {
+		console.log( p );
+		tr = p.querySelectorAll( "tr" );
+		for ( n=1; n<tr.length; n++ ) tr[ n ].style.display = "none";
+		unselected = 1;
+	}
+	else {
+		for ( n=1; n<tr.length; n++ ) tr[ n ].style.display = "block";
+		unselected = 0;
+	}
+}
+
+
 //Update exercise session list
 function updateExerciseSession ( ev ) {
 	//Get the current PID
@@ -272,6 +289,7 @@ Router = {
 	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: makeModal }
 	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
+	 ,{ domSelector: "select[name=missedReason]", event: "change"  , f: updateExerciseForm }
 	]
 
 	,"input": [

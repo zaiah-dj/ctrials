@@ -53,4 +53,6 @@ for ( t in vars ) {
 		variables[ t.set ] = url[ t.key ];
 	}
 }
+
+//
 </cfscript>

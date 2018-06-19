@@ -44,9 +44,7 @@ else {
 
 //Current Week should also be carried through the whole app.
 currentWeek = DateDiff( "ww", startDate, date ) + 1;
-
 currentDay = DayOfWeek( Now() ); 
-
 currentDayName = DateTimeFormat( Now(), "EEE" ); 
 
 
@@ -202,8 +200,6 @@ else {
 
 //Recall the last valid session data
 try {
-writeoutput( currentId );
-writeoutput( currentId );
 	//Select from the progress table and use this to prefill fields that don't exist
 	p = ezdb.exec( 
 		string = 
@@ -234,7 +230,7 @@ writeoutput( currentId );
 }
 catch (any e) {
 	req.sendAsJSON( status = 0, message = "#e.message#" );
-abort;
+	abort;
 }
 /*
 //Initialize the session variables
@@ -247,4 +243,23 @@ session.extype = StructKeyExists( url, "extype") ? url.extype : session.extype ;
 session.time = StructKeyExists( url,  "time") ? url.time : session.time ;
 session.location = "#cgi.script_name#?#cgi.query_string#";
 */
+
+session[ "#session.iv_motrpac_transact_id#" ] = {
+	//
+	date  = 0	
+	//
+ ,day   = 3
+	//Current user start week
+ ,sweek = 0
+	//Current user current week
+ ,cweek = 0
+	//Where was the user last located?
+ ,location = "#cgi.script_name#?#cgi.query_string#"
+	//What exercise has been selected last?
+ ,exerciseType = 0
+	//Who is logged in and doing work?
+ ,session_id = 0
+	//When is the next scheduled sesssion (and why does this matter?)?
+ ,ps_next_sched = 0
+};
 </cfscript>

@@ -24,6 +24,7 @@
 	</cfif>
 </cfloop>
 
+
 	<!--- iPad Stuff --->
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 
@@ -42,16 +43,6 @@
 </head>
 
 <body>
-	<cfif data.debug eq 1>
-		<div class="debug2">
-			Session Data: #sess.key# - #sess.status#
-			<div>Current Date: #date#</div>
-			<div>Current Day: #DayOfWeek(Now())#</div>
-			<div>Start Week: #startDate#</div>
-			<div>Current Week: #currentWeek#</div>
-		</div>
-		<div id="sessionKey" style="display:none">#sess.key#</div>
-	</cfif>
 
 	<div class="persistent-nav">
 		<a href="/motrpac/web/secure/dataentry">Back to MoTrPAC</a>

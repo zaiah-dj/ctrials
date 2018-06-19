@@ -9,8 +9,9 @@ else {
 			bindArgs = { sid = url.sid }
 		);
 
-		if ( !a.status )
+		if ( !a.status ) {
 			req.sendAsJson( status = 0, message = "#a.message#" );
+		}
 
 		req.sendAsJson( 
 			status = 1, 
