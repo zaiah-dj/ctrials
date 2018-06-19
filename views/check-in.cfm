@@ -114,9 +114,9 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<!---<span class="sameline">Systolic</span>--->
-									<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" required>
+									<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" value="#sys_bp#" required>
 								</div>
-								<div class="catch cc col-sm-1">#sys_bp#</div>
+								<div class="catch cc col-sm-1"><span>#sys_bp#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
 									<button class="incrementor">+</button>
 									<button class="incrementor">-</button>
@@ -129,9 +129,9 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<!---<span class="sameline">Diastolic</span>--->
-									<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" required>
+									<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" value="#dia_bp#" required>
 								</div>
-								<div class="catch cc col-sm-1">#dia_bp#</div>
+								<div class="catch cc col-sm-1"><span>#dia_bp#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
 									<button class="incrementor">+</button>
 									<button class="incrementor">-</button>
@@ -155,11 +155,10 @@
 							<div class="cc col-sm-8">
 								<input type="range" min="0" max="300" class="slider" name="ps_thr" value="0" required>
 							</div>
-							<div class="catch cc col-sm-1"></div>
+							<div class="catch cc col-sm-1"><span>0</span><span> bpm</span></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
-								<span>lb</span>
 							</div>
 						</div>
 						</cfif>
@@ -173,11 +172,10 @@
 							<div class="cc col-sm-8">
 								<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#model.weight#" required>
 							</div>
-							<div class="catch cc col-sm-1">#model.weight#</div>
+							<div class="catch cc col-sm-1"><span>#iif(model.weight eq "",0,model.weight)#</span><span> lb</span></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
-								<span>lb</span>
 							</div>
 						</div>
 					</td>

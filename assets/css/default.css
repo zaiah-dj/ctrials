@@ -296,8 +296,9 @@ ul.inner-selection {
 {
 	position: relative;
 	min-width: 70px;
-	min-height: 50px;
+	min-height: 30px;
 	width: 16%;
+	width: 8%;
 	left: 0.5%;
 	font-weight: bold;
 	text-align: center;
@@ -309,6 +310,8 @@ ul.inner-selection {
 	background-color: #333; 
 	color: white;
 	transition: background-color 0.2s, color 0.2s;
+	vertical-align: top;
+/*	transform: rotate(-75deg);*/
 }
 
 .container-body .inner-selection li:hover {
@@ -324,6 +327,13 @@ ul.inner-selection {
 .container-body .inner-selection li.completed {
 	background-color: #999;
 	color: black; 
+}
+
+@media ( min-width: 400px ) {
+	.container-body .inner-selection li {
+		min-height: 50px;
+		top: 0px;
+	}
 }
 
 ul.nav a {
@@ -1129,6 +1139,8 @@ ul.participant-notes li {
 .hide {
 	
 }
+
+li.smaller { padding-top: 10px !important; font-size: 0.65em !important; }
 
 .cc {
 	padding: 0px;

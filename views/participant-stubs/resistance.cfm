@@ -5,35 +5,27 @@
 		<cfset DebugClientCode = ajax.ClientDebug()>
 	</cfif>
 
-	<!--- Let's see all of these in a list --->
-	<ul class="inner-selection">
+	<!--- Let's see all of these in a list ---> <ul class="inner-selection">
 	<cfset cnt=0>
-		<a href="#link( 'input.cfm?id=#url.id#' )#"><li>5 Minute Warmup</li></a>
-	<cfloop query = "#reExList.results#"> 
-		<a href="#link( 'input.cfm?id=#url.id#&extype=#et_id#' )#"><li #iif(type eq et_id, DE('class="selected"'),DE(''))#>#et_name#</li></a>
+		<a href="#link( 'input.cfm?id=#url.id#' )#"><li class="smaller">5 Minute Warmup</li></a>
+	<cfloop query = "#reExList#">
+		<cfif Len(pname) gte 13>
+			<cfset classnames="smaller">
+		<CFELSE>
+			<cfset classnames="">
+		</cfif>
+
+		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(type eq id, DE('selected'),DE(''))# #classnames#">#pname#</li></a>
 	</cfloop>
-		<a href="#link( 'recovery.cfm?id=#url.id#' )#">
-			<li class="bg-red">Stop Session</li></a>
+		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red">Stop Session</li></a>
 	</ul>
 
 	<div class="selection">
 		<table class="table table-striped">
 			<tbody>
 				<tr>
-					<td class="title">See Machine Settings</td>
-					<td>
-						<a class="modal-activate" href="#link( '' )#">Machine Settings</a>
-						<div class="modal">
-							<div class="modal-content">
-								<span class="close">&times;</span>
-								<p>Equipment Log</p>
-								<div id="feed">
-									<cfinclude template="../../app/eqlog.cfm">
-									<cfinclude template="../eqlog.cfm">
-								</div>	
-							</div>
-						</div>
-					</td>
+					<td class="title">Machine Settings</td>
+					<td>Paramount XL-300</td>
 				</tr>
 			</tbody>
 		</table>

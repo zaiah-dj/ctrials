@@ -5,9 +5,11 @@ if ( isDefined("part") && ListContains(RESISTANCE,part.results.randomGroupCode) 
 	pid = currentId; 
 	aweek = StructKeyExists( old_ws, "ps_week" ) ? old_ws.ps_week : 1;
 	aday = StructKeyExists( old_ws, "ps_day" ) ? old_ws.ps_day : 1;
+	ex=createObject("component","components.resistanceExercises").init();
 
 	//Pull all exercises	
-	reExList=ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
+	//ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
+	reExList=ex.getSpecificExercises( ex.upperBody() );
 
 	//Pull one exercise
 	reExSel =ezdb.exec( 
@@ -43,7 +45,7 @@ if ( isDefined("part") && ListContains(RESISTANCE,part.results.randomGroupCode) 
 		desig = "shoulder2";
 	else if ( type == 14 )
 		desig = "triceppress";
-
+/*
 	prv = ezdb.exec(
 		string = "
 		SELECT * FROM 
@@ -58,7 +60,7 @@ if ( isDefined("part") && ListContains(RESISTANCE,part.results.randomGroupCode) 
 		 ,stdywk = aweek - 1 
 		 ,dayofwk = aday
 		});
-
+*/
 	//Get the entries in the table.
 	pop = ezdb.exec(
 		string = "
@@ -109,13 +111,14 @@ if ( isDefined("part") && ListContains(RESISTANCE,part.results.randomGroupCode) 
 	r1 = ( pc ) ? pop.results[ "#desig#Rep1" ] : 0;
 	r2 = ( pc ) ? pop.results[ "#desig#Rep2" ] : 0;
 	r3 = ( pc ) ? pop.results[ "#desig#Rep3" ] : 0;
+/*
 	pw1 = ( pc ) ? prv.results[ "#desig#Wt1" ] : 0;
 	pw2 = ( pc ) ? prv.results[ "#desig#Wt2" ] : 0;
 	pw3 = ( pc ) ? prv.results[ "#desig#Wt3" ] : 0;
 	pr1 = ( pc ) ? prv.results[ "#desig#Rep1" ] : 0;
 	pr2 = ( pc ) ? prv.results[ "#desig#Rep2" ] : 0;
 	pr3 = ( pc ) ? prv.results[ "#desig#Rep3" ] : 0;
-
+*/
 	values = [
 		 {label="Set 1", uom="lb",min = 5, max = 100, step = 5, name = "weight1"
 			,def = pop.results[ "#desig#Wt1" ], prv = pop.results[ "p_#desig#Wt1" ] }
