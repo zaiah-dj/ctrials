@@ -72,7 +72,7 @@
 							<p>Equipment Log</p>
 							<textarea name="reasonStoppedEarly"></textarea>
 							<!--- 
-								<button class="inc-button" id="el_reason_save">Save</button>
+								<button class="incrementor" id="el_reason_save">Save</button>
 								--->
 						</div>
 					</div>
@@ -97,8 +97,8 @@
 								<div class="catch cc col-sm-1">0</div>
 								<div class="col-sm-1">(uom)</div>
 								<div class="col-sm-1">
-									<button class="inc-button">+</button>
-									<button class="inc-button">-</button>
+									<button class="incrementor">+</button>
+									<button class="incrementor">-</button>
 								</div>
 							</div>
 						</td>
@@ -113,8 +113,8 @@
 								<div class="catch cc col-sm-1">0</div>
 								<div class="col-sm-1">(uom)</div>
 								<div class="col-sm-1">
-									<button class="inc-button">+</button>
-									<button class="inc-button">-</button>
+									<button class="incrementor">+</button>
+									<button class="incrementor">-</button>
 								</div>
 							</div>
 						</td>
@@ -129,8 +129,8 @@
 								<div class="catch cc col-sm-1">0</div>
 								<div class="col-sm-1">(uom)</div>
 								<div class="col-sm-1">
-									<button class="inc-button">+</button>
-									<button class="inc-button">-</button>
+									<button class="incrementor">+</button>
+									<button class="incrementor">-</button>
 								</div>
 							</div>
 						</td>
