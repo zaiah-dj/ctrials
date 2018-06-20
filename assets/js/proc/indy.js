@@ -243,7 +243,7 @@ function updateExerciseSession ( ev ) {
 	
 	//And finally get the field to change
 	var p = ev.target.parentElement.parentElement.parentElement;
-	var q = p.querySelector( "table tr:nth-of-type(3) td:nth-child(2) ul.dasch" );
+	var q = document.getElementById( "weekSession" );
 	
 	//Create the URL
 	var l = "/motrpac/web/secure/dataentry/iv/" 

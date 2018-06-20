@@ -255,7 +255,7 @@ randomCode = currentParticipant.results.randomGroupCode;
 //Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
 session[ "#session.iv_motrpac_transact_id#" ] = {
 	//The day that the session is currently modifying
- ,day   = 3
+  day   = 3
 
 	//The week that the session is currently modifying
  ,week = 3

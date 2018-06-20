@@ -4,88 +4,75 @@
 		<table class="table">
 			<tbody>
 				<tr>
-					<td class="title">Did Patient Miss Visit?</td>
-					<td>
-						<select name="missedReason"> 
-							<option selected value=0>No</option>	
-						<cfloop query = missedReasons.results>
-							<option value=#et_id#>Yes - #et_name#</option>	
-						</cfloop>
-						</select>
-					</td>
-				</tr>
-
-				<tr>
-					<td class="title">Study Week</td>
-					<td>
-						<cfset sc=1>
-						<select name="ps_week" required>
-						<cfloop from=1 to=14 index = "d">
-							<cfif #currentWeek# eq #d#>
-							<option selected value=#d#>Week #d#</option>	
-							<cfelse>
-							<option value=#d#>Week #d#</option>	
-							</cfif>
-						</cfloop>
-						</select>
-					</td>
-				</tr>
-
-				<tr>
-					<td class="title">Exercise Session</td>
-					<td>
-						<input type="hidden" name="ps_day" value="#currentDay#"></input>
-						<!---
-						<button class="incrementor">See Previous Week Results</button>
-						--->
-						<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">All Previous Results</a>
-						<div class="modal">
-							<div class="modal-content">
-								<span class="close">&times;</span>
-								<p>Previous Weeks</p>
-								<div id="feed">
-									<cfset week=#currentWeek#>
-									<cfset day=#currentDay#>
-									<cfinclude template="../app/ajax_display_previous.cfm">
-									<cfinclude template="modal-results.cfm">
-								</div>	
-							</div>
-						</div>
-						<ul class="dasch">
-						<cfset daynum = 1>
-						<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
-							<li <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
-								#day#
-								<br />
-								<cfif 0>
-								<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&day=#daynum#&week=#currentWeek#')#">See Results</a>
+					<td colspan=2>
+						<div style="width:50%;float:left;">
+							<label class="title">Study Week</label>
+							<cfset sc=1>
+							<select name="ps_week" required>
+							<cfloop from=1 to=14 index = "d">
+								<cfif #currentWeek# eq #d#>
+								<option selected value=#d#>Week #d#</option>	
+								<cfelse>
+								<option value=#d#>Week #d#</option>	
 								</cfif>
+							</cfloop>
+							</select>
+						</div>	
+
+						<div style="width:50%; float:right;">
+							<label class="title">Exercise Session</label>
+							<input type="hidden" name="ps_day" value="#currentDay#"></input>
+							<!---
+							<button class="incrementor">See Previous Week Results</button>
+							--->
+							<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">All Previous Results</a>
 							<div class="modal">
 								<div class="modal-content">
 									<span class="close">&times;</span>
-									<h3>Previous Weeks</h3>
+									<p>Previous Weeks</p>
 									<div id="feed">
 										<cfset week=#currentWeek#>
-										<cfset day=#daynum#>
+										<cfset day=#currentDay#>
 										<cfinclude template="../app/ajax_display_previous.cfm">
 										<cfinclude template="modal-results.cfm">
 									</div>	
 								</div>
 							</div>
-							</li>
-							<cfset daynum++>
-						</cfloop>
-						</ul>
+
+							<cfset daynum = 1>
+							<div id="weekSession">
+								<table class="inner"> 
+									<tr><cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day"><th>#day#</th></cfloop></tr>
+									<tr>
+									<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
+										<td <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
+											<cfif 0>
+											<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&day=#daynum#&week=#currentWeek#')#">See Results</a>
+											<cfelse> -
+											</cfif>
+										<div class="modal">
+											<div class="modal-content">
+												<span class="close">&times;</span>
+												<h3>Previous Weeks</h3>
+												<div id="feed">
+													<cfset week=#currentWeek#>
+													<cfset day=#daynum#>
+													<cfinclude template="../app/ajax_display_previous.cfm">
+													<cfinclude template="modal-results.cfm">
+												</div>	
+											</div>
+										</div>
+										</td>
+										<cfset daynum++>
+									</cfloop>
+									</tr>
+								</table>
+							</div>	
+						</div>	
+
 					</td>
 				</tr>
 
-				<tr>
-					<td class="title">Next Scheduled Visit</td>
-					<td>
-						<input type="date" name="ps_next_sched" value="#model.nextSchedVisit#" required>
-						<div>( e.g. 01/01/1991 )</div>
-					</td>
-				</tr>
 
 				<tr>
 					<td class="title">Blood Pressure</td>

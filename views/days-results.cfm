@@ -1,4 +1,4 @@
-<table>
+<table class="inner">
 <cfif not aIsDefined> 
 	<tr>
 		<td>No Results</td>
@@ -12,7 +12,7 @@
 
 <cfoutput>
 <tr>
-	<cfloop array=#DaysArr# index=da><td>#da.name#</td></cfloop>
+	<cfloop array=#DaysArr# index=da><th>#da.name#</th></cfloop>
 </tr>
 <tr>
 <cfloop array=#DaysArr# index=da>
