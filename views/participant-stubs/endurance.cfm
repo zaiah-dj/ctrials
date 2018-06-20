@@ -37,18 +37,19 @@
 			<tr>
 				<td class="title">Exercise Type</td>
 				<td>
-				<select id="choose_mode" name="equipment" disabled>
-					<option value="0">This Will Already be Chosen</option>
-					<option selected value="1">Cycle</option>
-					<option value="2">Treadmill</option>
-					<option value="3">Elliptical</option>
-					<option value="4">Other</option>
-				</select>
+					<cfif sess.current.exerciseParameter eq 1>	
+						Cycle
+					<cfelseif sess.current.exerciseParameter eq 2>	
+						Treadmill	
+					<cfelseif sess.current.exerciseParameter eq 3>	
+						Other	
+					</cfif>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-		<cfloop array = #values#  index = "val">
+<cfloop array = #values#  index = "val">
+	<cfif val.show>
 	<table class="table table-striped endurance">
 		<tbody>
 			<tr class="heading">
@@ -80,7 +81,8 @@
 					</div>
 				</td>
 			</tr>
-		</cfloop>
+	</cfif>
+</cfloop>
 		</tbody>
 	</table>
 

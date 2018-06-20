@@ -5,11 +5,11 @@ if ( isDefined("currentParticipant") && ListContains(RESISTANCE, currentParticip
 	pid = currentId; 
 	aweek = StructKeyExists( old_ws, "ps_week" ) ? old_ws.ps_week : 1;
 	aday = StructKeyExists( old_ws, "ps_day" ) ? old_ws.ps_day : 1;
-	ex=createObject("component","components.resistanceExercises").init();
+	//ex=createObject("component","components.exercises").init();
 
 	//Pull all exercises	
 	//ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
-	reExList=ex.getSpecificExercises( ex.upperBody() );
+	reExList=exe.getSpecificExercises( sess.current.exerciseParameter );
 
 	//Pull one exercise
 	reExSel =ezdb.exec( 

@@ -68,8 +68,7 @@
 									</tr>
 								</table>
 							</div>	
-						</div>	
-
+						</div>
 					</td>
 				</tr>
 
@@ -176,28 +175,36 @@
 					</td>
 					<td>
 						<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
-							<cfloop query=#Q.machines.results#> 
 							<div class="clabel">
-								#et_name#<!---<label>#et_name#</label>--->
-								<cfif #model.machineValue# eq "#et_name#">
-								<input type="radio" name="ps_machine_value" value="#et_name#" required checked>
-								<cfelse>
-								<input type="radio" name="ps_machine_value" value="#et_name#" required>
-								</cfif>
+								Cycle
+								<input type="radio" name="param" value="1" required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
-							</cfloop>
+							<div class="clabel">
+								Treadmill<!---<label>#et_name#</label>--->
+								<input type="radio" name="param" value="2" required>
+								<span class="checkmark"></span>
+								<br />
+							</div>
+							<div class="clabel">
+								Other<!---<label>#et_name#</label>--->
+								<input type="radio" name="param" value="3" required>
+								<span class="checkmark"></span>
+								<br />
+							</div>
 						<cfelse>
 							<cfset el=ListToArray( ValueList( Q.exercises.results.et_name, "," ))>
 							<div class="clabel">
-								<cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop>
-								<input type="radio" name="exset" value="5" required><br />
+								Upper Body
+<!---								<cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop> --->
+								<input type="radio" name="param" value="4" required><br />
 								<span class="checkmark"></span>
 							</div>
 							<div class="clabel">
-								<cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop>
-								<input type="radio" name="exset" value="6" required>
+								Lower Body
+<!---								<cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop> --->
+								<input type="radio" name="param" value="5" required>
 								<span class="checkmark"></span>
 							</div>
 						</cfif>

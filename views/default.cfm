@@ -61,9 +61,9 @@ to reorganize participants.
 					<ul> 
 				<cfif sess.status gte 2>
 					<cfloop query = selectedParticipants.results>
-						<li>
+						<li class="#iif( ListContains(ENDURANCE, randomGroupCode), DE("endurance"), DE("resistance"))#-class-dropped">
 							<span>#firstname# #lastname#</span>
-							<span>#partcipantGUID#</span>
+							<span>#participantGUID#</span>
 						</li>	
 					</cfloop>
 				</cfif>

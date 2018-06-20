@@ -36,57 +36,6 @@ if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentPartic
 
 	//Get queries for recall
 	ezdb.setDs = "#data.source#";
-	/*
-	//This will work for regular usage, if going back in time though, still not right.. 
-	ranges = ezdb.exec(
-		string = "
-			SELECT
-				MAX( stdywk ) as mstdywk 
-			 ,MAX( dayofwk ) as mdayofwk
-			FROM
-				#data.data.endurance#
-			WHERE
-				participantGUID = :pid
-			GROUP BY
-				participantGUID
-		"
-	 ,datasource = "#data.source#"
-	 ,bindArgs = { pid = currentId });
-	*/
-/*
-	prv = ezdb.exec(
-		string = "
-			SELECT * 
-			FROM
-				#data.data.endurance#
-			WHERE
-				participantGUID = :pid
-			AND stdywk = :stdywk
-			AND dayofwk = :dayofwk
-		"
-	 ,datasource = "#data.source#"
-	 ,bindArgs = {
-			pid = currentId
-		 ,stdywk = ((currentDay - 1) == 0) ? currentWeek - 1 : currentWeek
-		 ,dayofwk = (( currentDay - 1 ) == 0) ? 4 : currentDay - 1
-		});
-
-	req = ezdb.exec(
-		string = "
-			SELECT * FROM
-				#data.data.endurance#
-			WHERE
-				participantGUID = :pid
-			AND stdywk = :stdywk
-			AND dayofwk = :dayofwk
-		"
-	 ,datasource = "#data.source#"
-	 ,bindArgs = {
-			pid = currentId
-		 ,stdywk = currentWeek
-		 ,dayofwk = currentDay
-		});
-*/
 
 	req = ezdb.exec(
 		string = "
@@ -137,15 +86,15 @@ if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentPartic
 	rc = req.prefix.recordCount;	
 
 	values = [
-		{ show = true, label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
+		{ show = ( sess.current.exerciseParameter eq 1 ) ? true : false, label = "RPM", uom = "",  min = 20, max = 120, step = 1, name = "rpm"
 			,def = req.results[ "#desig#rpm" ], prv = req.results[ "p_#desig#rpm" ] }
-	 ,{ show = true, label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
+	 ,{ show = ( sess.current.exerciseParameter eq 1 ) ? true : false, label = "Watts/Resistance",uom = "", min = 0, max = 500, step = 1, name = "watts_resistance"
 			,def = req.results[ "#desig#watres" ], prv = req.results[ "p_#desig#watres" ] }
-	 ,{	show = true, label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
+	 ,{	show = ( sess.current.exerciseParameter eq 2 ) ? true : false, label = "MPH/Speed", uom = "",    min = 0.1, max = 15, step = 0.5, name = "speed"
 			,def = req.results[ "#desig#speed" ], prv = req.results[ "p_#desig#speed" ] }
-	 ,{ show = true, label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
+	 ,{ show = ( sess.current.exerciseParameter eq 2 ) ? true : false, label = "Percent Grade", uom = "",    min = 0, max = 15, step = 1, name = "grade"
 			,def = req.results[ "#desig#prctgrade" ], prv = req.results[ "p_#desig#prctgrade" ] }
-/*	 ,{ show = true, label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
+/*	 ,{ show = ( sess.current.exerciseParameter eq 1 ), label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
 			,def = req.results[ "#desig#rpe" ] }*/
 	 ,{ show = true, label = "Affect",uom = "",    min = -5, max = 5, step = 1, name = "affect"
 		  ,def = 0, prv = 0 }

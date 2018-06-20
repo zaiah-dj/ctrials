@@ -3,7 +3,7 @@ try {
 	if ( isDefined('old_ws') ) {
 		new_ws = {};
 		//Add keys from POST or GET
-		for ( nn in [ "ps_next_sched", "staffer_id", "ps_weight", "ps_machine_value" ] )
+		for ( nn in [ "staffer_id", "ps_weight", "param" ] )
 			if ( StructKeyExists(form, nn) ) StructInsert( new_ws, nn, form[ nn ] );
 		for ( nn in [ "id", "extype", "time" ] )
 			if ( StructKeyExists(url, nn)) StructInsert( new_ws, nn, url[ nn ] );

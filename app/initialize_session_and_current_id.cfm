@@ -7,6 +7,7 @@ rl    = CreateObject( "component", "components.requestLogger" );
 cf    = CreateObject( "component", "components.checkFields" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 val   = CreateObject( "component", "components.validate" );
+exe   = CreateObject( "component", "components.exercises" ).init();
 
 //val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
@@ -49,6 +50,7 @@ if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 else {
 	date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
 }
+
 
 //Current Week should also be carried through the whole app.
 currentWeek = DateDiff( "ww", startDate, date ) + 1;
@@ -285,7 +287,7 @@ if ( sess.status gt 1 ) {
 		SELECT * FROM 
 			#data.data.participants# 
 		WHERE participantGUID NOT IN (
-		  SELECT DISTINCT p_pid FROM 
+		  SELECT DISTINCT p_participantGUID FROM 
 				#data.data.sessionMembers#	
 			WHERE 
 				p_transaction_id = :sid 
@@ -294,6 +296,7 @@ if ( sess.status gt 1 ) {
 			sid = sess.key
 		}
 	);
+
 }
 
 
@@ -309,19 +312,27 @@ else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
 	}
 }
 
-/*
 //Select an exercise type 
-exerciseParam = 0;
-if ( StructKeyExists( form, "exerciseParam" ) )
-	exerciseParam = form.week;
-else if ( StructKeyExists( url, "exerciseParam" ) )
-	exerciseParam = url.week;
+ep = 0;
+//writedump( form.param );abort;
+if ( StructKeyExists( form, "param" ) )
+	ep = form.param;
+else if ( StructKeyExists( url, "param" ) )
+	ep = url.param;
 else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
-	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "exerciseParam" ) ) {
-		exerciseParam = session[ "#session.iv_motrpac_transact_id#" ][ "week" ];
+	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "exerciseParameter" ) ) {
+		ep = session[ "#session.iv_motrpac_transact_id#" ][ "exerciseParameter" ];
 	}
 }
-*/
+
+
+if ( ep gt 0 ) {
+//	exerciseList = exe.getSpecificExercises( ep );	
+	if ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) {
+		//exerciseList = exe.getSpecificExercises( ep );	
+	} 
+}
+
 
 //Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
 session[ "#session.iv_motrpac_transact_id#" ] = {
@@ -344,7 +355,10 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
  ,randomizedTypeName = (randomCode eq "") ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? "Endurance" : "Resistance"
 
 	//What exercise has been selected last?
- ,exerciseParameter = 0
+ ,exerciseParameter = ep
+
+	//Show the exercises selected
+ //,exerciseListName = (isDefined("exerciseList")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
 
 	//Who is logged in and doing work?
  ,staffId = 0

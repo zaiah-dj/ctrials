@@ -4,11 +4,8 @@ param name="old_ws.ps_week" default="0";
 param name="old_ws.ps_day" default="0";
 param name="old_ws.ps_next_sched" default="0";
 param name="old_ws.ps_weight" default="0";
-param name="old_ws.ps_machine_value" default="0";
+//param name="old_ws.ps_machine_value" default="0";
 
-
-//Check more
-selectedDays = {};
 
 //Do all the queries here.	
 Q = {
@@ -54,7 +51,7 @@ if ( Q.pbp.prefix.recordCount )
 	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
 	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
-	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
+//	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
 	 ,minBPS = 40
 	 ,maxBPS = 210
 	 ,minBPD = 20
@@ -70,7 +67,7 @@ else {
 	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
 	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
-	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
+//	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
 	 ,minBPS = 40
 	 ,maxBPS = 210
 	 ,minBPD = 20
