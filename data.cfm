@@ -21,7 +21,7 @@ I can do more with this concept...
 ,"name"   = "iv"
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  1
+,"debug"  =  0
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
