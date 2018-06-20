@@ -3,6 +3,15 @@ data.cfm
 
 CFM based routing structure.
 I can do more with this concept...
+
+
+	"endurance"      = "frm_ADUEndurance"
+ ,"resistance"     = "frm_ADUResistance"
+ ,"participants"   = "v_ADUSessionTickler"
+
+	"endurance"      = "ac_mtr_endurance_new"
+ ,"resistance"     = "ac_mtr_resistance_new"
+ ,"participants"   = "ac_mtr_participants_v2"
   --->
 <cfset manifest={
  "source" = "motrpac"
@@ -16,9 +25,9 @@ I can do more with this concept...
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
-	"endurance"      = "frm_ADUEndurance"
- ,"resistance"     = "frm_ADUResistance"
- ,"participants"   = "v_ADUSessionTickler"
+	"endurance"      = "ac_mtr_endurance_new"
+ ,"resistance"     = "ac_mtr_resistance_new"
+ ,"participants"   = "ac_mtr_participants_v2"
  ,"notes"          = "ac_mtr_participant_notes"
  ,"sessionTable"   = "ac_mtr_logging_progress_tracker_v2"
  ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
@@ -75,7 +84,6 @@ I can do more with this concept...
 		"hint"  =  "The participant selection page as seen by the interventionists."
 	 ,"model" = [
 		  "initialize_session_and_current_id"
-		 ,"select_participants"
 		 ,"update_valid_session"
 		]
 	 ,"view"  = [ 
@@ -131,8 +139,6 @@ I can do more with this concept...
 	 ,"model" = [ 
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
-			,"select_participants"
-			,"select_single_participant"
 			,"prepare_endurance_input"
 			,"prepare_resistance_input"
 			,"prepare_control_input" 
@@ -152,8 +158,6 @@ I can do more with this concept...
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
 			,"process_checkin_form"
-			,"select_participants"
-			,"select_single_participant"
 			,"select_participant_check_in_data"
 			,"select_participant_notes"
 			,"select_failure_reasons"
@@ -183,8 +187,6 @@ I can do more with this concept...
 		"model" = [ 
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
-			,"select_participants"
-			,"select_single_participant"
 		]
 	 ,"view"  = [ 
 			"master/head"
@@ -200,8 +202,6 @@ I can do more with this concept...
 		"hint"  =  "Compare the participant's previous weeks history."
 	 ,"model" = [ 
 			 "initialize_session_and_current_id"
-			,"select_participants"
-			,"select_single_participant"
 		]
 	 ,"view"  = [ 
 			"master/head"

@@ -12,9 +12,17 @@ val   = CreateObject( "component", "components.validate" );
 ezdb.setDs( datasource = "#data.source#" );
 
 //Set labels from over here somewhere
+ENDURANCE_CLASSIFIERS = "ADUEndur,ATHEndur,ADUEnddur";
+RESISTANCE_CLASSIFIERS = "ADUResist,ATHResist";
+CONTROL_CLASSIFIERS = "ADUControl";
+
 ENDURANCE = "ADUEndur,ATHEndur,ADUEnddur";
 RESISTANCE = "ADUResist,ATHResist";
 CONTROL = "ADUControl";
+
+E = 1;
+R = 2;
+C = 3;
 //writedump( ListContains( ENDURANCE, "ADUEndur" ) );
 
 //Always start new weeks on Sunday
@@ -232,34 +240,95 @@ catch (any e) {
 	req.sendAsJSON( status = 0, message = "#e.message#" );
 	abort;
 }
-/*
-//Initialize the session variables
-session.ps_day = StructKeyExists( form, "ps_day") ? form.ps_day : session.ps_day ;
-session.ps_week = StructKeyExists( form, "ps_week") ? form.ps_week : session.ps_week ;
-session.ps_next_sched = StructKeyExists( form, "ps_next_sched") ? form.ps_next_sched : session.ps_next_sched ;
-session.staffer_id = StructKeyExists( form, "ps_day") ? form.ps_day : session.ps_day ;
-session.id = StructKeyExists( url, "id") ? url.id : session.id ;
-session.extype = StructKeyExists( url, "extype") ? url.extype : session.extype ;
-session.time = StructKeyExists( url,  "time") ? url.time : session.time ;
-session.location = "#cgi.script_name#?#cgi.query_string#";
-*/
 
+
+//Get participant data 
+currentParticipant = ezdb.exec( 
+	string = "SELECT * FROM #data.data.participants# WHERE participantGUID = :pid"
+ ,bindArgs = { pid = currentId }
+);
+
+//If a current ID is initialized, figure out which group they belong to
+randomCode = currentParticipant.results.randomGroupCode;
+
+
+//Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
 session[ "#session.iv_motrpac_transact_id#" ] = {
-	//
-	date  = 0	
-	//
+	//The day that the session is currently modifying
  ,day   = 3
+
+	//The week that the session is currently modifying
+ ,week = 3
+
 	//Current user start week
  ,sweek = 0
+
 	//Current user current week
  ,cweek = 0
+
 	//Where was the user last located?
  ,location = "#cgi.script_name#?#cgi.query_string#"
+
+	//Randomized type
+ ,randomizedType = ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? E : R
+
 	//What exercise has been selected last?
  ,exerciseType = 0
+
 	//Who is logged in and doing work?
- ,session_id = 0
+ ,staffId = 0
+
+	//What members are currently part of this session?
+ ,partcipantList =0 
+
+	//Participant ID
+ ,participantId = currentId 
+
 	//When is the next scheduled sesssion (and why does this matter?)?
  ,ps_next_sched = 0
 };
+
+
+//If nothing is selected, these queries ought to be empty queries
+if ( sess.status gt 1 ) {
+	selectedParticipants = ezdb.exec( 
+		string = "
+		SELECT
+			*
+		FROM
+		( SELECT 
+				p_pid, p_participantGUID
+			FROM 
+				#data.data.sessionMembers#	
+			WHERE 
+				p_transaction_id = :sid	
+		) AS CurrentTransactionIDList
+		LEFT JOIN
+		( SELECT
+				* 
+			FROM 
+				#data.data.participants#	
+		) AS amp
+		ON CurrentTransactionIDList.p_participantGUID = amp.participantGUID;
+		"
+		,bindArgs = {
+			sid = sess.key
+		}	
+	);
+
+	unselectedParticipants = ezdb.exec( 
+		string = "
+		SELECT * FROM 
+			#data.data.participants# 
+		WHERE participantGUID NOT IN (
+		  SELECT DISTINCT p_pid FROM 
+				#data.data.sessionMembers#	
+			WHERE 
+				p_transaction_id = :sid 
+		) ORDER BY lastname ASC"
+	 ,bindArgs = {
+			sid = sess.key
+		}
+	);
+}
 </cfscript>

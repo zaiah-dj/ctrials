@@ -1,4 +1,5 @@
 <cfscript>
+/*
 if ( sess.status gt 1 ) {
 	selectedParticipants = ezdb.exec( 
 		string = "
@@ -40,4 +41,5 @@ if ( sess.status gt 1 ) {
 		}
 	);
 }
+*/
 </cfscript>

@@ -64,7 +64,7 @@
 		<td>#s#</td><td>#session[s]#</td>
 	<cfelse>
 		<td></td><td><table>
-		<th>session[ #s# ]</th>
+		<th>session</th><th>[ #s# ]</th>
 	<cfloop collection="#session[s]#" item="ss">
 		<tr><td>#ss#</td><td>#session[s][ss]#</td></tr>
 	</cfloop>	
