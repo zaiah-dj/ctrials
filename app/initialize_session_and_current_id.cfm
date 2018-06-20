@@ -248,45 +248,9 @@ currentParticipant = ezdb.exec(
  ,bindArgs = { pid = currentId }
 );
 
+
 //If a current ID is initialized, figure out which group they belong to
 randomCode = currentParticipant.results.randomGroupCode;
-
-
-//Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
-session[ "#session.iv_motrpac_transact_id#" ] = {
-	//The day that the session is currently modifying
-  day   = 3
-
-	//The week that the session is currently modifying
- ,week = 3
-
-	//Current user start week
- ,sweek = 0
-
-	//Current user current week
- ,cweek = 0
-
-	//Where was the user last located?
- ,location = "#cgi.script_name#?#cgi.query_string#"
-
-	//Randomized type
- ,randomizedType = ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? E : R
-
-	//What exercise has been selected last?
- ,exerciseType = 0
-
-	//Who is logged in and doing work?
- ,staffId = 0
-
-	//What members are currently part of this session?
- ,partcipantList =0 
-
-	//Participant ID
- ,participantId = currentId 
-
-	//When is the next scheduled sesssion (and why does this matter?)?
- ,ps_next_sched = 0
-};
 
 
 //If nothing is selected, these queries ought to be empty queries
@@ -331,4 +295,55 @@ if ( sess.status gt 1 ) {
 		}
 	);
 }
+
+
+//Select a week
+week = 0;
+if ( StructKeyExists( form, "week" ) )
+	week = form.week;
+else if ( StructKeyExists( url, "week" ) )
+	week = url.week;
+else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
+	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "week" ) ) {
+		week = session[ "#session.iv_motrpac_transact_id#" ][ "week" ];
+	}
+}
+
+
+//Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
+session[ "#session.iv_motrpac_transact_id#" ] = {
+	//The day that the session is currently modifying
+  day = DayOfWeek( Now() )
+
+	//The proper name of the day that the session is currently modifiying
+ ,dayName = DateTimeFormat( Now(), "EEE" )
+
+	//The week that the session is currently modifying
+ ,week = week 
+
+	//Where was the user last located?
+ ,location = "#cgi.script_name#?#cgi.query_string#"
+
+	//Randomized type
+ ,randomizedType = ( randomCode eq "" ) ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? E : R
+
+	//Randomized type
+ ,randomizedTypeName = (randomCode eq "") ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? "Endurance" : "Resistance"
+
+	//What exercise has been selected last?
+ ,exerciseParameter = 0
+
+	//Who is logged in and doing work?
+ ,staffId = 0
+
+	//What members are currently part of this session?
+ ,participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
+
+	//Participant ID
+ ,participantId = currentId 
+};
+
+
+//sess.current
+sess.current = session[ "#session.iv_motrpac_transact_id#" ];
 </cfscript>

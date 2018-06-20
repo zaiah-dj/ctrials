@@ -172,7 +172,7 @@ I can do more with this concept...
 		}
 
 	,"logout" = { 
-		"model" = "session/kill"
+		"model" = "destroy_session"
 	 ,"view"  =  "logout"
 	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
 	 	}
