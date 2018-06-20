@@ -9,7 +9,7 @@ if ( !StructIsEmpty( form ) ) {
 
 		//Regular variables
 		sess_id = session.iv_motrpac_transact_id;
-		fieldsToCheck = "ps_pid,ps_day,ps_next_sched,bp_systolic,bp_diastolic";
+		fieldsToCheck = "ps_pid,ps_day,bp_systolic,bp_diastolic";
 		bp = ( StructKeyExists( form, "ps_bp" ) ) ? form.ps_bp : 0;
 		nt = ( StructKeyExists( form, "ps_notes" ) ) ? form.ps_notes : 0;
 
@@ -17,7 +17,7 @@ if ( !StructIsEmpty( form ) ) {
 		
 
 		//Check for the form fields that are needed and try to insert.
-		fields = cf.checkFields( form, "ps_day", "ps_pid", "ps_next_sched", "bp_systolic", "bp_diastolic" );
+		fields = cf.checkFields( form, "ps_day", "ps_pid", "bp_systolic", "bp_diastolic" );
 		if ( !fields.status ) {
 			message = fields.message;
 			writeoutput( message );
@@ -58,7 +58,6 @@ if ( !StructIsEmpty( form ) ) {
 					,:ps_session_id
 					,:ps_week
 					,:ps_day
-					,:ps_next_sched
 					,:ps_weight
 					,:ps_reex_type
 					,:datestamp
@@ -68,7 +67,6 @@ if ( !StructIsEmpty( form ) ) {
 				,ps_session_id = sess_id	
 				,ps_week = currentWeek
 				,ps_day = currentDay
-				,ps_next_sched = { value=DateTimeFormat( form.ps_next_sched, "YYYY-MM-DD" ),type="cfsqldatetime" }
 				,ps_weight = form.ps_weight
 				,ps_reex_type = (StructKeyExists( form, "exset" )) ? form.exset : 0
 				,datestamp = {value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"} 

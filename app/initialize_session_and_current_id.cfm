@@ -309,6 +309,19 @@ else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
 	}
 }
 
+/*
+//Select an exercise type 
+exerciseParam = 0;
+if ( StructKeyExists( form, "exerciseParam" ) )
+	exerciseParam = form.week;
+else if ( StructKeyExists( url, "exerciseParam" ) )
+	exerciseParam = url.week;
+else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
+	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "exerciseParam" ) ) {
+		exerciseParam = session[ "#session.iv_motrpac_transact_id#" ][ "week" ];
+	}
+}
+*/
 
 //Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
 session[ "#session.iv_motrpac_transact_id#" ] = {
