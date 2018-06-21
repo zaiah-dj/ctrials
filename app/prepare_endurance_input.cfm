@@ -75,11 +75,11 @@ if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentPartic
 		"
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
-			pid = currentId
-		 ,stdywk = currentWeek
-		 ,dayofwk = currentDay
-		 ,pstdywk = ((currentDay - 1) == 0) ? currentWeek - 1 : currentWeek
-		 ,pdayofwk = (( currentDay - 1 ) == 0) ? 4 : currentDay - 1
+			pid = sess.current.participantId 
+		 ,stdywk = sess.current.week 
+		 ,dayofwk = sess.current.day 
+		 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.current.week - 1 : sess.current.week
+		 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
 		});
 
 	//Prefill any values that need to be prefilled	 
@@ -112,9 +112,9 @@ if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentPartic
 		}]
 	 ,additional = [ 
 		{ name="this", value= "endurance" }
-	 ,{ name="pid", value= "#currentId#" }
-	 ,{ name="dayofwk", value= "#currentDay#" }
-	 ,{ name="stdywk", value= "#currentWeek#" }
+	 ,{ name="pid", value= "#sess.current.participantId#" }
+	 ,{ name="dayofwk", value= "#sess.current.day#" }
+	 ,{ name="stdywk", value= "#sess.current.week#" }
 	 ,{ name="sess_id", value= "#sess.key#" }
 		]
 	);

@@ -9,11 +9,11 @@
 							<label class="title">Study Week</label>
 							<cfset sc=1>
 							<select name="ps_week" required>
-							<cfloop from=1 to=14 index = "d">
-								<cfif #currentWeek# eq #d#>
-								<option selected value=#d#>Week #d#</option>	
+							<cfloop from=1 to=14 index = "w">
+								<cfif #sess.current.week# eq #w#>
+								<option selected value=#w#>Week #w#</option>	
 								<cfelse>
-								<option value=#d#>Week #d#</option>	
+								<option value=#w#>Week #w#</option>	
 								</cfif>
 							</cfloop>
 							</select>
@@ -31,8 +31,8 @@
 									<span class="close">&times;</span>
 									<p>Previous Weeks</p>
 									<div id="feed">
-										<cfset week=#currentWeek#>
-										<cfset day=#currentDay#>
+										<cfset week=#sess.current.week#>
+										<cfset day=#sess.current.day#>
 										<cfinclude template="../app/ajax_display_previous.cfm">
 										<cfinclude template="modal-results.cfm">
 									</div>	
@@ -45,9 +45,9 @@
 									<tr><cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day"><th>#day#</th></cfloop></tr>
 									<tr>
 									<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
-										<td <cfif currentDayName eq LCase( day )>class="selected"</cfif>>	
+										<td <cfif sess.current.dayName eq LCase( day )>class="selected"</cfif>>	
 											<cfif 0>
-											<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&day=#daynum#&week=#currentWeek#')#">See Results</a>
+											<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&day=#daynum#&week=#sess.current.week#')#">See Results</a>
 											<cfelse> -
 											</cfif>
 										<div class="modal">
@@ -55,7 +55,7 @@
 												<span class="close">&times;</span>
 												<h3>Previous Weeks</h3>
 												<div id="feed">
-													<cfset week=#currentWeek#>
+													<cfset week=#sess.current.week#>
 													<cfset day=#daynum#>
 													<cfinclude template="../app/ajax_display_previous.cfm">
 													<cfinclude template="modal-results.cfm">
@@ -74,12 +74,12 @@
 
 
 				<tr>
-					<td class="title">Blood Pressure</td>
-					<td>
-
 					<!--- Figure blood pressure --->
 					<cfset sys_bp=#iif( model.currentBpSystolic lt 60, 80, model.currentBpSystolic )#>
 					<cfset dia_bp=#iif( model.currentBpDiastolic lt 50, 80, model.currentBpDiastolic )#>
+
+					<td class="title">Blood Pressure</td>
+					<td>
 
 					<cfif !model.needsNewBp>
 						<span class=huge>#sys_bp#</span> / <span class=huge>#dia_bp#</span>

@@ -75,9 +75,9 @@
 	<th>Page Data</th>
 <cfif (data.loaded eq "check-in") or (data.loaded eq "input")>
 	<tr><td>Current Date</td><td>#date#</td></tr>
-	<tr><td>Current Day</td><td>#DayOfWeek(Now())#</td></tr>
+	<tr><td>Current Day</td><td>#sess.current.day#</td></tr>
 	<tr><td>Start Week</td><td>#startDate#</td></tr>
-	<tr><td>Current Week</td><td>#currentWeek#</td></tr>
+	<tr><td>Current Week</td><td>#sess.current.week#</td></tr>
 </cfif>	
 	</table>
 </div>
