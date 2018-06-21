@@ -102,4 +102,14 @@ else {
 	};
 }
 */
+
+//select days from this week with results (including today?)
+tbName = ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) 
+	? "#data.data.endurance#" : "#data.data.resistance#";
+qCompletedDays = ezdb.exec(
+	string="select dayofwk from #tbName# where participantGUID = :pid AND stdywk = :wk"
+ ,bindArgs={pid=sess.current.participantId, wk=sess.current.week}
+);
+cdays = [0,0,0,0,0,0];
+for ( n in ListToArray( ValueList( qCompletedDays.results.dayofwk, "," ) ) ) cdays[ n ] = n;
 </cfscript>

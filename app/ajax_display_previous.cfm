@@ -1,28 +1,28 @@
 <!--- display previous week's results in ajax --->
 <cfscript>
 prev = 0;
-if ( isDefined("url.id") ) {
-	myPid=url.id;
-	currentParticipant = ezdb.exec(
-		string = "SELECT * FROM 
-			#data.data.participants# 
-		WHERE 
-			participantGUID = :pid" 
-	 ,bindArgs = { pid = sess.current.participantId }
-	);
-}
-
-
 week = (!StructKeyExists( url, "week" )) ? (!isDefined("week") ? 1 : week) : url.week;
 day = (!StructKeyExists( url, "day" )) ? (!isDefined("day") ? 1 : day) : url.day;
+currentParticipant = ezdb.exec(
+	string = "SELECT * FROM 
+		#data.data.participants# 
+	WHERE 
+		participantGUID = :pid" 
+ ,bindArgs = { pid = ( isDefined("url.id") ) ? url.id : (( isDefined("cid") ) ? cid : 0) }
+);
 
 if ( !isDefined( "currentParticipant" ) ) {
 	writeoutput( "no id exists for participant" );
 	abort;
 }
 
-if ( isDefined( "currentParticipant" ) && ListContains(ENDURANCE, currentParticipant.results.randomGroupCode) ) 
-{
+//if count is zero?
+if ( !isDefined( "currentParticipant" ) ) {
+	writeoutput( "no id exists for participant" );
+	abort;
+}
+
+if ( isDefined( "currentParticipant" ) && ListContains(ENDURANCE, currentParticipant.results.randomGroupCode) ) {
 	times = [
 	/*	 { index=0,  text="Warm-Up" }
 		,*/{ index=5,  text='<5m'  }

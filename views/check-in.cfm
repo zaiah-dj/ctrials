@@ -22,9 +22,8 @@
 						<div style="width:50%; float:right;">
 							<label class="title">Exercise Session</label>
 							<input type="hidden" name="ps_day" value="#sess.current.day#"></input>
-							<!---
-							<button class="incrementor">See Previous Week Results</button>
-							--->
+		
+							<!--- This is a link activating a modal window to see all previous results for the current participant --->
 							<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&all=true')#">All Previous Results</a>
 							<div class="modal">
 								<div class="modal-content">
@@ -33,37 +32,39 @@
 									<div id="feed">
 										<cfset week=#sess.current.week#>
 										<cfset day=#sess.current.day#>
+										<cfset cid=#sess.current.participantId#>
 										<cfinclude template="../app/ajax_display_previous.cfm">
 										<cfinclude template="modal-results.cfm">
 									</div>	
 								</div>
 							</div>
 
-							<cfset daynum = 1>
 							<div id="weekSession">
 								<table class="inner"> 
 									<tr><cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day"><th>#day#</th></cfloop></tr>
 									<tr>
-									<cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day">
+									<!--- This loop generates links activating modal windows to see previous days' results within the current week --->
+									<cfloop array=#cdays# item="day">
 										<td <cfif sess.current.dayName eq LCase( day )>class="selected"</cfif>>	
-											<cfif 0>
-											<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&day=#daynum#&week=#sess.current.week#')#">See Results</a>
-											<cfelse> -
-											</cfif>
-										<div class="modal">
-											<div class="modal-content">
-												<span class="close">&times;</span>
-												<h3>Previous Weeks</h3>
-												<div id="feed">
-													<cfset week=#sess.current.week#>
-													<cfset day=#daynum#>
-													<cfinclude template="../app/ajax_display_previous.cfm">
-													<cfinclude template="modal-results.cfm">
-												</div>	
+										<cfif not day>
+											-
+										<cfelse>
+											<cfset week=#sess.current.week#>
+											<cfset day=#day#>
+											<cfset cid=#sess.current.participantId#>
+											<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&day=#day#&week=#sess.current.week#')#">See Results</a>
+											<div class="modal">
+												<div class="modal-content">
+													<span class="close">&times;</span>
+													<h3>Previous Weeks</h3>
+													<div id="feed">
+														<cfinclude template="../app/ajax_display_previous.cfm">
+														<cfinclude template="modal-results.cfm">
+													</div>	
+												</div>
 											</div>
-										</div>
+										</cfif>
 										</td>
-										<cfset daynum++>
 									</cfloop>
 									</tr>
 								</table>
