@@ -65,8 +65,8 @@ if ( !StructIsEmpty( form ) ) {
 			 ,bindArgs = {
 				 ps_pid  = form.ps_pid
 				,ps_session_id = sess_id	
-				,ps_week = currentWeek
-				,ps_day = currentDay
+				,ps_week = sess.current.week
+				,ps_day = sess.current.day
 				,ps_weight = form.ps_weight
 				,ps_reex_type = (StructKeyExists( form, "exset" )) ? form.exset : 0
 				,datestamp = {value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"} 
@@ -92,8 +92,8 @@ if ( !StructIsEmpty( form ) ) {
 					,bindArgs = {
 						w = form.ps_weight
 					 ,pid = form.ps_pid
-					 ,dwk = currentDay
-					 ,swk = currentWeek
+					 ,dwk = sess.current.day
+					 ,swk = sess.current.week
 					}
 				);
 			}
@@ -109,8 +109,8 @@ if ( !StructIsEmpty( form ) ) {
 					,bindArgs = {
 						w = form.ps_weight
 					 ,pid = form.ps_pid
-					 ,dwk = currentDay
-					 ,swk = currentWeek
+					 ,dwk = sess.current.day
+					 ,swk = sess.current.week
 					}
 				);
 			}

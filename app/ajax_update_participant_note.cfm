@@ -6,7 +6,7 @@ ezdb.exec(
 		#data.data.notes#	
 	VALUES ( :pid, :dt, :text )"
  ,bindArgs = {
-		pid = currentId
+		pid = sess.current.participantId
 	 ,dt={value=DateTimeFormat( Now(), "YYYY-MM-DD" ), type="cfsqldatetime"}
 	 ,text= "#form.note#"
 	}

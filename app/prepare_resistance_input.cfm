@@ -2,7 +2,7 @@
 if ( isDefined("currentParticipant") && ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) {
 	cssClassName="resistance-class";
 	type = (StructKeyExists(url,"extype")) ? url.extype : 1;
-	pid = currentId; 
+	pid = sess.current.participantId; 
 	aweek = StructKeyExists( old_ws, "ps_week" ) ? old_ws.ps_week : 1;
 	aday = StructKeyExists( old_ws, "ps_day" ) ? old_ws.ps_day : 1;
 	//ex=createObject("component","components.exercises").init();
@@ -56,7 +56,7 @@ if ( isDefined("currentParticipant") && ListContains(RESISTANCE, currentParticip
 			AND dayofwk = :dayofwk
 		"
 	 ,bindArgs = {
-			pid = currentId
+			pid = sess.current.participantId
 		 ,stdywk = aweek - 1 
 		 ,dayofwk = aday
 		});
@@ -95,10 +95,10 @@ if ( isDefined("currentParticipant") && ListContains(RESISTANCE, currentParticip
 		ON pweek.pguid = cweek.participantGUID
 		"
 	 ,bindArgs = {
-			pid = currentId
+			pid = sess.current.participantId
 		 ,stdywk = aweek
 		 ,dayofwk = aday
-		 ,pstdywk = ((currentDay - 1) == 0) ? aweek - 1 : aweek
+		 ,pstdywk = ((sess.current.day - 1) == 0) ? aweek - 1 : aweek
 		 ,pdayofwk = (( aday - 1 ) == 0) ? 4 : aday - 1
 		});
 

@@ -1,6 +1,5 @@
 <cfscript>
 //Include all CFCs first hereq
-include "globals.cfm";
 ajax  = CreateObject( "component", "components.writeback" );
 ezdb  = CreateObject( "component", "components.quella" );
 rl    = CreateObject( "component", "components.requestLogger" );
@@ -11,6 +10,7 @@ exe   = CreateObject( "component", "components.exercises" ).init();
 
 //val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
+
 
 //Set labels from over here somewhere
 ENDURANCE_CLASSIFIERS = "ADUEndur,ATHEndur,ADUEnddur";
@@ -24,15 +24,10 @@ CONTROL = "ADUControl";
 E = 1;
 R = 2;
 C = 3;
-//writedump( ListContains( ENDURANCE, "ADUEndur" ) );
 
 //Always start new weeks on Sunday
-if ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) {
-	startDate = url.startDate;
-}
-else {
-	startDate = DateTimeFormat( createDate( 2018, 5, 13 ), "YYYY-MM-DD" );
-}
+startDate = ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) 
+	? url.startDate : DateTimeFormat( createDate( 2018, 5, 13 ), "YYYY-MM-DD" );
 
 //Current date
 if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
@@ -50,12 +45,6 @@ if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 else {
 	date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
 }
-
-
-//Current Week should also be carried through the whole app.
-currentWeek = DateDiff( "ww", startDate, date ) + 1;
-currentDay = DayOfWeek( Now() ); 
-currentDayName = DateTimeFormat( Now(), "EEE" ); 
 
 
 //Session detection and initialization (if need be)
@@ -326,6 +315,8 @@ else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
 }
 
 
+//Here is a way to calculate the exercise type from the beginning of the script, 
+//(versus having to compare against ENDURANCE_CLASSIFIERS all over the application)
 if ( ep gt 0 ) {
 //	exerciseList = exe.getSpecificExercises( ep );	
 	if ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) {
@@ -367,7 +358,7 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
  ,participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
 
 	//Participant ID
- ,participantId = currentId 
+ ,participantId = currentId
 };
 
 

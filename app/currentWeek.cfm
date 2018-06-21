@@ -25,9 +25,9 @@ else {
 }
 
 //Current Week should also be carried through the whole app.
-currentWeek = DateDiff( "ww", startDate, date ) + 1;
+sess.current.week = DateDiff( "ww", startDate, date ) + 1;
 
-currentDay = DayOfWeek( Now() ); 
+sess.current.day = DayOfWeek( Now() ); 
 
-currentDayName = DateTimeFormat( Now(), "EEE" ); 
+sess.current.dayName = DateTimeFormat( Now(), "EEE" ); 
 </cfscript>

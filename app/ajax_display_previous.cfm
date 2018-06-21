@@ -8,7 +8,7 @@ if ( isDefined("url.id") ) {
 			#data.data.participants# 
 		WHERE 
 			participantGUID = :pid" 
-	 ,bindArgs = { pid = currentId }
+	 ,bindArgs = { pid = sess.current.participantId }
 	);
 }
 
@@ -47,7 +47,7 @@ if ( isDefined( "currentParticipant" ) && ListContains(ENDURANCE, currentPartici
 		AND
 			stdywk = :week
 		" 
-	 ,bindArgs = { pid = currentId, week = week, day = day }
+	 ,bindArgs = { pid = sess.current.participantId, week = week, day = day }
 	);
 }
 else if ( isDefined( "currentParticipant" ) && ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) 
@@ -63,7 +63,7 @@ else if ( isDefined( "currentParticipant" ) && ListContains(RESISTANCE, currentP
 		AND
 			stdywk = :week
 		" 
-	 ,bindArgs = { pid = currentId, week = week, day = day }
+	 ,bindArgs = { pid = sess.current.participantId, week = week, day = day }
 	);
 }
 </cfscript>

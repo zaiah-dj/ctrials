@@ -124,13 +124,13 @@ I can do more with this concept...
 
 	,"update-note" = {
 		"hint" = "Used to update notes in place."
-		,"model" = [ "dependencies", "currentId", "ajax_update_participant_note" ]
+		,"model" = [ "initialize_session_and_current_id", "ajax_update_participant_note" ]
 		,"view" = "nothing"
 	}
 
 	,"recovery-done" = {
 		"hint" = "Used to mark the end of a session for a user."
-		,"model" = [ "dependencies", "currentId", "recovery-done" ]
+		,"model" = [ "initialize_session_and_current_id", "recovery-done" ]
 		,"view" = "recovery-done"
 	}
 

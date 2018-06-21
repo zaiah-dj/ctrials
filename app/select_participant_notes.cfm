@@ -14,7 +14,7 @@ try {
 			"
 	 ,datasource = "#data.source#" 
 	 ,bindArgs = {
-			pid = currentId 
+			pid = sess.current.participantId 
 		});
 
 	if ( !pNotes.status ) {

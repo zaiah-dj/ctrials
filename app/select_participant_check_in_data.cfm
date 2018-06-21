@@ -48,8 +48,8 @@ if ( Q.pbp.prefix.recordCount )
 	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
 	 ,targetHeartRate = 0 //currentParticipant.results.p_targetheartrate
 	 ,nextSchedVisit = listFirst( old_ws.ps_next_sched, DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" ) )
-	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
-	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
+	 ,sess.current.week = ListFirst( old_ws.ps_week, 0 )
+	 ,sess.current.day = ListFirst( old_ws.ps_day, 0 )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
 //	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
 	 ,minBPS = 40
@@ -64,8 +64,8 @@ else {
 	 ,currentBpDiastolic = 0
 	 ,targetHeartRate = 0 //currentParticipant.results.p_targetheartrate
 	 ,nextSchedVisit = listFirst( old_ws.ps_next_sched, DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" ) )
-	 ,currentWeek = ListFirst( old_ws.ps_week, 0 )
-	 ,currentDay = ListFirst( old_ws.ps_day, 0 )
+	 ,sess.current.week = ListFirst( old_ws.ps_week, 0 )
+	 ,sess.current.day = ListFirst( old_ws.ps_day, 0 )
 	 ,weight = ListFirst( old_ws.ps_weight, 0 )
 //	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
 	 ,minBPS = 40

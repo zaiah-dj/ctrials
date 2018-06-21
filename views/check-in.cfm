@@ -21,11 +21,11 @@
 
 						<div style="width:50%; float:right;">
 							<label class="title">Exercise Session</label>
-							<input type="hidden" name="ps_day" value="#currentDay#"></input>
+							<input type="hidden" name="ps_day" value="#sess.current.day#"></input>
 							<!---
 							<button class="incrementor">See Previous Week Results</button>
 							--->
-							<a class="modal-activate" href="#link('modal-results.cfm?id=#currentId#&all=true')#">All Previous Results</a>
+							<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&all=true')#">All Previous Results</a>
 							<div class="modal">
 								<div class="modal-content">
 									<span class="close">&times;</span>
@@ -234,7 +234,7 @@
 			</tbody>
 		</table>
 
-		<input type="hidden" name="ps_pid" value="#currentId#">
+		<input type="hidden" name="ps_pid" value="#sess.current.participantId#">
 		<input type="submit" value="Next!"></input>
 	</form>
 </div> <!--- container-body --->

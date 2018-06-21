@@ -138,6 +138,6 @@ currentParticipant = ezdb.exec(
 		#data.data.participants# 
 	WHERE 
 		participantGUID = :pid" 
- ,bindArgs = { pid = currentId }
+ ,bindArgs = { pid = sess.current.participantId }
 );
 </cfscript>

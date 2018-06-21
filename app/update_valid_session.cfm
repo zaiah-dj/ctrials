@@ -24,7 +24,7 @@ try {
 				string = "INSERT INTO #data.data.sessionTable# 
 				 VALUES (	:aid, :sid, :loc, :tmp, :misc )"
 			 ,bindArgs = {
-				 aid = currentId 
+				 aid = sess.current.participantId 
 				,sid = sess.key 
 				,misc = SerializeJSON( new_ws )
 				,loc = "#cgi.script_name#?#cgi.query_string#"
@@ -47,7 +47,7 @@ try {
 					loc = "#cgi.script_name#?#cgi.query_string#"
 				 ,sid = sess.key
 				 ,misc = SerializeJSON( new_ws ) 
-				 ,aid = currentId
+				 ,aid = sess.current.participantId
 				}
 			);
 		}

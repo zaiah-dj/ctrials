@@ -1,7 +1,7 @@
 <cfoutput>
 <h3>Week #week# | Day #day#</h3>
 <cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14" index="lweek">
-<a class="modal-load" href="#link( 'modal-results.cfm?id=#currentId#&week=#lweek#' )#">Week #lweek#</a>
+<a class="modal-load" href="#link( 'modal-results.cfm?id=#sess.current.participantId#&week=#lweek#' )#">Week #lweek#</a>
 </cfloop>
 <table>
 <cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>

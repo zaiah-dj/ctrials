@@ -15,7 +15,7 @@ else {
 
 		req.sendAsJson( 
 			status = 1, 
-			message = "cid = #currentId#, sid = #a.results.session_id#, pid = #a.results.active_pid#, location = #a.results.location#, json = #a.results.misc#"
+			message = "cid = #sess.current.participantId#, sid = #a.results.session_id#, pid = #a.results.active_pid#, location = #a.results.location#, json = #a.results.misc#"
 		);
 	}
 	catch (any e) {

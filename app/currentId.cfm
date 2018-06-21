@@ -1,18 +1,18 @@
 <cfscript>
 //Logic to get the most current ID.
-currentId = 0;
+sess.current.participantId = 0;
 
 //If an ID is specified in the URL or in POST (POST getting preference), then it is the current one
 if ( StructKeyExists( form, "pid" ) )
-	currentId = form.pid;	
+	sess.current.participantId = form.pid;	
 else if ( StructKeyExists( url, "id" ) )
-	currentId = url.id;
+	sess.current.participantId = url.id;
 else {
 	//Get the newest one
 	if ( !isDefined("sess.key" ) )
-		currentId = 0;
+		sess.current.participantId = 0;
 	else { 
-		currentId = ezdb.exec(
+		sess.current.participantId = ezdb.exec(
 			string = "SELECT 
 				TOP 1 active_pid 
 			FROM 
