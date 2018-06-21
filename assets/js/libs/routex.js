@@ -71,10 +71,7 @@ function Routex ( args ) {
 		init: function ( ) {
 			//Loop through the elements in the route specified.
 			//	( VERBOSE ) ? console.log( "Loading handlers for route '" + loc + "'" ) : 0;
-			console.log( local.routes );
-			console.log( local.currentLocation );
 			for ( r in local.routes ) {
-			console.log( r );
 				if ( local.currentLocation.indexOf( r ) > -1 ) {
 					for ( t in local.routes[ r ] ) {
 						tt = local.routes[ r ][ t ];

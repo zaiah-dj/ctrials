@@ -12,10 +12,6 @@
 // For check-in
 var local_data = {};
 
-// Be really chatty
-var VERBOSE = 1;
-
-
 // printf (str, ....) - Works like the C version that you know and love.
 function printf(str) {
 	//Split on %[format strings]
@@ -26,6 +22,17 @@ function checkAtSubmit( ev ) {
 	//Check that all ranges have been touched 
 }
 
+
+//Filter search when trying to narrow down participants
+function searchParticipants ( ev ) {
+	vv = [].slice.call( document.querySelectorAll( "ul.part-drop-list li" ) );
+	for ( i=0; i < vv.length; i++ ) {
+		nod =         vv[i].children[0].parentElement;
+		key = String( vv[i].children[0].innerHTML );
+		val = ev.target.value;
+		nod.style.display = ( key.toLowerCase().indexOf( val.toLowerCase() ) == -1 ) ? "none" : "block"; 
+	}
+}
 
 function changeSliderNeighborValue ( ev ) {
 	//Change the whole value if the inner value has no nodes...
@@ -76,34 +83,13 @@ function updateNeighborBoxFromSI (ev) {
 }
 
 
-
-function getNextResults(ev) {
-	ev.preventDefault();
-	//Get all modal-load links, and set xhr for each.
-	var xhr = new XMLHttpRequest();
-	var doc = document.getElementById( "feed" );
-	xhr.open( "GET", ev.target, false );
-	xhr.send();
-	doc.innerHTML = xhr.responseText;	
-	var ia = [].slice.call( 
-		document.querySelectorAll( ".modal-load" )); 
-
-	//Remove all listeners on the page	
-	for ( n in ia ) {
-		ia[n].removeEventListener( "click", getNextResults );
-	}
-
-	//Re-add all listeners on the page.
-	for ( n in ia ) {
-		ia[n].addEventListener( "click", getNextResults );
-	}
-	return 1;
+function ribbit(ev) {
+	alert( "i've been reloaded" );
 }
 
 //Handles fetching and serializing participant results from previous weeks 
-function modalGetNextResults(ev) {
+function getNextResults(ev) {
 	ev.preventDefault();
-
 	//Get all modal-load links, and set xhr for each.
 	var xhr = new XMLHttpRequest();
 	var doc = document.getElementById( "feed" );
@@ -238,8 +224,9 @@ function updateExerciseForm ( ev ) {
 function updateExerciseSession ( ev ) {
 	//Get the current PID
 	var pid, ilocarr = location.href.split("?")[1].split("=");
-	for ( n=0; n < ilocarr.length; n++ )
-		{ if ( ilocarr[n] == "id" ) pid = ilocarr[n + 1];	}
+	for ( n=0; n < ilocarr.length; n++ ) {
+		if ( ilocarr[n] == "id" ) pid = ilocarr[n + 1];
+	}
 	
 	//And finally get the field to change
 	var p = ev.target.parentElement.parentElement.parentElement;
@@ -254,6 +241,8 @@ function updateExerciseSession ( ev ) {
 	//Send a request and replace the field
 	var x = new XMLHttpRequest();
 	//console.log( l );
+	
+x.addEventListener("load", ribbit );
 	x.open( "GET", l , false); 
 	x.send();
 	q.innerHTML = x.responseText;	
@@ -285,11 +274,11 @@ Router = {
 	 ,{ domSelector: "input[ type=submit ]", event: "click"   , f: checkAtSubmit }
 	 ,{ domSelector: "select"              , event: "click"   , f: [ updateTickler ] }
 	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
-	 ,{ domSelector: ".modal-load"         , event: "click"   , f: modalGetNextResults }
+	 ,{ domSelector: ".modal-load"         , event: "click"   , f: getNextResults }
 	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: makeModal }
 	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
-	 ,{ domSelector: "select[name=missedReason]", event: "change"  , f: updateExerciseForm }
+	 ,{ domSelector: "#feed", event: "load"  , f: ribbit }
 	]
 
 	,"input": [
@@ -305,6 +294,7 @@ Router = {
 	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
 	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: tc }
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: save_session_users }
+	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
 	]
 };
 
