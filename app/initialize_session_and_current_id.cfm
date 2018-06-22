@@ -315,6 +315,10 @@ else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
 }
 
 
+//Generate record threads here for writing and saving
+//recordThread = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
+
+
 //Here is a way to calculate the exercise type from the beginning of the script, 
 //(versus having to compare against ENDURANCE_CLASSIFIERS all over the application)
 if ( ep gt 0 ) {

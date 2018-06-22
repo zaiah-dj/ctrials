@@ -1,4 +1,5 @@
 <cfscript>
+errstr = "Error at /api/resistance/* - ";
 try {
 	//Auto select exercise type if it's nowhere to be found
 	if ( !StructKeyExists( form, "extype" ) )
@@ -31,26 +32,33 @@ try {
 		desig = "seatedrow";
 	else if ( form.extype == 13 )
 		desig = "shoulder2";
-	else if ( form.extype == 14 )
+	else if ( form.extype == 14 ) {
 		desig = "triceppress";
+	}
 
-	//Then check for the right fields.	
-	fields = cf.checkFields( form, 
-		 "pid"
-		,"sess_id"
-		,"reps1"
-		,"reps2"
-		,"reps3"
-		,"weight1"
-		,"weight2"
-		,"weight3"
-	);
+	//...
+	stat = val.validate( form, {
+		 pid = { req = true }
+		,sess_id = { req = true }
+		,stdywk = { req = true }
+		,dayofwk = { req = true }
+		,staffId = { req = false, ifNone = 1 }
+		,recordThread = { req = false, ifNone = "hi" }
+		,reps1 = { req = true }
+		,reps2 = { req = true }
+		,reps3 = { req = true }
+		,weight1 = { req = true }
+		,weight2 = { req = true }
+		,weight3 = { req = true }
+	});	
 
-	if ( !fields.status )
-		req.sendAsJson( status = 0, message = "RESISTANCE - #fields.message#" );	
-	
-	//then insert or update if the row is not there...
-	//pid="#form.pid#", extype="#form.el_re_extype#" 
+	if ( !stat.status ) {
+		req.sendAsJson( status = 0, message = "#errstr# - #stat.message#" );	
+	}
+
+	fv = stat.results;
+
+	//Insert or update if the row is not there...
 	upd = ezdb.exec( 
 		string = "
 		SELECT * 
@@ -62,110 +70,103 @@ try {
 			AND dayofwk = :dayofwk
 		"
 		,bindArgs = { 
-			pid = form.pid
-		 ,stdywk = form.stdywk
-		 ,dayofwk = form.dayofwk
+			pid = fv.pid
+		 ,stdywk = fv.stdywk
+		 ,dayofwk = fv.dayofwk
 		}
 	);
 
-	//req.sendAsJson( status=1, message="Failmatic: #SerializeJSON( upd )#" );
-
-	if ( !upd.status )
-		req.sendAsJson( status = 0, message = "RESISTANCE - #upd.message#" );
-
-	//Get a new record thread
-	recordThread = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
-
-	if ( !upd.prefix.recordCount ) {
-		upd = ezdb.exec( 
-			datasource = "#data.source#"
-			,string = "
-				INSERT INTO 
-					#data.data.resistance#	
-				(  participantGUID
-					,recordthread
-					,insertedBy
-					,dayofwk
-					,stdywk
-					,#desig#Rep1
-					,#desig#Rep2
-					,#desig#Rep3
-					,#desig#Wt1
-					,#desig#Wt2
-					,#desig#Wt3
-				)
-				VALUES
-				(  :pid
-					,:recThr
-					,:insBy
-					,:dwk
-					,:swk
-					,:rep1
-					,:rep2
-					,:rep3
-					,:wt1
-					,:wt2
-					,:wt3
-				);"
-			,bindArgs = {
-				pid   = "#form.pid#" 
-			 ,recThr= recordThread
-			 ,insBy = "NOBODY" 
-			 ,dwk   = "#form.dayofwk#"
-			 ,swk   = "#form.stdywk#"
-			 ,rep1  = "#form.reps1#" 
-			 ,rep2  = "#form.weight1#" 
-			 ,rep3  = "#form.reps2#" 
-			 ,wt1   = "#form.weight2#" 
-			 ,wt2   = "#form.reps3#" 
-			 ,wt3   = "#form.weight3#" 
-			} 
-		);
-	}
-	else {
-		upd = ezdb.exec( 
-			string = "
-			UPDATE
-				#data.data.resistance#	
-			SET 
-				 #desig#Rep1 = :rep1
-				,#desig#Wt1  = :wt1
-				,#desig#Rep2 = :rep2
-				,#desig#Wt2  = :wt2
-				,#desig#Rep3 = :rep3
-				,#desig#Wt3  = :wt3
-			WHERE
-				participantGUID = :pid
-			AND
-				stdywk = :swk
-			AND
-				dayofwk = :dwk
-			"
-			,datasource = "#data.source#"
-
-			,bindArgs = {
-				pid ="#form.pid#" 
-			 ,sid ="#form.sess_id#"
-			 ,dwk = "#form.dayofwk#"
-			 ,swk = "#form.stdywk#"
-			 ,staffId = 1
-			 ,rep1="#form.reps1#" 
-			 ,wt1 ="#form.weight1#" 
-			 ,rep2="#form.reps2#" 
-			 ,wt2 ="#form.weight2#" 
-			 ,rep3="#form.reps3#" 
-			 ,wt3 ="#form.weight3#" 
-			}
-		);	
-	}
-
 	if ( !upd.status ) {
-		req.sendAsJson( status = 0, message = "RESISTANCE - #upd.message#" );
+		req.sendAsJson( status = 0, message = "#errstr# - #upd.message#" );
 	}
 }
-catch (any e) {
-	req.sendAsJson( status = 0, message = "RESISTANCE - #e.message# - #e.detail#" );
+catch (any ff) {
+	req.sendAsJson( status = 0, message = "#errstr# - #ff#" );
 }
-req.sendAsJson( status = 1, message = "RESISTANCE - #upd.message#" );	
+
+
+//Choose a SQL statment
+sqlStatement = "";
+if ( !upd.prefix.recordCount ) {
+	sqlString = "
+		INSERT INTO 
+			#data.data.resistance#	
+		(  participantGUID
+			,recordthread
+			,insertedBy
+			,dayofwk
+			,stdywk
+			,#desig#Rep1
+			,#desig#Rep2
+			,#desig#Rep3
+			,#desig#Wt1
+			,#desig#Wt2
+			,#desig#Wt3
+		)
+		VALUES
+		(  :pid
+			,:recThr
+			,:insBy
+			,:dwk
+			,:swk
+			,:rep1
+			,:rep2
+			,:rep3
+			,:wt1
+			,:wt2
+			,:wt3
+		);";
+	}
+else {
+	sqlString = " 
+		UPDATE
+			#data.data.resistance#	
+		SET 
+			 #desig#Rep1 = :rep1
+			,#desig#Wt1  = :wt1
+			,#desig#Rep2 = :rep2
+			,#desig#Wt2  = :wt2
+			,#desig#Rep3 = :rep3
+			,#desig#Wt3  = :wt3
+		WHERE
+			participantGUID = :pid
+		AND
+			stdywk = :swk
+		AND
+			dayofwk = :dwk
+		";
+}
+
+
+//Then perform the query
+try {
+	qu = ezdb.exec(
+		string = sqlString
+	 ,datasource = "#data.source#"
+ 	 ,bindArgs = {
+			pid      = fv.pid 
+		 ,sid      = fv.sess_id
+		 ,staffId  = fv.staffId 
+		 ,recThr   = fv.recordThread
+		 ,insBy    = "NOBODY" 
+		 ,dwk      = fv.dayofwk
+		 ,swk      = fv.stdywk
+		 ,rep1     = fv.reps1 
+		 ,rep2     = fv.weight1 
+		 ,rep3     = fv.reps2 
+		 ,wt1      = fv.weight2 
+		 ,wt2      = fv.reps3 
+		 ,wt3      = fv.weight3 
+		} 
+	);
+
+	if ( !qu.status ) {
+		req.sendAsJson( status = 0, message = "#errstr# - #qu.message#" );
+	}
+}
+catch (any ff) {
+	req.sendAsJson( status = 0, message = "#errstr# - #ff#" );
+}
+req.sendAsJson( status = 1, message = "SUCCESS at /api/resistance/* - #upd.message#" );	
 abort;
 </cfscript>
