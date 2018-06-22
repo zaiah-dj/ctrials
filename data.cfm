@@ -82,10 +82,7 @@ I can do more with this concept...
 ,"routes" = {
 	"default"= { 
 		"hint"  =  "The participant selection page as seen by the interventionists."
-	 ,"model" = [
-		  "initialize_session_and_current_id"
-		 ,"update_valid_session"
-		]
+	 ,"model" = ["initialize_session_and_current_id","update_valid_session" ]
 	 ,"view"  = [ 
 			"master/head", 
 			"default", 
@@ -95,10 +92,7 @@ I can do more with this concept...
 
 	,"modal-results" = { 
 		"hint"  =  "Results for previous weeks go here." 
-	 ,"model" = [
-		  "initialize_session_and_current_id"
-		 ,"ajax_display_previous"
-		]
+	 ,"model" = ["initialize_session_and_current_id" ,"ajax_display_previous" ]
 	 ,"view"  =  "modal-results"
 	 ,"content_type"  = "application/json"
 	}
@@ -111,13 +105,7 @@ I can do more with this concept...
 
 	,"update" = { 
 		"hint"  =  "This acts as the server side endpoint for values edited via AJAX." 
-	 ,"model" = [
-		  "initialize_session_and_current_id"
-		 ,"ajax_start_new_session"
-		 ,"ajax_update_resistance_table"
-		 ,"ajax_update_endurance_table"
-		 ,"ajax_update_control_table"
-		]
+	 ,"model" = ["initialize_session_and_current_id","api" ]
 	 ,"view"  =  "update"
 	 ,"content_type"  = "application/json"
 	}

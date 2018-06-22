@@ -118,6 +118,7 @@ component {
 	public function validate ( cStruct, vStruct ) {
 		s = StructNew();
 		s.status = true;
+		s.message = "";
 
 		//Results are where things should go...
 		s.results = StructNew();
@@ -126,14 +127,25 @@ component {
 		for ( key in vStruct ) {
 			//Short names
 			vk = vStruct[ key ];
-			ck = cStruct[ key ];
 
-			//Required
+			//If key is required, and not there, stop
 			if ( structKeyExists( vk, "req" ) ) {
-				//The whole thing should fail if this isn't here...
-				if ( !structKeyExists( cStruct, key ) )
+				if ( (!structKeyExists( cStruct, key )) && (vk[ "req" ] eq true) ) {
 					return strerror( 'errKeyNotFound', key );
+				}
 			}
+
+			//No use moving forward if the key does not exist...
+			if ( !structKeyExists( cStruct, key ) ) {
+				//Use the 'none' key to set defaults on values that aren't required
+				if ( StructKeyExists( vk, "ifNone" ) ) {
+					s.results[ key ] = vk[ "ifNone" ];	
+				} 
+				continue;
+			}
+ 
+			//Set this key
+			ck = cStruct[ key ];
 
 			//Less than	
 			if ( structKeyExists( vk, "lt" ) ) {

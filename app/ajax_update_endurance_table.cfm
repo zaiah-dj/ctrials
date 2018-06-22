@@ -1,6 +1,10 @@
 <cfscript>
 if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) {
 	try {
+		//Define an error string for use throughout this part
+		errstr = "Error at /api/endurance/* - ";
+
+/*
 		//check fields
 		fields = cf.checkFields( form, 
 			 "pid"
@@ -17,6 +21,35 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) {
 		//...
 		if ( !fields.status )
 			req.sendAsJson( status = 0, message = "ENDURANCE - #fields.message#" );	
+*/
+
+		//TODO: This needs to be able to check types
+		req.sendAsJson( status = 0, message = "#errstr# - #serializeJSON(val)#" );	
+		stat = val.validate( form, {
+			 pid = { req = true }
+
+			,sess_id = { req = true/*, type = "numeric"*/ }
+
+			,rpm = { req = true/*, type = "numeric"*/ }
+
+			,watts_resistance = { req = true/*, type = "numeric"*/ }
+
+			,grade = { req = true/*, type = "numeric"*/ }
+
+			,speed = { req = true/*, type = "numeric"*/ }
+
+			,affect = { req = true/*, type = "numeric"*/ }
+
+			/*Should only fit in a certain range of values*/ 
+			,equipment = { req = true/*, type = "numeric"*/ }
+
+			/*Should never be out of range of 0 - 50*/
+			,timeblock = { req = true/*, type = "numeric"*/ }
+		});	
+
+		if ( !stat.status ) {
+			req.sendAsJson( status = 0, message = "#errstr# #fields.message#" );	
+		}
 		
 		//Figure out the form field name 
 		desig = "";
@@ -28,10 +61,7 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) {
 			desig = "m#form.timeblock#_ex";
 		}
 
-		//then insert or update if the row is not there...
-		//add stdywk, staffid, visitguid, dayofwk, insertedby to get an accurate count
-			 //,visitguid = :visitguid
-				//,visitguid = sess.key
+		//Check for the presence of a field already
 		upd = ezdb.exec( 
 			string = "
 			SELECT * FROM 
@@ -49,8 +79,9 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) {
 			}
 		);
 
-		if ( !upd.status )
+		if ( !upd.status ) {
 			req.sendAsJson( status = 0, message = "ENDURANCE - #upd.message#" );
+		}
 	
 		if ( !upd.prefix.recordCount ) {
 			upd = ezdb.exec( 
@@ -136,15 +167,15 @@ if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) {
 			);	
 		}
 		if ( !upd.status ) {
-			req.sendAsJson( status = 0, message = "ENDURANCE - #upd.message#" );
+			req.sendAsJson( status = 0, message = "#errstr# - #upd.message#" );
 			abort;
 		}
 	}
 	catch (any e) {
-		req.sendAsJson( status = 0, message = "ENDURANCE UPDATE FAILED - #e.message# - #e.detail# " );	
+		req.sendAsJson( status = 0, message = "#errstr# #e.message# - #e.detail# " );	
 		abort;
 	}
-	req.sendAsJson( status = 1, message = "ENDURANCE - #upd.message#" );	
+	req.sendAsJson( status = 1, message = "SUCCESS @ /api/endurance/* - #upd.message#" );	
 	abort;
 }
 

@@ -112,6 +112,7 @@ if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentPartic
 		}]
 	 ,additional = [ 
 		{ name="this", value= "endurance" }
+	 ,{ name="exParam", value= "#sess.current.exerciseParameter#" }
 	 ,{ name="pid", value= "#sess.current.participantId#" }
 	 ,{ name="dayofwk", value= "#sess.current.day#" }
 	 ,{ name="stdywk", value= "#sess.current.week#" }
