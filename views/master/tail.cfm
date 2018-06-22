@@ -66,7 +66,18 @@
 		<td></td><td><table>
 		<th>session</th><th>[ #s# ]</th>
 	<cfloop collection="#session[s]#" item="ss">
+		<cfif ss eq "recordThreads" >
+			<tr>
+				<td>#ss#</td>
+				<td>
+				<cfloop collection="#session[s][ss]#" item="tw">
+					#session[s][ss][tw]#<br />
+				</cfloop>
+				</td>
+			</tr>
+		<cfelse>
 		<tr><td>#ss#</td><td>#session[s][ss]#</td></tr>
+		</cfif>
 	</cfloop>	
 		</table></td>
 	</cfif>

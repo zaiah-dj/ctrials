@@ -323,13 +323,20 @@ else if ( StructKeyExists( url, "param" ) )
 	ep = url.param;
 else 
 */
-/*
 if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
-	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "recordThreads" ) ) {
-		//ep = session[ "#session.iv_motrpac_transact_id#" ][ "exerciseParameter" ];
+	sts =  session[ "#session.iv_motrpac_transact_id#" ];
+	if ( StructKeyExists( sts, "recordThreads" ) && !StructIsEmpty( sts["recordThreads"]  ) ) {
+		recordThreads = sts[ "recordThreads" ];
+	}
+	else {
+		recordThreads = {};
+		if ( isDefined("selectedParticipants") ) {
+			for ( iid in ListToArray( ValueList(selectedParticipants.results.p_participantGUID, ", ") ) ) {
+				recordThreads[ iid ] = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
+			}
+		}
 	}
 }
-*/
 
 
 //Here is a way to calculate the exercise type from the beginning of the script, 
@@ -379,6 +386,9 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
 
 	//Participant ID
  ,participantId = currentId
+
+	//List of record threads in use
+ ,recordThreads = (isDefined("recordThreads")) ? recordThreads : {}
 };
 
 
