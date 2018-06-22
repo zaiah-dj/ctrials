@@ -316,6 +316,20 @@ else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
 
 //Generate record threads here for writing and saving
 //recordThread = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
+/*
+if ( StructKeyExists( form, "param" ) )
+	ep = form.param;
+else if ( StructKeyExists( url, "param" ) )
+	ep = url.param;
+else 
+*/
+/*
+if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
+	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "recordThreads" ) ) {
+		//ep = session[ "#session.iv_motrpac_transact_id#" ][ "exerciseParameter" ];
+	}
+}
+*/
 
 
 //Here is a way to calculate the exercise type from the beginning of the script, 
