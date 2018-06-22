@@ -3,7 +3,6 @@
 ajax  = CreateObject( "component", "components.writeback" );
 ezdb  = CreateObject( "component", "components.quella" );
 rl    = CreateObject( "component", "components.requestLogger" );
-cf    = CreateObject( "component", "components.checkFields" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 val   = CreateObject( "component", "components.validate" );
 exe   = CreateObject( "component", "components.exercises" ).init();
@@ -351,6 +350,9 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
 
 	//What exercise has been selected last?
  ,exerciseParameter = ep
+
+	//The ID of the session identifier
+ ,sessId = session.iv_motrpac_transact_id
 
 	//Show the exercises selected
  //,exerciseListName = (isDefined("exerciseList")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
