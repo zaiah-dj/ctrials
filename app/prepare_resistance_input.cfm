@@ -142,6 +142,7 @@ if ( isDefined("currentParticipant") && ListContains(RESISTANCE, currentParticip
 	 ,additional = [ 
 			{ name = "this", value = "resistance" }
 		 ,{ name = "sess_id", value = "#sess.key#" }
+ 		 ,{ name="recordThread", value= "#sess.current.recordThread#" }
 		 ,{ name = "pid", value = "#pid#" }
 		 ,{ name = "dayofwk", value= "#aday#" }
 		 ,{ name = "stdywk", value= "#aweek#" }

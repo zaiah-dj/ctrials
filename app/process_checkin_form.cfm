@@ -101,7 +101,7 @@ if ( !StructIsEmpty( form ) ) {
 				}
 			);
 			if ( !qh.status ) { 
-				errAndRedirect( "Error at process_checkin_form.cfm (132): #SerializeJSON(bpi)#" );
+				errAndRedirect( "Error at process_checkin_form.cfm (132): #SerializeJSON(qh)#" );
 			}
 		}
 		else if ( ListContains(RESISTANCE, extype) ) {
@@ -109,9 +109,11 @@ if ( !StructIsEmpty( form ) ) {
 				string = "UPDATE #data.data.resistance# 
 					SET weight = :wt 
 				WHERE
-				participantGUID = :pid
-				dayofwk = :dwk
-				studywk = :swk"
+					participantGUID = :pid
+				AND
+					dayofwk = :dwk
+				AND
+					stdywk = :swk"
 
 				,bindArgs = {
 					wt  = fv.ps_weight
@@ -121,7 +123,7 @@ if ( !StructIsEmpty( form ) ) {
 				}
 			);
 			if ( !qh.status ) { 
-				errAndRedirect( "Error at process_checkin_form.cfm (152): #SerializeJSON(bpi)#" );
+				errAndRedirect( "Error at process_checkin_form.cfm (152): #SerializeJSON(qh)#" );
 			}
 		}
 	}

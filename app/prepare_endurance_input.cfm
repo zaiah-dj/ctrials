@@ -114,6 +114,7 @@ if ( isDefined( "currentParticipant" ) && ListContains( ENDURANCE, currentPartic
 		{ name="this", value= "endurance" }
 	 ,{ name="exParam", value= "#sess.current.exerciseParameter#" }
 	 ,{ name="pid", value= "#sess.current.participantId#" }
+	 ,{ name="recordThread", value= "#sess.current.recordThread#" }
 	 ,{ name="dayofwk", value= "#sess.current.day#" }
 	 ,{ name="stdywk", value= "#sess.current.week#" }
 	 ,{ name="sess_id", value= "#sess.key#" }
