@@ -44,7 +44,7 @@
 									<tr><cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day"><th>#day#</th></cfloop></tr>
 									<tr>
 									<!--- This loop generates links activating modal windows to see previous days' results within the current week --->
-									<cfloop array=#cdays# item="day">
+									<cfloop array=#checkIn.cdays# item="day">
 										<td <cfif sess.current.dayName eq LCase( day )>class="selected"</cfif>>	
 										<cfif not day>
 											-
@@ -76,21 +76,21 @@
 
 				<tr>
 					<!--- Figure blood pressure --->
-					<cfset sys_bp=#iif( model.currentBpSystolic lt 60, 80, model.currentBpSystolic )#>
-					<cfset dia_bp=#iif( model.currentBpDiastolic lt 50, 80, model.currentBpDiastolic )#>
+					<cfset checkIn.BPSystolic=#iif( checkIn.BPSystolic lt 60, 80, checkIn.BPSystolic )#>
+					<cfset checkIn.BPDiastolic=#iif( checkIn.BPDiastolic lt 50, 80, checkIn.BPDiastolic )#>
 
 					<td class="title">Blood Pressure</td>
 					<td>
 
-					<cfif !model.needsNewBp>
-						<span class=huge>#sys_bp#</span> / <span class=huge>#dia_bp#</span>
+					<cfif !checkIn.needsNewBp>
+						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span>
 						<i>(*No further readings need to be taken at this time)</i>
-						<input type="hidden" value="#model.currentBpSystolic#" name="bp_systolic">
-						<input type="hidden" value="#model.currentBpDiastolic#" name="bp_diastolic">
+						<input type="hidden" value="#checkIn.BPSystolic#" name="bp_systolic">
+						<input type="hidden" value="#checkIn.BPDiastolic#" name="bp_diastolic">
 
 					<cfelse>
 						<div>
-						<span class=huge>#model.currentBpSystolic#</span> / <span class=huge>#model.currentBpDiastolic#</span>
+						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span>
 						<span style="text-align: right;">
 							A new blood pressure reading is required for this participant.
 						</span>
@@ -99,9 +99,9 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<span style="top: -2px" class="sameline">Systolic</span>
-									<input type="range" min="#model.minBPS#" max="#model.maxBPS#" class="slider" name="bp_systolic" value="#sys_bp#" required>
+									<input type="range" min="#checkIn.BPMinSystolic#" max="#checkIn.BPMaxSystolic#" class="slider" name="bp_systolic" value="#checkIn.BPSystolic#" required>
 								</div>
-								<div class="catch cc col-sm-1"><span>#sys_bp#</span><span> mmHg</span></div>
+								<div class="catch cc col-sm-1"><span>#checkIn.BPSystolic#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
 									<button class="incrementor">+</button>
 									<button class="incrementor">-</button>
@@ -114,9 +114,9 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<span style="top: -2px" class="sameline">Diastolic</span>
-									<input type="range" min="#model.minBPD#" max="#model.maxBPD#" class="slider" name="bp_diastolic" value="#dia_bp#" required>
+									<input type="range" min="#checkIn.BPMinDiastolic#" max="#checkIn.BPMaxDiastolic#" class="slider" name="bp_diastolic" value="#checkIn.BPDiastolic#" required>
 								</div>
-								<div class="catch cc col-sm-1"><span>#dia_bp#</span><span> mmHg</span></div>
+								<div class="catch cc col-sm-1"><span>#checkIn.BPDiastolic#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
 									<button class="incrementor">+</button>
 									<button class="incrementor">-</button>
@@ -130,11 +130,11 @@
 				<tr>
 					<td class="title">Target Heart Rate</td>
 					<td>
-						<cfif model.targetHeartRate>
-						#model.targetHeartRate# BPM
+						<cfif checkIn.targetHR>
+						#checkIn.targetHR# BPM
 						(Variance allowed between 
-							#model.targetHeartRate - (model.targetHeartRate * 0.05)# and 
-							#model.targetHeartRate + (model.targetHeartRate * 0.05)# BPM )
+							#checkIn.targetHR - (checkIn.targetHR * 0.05)# and 
+							#checkIn.targetHR + (checkIn.targetHR * 0.05)# BPM )
 						<cfelse>
 						<div class="row">
 							<div class="cc col-sm-8">
@@ -155,9 +155,9 @@
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
-								<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#model.weight#" required>
+								<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#checkIn.weight#" required>
 							</div>
-							<div class="catch cc col-sm-1"><span>#iif(model.weight eq "",0,model.weight)#</span><span> lb</span></div>
+							<div class="catch cc col-sm-1"><span>#iif(checkIn.weight eq "",0,checkIn.weight)#</span><span> lb</span></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
@@ -183,28 +183,25 @@
 								<br />
 							</div>
 							<div class="clabel">
-								Treadmill<!---<label>#et_name#</label>--->
+								Treadmill
 								<input type="radio" name="param" value="2" required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
-								Other<!---<label>#et_name#</label>--->
+								Other
 								<input type="radio" name="param" value="3" required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 						<cfelse>
-							<cfset el=ListToArray( ValueList( Q.exercises.results.et_name, "," ))>
 							<div class="clabel">
 								Upper Body
-<!---								<cfloop from=1 to=4 index=i>#el[i]#<cfif i neq 4>, </cfif></cfloop> --->
 								<input type="radio" name="param" value="4" required><br />
 								<span class="checkmark"></span>
 							</div>
 							<div class="clabel">
 								Lower Body
-<!---								<cfloop from=5 to=8 index=i>#el[i]#<cfif i neq 8>, </cfif></cfloop> --->
 								<input type="radio" name="param" value="5" required>
 								<span class="checkmark"></span>
 							</div>

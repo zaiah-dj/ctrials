@@ -1,4 +1,5 @@
 <cfscript>
+/*
 try {
 	if ( isDefined('old_ws') ) {
 		new_ws = {};
@@ -62,4 +63,5 @@ catch (any e) {
 	writedump( e );
 	abort;	
 }
+*/
 </cfscript>

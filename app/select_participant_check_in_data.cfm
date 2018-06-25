@@ -1,10 +1,16 @@
 <cfscript>
+/*
 //Objects
 param name="old_ws.ps_week" default="0";
 param name="old_ws.ps_day" default="0";
 param name="old_ws.ps_next_sched" default="0";
 param name="old_ws.ps_weight" default="0";
 //param name="old_ws.ps_machine_value" default="0";
+*/
+
+//select days from this week with results (including today?)
+tbName = ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) 
+	? "#data.data.endurance#" : "#data.data.resistance#";
 
 
 //Do all the queries here.	
@@ -35,81 +41,40 @@ Q = {
 };
 
 
+//Check in
+checkIn = {
+	//Blood pressure
+	 BPSystolic = 0
+	,BPDiastolic = 0
+	,BPMinSystolic = 0
+	,BPMaxSystolic = 0
+	,BPMinDiastolic = 0
+	,BPMaxDiastolic = 0
+
+	//Target Heart Rate
+	,targetHR = 0
+
+	//Weight
+	,weight = 0
+
+	//Do I need a new blood pressure?
+	,needsNewBp = false 
+
+	//Completed days array
+  ,cdays = [0,0,0,0,0,0]
+
+	//Query completed days
+	,qCompletedDays = ezdb.exec(
+		string="SELECT dayofwk FROM #tbName# 
+			WHERE participantGUID = :pid AND stdywk = :wk"
+	 ,bindArgs={ pid=sess.current.participantId, wk=sess.current.week }
+	)
+
+	//Exercise list
+	,elist = CreateObject( "component", "components.exercises" ).init()
+};
 
 
-//Getting the next scheduled visit is not super straightforward if it's not recorded in patient table.
-nextScheduledVisit = ( Q.ai.prefix.recordCount ) ? Q.ai.results.ps_next_sched : Now(); 
-
-//Blood pressure needs some help.
-if ( Q.pbp.prefix.recordCount ) 
-	model = {
-		needsNewBp = ( DateDiff( "d", Q.pbp.results.bp_daterecorded, Now() ) > 30 ) ? true : false
-	 ,currentBpSystolic = Q.pbp.results.bp_systolic
-	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
-	 ,targetHeartRate = 0 //currentParticipant.results.p_targetheartrate
-	 ,nextSchedVisit = listFirst( old_ws.ps_next_sched, DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" ) )
-	 ,sess.current.week = ListFirst( old_ws.ps_week, 0 )
-	 ,sess.current.day = ListFirst( old_ws.ps_day, 0 )
-	 ,weight = ListFirst( old_ws.ps_weight, 0 )
-//	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
-	 ,minBPS = 40
-	 ,maxBPS = 210
-	 ,minBPD = 20
-	 ,maxBPD = 120
-	};
-else {
-	model = {
-		needsNewBp = true
-	 ,currentBpSystolic = 0
-	 ,currentBpDiastolic = 0
-	 ,targetHeartRate = 0 //currentParticipant.results.p_targetheartrate
-	 ,nextSchedVisit = listFirst( old_ws.ps_next_sched, DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" ) )
-	 ,sess.current.week = ListFirst( old_ws.ps_week, 0 )
-	 ,sess.current.day = ListFirst( old_ws.ps_day, 0 )
-	 ,weight = ListFirst( old_ws.ps_weight, 0 )
-//	 ,machineValue = ListFirst( old_ws.ps_machine_value, 0 )
-	 ,minBPS = 40
-	 ,maxBPS = 210
-	 ,minBPD = 20
-	 ,maxBPD = 120
-	};
-}
-/*
-//Blood pressure needs some help.
-if ( Q.pbp.prefix.recordCount ) 
-	model = {
-		needsNewBp = ( DateDiff( "d", Q.pbp.results.bp_daterecorded, Now() ) > 30 ) ? true : false
-	 ,currentBpSystolic = Q.pbp.results.bp_systolic
-	 ,currentBpDiastolic = Q.pbp.results.bp_diastolic
-	 ,targetHeartRate = currentParticipant.results.p_targetheartrate
-	 ,nextSchedVisit = DateTimeFormat( nextScheduledVisit, "YYYY-MM-DD" )
-	 ,minBPS = 40
-	 ,maxBPS = 210
-	 ,minBPD = 20
-	 ,maxBPD = 120
-	};
-else {
-	model = {
-		needsNewBp = true
-	 ,currentBpSystolic = 0
-	 ,currentBpDiastolic = 0
-	 ,targetHeartRate = currentParticipant.results.p_targetheartrate
-	 ,nextSchedVisit = DateTimeFormat( Q.ci.results.ps_next_sched, "MM/DD/YYYY" )
-	 ,minBPS = 40
-	 ,maxBPS = 210
-	 ,minBPD = 20
-	 ,maxBPD = 120
-	};
-}
-*/
-
-//select days from this week with results (including today?)
-tbName = ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) 
-	? "#data.data.endurance#" : "#data.data.resistance#";
-qCompletedDays = ezdb.exec(
-	string="select dayofwk from #tbName# where participantGUID = :pid AND stdywk = :wk"
- ,bindArgs={pid=sess.current.participantId, wk=sess.current.week}
-);
-cdays = [0,0,0,0,0,0];
-for ( n in ListToArray( ValueList( qCompletedDays.results.dayofwk, "," ) ) ) cdays[ n ] = n;
+for ( n in ListToArray( ValueList( checkIn.qCompletedDays.results.dayofwk, "," ) ) )
+	{	checkIn.cdays[ n ] = n; }
 </cfscript>
