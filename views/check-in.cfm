@@ -1,20 +1,26 @@
+<!--- Figure blood pressure --->
+<!---<cfset checkIn.BPSystolic=#iif( checkIn.BPSystolic lt 60, 80, checkIn.BPSystolic )#>
+<cfset checkIn.BPDiastolic=#iif( checkIn.BPDiastolic lt 50, 80, checkIn.BPDiastolic )#>--->
+<cfset week=#sess.current.week#>
+<cfset day=#sess.current.day#>
+<cfset cid=#sess.current.participantId#>
+<cfset prevResultsLink=link('modal-results.cfm?id=#sess.current.participantId#&all=true')>
+<cfset links={}>
+<cfset links.checkIn = link( 'check-in.cfm?id=#url.id#' )>
+<cfset links.allPreviousResults = link('modal-results.cfm?id=#sess.current.participantId#&all=true')>
+
 <cfoutput>
 <div class="container-body">
-	<form name="checkInForm" action="#link( 'check-in.cfm?id=#url.id#' )#" method="POST">
+	<form name="checkInForm" action="#links.checkIn#" method="POST">
 		<table class="table">
 			<tbody>
 				<tr>
 					<td colspan=2>
 						<div style="width:50%;float:left;">
 							<label class="title">Study Week</label>
-							<cfset sc=1>
 							<select name="ps_week" required>
 							<cfloop from=1 to=14 index = "w">
-								<cfif #sess.current.week# eq #w#>
-								<option selected value=#w#>Week #w#</option>	
-								<cfelse>
-								<option value=#w#>Week #w#</option>	
-								</cfif>
+								<option #iif(sess.current.week eq w,DE("selected"),DE(""))# value=#w#>Week #w#</option>	
 							</cfloop>
 							</select>
 						</div>	
@@ -24,15 +30,12 @@
 							<input type="hidden" name="ps_day" value="#sess.current.day#"></input>
 		
 							<!--- This is a link activating a modal window to see all previous results for the current participant --->
-							<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&all=true')#">All Previous Results</a>
+							<a class="modal-activate" href="#links.allPreviousResults#">All Previous Results</a>
 							<div class="modal">
 								<div class="modal-content">
 									<span class="close">&times;</span>
 									<p>Previous Weeks</p>
 									<div id="feed">
-										<cfset week=#sess.current.week#>
-										<cfset day=#sess.current.day#>
-										<cfset cid=#sess.current.participantId#>
 										<cfinclude template="../app/ajax_display_previous.cfm">
 										<cfinclude template="modal-results.cfm">
 									</div>	
@@ -49,10 +52,9 @@
 										<cfif not day>
 											-
 										<cfelse>
-											<cfset week=#sess.current.week#>
 											<cfset day=#day#>
-											<cfset cid=#sess.current.participantId#>
-											<a class="modal-activate" href="#link('modal-results.cfm?id=#sess.current.participantId#&day=#day#&week=#sess.current.week#')#">See Results</a>
+											<cfset links.individualResult = link('modal-results.cfm?id=#sess.current.participantId#&day=#day#&week=#sess.current.week#')>
+											<a class="modal-activate" href="#links.individualResult#">See Results</a>
 											<div class="modal">
 												<div class="modal-content">
 													<span class="close">&times;</span>
@@ -75,14 +77,10 @@
 
 
 				<tr>
-					<!--- Figure blood pressure --->
-					<cfset checkIn.BPSystolic=#iif( checkIn.BPSystolic lt 60, 80, checkIn.BPSystolic )#>
-					<cfset checkIn.BPDiastolic=#iif( checkIn.BPDiastolic lt 50, 80, checkIn.BPDiastolic )#>
-
 					<td class="title">Blood Pressure</td>
 					<td>
 
-					<cfif !checkIn.needsNewBp>
+					<cfif !checkIn.getNewBP>
 						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span>
 						<i>(*No further readings need to be taken at this time)</i>
 						<input type="hidden" value="#checkIn.BPSystolic#" name="bp_systolic">
@@ -90,7 +88,6 @@
 
 					<cfelse>
 						<div>
-						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span>
 						<span style="text-align: right;">
 							A new blood pressure reading is required for this participant.
 						</span>

@@ -396,11 +396,9 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
 sess.current = session[ "#session.iv_motrpac_transact_id#" ];
 
 //There will realistically only be one at a time...
-//writedump( sess.current.participantId );
-//writedump( sess.current.recordThreads );
 sess.current.recordThread = 
 	( StructKeyExists( sess.current.recordThreads, sess.current.participantId ) ) ?
-	StructFind( sess.current.recordThreads, sess.current.participantId ) : 0;
-//	sess.current.recordThreads[ sess.current.participantId ];
-//writedump( sess.current );abort;
+	StructFind( sess.current.recordThreads, sess.current.participantId ) : 0 ;
+
+
 </cfscript>

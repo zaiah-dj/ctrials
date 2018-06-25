@@ -89,6 +89,21 @@
 	<tr><td>Current Day</td><td>#sess.current.day#</td></tr>
 	<tr><td>Start Week</td><td>#startDate#</td></tr>
 	<tr><td>Current Week</td><td>#sess.current.week#</td></tr>
+
+	<!--- .... --->
+	<cfif data.loaded eq "check-in">
+		<cfloop collection="#checkIn#" item="cc">
+		<cfif IsSimpleValue( checkIn[cc] )>
+		<tr><td>#cc#</td><td>#checkIn[ cc ]#</td></tr>
+<!---
+--->
+		<cfelse>
+<!---
+		<tr><td>#cc#</td><td>#checkIn[ cc ]#</td></tr>
+--->
+		</cfif>
+		</cfloop>	
+	</cfif>
 </cfif>	
 	</table>
 </div>
