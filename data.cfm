@@ -92,14 +92,14 @@ I can do more with this concept...
 
 	,"modal-results" = { 
 		"hint"  =  "Results for previous weeks go here." 
-	 ,"model" = ["initialize_session_and_current_id" ,"ajax_display_previous" ]
+	 ,"model" = ["initialize_session_and_current_id" ,"api" ]
 	 ,"view"  =  "modal-results"
 	 ,"content_type"  = "application/json"
 	}
 
 	,"completed-days-results" = {
 		"hint" = "Results for completed days in a week go here."
-	 ,"model" = [ "initialize_session_and_current_id", "ajax_get_completed_days" ]
+	 ,"model" = [ "initialize_session_and_current_id", "api" ]
 	 ,"view" = "days-results"
 	}
 
@@ -112,7 +112,7 @@ I can do more with this concept...
 
 	,"update-note" = {
 		"hint" = "Used to update notes in place."
-		,"model" = [ "initialize_session_and_current_id", "ajax_update_participant_note" ]
+		,"model" = [ "initialize_session_and_current_id", "api" ]
 		,"view" = "nothing"
 	}
 
