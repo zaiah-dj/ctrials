@@ -4,7 +4,6 @@ data.cfm
 CFM based routing structure.
 I can do more with this concept...
 
-
 	"endurance"      = "frm_ADUEndurance"
  ,"resistance"     = "frm_ADUResistance"
  ,"participants"   = "v_ADUSessionTickler"
@@ -12,6 +11,14 @@ I can do more with this concept...
 	"endurance"      = "ac_mtr_endurance_new"
  ,"resistance"     = "ac_mtr_resistance_new"
  ,"participants"   = "ac_mtr_participants_v2"
+
+			,"prepare_endurance_input"
+			,"prepare_resistance_input"
+			,"prepare_control_input" 
+
+			,"select_participant_check_in_data"
+			,"select_participant_notes"
+			,"select_failure_reasons"
   --->
 <cfset manifest={
  "source" = "motrpac"
@@ -124,13 +131,7 @@ I can do more with this concept...
 
 	,"input"  = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
-	 ,"model" = [ 
-			 "initialize_session_and_current_id"
-			,"update_valid_session"
-			,"prepare_endurance_input"
-			,"prepare_resistance_input"
-			,"prepare_control_input" 
-		]
+	 ,"model" = [ "initialize_session_and_current_id", "update_valid_session", "input" ]
 	 ,"view"  = [ 
 			"master/head", 
 			"participant/list", 
@@ -146,9 +147,6 @@ I can do more with this concept...
 			 "initialize_session_and_current_id"
 			,"update_valid_session"
 			,"process_checkin_form"
-			,"select_participant_check_in_data"
-			,"select_participant_notes"
-			,"select_failure_reasons"
 		]
 	 ,"view"  = [ 
 			 "master/head"

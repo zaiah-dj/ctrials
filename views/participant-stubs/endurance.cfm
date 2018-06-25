@@ -1,7 +1,7 @@
 <!--- endurance.cfm --->
 <cfoutput>
 	<!--- Set a time --->
-	<input type="hidden" value="#defaultTimeblock#" name="timeblock">
+	<input type="hidden" value="#dtb#" name="timeblock">
 
 	<cfif data.debug eq 1>
 		<cfset DebugClientCode = ajax.ClientDebug()>
@@ -10,24 +10,17 @@
 	<!--- TODO: This shouldn't take two loops.  Think about it more. --->
 	<div class="inner-selection">
 		<ul class="inner-selection">
-		<cfloop array=#times# index=ind>
-		<cfif ind.index eq defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
-				<li class="selected">#ind.text#</li>
-			</a>
-		<cfelseif ind.index lt defaultTimeblock>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
-				<li class="completed">#ind.text#</li>
-			</a>
+		<cfloop query=#times#> 
+		<cfset timelink = link( "input.cfm?id=#url.id#&time=#index#" )> 
+		<cfif index eq dtb>
+			<a href="#timelink#"><li class="selected">#text#</li></a>
+		<cfelseif index lt dtb>
+			<a href="#timelink#"><li class="completed">#text#</li></a>
 		<cfelse>
-			<a href="#link( 'input.cfm?id=#url.id#&time=#ind.index#' )#">
-				<li>#ind.text#</li>
-			</a>
+			<a href="#timelink#"><li>#text#</li></a>
 		</cfif>
 		</cfloop>
-			<a href="#link( 'recovery.cfm?id=#url.id#' )#">
-				<li class="bg-red">Stop Session</li>
-			</a>
+			<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red">Stop Session</li></a>
 		</ul>
 	</div>
 
@@ -62,7 +55,7 @@
 			</tr>
 			<tr>
 				<td class="title">
-					#val.prv# lb
+					<cfif val.prv eq "">*<cfelse>#val.prv# #val.uom#</cfif>
 				</td>
 				<td>
 					<div class="row">
@@ -72,8 +65,7 @@
 							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#def#" defaultvalue="#def#" name="#val.name#">
 							</cfif>
 						</div>
-						<div class="catch cc col-sm-1"><span>#def#</span><span> lb</span></div>
-						<!---<div class="col-sm-1">lb</div>--->
+						<div class="catch cc col-sm-1"><span>#def#</span><span> #val.uom#</span></div>
 						<div class="col-sm-1">
 							<button class="incrementor">+</button>
 							<button class="incrementor">-</button>
@@ -86,8 +78,7 @@
 		</tbody>
 	</table>
 
-	<input id="sendPageVals" type="submit" value="Save Changes" style="width: 200px;color:white;"></input>
+	<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 	<!--- Real ugly front end initialization code --->
 	#AjaxClientInitCode#
-
 </cfoutput>

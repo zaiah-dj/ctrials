@@ -36,7 +36,7 @@
 									<span class="close">&times;</span>
 									<p>Previous Weeks</p>
 									<div id="feed">
-										<cfinclude template="../app/ajax_display_previous.cfm">
+										<cfinclude template="../app/api/display_previous.cfm">
 										<cfinclude template="modal-results.cfm">
 									</div>	
 								</div>
@@ -60,7 +60,7 @@
 													<span class="close">&times;</span>
 													<h3>Previous Weeks</h3>
 													<div id="feed">
-														<cfinclude template="../app/ajax_display_previous.cfm">
+														<cfinclude template="../app/api/display_previous.cfm">
 														<cfinclude template="modal-results.cfm">
 													</div>	
 												</div>
