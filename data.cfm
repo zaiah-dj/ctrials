@@ -89,7 +89,7 @@ I can do more with this concept...
 ,"routes" = {
 	"default"= { 
 		"hint"  =  "The participant selection page as seen by the interventionists."
-	 ,"model" = ["initialize_session_and_current_id","update_valid_session" ]
+	 ,"model" = ["initialize_session_and_current_id" ]
 	 ,"view"  = [ 
 			"master/head", 
 			"default", 
@@ -131,7 +131,7 @@ I can do more with this concept...
 
 	,"input"  = { 
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
-	 ,"model" = [ "initialize_session_and_current_id", "update_valid_session", "input" ]
+	 ,"model" = [ "initialize_session_and_current_id", "input" ]
 	 ,"view"  = [ 
 			"master/head", 
 			"participant/list", 
@@ -145,7 +145,6 @@ I can do more with this concept...
 		"hint"  =  "Enter test data for a participant.  Exercise types and questions are chosen during the randomization process and should not need to be modified here."
 	 ,"model" = [ 
 			 "initialize_session_and_current_id"
-			,"update_valid_session"
 			,"process_checkin_form"
 		]
 	 ,"view"  = [ 
@@ -172,7 +171,6 @@ I can do more with this concept...
 	,"recovery" = { 
 		"model" = [ 
 			 "initialize_session_and_current_id"
-			,"update_valid_session"
 		]
 	 ,"view"  = [ 
 			"master/head"

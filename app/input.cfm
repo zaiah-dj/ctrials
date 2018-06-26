@@ -17,6 +17,7 @@ if ( isDefined( "currentParticipant" ) ) {
 		//Get queries for recall
 		ezdb.setDs = "#data.source#";
 
+		//Recall endurance data from the current or last session
 		req = ezdb.exec(
 			string = "
 			SELECT * FROM
@@ -61,6 +62,15 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.current.week - 1 : sess.current.week
 			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
 			});
+
+		 ba = {
+				pid = sess.current.participantId 
+			 ,stdywk = sess.current.week 
+			 ,dayofwk = sess.current.day 
+			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.current.week - 1 : sess.current.week
+			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
+		};
+//writedump( ba );writedump( req );abort;
 
 		//Prefill any values that need to be prefilled	 
 		rc = req.prefix.recordCount;	

@@ -284,14 +284,13 @@ if ( sess.status gt 1 ) {
 			sid = sess.key
 		}
 	);
-
 }
 
 
 //Select a week
 week = 0;
-if ( StructKeyExists( form, "week" ) )
-	week = form.week;
+if ( StructKeyExists( form, "ps_week" ) )
+	week = form.ps_week;
 else if ( StructKeyExists( url, "week" ) )
 	week = url.week;
 else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {

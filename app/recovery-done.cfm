@@ -1,7 +1,6 @@
 <!--- save recovery data (for both exericses) --->
 <cfscript>
-if ( StructKeyExists( form, "pid" ) ) 
-{
+if ( StructKeyExists( form, "pid" ) ) {
 	//Get type
 	type = ezdb.exec(
 		string = "select randomGroupCode from #data.data.participants# where participantGUID = :pid"
