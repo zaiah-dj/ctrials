@@ -13,7 +13,11 @@ if ( !StructIsEmpty( form ) ) {
 			ps_day = { req = true }
 		 ,ps_pid = { req = true }
 		 ,ps_weight = { req = true }
+		 ,ps_week = { req = true }
+		 ,ps_thr = { req = ( sess.current.randomizedTypeName eq "endurance" ), ifNone = 0 }
 		 ,param = { req = true }
+		 ,insby  = { req = false, ifNone = 0 }
+		 ,staffid = { req = false, ifNone = 0 }
 		 ,ps_next_sched = { req = false , ifNone = 0 }
 		 ,bp_systolic = { req = false, ifNone = 0 }
 		 ,bp_diastolic = { req = false, ifNone = 0 }
@@ -33,14 +37,7 @@ if ( !StructIsEmpty( form ) ) {
 
 			if ( exists eq "" ) {
 				sqlString = "INSERT INTO #data.data.bloodpressure#
-					VALUES 
-					( 
-					  :id
-					 ,:systolic
-					 ,:diastolic
-					 ,:recorddate 
-					 ,NULL
-					)"; 
+					VALUES ( :id,:systolic, :diastolic, :recorddate, NULL )";
 			}
 			else {
 				sqlString = "UPDATE #data.data.bloodpressure# SET
@@ -62,84 +59,56 @@ if ( !StructIsEmpty( form ) ) {
 			}
 		}
 
-		//Add a row to the check in status table
-		qr = ezdb.exec( 
-			string="INSERT INTO #data.data.checkin# VALUES (
-				 :ps_pid
-				,:ps_session_id
-				,:ps_week
-				,:ps_day
-				,:ps_nextSched
-				,:ps_weight
-				,:extype
-				,:datestamp
-			)"
+		//Select a table name
+		tbName = ( sess.current.randomizedTypeName eq "endurance" ) ? "#data.data.endurance#" : "#data.data.resistance#"; 
+
+		//Is there already a record?
+		exists = ezdb.exec(string="SELECT participantGUID FROM #tbName# 
+			WHERE participantGUID = :pid AND dayofwk = :dwk AND stdywk = :swk AND recordthread = :rid"
+	   ,bindArgs = { pid=fv.ps_pid, dwk = sess.current.day, swk = fv.ps_week, rid = { value=sess.current.recordThread, type = "varchar" }}
+		).results.participantGUID;
+				
+		//Write weight regardless, and target heart rate if this is an endurance participant
+		sqlString = "";
+		if ( exists eq "" ) {
+			sqlString	= "
+				INSERT INTO #tbName# 
+					( staffId , insertedBy, weight, participantGUID, recordthread, dayofwk, 
+					#iif(tbName eq data.data.endurance, DE("trgthr1,"), DE(""))# 
+					stdywk )
+		    VALUES 
+					( :stf    , :iby      , :wt   ,:pid            , :rthd       , :dwk   , 
+					#iif(tbName eq data.data.endurance, DE(":thr,"), DE(""))# 
+					:swk   )";
+		}
+		else { 
+			sqlString	= "UPDATE #tbName# 
+				SET 
+					weight = :wt 
+					#iif(tbName eq data.data.endurance, DE(",trgthr1 = :thr"), DE(""))# 
+				WHERE participantGUID = :pid AND recordthread = :rthd
+				  AND dayofwk = :dwk AND stdywk = :swk";
+		}
+
+		qh = ezdb.exec(
+			string = sqlString
 		 ,bindArgs = {
-			 ps_pid  = fv.ps_pid
-			,ps_session_id = sess.current.sessId
-			,ps_week = sess.current.week
-			,ps_day = sess.current.day
-			,ps_nextSched = fv.ps_next_sched
-			,ps_weight = fv.ps_weight
-			,extype = fv.param
-			,datestamp = {value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime"} 
-		});
+			  stf = fv.staffid
+			 ,iby = fv.insby
+			 ,wt  = fv.ps_weight
+			 ,pid = fv.ps_pid
+			 ,thr = fv.ps_thr
+			 ,rthd= { value = sess.current.recordThread, type = "varchar" }
+			 ,dwk = sess.current.day
+			 ,swk = fv.ps_week
+		 }
+		);
+/*writeoutput( sqlString );
+writedump( qh );
+abort;*/
 
-		if ( !qr.status ) { 
-			errAndRedirect( "Error at process_checkin_form.cfm (102): #SerializeJSON(qr)#" );
-		}
-
-		//Exercise type
-		extype = ezdb.exec( 
-			string = "SELECT randomGroupCode FROM 
-				#data.data.participants# WHERE participantGUID = :pid"
-		 ,bindArgs = { pid = form.ps_pid }
-		).results.randomGroupCode;
-
-		//Update the proper table with weight info
-		if ( ListContains( ENDURANCE, extype ) ) {
-			qh = ezdb.exec( 
-				string = "UPDATE #data.data.endurance# 
-					SET weight = :wt 
-				WHERE
-					participantGUID = :pid
-				AND
-					dayofwk = :dwk
-				AND
-					stdywk = :swk"
-
-				,bindArgs = {
-					wt  = fv.ps_weight
-				 ,pid = fv.ps_pid
-				 ,dwk = sess.current.day
-				 ,swk = sess.current.week
-				}
-			);
-			if ( !qh.status ) { 
-				errAndRedirect( "Error at process_checkin_form.cfm (132): #SerializeJSON(qh)#" );
-			}
-		}
-		else if ( ListContains(RESISTANCE, extype) ) {
-			qh = ezdb.exec( 
-				string = "UPDATE #data.data.resistance# 
-					SET weight = :wt 
-				WHERE
-					participantGUID = :pid
-				AND
-					dayofwk = :dwk
-				AND
-					stdywk = :swk"
-
-				,bindArgs = {
-					wt  = fv.ps_weight
-				 ,pid = fv.ps_pid
-				 ,dwk = sess.current.day
-				 ,swk = sess.current.week
-				}
-			);
-			if ( !qh.status ) { 
-				errAndRedirect( "Error at process_checkin_form.cfm (152): #SerializeJSON(qh)#" );
-			}
+		if ( !qh.status ) { 
+			errAndRedirect( "Error at process_checkin_form.cfm (152): #SerializeJSON(qh)#" );
 		}
 	}
 	catch (any ff) {

@@ -364,10 +364,12 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
  ,location = "#cgi.script_name#?#cgi.query_string#"
 
 	//Randomized type
- ,randomizedType = ( randomCode eq "" ) ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? E : R
+  //,randomizedType = ( randomCode eq "" ) ? 0 : (ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ? E : R)
+ ,randomizedType = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? E : R
 
 	//Randomized type
- ,randomizedTypeName = (randomCode eq "") ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? "Endurance" : "Resistance"
+ ,randomizedTypeName = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? "Endurance" : "Resistance" 
+ //,randomizedTypeName = (randomCode eq "") ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? "Endurance" : "Resistance"
 
 	//What exercise has been selected last?
  ,exerciseParameter = ep
@@ -406,22 +408,52 @@ if ( data.loaded eq "check-in" ) {
 	tbName = ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) 
 		? "#data.data.endurance#" : "#data.data.resistance#";
 
-	//This should be private...
+	//Get the last blood pressure
 	privateBPQ = ezdb.exec( 
 		string="SELECT * FROM #data.data.bloodpressure# WHERE bp_pid = :pid", 
 		bindArgs = { pid = "#sess.current.participantId#" } 
 	).results;
 
-	//...
-	privateReBP = ( privateBPQ.bp_daterecorded eq "" || DateDiff( "d", privateBPQ.bp_daterecorded, Now() ) gt 30 ); 
+	//Blood pressure calculations
+	privateBPDaysLimit = 30;
+	privateBPDaysElapsed = ( privateBPQ.bp_daterecorded eq "" ) ? 0 : DateDiff( "d", privateBPQ.bp_daterecorded, Now() ); 
+	privateReBP = ( privateBPQ.bp_daterecorded eq "" || privateBPDaysElapsed gt privateBPDaysLimit ); 
 
+	//Get the last recorded weight
+	weight = ezdb.exec( 
+	  string="
+			SELECT weight FROM #tbName# 
+			WHERE 
+				recordthread = :thr
+			AND
+				participantGUID = :pid 
+		"
+	 ,bindArgs = { 
+			pid = { type = "varchar", value = sess.current.participantId },
+			thr = { type = "varchar", value = sess.current.recordThread  }
+		}
+	).results.weight;
+
+	if ( !ListContains(ENDURANCE, currentParticipant.results.randomGroupCode) )
+		targetHR = 0;
+	else {
+		//Get the last recorded weight
+		targetHR = ezdb.exec( 
+			string="SELECT trgthr1 FROM #tbName# 
+				WHERE recordthread = :thr AND participantGUID = :pid "
+		 ,bindArgs = { 
+				pid = { type = "varchar", value = sess.current.participantId },
+				thr = { type = "varchar", value = sess.current.recordThread  }
+			}
+		).results.trgthr1;
+	}
 
 	//Check in
 	checkIn = {
 		//Blood pressure
 		//Do I need a new blood pressure?
 		 getNewBP = privateReBP
-		,BPDaysLeft = (privateReBP) ? 1 : 0 
+		,BPDaysLeft = privateBPDaysLimit - privateBPDaysElapsed
 		,BPSystolic = (privateReBP) ? 40 : privateBPQ.bp_systolic
 		,BPDiastolic = (privateReBP) ? 40 : privateBPQ.bp_diastolic
 		,BPMinSystolic = 40  
@@ -430,10 +462,10 @@ if ( data.loaded eq "check-in" ) {
 		,BPMaxDiastolic = 90
 
 		//Target Heart Rate
-		,targetHR = 0
+		,targetHR = ( targetHR eq "" || targetHR eq 0 ) ? 0 : targetHR
 
 		//Weight
-		,weight = 0
+		,weight = ( weight eq "" || weight eq 0 ) ? 0 : weight
 
 		//Completed days array
 		,cdays = [0,0,0,0,0,0]

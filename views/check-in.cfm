@@ -82,11 +82,7 @@
 
 					<cfif !checkIn.getNewBP>
 						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span> mmHg
-						<i style="float:right;position:relative;top:8px;">(*No further readings need to be taken at this time)</i>
-						<!---
-						<input type="hidden" value="#checkIn.BPSystolic#" name="bp_systolic">
-						<input type="hidden" value="#checkIn.BPDiastolic#" name="bp_diastolic">
-							--->
+						<i style="float:right;position:relative;top:8px;">(*New reading not needed for another #checkIn.BPDaysLeft# days)</i>
 
 					<cfelse>
 						<div>
@@ -126,28 +122,28 @@
 					</td>
 				</tr>
 
+				<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 				<tr>
 					<td class="title">Target Heart Rate</td>
 					<td>
-						<cfif checkIn.targetHR>
-						#checkIn.targetHR# BPM
-						(Variance allowed between 
-							#checkIn.targetHR - (checkIn.targetHR * 0.05)# and 
-							#checkIn.targetHR + (checkIn.targetHR * 0.05)# BPM )
-						<cfelse>
 						<div class="row">
 							<div class="cc col-sm-8">
-								<input type="range" min="0" max="300" class="slider" name="ps_thr" value="0" required>
+								<input type="range" min="0" max="300" class="slider" name="ps_thr" value="#checkIn.targetHR#" required>
 							</div>
-							<div class="catch cc col-sm-1"><span>0</span><span> bpm</span></div>
+							<div class="catch cc col-sm-1"><span>#checkIn.targetHR#</span><span> bpm</span></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
 							</div>
+							<cfif checkIn.targetHR>
+							<br />(*Variance allowed for currently selected heart rate is in between 
+								#checkIn.targetHR - (checkIn.targetHR * 0.05)# and 
+								#checkIn.targetHR + (checkIn.targetHR * 0.05)# BPM )
+							</cfif>
 						</div>
-						</cfif>
 					</td>
 				</tr>
+				</cfif>
 
 				<tr>
 					<td class="title">Weight</td>
@@ -177,31 +173,31 @@
 						<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 							<div class="clabel">
 								Cycle
-								<input type="radio" name="param" value="1" required>
+								<input type="radio" name="param" value="1" #iif(sess.current.exerciseParameter eq 1,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
 								Treadmill
-								<input type="radio" name="param" value="2" required>
+								<input type="radio" name="param" value="2"  #iif(sess.current.exerciseParameter eq 2,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
 								Other
-								<input type="radio" name="param" value="3" required>
+								<input type="radio" name="param" value="3"  #iif(sess.current.exerciseParameter eq 3,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 						<cfelse>
 							<div class="clabel">
 								Upper Body
-								<input type="radio" name="param" value="4" required><br />
-								<span class="checkmark"></span>
+								<input type="radio" name="param" value="4"  #iif(sess.current.exerciseParameter eq 4,DE("checked"),DE(""))# required>
+								<br /><span class="checkmark"></span>
 							</div>
 							<div class="clabel">
 								Lower Body
-								<input type="radio" name="param" value="5" required>
+								<input type="radio" name="param" value="5" #iif(sess.current.exerciseParameter eq 5,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 							</div>
 						</cfif>

@@ -28,22 +28,23 @@
 /* Create a custom radio button */
 .checkmark {
     position: absolute;
-    top: 0;
+    top: 3px;
     left: 0;
     height: 25px;
     width: 25px;
-    background-color: #eee;
+    background-color: #ccc;
     border-radius: 50%;
+	border: 1px solid black;
 }
 
 /* On mouse-over, add a grey background color */
 .clabel:hover input ~ .checkmark {
-    background-color: #ccc;
+    background-color: cyan;
 }
 
 /* When the radio button is checked, add a blue background */
 .clabel input:checked ~ .checkmark {
-    background-color: #2196F3;
+    background-color: cyan;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
@@ -60,10 +61,10 @@
 
 /* Style the indicator (dot/circle) */
 .clabel .checkmark:after {
- 	top: 8.5px;
-	left: 8.5px;
+ 	top: 6.5px;
+	left: 7.5px;
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	background: white;
+	background: black;
 }
