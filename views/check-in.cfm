@@ -81,10 +81,12 @@
 					<td>
 
 					<cfif !checkIn.getNewBP>
-						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span>
-						<i>(*No further readings need to be taken at this time)</i>
+						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span> mmHg
+						<i style="float:right;position:relative;top:8px;">(*No further readings need to be taken at this time)</i>
+						<!---
 						<input type="hidden" value="#checkIn.BPSystolic#" name="bp_systolic">
 						<input type="hidden" value="#checkIn.BPDiastolic#" name="bp_diastolic">
+							--->
 
 					<cfelse>
 						<div>

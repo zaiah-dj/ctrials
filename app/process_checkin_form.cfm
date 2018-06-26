@@ -26,15 +26,30 @@ if ( !StructIsEmpty( form ) ) {
 		fv = stat.results;
 		
 		//Add a row to the blood pressure table. (if required)
-		if ( 0 ) {
+		if ( fv.bp_systolic > 0 && fv.bp_diastolic > 0 ) {
+			exists = ezdb.exec( string = "SELECT bp_pid FROM #data.data.bloodpressure# WHERE bp_pid = :id",
+				bindArgs = { id = fv.ps_pid } ).results.bp_pid;
+			sqlString = ""; 
+
+			if ( exists eq "" ) {
+				sqlString = "INSERT INTO #data.data.bloodpressure#
+					VALUES 
+					( 
+					  :id
+					 ,:systolic
+					 ,:diastolic
+					 ,:recorddate 
+					 ,NULL
+					)"; 
+			}
+			else {
+				sqlString = "UPDATE #data.data.bloodpressure# SET
+					bp_systolic = :systolic, bp_diastolic = :diastolic
+				 ,bp_daterecorded = :recorddate WHERE bp_pid = :id";
+			} 
+
 			bpi = ezdb.exec(
-				string="UPDATE #data.data.bloodpressure# 
-					SET 
-						bp_systolic = :systolic
-					 ,bp_diastolic = :diastolic
-					 ,bp_daterecorded = :recorddate
-					WHERE 
-						bp_pid = :id"
+				 string = sqlString
 				,bindArgs={ 
 					 id        = fv.ps_pid
 					,systolic  = fv.bp_systolic

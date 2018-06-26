@@ -415,11 +415,12 @@ if ( data.loaded eq "check-in" ) {
 	//...
 	privateReBP = ( privateBPQ.bp_daterecorded eq "" || DateDiff( "d", privateBPQ.bp_daterecorded, Now() ) gt 30 ); 
 
+
 	//Check in
 	checkIn = {
 		//Blood pressure
 		//Do I need a new blood pressure?
-		 getNewBP = (privateReBP) ? 1 : 0 
+		 getNewBP = privateReBP
 		,BPDaysLeft = (privateReBP) ? 1 : 0 
 		,BPSystolic = (privateReBP) ? 40 : privateBPQ.bp_systolic
 		,BPDiastolic = (privateReBP) ? 40 : privateBPQ.bp_diastolic
