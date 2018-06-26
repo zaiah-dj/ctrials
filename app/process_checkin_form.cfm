@@ -14,7 +14,6 @@ if ( !StructIsEmpty( form ) ) {
 		 ,ps_pid = { req = true }
 		 ,ps_weight = { req = true }
 		 ,ps_week = { req = true }
-		 ,ps_thr = { req = ( sess.current.randomizedTypeName eq "endurance" ), ifNone = 0 }
 		 ,param = { req = true }
 		 ,insby  = { req = false, ifNone = 0 }
 		 ,staffid = { req = false, ifNone = 0 }
@@ -74,11 +73,9 @@ if ( !StructIsEmpty( form ) ) {
 			sqlString	= "
 				INSERT INTO #tbName# 
 					( staffId , insertedBy, weight, participantGUID, recordthread, dayofwk, 
-					#iif(tbName eq data.data.endurance, DE("trgthr1,"), DE(""))# 
 					stdywk )
 		    VALUES 
 					( :stf    , :iby      , :wt   ,:pid            , :rthd       , :dwk   , 
-					#iif(tbName eq data.data.endurance, DE(":thr,"), DE(""))# 
 					:swk   )";
 		}
 		else { 
@@ -97,7 +94,6 @@ if ( !StructIsEmpty( form ) ) {
 			 ,iby = fv.insby
 			 ,wt  = fv.ps_weight
 			 ,pid = fv.ps_pid
-			 ,thr = fv.ps_thr
 			 ,rthd= { value = sess.current.recordThread, type = "varchar" }
 			 ,dwk = sess.current.day
 			 ,swk = fv.ps_week

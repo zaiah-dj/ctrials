@@ -122,28 +122,10 @@
 					</td>
 				</tr>
 
-				<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 				<tr>
 					<td class="title">Target Heart Rate</td>
-					<td>
-						<div class="row">
-							<div class="cc col-sm-8">
-								<input type="range" min="0" max="300" class="slider" name="ps_thr" value="#checkIn.targetHR#" required>
-							</div>
-							<div class="catch cc col-sm-1"><span>#checkIn.targetHR#</span><span> bpm</span></div>
-							<div class="col-sm-1">
-								<button class="incrementor">+</button>
-								<button class="incrementor">-</button>
-							</div>
-							<cfif checkIn.targetHR>
-							<br />(*Variance allowed for currently selected heart rate is in between 
-								#checkIn.targetHR - (checkIn.targetHR * 0.05)# and 
-								#checkIn.targetHR + (checkIn.targetHR * 0.05)# BPM )
-							</cfif>
-						</div>
-					</td>
+					<td>(0) bpm</td>
 				</tr>
-				</cfif>
 
 				<tr>
 					<td class="title">Weight</td>
