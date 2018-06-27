@@ -30,10 +30,10 @@ if ( StructKeyExists( form, "this" ) && form.this eq "startSession" ) {
 			}
 		}
 	}
-	catch (any e) {
+	catch (any ff) {
 		req.sendAsJson( 
 			status = 0, 
-			message= "Failed to add members to new session - #e.message# - #data.source# - #e.detail#"
+			message= "Failed to add members to new session - #ff# - #data.source#"
 		);
 	}
 

@@ -1,5 +1,5 @@
 <cfscript>
-if ( StructKeyExists( session, "iv_motrpac_transact_id" ) ) { 
+if ( StructKeyExists( session, "ivId" ) ) { 
 	//Bring in ezdb
 	ezdb  = CreateObject( "component", "components.quella" );
 
@@ -9,11 +9,11 @@ if ( StructKeyExists( session, "iv_motrpac_transact_id" ) ) {
 			ac_mtr_participant_transaction_set
 		WHERE 
 			p_transaction_id = :sid"
-	 ,bindArgs = { sid = 	session.iv_motrpac_transact_id }
+	 ,bindArgs = { sid = 	session.ivId }
 	);
 
 	//Get rid of other keys
-	StructDelete( session, "iv_motrpac_transact_id" );
+	StructDelete( session, "ivId" );
 }
 
 //Loop through and get rid of all other session data

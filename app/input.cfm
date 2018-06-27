@@ -14,11 +14,8 @@ if ( isDefined( "currentParticipant" ) ) {
 		if (dtb < 0 || dtb > 50 ) {writeoutput( "Endurance time value is too big." ); abort;}
 		desig = (dtb eq 0) ? "wrmup_" : (dtb eq 50) ? "m5_rec" : "m#dtb#_ex";
 
-		//Get queries for recall
-		ezdb.setDs = "#data.source#";
-
 		//Recall endurance data from the current or last session
-		req = ezdb.exec(
+		qu = ezdb.exec(
 			string = "
 			SELECT * FROM
 				( SELECT * FROM
@@ -26,7 +23,9 @@ if ( isDefined( "currentParticipant" ) ) {
 				WHERE
 					participantGUID = :pid
 				AND stdywk = :stdywk
-				AND dayofwk = :dayofwk ) as cweek
+				AND dayofwk = :dayofwk 
+				AND recordthread = :rthrd
+				) as cweek
 			INNER JOIN
 			( SELECT
 				 rec_id as p_rec_id
@@ -57,40 +56,33 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,datasource = "#data.source#"
 		 ,bindArgs = {
 				pid = sess.current.participantId 
+			 ,rthrd = sess.current.recordThread
 			 ,stdywk = sess.current.week 
 			 ,dayofwk = sess.current.day 
 			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.current.week - 1 : sess.current.week
 			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
 			});
 
-		 ba = {
-				pid = sess.current.participantId 
-			 ,stdywk = sess.current.week 
-			 ,dayofwk = sess.current.day 
-			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.current.week - 1 : sess.current.week
-			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
-		};
-//writedump( ba );writedump( req );abort;
 
 		//Prefill any values that need to be prefilled	 
-		rc = req.prefix.recordCount;	
+		rc = qu.prefix.recordCount;	
 
 		values = [
 			{ show = ( sess.current.exerciseParameter eq 1 ) ? true : false, 
 				label = "RPM", uom = "RPM",  min = 20, max = 120, step = 1, name = "rpm"
-				,def = req.results[ "#desig#rpm" ], prv = req.results[ "p_#desig#rpm" ] }
+				,def = qu.results[ "#desig#rpm" ], prv = qu.results[ "p_#desig#rpm" ] }
 		 ,{ show = ( sess.current.exerciseParameter eq 1 ) ? true : false, 
 				label = "Watts/Resistance",uom = "Watts", min = 0, max = 500, step = 1, name = "watts_resistance"
-				,def = req.results[ "#desig#watres" ], prv = req.results[ "p_#desig#watres" ] }
+				,def = qu.results[ "#desig#watres" ], prv = qu.results[ "p_#desig#watres" ] }
 		 ,{	show = ( sess.current.exerciseParameter eq 2 ) ? true : false, 
 				label = "MPH/Speed", uom = "MPH",    min = 0.1, max = 15, step = 0.5, name = "speed"
-				,def = req.results[ "#desig#speed" ], prv = req.results[ "p_#desig#speed" ] }
+				,def = qu.results[ "#desig#speed" ], prv = qu.results[ "p_#desig#speed" ] }
 		 ,{ show = ( sess.current.exerciseParameter eq 2 ) ? true : false, 
 				label = "Percent Grade", uom = "%",    min = 0, max = 15, step = 1, name = "grade"
-				,def = req.results[ "#desig#prctgrade" ], prv = req.results[ "p_#desig#prctgrade" ] }
+				,def = qu.results[ "#desig#prctgrade" ], prv = qu.results[ "p_#desig#prctgrade" ] }
 	/*	 ,{ show = ( sess.current.exerciseParameter eq 1 ), 
 				label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
-				,def = req.results[ "#desig#rpe" ] }*/
+				,def = qu.results[ "#desig#rpe" ] }*/
 		 ,{ show = true, 
 				label = "Affect", uom = "",    min = -5, max = 5, step = 1, name = "affect"
 				,def = 0, prv = 0 }
@@ -138,7 +130,7 @@ if ( isDefined( "currentParticipant" ) ) {
 		desig = res.getExerciseName( type ).desig; 
 
 		//Get the entries in the table.
-		pop = ezdb.exec(
+		qu = ezdb.exec(
 			string = "
 			SELECT * FROM
 			( SELECT
@@ -167,33 +159,36 @@ if ( isDefined( "currentParticipant" ) ) {
 					participantGUID = :pid 
 					AND stdywk = :stdywk
 					AND dayofwk = :dayofwk
+					AND recordthread = :rthrd
 			) AS cweek
 			ON pweek.pguid = cweek.participantGUID
 			"
 		 ,bindArgs = {
 				pid = sess.current.participantId
+			 ,rthrd = { value = sess.current.recordThread, type = "varchar" }
 			 ,stdywk = aweek
 			 ,dayofwk = aday
 			 ,pstdywk = ((sess.current.day - 1) == 0) ? aweek - 1 : aweek
 			 ,pdayofwk = (( aday - 1 ) == 0) ? 4 : aday - 1
 			});
 
+//writedump( qu ); abort;
 
 		//Generate the form from either db or something else...
-		pc = pop.prefix.recordCount;
+		pc = qu.prefix.recordCount;
 		values = [
 			 {label="Set 1", uom="lb",min = 5, max = 100, step = 5, name = "weight1"
-				,def = pop.results[ "#desig#Wt1" ], prv = pop.results[ "p_#desig#Wt1" ] }
+				,def = qu.results[ "#desig#Wt1" ], prv = qu.results[ "p_#desig#Wt1" ] }
 			,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps1"
-				,def = pop.results[ "#desig#Rep1" ], prv = pop.results[ "p_#desig#Rep1" ] }
+				,def = qu.results[ "#desig#Rep1" ], prv = qu.results[ "p_#desig#Rep1" ] }
 			,{label="Set 2", uom="lb",min = 5, max = 100, step = 5, name = "weight2"
-				,def = pop.results[ "#desig#Wt2" ], prv = pop.results[ "p_#desig#Wt2" ] }
+				,def = qu.results[ "#desig#Wt2" ], prv = qu.results[ "p_#desig#Wt2" ] }
 			,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps2" 
-				,def = pop.results[ "#desig#Rep2" ], prv = pop.results[ "p_#desig#Rep2" ] }
+				,def = qu.results[ "#desig#Rep2" ], prv = qu.results[ "p_#desig#Rep2" ] }
 			,{label="Set 3", uom="lb",min = 5, max = 100, step = 5, name = "weight3"
-				,def = pop.results[ "#desig#Wt3" ], prv = pop.results[ "p_#desig#Wt3" ] }
+				,def = qu.results[ "#desig#Wt3" ], prv = qu.results[ "p_#desig#Wt3" ] }
 			,{label="", uom="reps",min = 0, max = 15, step = 1, name = "reps3"
-				,def = pop.results[ "#desig#Rep3" ], prv = pop.results[ "p_#desig#Rep3" ] }
+				,def = qu.results[ "#desig#Rep3" ], prv = qu.results[ "p_#desig#Rep3" ] }
 		];
 		
 		//Initialize AJAX
@@ -218,5 +213,6 @@ if ( isDefined( "currentParticipant" ) ) {
 			}
 		);
 	}
+//writedump( qu ); abort;
 }
 </cfscript>

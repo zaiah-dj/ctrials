@@ -10,7 +10,6 @@ exe   = CreateObject( "component", "components.exercises" ).init();
 //val.validate( {}, {} );
 ezdb.setDs( datasource = "#data.source#" );
 
-
 //Set labels from over here somewhere
 ENDURANCE_CLASSIFIERS = "ADUEndur,ATHEndur,ADUEnddur";
 RESISTANCE_CLASSIFIERS = "ADUResist,ATHResist";
@@ -32,10 +31,9 @@ startDate = ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" 
 if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 	try {
 		date = DateTimeFormat( url.date, "YYYY-MM-DD HH:nn:ss" );
-
 		if ( DateDiff( "ww", startDate, date ) < 0 ) {
 			date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-		}	
+		}
 	}
 	catch (any e) {
 		date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
@@ -44,7 +42,6 @@ if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 else {
 	date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
 }
-
 
 //Session detection and initialization (if need be)
 expireTime = 60 /*secs*/ * 60 /*minutes*/ * 2 /*hours*/;
@@ -70,11 +67,11 @@ if ( data.debug eq 1 ) {
 }
 
 //Get the last session key in the browser or make a new one.
-if ( StructKeyExists( session, "iv_motrpac_transact_id" ) ) 
-	sess.key = session.iv_motrpac_transact_id;
+if ( StructKeyExists( session, "ivId" ) ) 
+	sess.key = session.ivId;
 else {
-	session.iv_motrpac_transact_id = randstr( 5 ) & randnum( 10 ) & randstr( 5 );
-	sess.key = session.iv_motrpac_transact_id; 
+	session.ivId = randstr( 5 ) & randnum( 10 ) & randstr( 5 );
+	sess.key = session.ivId; 
 }
 
 sess.status = 2;
@@ -124,13 +121,13 @@ else {
 	//after 2 hours (or whatever expireTime is), the session needs to completely expire
 	if ( superExpire neq -1 && timePassed >= expireTime ) {
 		//writeoutput( "#expireTime# seconds have passed.  Kill the session..." );abort;
-		if ( StructKeyExists( session, "iv_motrpac_transact_id" ) ) {
+		if ( StructKeyExists( session, "ivId" ) ) {
 			//really doesn't matter if this fails.
 			ezdb.exec( 
 			  string="DELETE FROM ac_mtr_participant_transaction_set WHERE p_transaction_id = :sid" 
-			 ,bindArgs={sid=session.iv_motrpac_transact_id}
+			 ,bindArgs={sid=session.ivId}
 			);
-			StructDelete( session, "iv_motrpac_transact_id" );
+			StructDelete( session, "ivId" );
 		}
 
 		//This staff member needs to run checkin again
@@ -293,9 +290,9 @@ if ( StructKeyExists( form, "ps_week" ) )
 	week = form.ps_week;
 else if ( StructKeyExists( url, "week" ) )
 	week = url.week;
-else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
-	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "week" ) ) {
-		week = session[ "#session.iv_motrpac_transact_id#" ][ "week" ];
+else if ( StructKeyExists( session, "#session.ivId#" ) ) {
+	if ( StructKeyExists( session[ "#session.ivId#" ], "week" ) ) {
+		week = session[ "#session.ivId#" ][ "week" ];
 	}
 }
 
@@ -306,24 +303,115 @@ if ( StructKeyExists( form, "param" ) )
 	ep = form.param;
 else if ( StructKeyExists( url, "param" ) )
 	ep = url.param;
-else if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
-	if ( StructKeyExists( session[ "#session.iv_motrpac_transact_id#" ], "exerciseParameter" ) ) {
-		ep = session[ "#session.iv_motrpac_transact_id#" ][ "exerciseParameter" ];
+else if ( StructKeyExists( session, "#session.ivId#" ) ) {
+	if ( StructKeyExists( session[ "#session.ivId#" ], "exerciseParameter" ) ) {
+		ep = session[ "#session.ivId#" ][ "exerciseParameter" ];
+	}
+}
+
+/*
+A full session ought to look like:
+
+{
+	id = <for reference only: the random ID that is now session.ivId>
+	needsRebuild [boolean]      - defines whether or not to rebuild record thread table
+	interventionist [ varchar ] - the current interventionist logged in for this session
+	location [ varchar ]        - the current location that the session is on
+	plocation [ varchar ]       - the last location?
+	status [ integer ]          - can be used for anything (like rebuild etc)
+	selected [ varchar ]        - the ID of the currently selected participant
+	participants [ table ]      - list of participants and accompanying data
+		[ <participantGUID> ]     = {
+			checkInCompleted[ bool ]  - Check if check-in is done
+			recoveryCompleted[ bool ] - Check if recovery is done
+			lastExerciseCompleted [ int ] - The last exercise completed...
+			lastLocation[ varchar ]   - The last location of the interventionist when working with this guy
+			bpdata [ integer ]        -
+			param [ integer ]         -
+			rType [ integer ]         -
+			rTypeName [ varchar]      -
+			week [ integer ]          -
+			dayname [ integer ]       -
+			day [ integer ]           -
+			getNewBP [ boolean ]      -
+			BPDaysLeft [ integer ]    - 
+			BPSystolic [ integer ]    - 
+			BPDiastolic [ integer ]   - 
+			BPMinSystolic [ integer ] - 
+			BPMaxSystolic [ integer ] - 
+			BPMinDiastolic [ integer ]- 
+			BPMaxDiastolic [ integer ]- 
+			targetHR [ integer ]      - 
+			weight [ integer ]        - 
+			exlist [ table ]          - List of exercises 	
+		}
+}
+ */
+
+
+//Build all record threads
+function buildRecordThreads( ) {
+	//Pass in the current session ( session[ session.ivId ] )
+	/*
+	If SelectedParticipants is not defined, 
+		most likely nothing has started, so return a blank table
+	If SelectedParticipants is defined, 
+		then extract the GUIDs from the query
+		create a table using participantSchema
+		and match it as the value for the participant GUID
+		you should have
+		[ guid ] = ParticipantSchema
+	*/
+
+	// Check to see if I've already created a table for this session, should be blank until one starts
+
+	// At start of session, build a list of participants, and add some keys to session:
+	// needsRebuild = [0,1] = means that a new person has logged in or out to the current interventionst
+	// interventionist = varchar = the id of the interventionist using the app (should be in db)
+	// 
+	// Also build a table of with participant id as keys
+	// Each of these should hold specific data that can be switched between like a pointer
+	// Keys in this table are:
+
+	if ( StructKeyExists( session, session.ivId ) ) {
+		if ( !StructKeyExists( session[ session.ivId ], "participants" ) ) {
+			sp = session[ session.ivId ][ "participants" ] = {};
+			if ( isDefined( "selectedParticipants" ) ) {
+				la = ListToArray( ValueList(selectedParticipants.results.p_participantGUID, ",") );
+				for ( iid in la ) {
+					fid = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
+					dp = sp[ "A" & Trim( iid ) ] = Trim( fid );
+					for ( key in participantSchema ) {
+						dp[ key ] = 0;	
+					} 
+				}
+			}
+		}
+		else {
+			; //run whatever needs to be run to build this... or just use closures ;)
+		}
 	}
 }
 
 
+//Get a record thread
+function getThread ( ) {
+	//writedump( sess.current.recordThreads ); abort;
+	if ( 0 ) {
+		id = sess.current.participantId; 
+		if ( StructKeyExists( sess.current.recordThreads, "A" & id ) ) {
+			return StructFind( sess.current.recordThreads, "A" & id );
+		}
+		return id;
+	}
+}
+
+
+/*
 //Generate record threads here for writing and saving
 //recordThread = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
-/*
-if ( StructKeyExists( form, "param" ) )
-	ep = form.param;
-else if ( StructKeyExists( url, "param" ) )
-	ep = url.param;
-else 
-*/
-if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
-	sts =  session[ "#session.iv_motrpac_transact_id#" ];
+if ( StructKeyExists( session, "#session.ivId#" ) ) {
+	sts =  session[ "#session.ivId#" ];
 	if ( StructKeyExists( sts, "recordThreads" ) && !StructIsEmpty( sts["recordThreads"]  ) ) {
 		recordThreads = sts[ "recordThreads" ];
 	}
@@ -331,11 +419,14 @@ if ( StructKeyExists( session, "#session.iv_motrpac_transact_id#" ) ) {
 		recordThreads = {};
 		if ( isDefined("selectedParticipants") ) {
 			for ( iid in ListToArray( ValueList(selectedParticipants.results.p_participantGUID, ", ") ) ) {
-				recordThreads[ iid ] = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
+				keyn = "A" & iid; 
+				fid = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
+				recordThreads[ keyn ] = fid;
 			}
 		}
 	}
 }
+*/
 
 
 //Here is a way to calculate the exercise type from the beginning of the script, 
@@ -349,7 +440,9 @@ if ( ep gt 0 ) {
 
 
 //Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
-session[ "#session.iv_motrpac_transact_id#" ] = {
+
+/*
+session[ "#session.ivId#" ] = {
 	//The day that the session is currently modifying
   day = DayOfWeek( Now() )
 
@@ -374,7 +467,7 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
  ,exerciseParameter = ep
 
 	//The ID of the session identifier
- ,sessId = session.iv_motrpac_transact_id
+ ,sessId = session.ivId
 
 	//Show the exercises selected
  //,exerciseListName = (isDefined("exerciseList")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
@@ -389,17 +482,75 @@ session[ "#session.iv_motrpac_transact_id#" ] = {
  ,participantId = currentId
 
 	//List of record threads in use
- ,recordThreads = (isDefined("recordThreads")) ? recordThreads : {}
+ ,recordThreads = buildRecordThreads()
+};
+*/
+
+//This schema should always... 
+participantSchema = {
+	 checkInCompleted = 0 
+	,recoveryCompleted = 0
+	,lastExerciseCompleted = 0
+	,lastLocation = 0
+	,bpData = 0
+	,exerciseParameter = ep
+	,randomizedType = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? E : R
+	,randomizedTypeName = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? "Endurance" : "Resistance"
+	,week = week 
+	,day = DayOfWeek( Now() )
+	,dayName = DateTimeFormat( Now(), "EEE" )
+	,getNewBP = 0
+	,BPDaysLeft = 0
+	,BPSystolic = 0
+	,BPDiastolic = 0
+	,BPMinSystolic = 0
+	,BPMaxSystolic = 0
+	,BPMinDiastolic = 0
+	,BPMaxDiastolic = 0
+	,targetHR = 0
+	,weight = 0
+	,exlist = 0
+};
+
+//Build a session
+session[ session.ivId ] = {
+	 id = session.ivId 
+	,day = DayOfWeek( Now() )
+	,dayName = DateTimeFormat( Now(), "EEE" )
+	,location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#"
+	,needsRebuild = 0
+	,plocation = 0
+	,selected = 0
+	,participantId = currentId 
+	,participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
+	,staff = {
+		 email     =  (isDefined( 'session.email' )) ? session.email : ""
+  	,guid      =  (isDefined( 'session.userguid' )) ? session.userguid : ""
+		,userid    =  (isDefined( 'session.userid' )) ? session.userid : ""
+		,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
+		,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
+	}
 };
 
 
-//sess.current
-sess.current = session[ "#session.iv_motrpac_transact_id#" ];
+//Build record threads
+buildRecordThreads( session[ session.ivId ] );
+
+
+//Only define this if someone is selected...
+sess.current = session[ "#session.ivId#" ];
+
 
 //There will realistically only be one at a time...
-sess.current.recordThread = 
-	( StructKeyExists( sess.current.recordThreads, sess.current.participantId ) ) ?
-	StructFind( sess.current.recordThreads, sess.current.participantId ) : 0 ;
+//writedump( sess.current.participantId );
+//writedump( sess.current.recordThreads );
+
+
+//...
+//StructDelete( sess.current, "recordthread" );
+//sess.current.recordThread = "";//getThread( sess.current.participantId );
+//writedump( getThread() ); abort;
+
 
 //Now, get specific and initialize other things
 if ( data.loaded eq "check-in" ) {

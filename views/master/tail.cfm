@@ -23,7 +23,6 @@
 .cfdebug table th {	background-color: white; color: black; }
 </style>
 <script>
-	//Make a thing
 	document.addEventListener("DOMContentLoaded",function(ev) {
 		b={};
 		b.dn = document.getElementById("cfdebug");
@@ -53,11 +52,16 @@
 		b.dn.appendChild( b.hy );
 	});
 </script>
+<style type="text/css">table.cfdump_struct { color: black; }</style>
 <div class="cfdebug" id="cfdebug">
 	<table>
 	<th>Session</th>
 	<tr><td>Session Data:</td><td>#sess.key#</td></tr>
 	<tr><td>Session Status:</td><td>#sess.status#</td></tr>
+	<tr>
+		<cfdump var = #session#>
+	</tr>
+<!---
 <cfloop collection="#session#" item="s">
 	<tr>
 	<cfif IsSimpleValue( session[s] )>
@@ -71,7 +75,7 @@
 				<td>#ss#</td>
 				<td>
 				<cfloop collection="#session[s][ss]#" item="tw">
-					#session[s][ss][tw]#<br />
+					<small style="font-size:0.6em">'#tw#' -> #session[s][ss][tw]#</small><br />
 				</cfloop>
 				</td>
 			</tr>
@@ -83,6 +87,8 @@
 	</cfif>
 	</tr>
 </cfloop>	
+--->
+
 	<th>Page Data</th>
 <cfif (data.loaded eq "check-in") or (data.loaded eq "input")>
 	<tr><td>Current Date</td><td>#date#</td></tr>
