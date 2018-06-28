@@ -30,11 +30,11 @@
 			<tr>
 				<td class="title">Exercise Type</td>
 				<td>
-					<cfif sess.current.exerciseParameter eq 1>	
+					<cfif sess.csp.exerciseParameter eq 1>	
 						Cycle
-					<cfelseif sess.current.exerciseParameter eq 2>	
+					<cfelseif sess.csp.exerciseParameter eq 2>	
 						Treadmill	
-					<cfelseif sess.current.exerciseParameter eq 3>	
+					<cfelseif sess.csp.exerciseParameter eq 3>	
 						Other	
 					</cfif>
 				</td>

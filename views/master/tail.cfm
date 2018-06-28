@@ -4,6 +4,7 @@
 <style type="text/css">
 .cfdebug {
 	width: 50%;
+	max-height: 50%;
 	min-width: 200px;
 	height: auto;
 	color: white;
@@ -94,21 +95,22 @@
 	<tr><td>Current Date</td><td>#date#</td></tr>
 	<tr><td>Current Day</td><td>#sess.current.day#</td></tr>
 	<tr><td>Start Week</td><td>#startDate#</td></tr>
-	<tr><td>Current Week</td><td>#sess.current.week#</td></tr>
-
+<!---
+	<tr><td>Current Week</td><td>#sess.csp.week#</td></tr>
+--->
 	<!--- .... --->
 	<cfif data.loaded eq "check-in">
+<!---
 		<cfloop collection="#checkIn#" item="cc">
 		<cfif IsSimpleValue( checkIn[cc] )>
 		<tr><td>#cc#</td><td>#checkIn[ cc ]#</td></tr>
-<!---
---->
 		<cfelse>
 <!---
 		<tr><td>#cc#</td><td>#checkIn[ cc ]#</td></tr>
 --->
 		</cfif>
 		</cfloop>	
+--->
 	</cfif>
 </cfif>	
 	</table>

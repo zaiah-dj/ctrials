@@ -56,10 +56,10 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,datasource = "#data.source#"
 		 ,bindArgs = {
 				pid = sess.current.participantId 
-			 ,rthrd = sess.current.recordThread
-			 ,stdywk = sess.current.week 
+			 ,rthrd = sess.csp.recordthread
+			 ,stdywk = sess.csp.week 
 			 ,dayofwk = sess.current.day 
-			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.current.week - 1 : sess.current.week
+			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.csp.week - 1 : sess.csp.week
 			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
 			});
 
@@ -68,19 +68,19 @@ if ( isDefined( "currentParticipant" ) ) {
 		rc = qu.prefix.recordCount;	
 
 		values = [
-			{ show = ( sess.current.exerciseParameter eq 1 ) ? true : false, 
+			{ show = ( sess.csp.exerciseParameter eq 1 ) ? true : false, 
 				label = "RPM", uom = "RPM",  min = 20, max = 120, step = 1, name = "rpm"
 				,def = qu.results[ "#desig#rpm" ], prv = qu.results[ "p_#desig#rpm" ] }
-		 ,{ show = ( sess.current.exerciseParameter eq 1 ) ? true : false, 
+		 ,{ show = ( sess.csp.exerciseParameter eq 1 ) ? true : false, 
 				label = "Watts/Resistance",uom = "Watts", min = 0, max = 500, step = 1, name = "watts_resistance"
 				,def = qu.results[ "#desig#watres" ], prv = qu.results[ "p_#desig#watres" ] }
-		 ,{	show = ( sess.current.exerciseParameter eq 2 ) ? true : false, 
+		 ,{	show = ( sess.csp.exerciseParameter eq 2 ) ? true : false, 
 				label = "MPH/Speed", uom = "MPH",    min = 0.1, max = 15, step = 0.5, name = "speed"
 				,def = qu.results[ "#desig#speed" ], prv = qu.results[ "p_#desig#speed" ] }
-		 ,{ show = ( sess.current.exerciseParameter eq 2 ) ? true : false, 
+		 ,{ show = ( sess.csp.exerciseParameter eq 2 ) ? true : false, 
 				label = "Percent Grade", uom = "%",    min = 0, max = 15, step = 1, name = "grade"
 				,def = qu.results[ "#desig#prctgrade" ], prv = qu.results[ "p_#desig#prctgrade" ] }
-	/*	 ,{ show = ( sess.current.exerciseParameter eq 1 ), 
+	/*	 ,{ show = ( sess.csp.exerciseParameter eq 1 ), 
 				label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
 				,def = qu.results[ "#desig#rpe" ] }*/
 		 ,{ show = true, 
@@ -100,11 +100,11 @@ if ( isDefined( "currentParticipant" ) ) {
 			}]
 		 ,additional = [ 
 			{ name="this", value= "endurance" }
-		 ,{ name="exParam", value= "#sess.current.exerciseParameter#" }
+		 ,{ name="exParam", value= "#sess.csp.exerciseParameter#" }
 		 ,{ name="pid", value= "#sess.current.participantId#" }
-		 ,{ name="recordThread", value= "#sess.current.recordThread#" }
+		 ,{ name="recordThread", value= "#sess.csp.recordthread#" }
 		 ,{ name="dayofwk", value= "#sess.current.day#" }
-		 ,{ name="stdywk", value= "#sess.current.week#" }
+		 ,{ name="stdywk", value= "#sess.csp.week#" }
 		 ,{ name="sess_id", value= "#sess.key#" }
 			]
 		);
@@ -119,7 +119,7 @@ if ( isDefined( "currentParticipant" ) ) {
 
 		//Pull all exercises	
 		//ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
-		reExList=exe.getSpecificExercises( sess.current.exerciseParameter );
+		reExList=exe.getSpecificExercises( sess.csp.exerciseParameter );
 
 		//Pull one exercise
 		reExSel =ezdb.exec( 
@@ -165,7 +165,7 @@ if ( isDefined( "currentParticipant" ) ) {
 			"
 		 ,bindArgs = {
 				pid = sess.current.participantId
-			 ,rthrd = { value = sess.current.recordThread, type = "varchar" }
+			 ,rthrd = { value = sess.csp.recordthread, type = "varchar" }
 			 ,stdywk = aweek
 			 ,dayofwk = aday
 			 ,pstdywk = ((sess.current.day - 1) == 0) ? aweek - 1 : aweek
@@ -199,7 +199,7 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,additional = [ 
 				{ name = "this", value = "resistance" }
 			 ,{ name = "sess_id", value = "#sess.key#" }
-			 ,{ name="recordThread", value= "#sess.current.recordThread#" }
+			 ,{ name="recordThread", value= "#sess.csp.recordthread#" }
 			 ,{ name = "pid", value = "#pid#" }
 			 ,{ name = "dayofwk", value= "#aday#" }
 			 ,{ name = "stdywk", value= "#aweek#" }

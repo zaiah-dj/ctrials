@@ -22,7 +22,7 @@ function DINIT ( ) {
 	dn.style.className = "debug";
 	dn.style.position= "fixed";
 	dn.style.width= "400px";
-	dn.style.height= "50%";
+	dn.style.height= "300px";
 	dn.style.color= "white";
 	dn.style.backgroundColor= "maroon";
 	dn.style.zIndex= "99";

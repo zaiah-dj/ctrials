@@ -58,13 +58,19 @@ if ( !StructIsEmpty( form ) ) {
 			}
 		}
 
+//writedump( fv ); 
+		//Update the session with the correct type
+		sess.csp.exerciseParameter = fv.param;
+//writedump( sess.csp );
+//abort;
+
 		//Select a table name
-		tbName = ( sess.current.randomizedTypeName eq "endurance" ) ? "#data.data.endurance#" : "#data.data.resistance#"; 
+		tbName = ( sess.csp.randomizedTypeName eq "endurance" ) ? "#data.data.endurance#" : "#data.data.resistance#"; 
 
 		//Is there already a record?
 		exists = ezdb.exec(string="SELECT participantGUID FROM #tbName# 
 			WHERE participantGUID = :pid AND dayofwk = :dwk AND stdywk = :swk AND recordthread = :rid"
-	   ,bindArgs = { pid=fv.ps_pid, dwk = sess.current.day, swk = fv.ps_week, rid = { value=sess.current.recordThread, type = "varchar" }}
+	   ,bindArgs = { pid=fv.ps_pid, dwk = sess.current.day, swk = fv.ps_week, rid = { value=sess.csp.recordthread, type = "varchar" }}
 		).results.participantGUID;
 				
 		//Write weight regardless, and target heart rate if this is an endurance participant
@@ -94,14 +100,11 @@ if ( !StructIsEmpty( form ) ) {
 			 ,iby = fv.insby
 			 ,wt  = fv.ps_weight
 			 ,pid = fv.ps_pid
-			 ,rthd= { value = sess.current.recordThread, type = "varchar" }
+			 ,rthd= { value = sess.csp.recordthread, type = "varchar" }
 			 ,dwk = sess.current.day
 			 ,swk = fv.ps_week
 		 }
 		);
-/*writeoutput( sqlString );
-writedump( qh );
-abort;*/
 
 		if ( !qh.status ) { 
 			errAndRedirect( "Error at process_checkin_form.cfm (152): #SerializeJSON(qh)#" );

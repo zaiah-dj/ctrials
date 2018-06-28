@@ -296,18 +296,6 @@ else if ( StructKeyExists( session, "#session.ivId#" ) ) {
 	}
 }
 
-//Select an exercise type 
-ep = 0;
-//writedump( form.param );abort;
-if ( StructKeyExists( form, "param" ) )
-	ep = form.param;
-else if ( StructKeyExists( url, "param" ) )
-	ep = url.param;
-else if ( StructKeyExists( session, "#session.ivId#" ) ) {
-	if ( StructKeyExists( session[ "#session.ivId#" ], "exerciseParameter" ) ) {
-		ep = session[ "#session.ivId#" ][ "exerciseParameter" ];
-	}
-}
 
 /*
 A full session ought to look like:
@@ -377,13 +365,29 @@ function buildRecordThreads( ) {
 		if ( !StructKeyExists( session[ session.ivId ], "participants" ) ) {
 			sp = session[ session.ivId ][ "participants" ] = {};
 			if ( isDefined( "selectedParticipants" ) ) {
-				la = ListToArray( ValueList(selectedParticipants.results.p_participantGUID, ",") );
-				for ( iid in la ) {
-					fid = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
-					dp = sp[ "A" & Trim( iid ) ] = Trim( fid );
-					for ( key in participantSchema ) {
-						dp[ key ] = 0;	
-					} 
+				for ( p in selectedParticipants.results ) {
+					//Create a key that can be referenced by the participant GUID
+					cp = sp[ Trim( p.participantGUID ) ] = {};
+					cp.recordThread = Trim( ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID );
+					cp.checkInCompleted = 0 ;
+					cp.recoveryCompleted = 0;
+					cp.lastExerciseCompleted = 0;
+					cp.lastLocation = 0;
+					cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
+					cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
+					cp.week = week;
+					cp.getNewBP = 0;	
+					//This has to be initialized later...
+					cp.BPDaysLeft = 0;
+					cp.BPSystolic = 0;
+					cp.BPDiastolic = 0;
+					cp.BPMinSystolic = 0;
+					cp.BPMaxSystolic = 0;
+					cp.BPMinDiastolic = 0;
+					cp.BPMaxDiastolic = 0;
+					cp.targetHR = 0;
+					cp.weight = 0;
+					cp.exlist = 0;
 				}
 			}
 		}
@@ -393,124 +397,6 @@ function buildRecordThreads( ) {
 	}
 }
 
-
-//Get a record thread
-function getThread ( ) {
-	//writedump( sess.current.recordThreads ); abort;
-	if ( 0 ) {
-		id = sess.current.participantId; 
-		if ( StructKeyExists( sess.current.recordThreads, "A" & id ) ) {
-			return StructFind( sess.current.recordThreads, "A" & id );
-		}
-		return id;
-	}
-}
-
-
-/*
-//Generate record threads here for writing and saving
-//recordThread = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
-if ( StructKeyExists( session, "#session.ivId#" ) ) {
-	sts =  session[ "#session.ivId#" ];
-	if ( StructKeyExists( sts, "recordThreads" ) && !StructIsEmpty( sts["recordThreads"]  ) ) {
-		recordThreads = sts[ "recordThreads" ];
-	}
-	else {
-		recordThreads = {};
-		if ( isDefined("selectedParticipants") ) {
-			for ( iid in ListToArray( ValueList(selectedParticipants.results.p_participantGUID, ", ") ) ) {
-				keyn = "A" & iid; 
-				fid = ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID;
-				recordThreads[ keyn ] = fid;
-			}
-		}
-	}
-}
-*/
-
-
-//Here is a way to calculate the exercise type from the beginning of the script, 
-//(versus having to compare against ENDURANCE_CLASSIFIERS all over the application)
-if ( ep gt 0 ) {
-//	exerciseList = exe.getSpecificExercises( ep );	
-	if ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) {
-		//exerciseList = exe.getSpecificExercises( ep );	
-	} 
-}
-
-
-//Prepare the session last. TODO: Need a way to tell where the user is coming from... session won't set but could crash during an XHR...
-
-/*
-session[ "#session.ivId#" ] = {
-	//The day that the session is currently modifying
-  day = DayOfWeek( Now() )
-
-	//The proper name of the day that the session is currently modifiying
- ,dayName = DateTimeFormat( Now(), "EEE" )
-
-	//The week that the session is currently modifying
- ,week = week 
-
-	//Where was the user last located?
- ,location = "#cgi.script_name#?#cgi.query_string#"
-
-	//Randomized type
-  //,randomizedType = ( randomCode eq "" ) ? 0 : (ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ? E : R)
- ,randomizedType = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? E : R
-
-	//Randomized type
- ,randomizedTypeName = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? "Endurance" : "Resistance" 
- //,randomizedTypeName = (randomCode eq "") ? 0 : ( ListContains( ENDURANCE_CLASSIFIERS, randomCode ) ) ? "Endurance" : "Resistance"
-
-	//What exercise has been selected last?
- ,exerciseParameter = ep
-
-	//The ID of the session identifier
- ,sessId = session.ivId
-
-	//Show the exercises selected
- //,exerciseListName = (isDefined("exerciseList")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
-
-	//Who is logged in and doing work?
- ,staffId = 0
-
-	//What members are currently part of this session?
- ,participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
-
-	//Participant ID
- ,participantId = currentId
-
-	//List of record threads in use
- ,recordThreads = buildRecordThreads()
-};
-*/
-
-//This schema should always... 
-participantSchema = {
-	 checkInCompleted = 0 
-	,recoveryCompleted = 0
-	,lastExerciseCompleted = 0
-	,lastLocation = 0
-	,bpData = 0
-	,exerciseParameter = ep
-	,randomizedType = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? E : R
-	,randomizedTypeName = (!isDefined("currentParticipant")) ? 0 : ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) ? "Endurance" : "Resistance"
-	,week = week 
-	,day = DayOfWeek( Now() )
-	,dayName = DateTimeFormat( Now(), "EEE" )
-	,getNewBP = 0
-	,BPDaysLeft = 0
-	,BPSystolic = 0
-	,BPDiastolic = 0
-	,BPMinSystolic = 0
-	,BPMaxSystolic = 0
-	,BPMinDiastolic = 0
-	,BPMaxDiastolic = 0
-	,targetHR = 0
-	,weight = 0
-	,exlist = 0
-};
 
 //Build a session
 session[ session.ivId ] = {
@@ -539,21 +425,17 @@ buildRecordThreads( session[ session.ivId ] );
 
 //Only define this if someone is selected...
 sess.current = session[ "#session.ivId#" ];
-
-
-//There will realistically only be one at a time...
-//writedump( sess.current.participantId );
-//writedump( sess.current.recordThreads );
-
-
-//...
-//StructDelete( sess.current, "recordthread" );
-//sess.current.recordThread = "";//getThread( sess.current.participantId );
-//writedump( getThread() ); abort;
+if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
+	sess.csp = sess.current.participants[ sess.current.participantId ];
+}
 
 
 //Now, get specific and initialize other things
-if ( data.loaded eq "check-in" ) {
+if ( data.loaded eq "input" && cgi.query_string neq "" ) {
+	if ( StructKeyExists( url, "param" ) )
+		sess.csp.exerciseParameter = url.param;
+}
+else if ( data.loaded eq "check-in" ) {
 	//select days from this week with results (including today?)
 	tbName = ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) 
 		? "#data.data.endurance#" : "#data.data.resistance#";
@@ -573,17 +455,18 @@ if ( data.loaded eq "check-in" ) {
 	weight = ezdb.exec( 
 	  string="
 			SELECT weight FROM #tbName# 
-			WHERE 
-				recordthread = :thr
-			AND
-				participantGUID = :pid 
-		"
-	 ,bindArgs = { 
-			pid = { type = "varchar", value = sess.current.participantId },
-			thr = { type = "varchar", value = sess.current.recordThread  }
-		}
-	).results.weight;
+				WHERE 
+					recordthread = :thr
+				AND
+					participantGUID = :pid 
+			"
+		 ,bindArgs = { 
+				pid = { type = "varchar", value = sess.current.participantId },
+				thr = { type = "varchar", value = sess.csp.recordthread  }
+			}
+		).results.weight;
 
+	//...
 	if ( !ListContains(ENDURANCE, currentParticipant.results.randomGroupCode) )
 		targetHR = 0;
 	else {
@@ -593,47 +476,47 @@ if ( data.loaded eq "check-in" ) {
 				WHERE recordthread = :thr AND participantGUID = :pid "
 		 ,bindArgs = { 
 				pid = { type = "varchar", value = sess.current.participantId },
-				thr = { type = "varchar", value = sess.current.recordThread  }
+				thr = { type = "varchar", value = sess.csp.recordthread  }
 			}
 		).results.trgthr1;
 	}
 
-	//Check in
-	checkIn = {
-		//Blood pressure
-		//Do I need a new blood pressure?
-		 getNewBP = privateReBP
-		,BPDaysLeft = privateBPDaysLimit - privateBPDaysElapsed
-		,BPSystolic = (privateReBP) ? 40 : privateBPQ.bp_systolic
-		,BPDiastolic = (privateReBP) ? 40 : privateBPQ.bp_diastolic
-		,BPMinSystolic = 40  
-		,BPMaxSystolic = 160
-		,BPMinDiastolic = 40
-		,BPMaxDiastolic = 90
+	//Blood pressure
+	sess.csp.getNewBP = privateReBP;
+	sess.csp.BPDaysLeft = privateBPDaysLimit - privateBPDaysElapsed;
+	sess.csp.BPSystolic = (privateReBP) ? 40 : privateBPQ.bp_systolic;
+	sess.csp.BPDiastolic = (privateReBP) ? 40 : privateBPQ.bp_diastolic;
+	sess.csp.BPMinSystolic = 40 ;
+	sess.csp.BPMaxSystolic = 160;
+	sess.csp.BPMinDiastolic = 40;
+	sess.csp.BPMaxDiastolic = 90;
+	
 
-		//Target Heart Rate
-		,targetHR = ( targetHR eq "" || targetHR eq 0 ) ? 0 : targetHR
+	//Target Heart Rate
+	sess.csp.targetHR = ( targetHR eq "" || targetHR eq 0 ) ? 0 : targetHR;
 
-		//Weight
-		,weight = ( weight eq "" || weight eq 0 ) ? 0 : weight
+	//Weight
+	sess.csp.weight = ( weight eq "" || weight eq 0 ) ? 0 : weight;
 
-		//Completed days array
-		,cdays = [0,0,0,0,0,0]
+	//Completed days array
+	sess.csp.cdays = [0,0,0,0,0,0];
 
-		//Query completed days
-		,qCompletedDays = ezdb.exec(
-			string="SELECT dayofwk FROM #tbName# 
-				WHERE participantGUID = :pid AND stdywk = :wk"
-		 ,bindArgs={ pid=sess.current.participantId, wk=sess.current.week }
-		)
+	//Query completed days
+	qCompletedDays = ezdb.exec(
+		string="SELECT dayofwk FROM #tbName# 
+			WHERE participantGUID = :pid AND stdywk = :wk"
+	 ,bindArgs={ 
+			pid = sess.current.participantId 
+		 ,wk  = sess.csp.week
+		}
+	);
 
-		//Exercise list
-		,elist = CreateObject( "component", "components.exercises" ).init()
-	};
+	//Exercise list
+	sess.csp.elist = CreateObject( "component", "components.exercises" ).init();
 
 	//...
-	for ( n in ListToArray( ValueList( checkIn.qCompletedDays.results.dayofwk, "," ) ) ) {
-		checkIn.cdays[ n ] = n; 
+	for ( n in ListToArray( ValueList( qCompletedDays.results.dayofwk, "," ) ) ) {
+		sess.csp.cdays[ n ] = n; 
 	}
 
 	//...
@@ -658,4 +541,6 @@ if ( data.loaded eq "check-in" ) {
 		abort;	
 	}	
 }
+	sess.csp.exerciseParameter =  ( StructKeyExists( form, "param" ) ) ?
+		form.param : "6";
 </cfscript>

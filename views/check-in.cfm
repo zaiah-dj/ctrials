@@ -1,7 +1,7 @@
 <!--- Figure blood pressure --->
 <!---<cfset checkIn.BPSystolic=#iif( checkIn.BPSystolic lt 60, 80, checkIn.BPSystolic )#>
 <cfset checkIn.BPDiastolic=#iif( checkIn.BPDiastolic lt 50, 80, checkIn.BPDiastolic )#>--->
-<cfset week=#sess.current.week#>
+<cfset week=#sess.csp.week#>
 <cfset day=#sess.current.day#>
 <cfset cid=#sess.current.participantId#>
 <cfset prevResultsLink=link('modal-results.cfm?id=#sess.current.participantId#&all=true')>
@@ -20,7 +20,7 @@
 							<label class="title">Study Week</label>
 							<select name="ps_week" required>
 							<cfloop from=1 to=14 index = "w">
-								<option #iif(sess.current.week eq w,DE("selected"),DE(""))# value=#w#>Week #w#</option>	
+								<option #iif(sess.csp.week eq w,DE("selected"),DE(""))# value=#w#>Week #w#</option>	
 							</cfloop>
 							</select>
 						</div>	
@@ -47,13 +47,13 @@
 									<tr><cfloop list = "Mon,Tue,Wed,Thu,Fri,Sat" item = "day"><th>#day#</th></cfloop></tr>
 									<tr>
 									<!--- This loop generates links activating modal windows to see previous days' results within the current week --->
-									<cfloop array=#checkIn.cdays# item="day">
+									<cfloop array=#sess.csp.cdays# item="day">
 										<td <cfif sess.current.dayName eq LCase( day )>class="selected"</cfif>>	
 										<cfif not day>
 											-
 										<cfelse>
 											<cfset day=#day#>
-											<cfset links.individualResult = link('modal-results.cfm?id=#sess.current.participantId#&day=#day#&week=#sess.current.week#')>
+											<cfset links.individualResult = link('modal-results.cfm?id=#sess.current.participantId#&day=#day#&week=#sess.csp.week#')>
 											<a class="modal-activate" href="#links.individualResult#">See Results</a>
 											<div class="modal">
 												<div class="modal-content">
@@ -80,9 +80,9 @@
 					<td class="title">Blood Pressure</td>
 					<td>
 
-					<cfif !checkIn.getNewBP>
-						<span class=huge>#checkIn.BPSystolic#</span> / <span class=huge>#checkIn.BPDiastolic#</span> mmHg
-						<i style="float:right;position:relative;top:8px;">(*New reading not needed for another #checkIn.BPDaysLeft# days)</i>
+					<cfif !sess.csp.getNewBP>
+						<span class=huge>#sess.csp.BPSystolic#</span> / <span class=huge>#sess.csp.BPDiastolic#</span> mmHg
+						<i style="float:right;position:relative;top:8px;">(*New reading not needed for another #sess.csp.BPDaysLeft# days)</i>
 
 					<cfelse>
 						<div>
@@ -94,9 +94,9 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<span style="top: -2px" class="sameline">Systolic</span>
-									<input type="range" min="#checkIn.BPMinSystolic#" max="#checkIn.BPMaxSystolic#" class="slider" name="bp_systolic" value="#checkIn.BPSystolic#" required>
+									<input type="range" min="#sess.csp.BPMinSystolic#" max="#sess.csp.BPMaxSystolic#" class="slider" name="bp_systolic" value="#sess.csp.BPSystolic#" required>
 								</div>
-								<div class="catch cc col-sm-1"><span>#checkIn.BPSystolic#</span><span> mmHg</span></div>
+								<div class="catch cc col-sm-1"><span>#sess.csp.BPSystolic#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
 									<button class="incrementor">+</button>
 									<button class="incrementor">-</button>
@@ -109,9 +109,9 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<span style="top: -2px" class="sameline">Diastolic</span>
-									<input type="range" min="#checkIn.BPMinDiastolic#" max="#checkIn.BPMaxDiastolic#" class="slider" name="bp_diastolic" value="#checkIn.BPDiastolic#" required>
+									<input type="range" min="#sess.csp.BPMinDiastolic#" max="#sess.csp.BPMaxDiastolic#" class="slider" name="bp_diastolic" value="#sess.csp.BPDiastolic#" required>
 								</div>
-								<div class="catch cc col-sm-1"><span>#checkIn.BPDiastolic#</span><span> mmHg</span></div>
+								<div class="catch cc col-sm-1"><span>#sess.csp.BPDiastolic#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
 									<button class="incrementor">+</button>
 									<button class="incrementor">-</button>
@@ -132,9 +132,9 @@
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
-								<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#checkIn.weight#" required>
+								<input type="range" min="0" max="300" class="slider" name="ps_weight" value="#sess.csp.weight#" required>
 							</div>
-							<div class="catch cc col-sm-1"><span>#iif(checkIn.weight eq "",0,checkIn.weight)#</span><span> lb</span></div>
+							<div class="catch cc col-sm-1"><span>#iif(sess.csp.weight eq "",0,sess.csp.weight)#</span><span> lb</span></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
@@ -155,31 +155,31 @@
 						<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 							<div class="clabel">
 								Cycle
-								<input type="radio" name="param" value="1" #iif(sess.current.exerciseParameter eq 1,DE("checked"),DE(""))# required>
+								<input type="radio" name="param" value="1" #iif(sess.csp.exerciseParameter eq 1,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
 								Treadmill
-								<input type="radio" name="param" value="2"  #iif(sess.current.exerciseParameter eq 2,DE("checked"),DE(""))# required>
+								<input type="radio" name="param" value="2"  #iif(sess.csp.exerciseParameter eq 2,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
 								Other
-								<input type="radio" name="param" value="3"  #iif(sess.current.exerciseParameter eq 3,DE("checked"),DE(""))# required>
+								<input type="radio" name="param" value="3"  #iif(sess.csp.exerciseParameter eq 3,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 						<cfelse>
 							<div class="clabel">
 								Upper Body
-								<input type="radio" name="param" value="4"  #iif(sess.current.exerciseParameter eq 4,DE("checked"),DE(""))# required>
+								<input type="radio" name="param" value="4"  #iif(sess.csp.exerciseParameter eq 4,DE("checked"),DE(""))# required>
 								<br /><span class="checkmark"></span>
 							</div>
 							<div class="clabel">
 								Lower Body
-								<input type="radio" name="param" value="5" #iif(sess.current.exerciseParameter eq 5,DE("checked"),DE(""))# required>
+								<input type="radio" name="param" value="5" #iif(sess.csp.exerciseParameter eq 5,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 							</div>
 						</cfif>
