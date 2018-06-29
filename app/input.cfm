@@ -76,7 +76,17 @@ if ( isDefined( "currentParticipant" ) ) {
 			n.prv = private.query.results[ "p_#private.designation##n.formname#" ]; 
 			n.def = private.query.results[ "#private.designation##n.formname#" ]; 
 		}
+/*
+		//Add heart rate
+		if ( ListContains( private.time, "0,10,20,30,45" ) )
+			ArrayAppend( public.formValues, {uom="", label="Heart Rate",min=10,max=300,step=1,formName="hr" } );
 
+		//Add rpe and affect
+		if ( ListContains( private.time, "0,20,45" ) ) {
+			ArrayAppend( public.formValues, {uom="", label="RPE (Borg)",min=10,max=300,step=1,formName="rpe" } );
+			ArrayAppend( public.formValues, {uom="", label="Affect",min=10,max=300,step=1,formName="affect" } );
+		}
+*/				
 		// Initialize client side AJAX code 
 		AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 			location = link( "update.cfm" )
@@ -196,6 +206,5 @@ if ( isDefined( "currentParticipant" ) ) {
 			}
 		);
 	}
-//writedump( qu ); abort;
 }
 </cfscript>

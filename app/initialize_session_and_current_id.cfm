@@ -489,7 +489,6 @@ else if ( data.loaded eq "check-in" ) {
 	BPMaxSystolic = 160;
 	BPMinDiastolic = 40;
 	BPMaxDiastolic = 90;
-	
 
 	//Target Heart Rate
 	sess.csp.targetHR = ( targetHR eq "" || targetHR eq 0 ) ? 0 : targetHR;
