@@ -33,7 +33,7 @@
 			</tr>
 		</tbody>
 	</table>
-<cfloop query = #public.formValues#> 
+<cfloop array=#public.formValues# index="pfv"> 
 	<table class="table table-striped endurance">
 		<tbody>
 			<tr class="heading">
@@ -41,24 +41,20 @@
 					Last Visit's Results
 				</td>
 				<td> 
-					<center><b>#label#</b></center>
+					<center><b>#pfv.label#</b></center>
 				</td>
 			</tr>
 			<tr>
 				<td class="title">
-					<!---<cfif val.prv eq "">*<cfelse>{val.prv} #uom#</cfif>--->
+					<cfif pfv.prv eq "">*<cfelse>#pfv.prv# #pfv.uom#</cfif>
 				</td>
 				<td>
 					<div class="row">
-<!---
-						<cfset def=iif( val.def eq "", 0, val.def )>
---->
+						<cfset def=iif( pfv.def eq "", 0, pfv.def )>
 						<div class="cc col-sm-8">
-							<cfif !structKeyExists( val, "type" )>
-							<input type="range" min="#min#" max="#max#" class="slider" value="##" defaultvalue="##" name="#formName#">
-							</cfif>
+							<input type="range" min="#min#" max="#max#" class="slider" value="#def#" defaultvalue="#def#" name="#pfv.formName#">
 						</div>
-						<div class="catch cc col-sm-1"><span>##</span><span> #uom#</span></div>
+						<div class="catch cc col-sm-1"><span>#def#</span><span> #pfv.uom#</span></div>
 						<div class="col-sm-1">
 							<button class="incrementor">+</button>
 							<button class="incrementor">-</button>

@@ -58,11 +58,9 @@ if ( !StructIsEmpty( form ) ) {
 			}
 		}
 
-//writedump( fv ); 
 		//Update the session with the correct type
 		sess.csp.exerciseParameter = fv.param;
-//writedump( sess.csp );
-//abort;
+		sess.csp.week = fv.ps_week;
 
 		//Select a table name
 		tbName = ( sess.csp.randomizedTypeName eq "endurance" ) ? "#data.data.endurance#" : "#data.data.resistance#"; 
@@ -88,7 +86,6 @@ if ( !StructIsEmpty( form ) ) {
 			sqlString	= "UPDATE #tbName# 
 				SET 
 					weight = :wt 
-					#iif(tbName eq data.data.endurance, DE(",trgthr1 = :thr"), DE(""))# 
 				WHERE participantGUID = :pid AND recordthread = :rthd
 				  AND dayofwk = :dwk AND stdywk = :swk";
 		}

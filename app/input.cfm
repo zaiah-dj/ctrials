@@ -7,8 +7,9 @@ if ( isDefined( "currentParticipant" ) ) {
 	if ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) {
 		//No way to actually do a publically exposed model, so I'll settle for this...
 		clijs = CreateObject( "component", "components.writeback" );
-		ptime = (StructKeyExists( url, "time" )) ? url.time : 0;
 		obj   = CreateObject( "component", "components.endurance" ).init();
+		ptime = (StructKeyExists( url, "time" )) ? url.time : 0;
+
 		private = {
 		  time = ptime 
 		 ,designation = (ptime eq 50) ? "m5_rec" : obj.getTimeInfo( ptime ).label 
@@ -23,9 +24,9 @@ if ( isDefined( "currentParticipant" ) ) {
 					#data.data.endurance#
 				WHERE
 					participantGUID = :pid
-				AND stdywk = :stdywk
-				AND dayofwk = :dayofwk 
-				AND recordthread = :rthrd
+					AND stdywk = :stdywk
+					AND dayofwk = :dayofwk 
+					AND recordthread = :rthrd
 				) as cweek
 			INNER JOIN
 			( SELECT
@@ -74,40 +75,11 @@ if ( isDefined( "currentParticipant" ) ) {
 
 		cssClassName = "endurance-class";
 
-		//Figure out the form field name 
-		//if (dtb < 0 || dtb > 50 ) {writeoutput( "Endurance time value is too big." ); abort;}
-		//desig = (dtb eq 0) ? "wrmup_" : (dtb eq 50) ? "m5_rec" : "m#dtb#_ex";
-
-
-
-		//Prefill any values that need to be prefilled	 
-		//rc = qu.prefix.recordCount;	
+		//Loop through and add query results to the source data.
 		for ( n in public.formValues ) {
-			//public.formValues[ "wish" ] = "asdf";
-		} 
-
-	/*
-		values = [
-			{ show = ( sess.csp.exerciseParameter eq 1 ) ? true : false, 
-				label = "RPM", uom = "RPM",  min = 20, max = 120, step = 1, name = "rpm"
-				,def = qu.results[ "#desig#rpm" ], prv = qu.results[ "p_#desig#rpm" ] }
-		 ,{ show = ( sess.csp.exerciseParameter eq 1 ) ? true : false, 
-				label = "Watts/Resistance",uom = "Watts", min = 0, max = 500, step = 1, name = "watts_resistance"
-				,def = qu.results[ "#desig#watres" ], prv = qu.results[ "p_#desig#watres" ] }
-		 ,{	show = ( sess.csp.exerciseParameter eq 2 ) ? true : false, 
-				label = "MPH/Speed", uom = "MPH",    min = 0.1, max = 15, step = 0.5, name = "speed"
-				,def = qu.results[ "#desig#speed" ], prv = qu.results[ "p_#desig#speed" ] }
-		 ,{ show = ( sess.csp.exerciseParameter eq 2 ) ? true : false, 
-				label = "Percent Grade", uom = "%",    min = 0, max = 15, step = 1, name = "grade"
-				,def = qu.results[ "#desig#prctgrade" ], prv = qu.results[ "p_#desig#prctgrade" ] }
-		 ,{ show = ( sess.csp.exerciseParameter eq 1 ), 
-				label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe
-				,def = qu.results[ "#desig#rpe" ] }
-		 ,{ show = true, 
-				label = "Affect", uom = "",    min = -5, max = 5, step = 1, name = "affect"
-				,def = 0, prv = 0 }
-		];
-	*/
+			n.prv = private.query.results[ "p_#private.designation##n.formname#" ]; 
+			n.def = private.query.results[ "#private.designation##n.formname#" ]; 
+		}
 
 		// Initialize client side AJAX code 
 		AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 

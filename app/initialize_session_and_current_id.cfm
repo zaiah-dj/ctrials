@@ -284,17 +284,6 @@ if ( sess.status gt 1 ) {
 }
 
 
-//Select a week
-week = 0;
-if ( StructKeyExists( form, "ps_week" ) )
-	week = form.ps_week;
-else if ( StructKeyExists( url, "week" ) )
-	week = url.week;
-else if ( StructKeyExists( session, "#session.ivId#" ) ) {
-	if ( StructKeyExists( session[ "#session.ivId#" ], "week" ) ) {
-		week = session[ "#session.ivId#" ][ "week" ];
-	}
-}
 
 
 /*
@@ -360,10 +349,9 @@ function buildRecordThreads( t ) {
 				cp.exerciseParameter = 0 ;
 				cp.recoveryCompleted = 0;
 				cp.lastExerciseCompleted = 0;
-				cp.lastLocation = 0;
 				cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
 				cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
-				cp.week = week;
+				cp.week = 0;
 				cp.getNewBP = 0;	
 				//This has to be initialized later...
 				cp.BPDaysLeft = 0;
@@ -441,6 +429,10 @@ if ( StructKeyExists( sess.current, "participants" ) ) {
 if ( data.loaded eq "input" && cgi.query_string neq "" ) {
 	if ( StructKeyExists( url, "param" ) )
 		sess.csp.exerciseParameter = url.param;
+
+	//Select a week
+	if ( StructKeyExists( url, "week" ) )
+		sess.csp.week = url.week;
 }
 else if ( data.loaded eq "check-in" ) {
 	//select days from this week with results (including today?)

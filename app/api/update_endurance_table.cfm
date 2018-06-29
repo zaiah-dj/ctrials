@@ -21,15 +21,16 @@ try {
 	stat = val.validate( form, { 
 		 pid = { req = true }
 		,sess_id = { req = true }
+		,recordthread = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
 		,timeblock = { req = true }
-		,affect = { req = true }
+		,affect = { req = false, ifNone = 0 }
 		,staffId = { req = false, ifNone = 1 }
 		,mchntype = { req = false, ifNone = form.exParam }
 		,rpm = { req = (form.exParam eq CYCLE), ifNone = 0 }
-		,watts_resistance = { req = (form.exParam eq CYCLE), ifNone = 0 }
-		,grade = { req = (form.exParam eq TREADMILL), ifNone = 0 }
+		,watres = { req = (form.exParam eq CYCLE), ifNone = 0 }
+		,prctgrade = { req = (form.exParam eq TREADMILL), ifNone = 0 }
 		,speed = { req = (form.exParam eq TREADMILL), ifNone = 0 }
 		,oth1 = { req = (form.exParam eq OTHER), ifNone = 0 }
 		,oth2 = { req = (form.exParam eq OTHER), ifNone = 0 }
@@ -60,12 +61,14 @@ try {
 		WHERE
 			participantGUID = :pid
 		AND stdywk = :stdywk
+		AND recordthread = :recordthread
 		AND dayofwk = :dayofwk
 		"
 	 ,datasource="#data.source#"
 	 ,bindArgs = { 
 		 pid = fv.pid
 		,stdywk = fv.stdywk
+		,recordthread = fv.recordthread
 		,dayofwk = fv.dayofwk
 		}
 	);
@@ -83,8 +86,10 @@ catch (any thing) {
 sqlString = "";
 if ( !upd.prefix.recordCount ) {
 	sqlString = "
-	INSERT INTO #data.data.endurance#	
+	INSERT INTO 
+		#data.data.endurance#	
 	( participantGUID
+	 ,recordthread
 	 ,insertedBy
 	 ,mchntype
 	 ,#desig#oth1
@@ -99,6 +104,7 @@ if ( !upd.prefix.recordCount ) {
 	)
 	VALUES
 	(  :pid
+		,:rthrd
 		,:insertedby
 		,:mchntype
 		,:oth1
@@ -111,6 +117,7 @@ if ( !upd.prefix.recordCount ) {
 		,:swk
 		,:staffid
 	)";
+	//req.sendAsJson( status = 0, message = "INSERT" );
 }
 else {
 	sqlString = "
@@ -127,10 +134,13 @@ else {
 	 WHERE
 		participantGUID = :pid
 	 AND
+		recordthread = :rthrd
+	 AND
 		dayofwk = :dwk
 	 AND
 		stdywk = :swk
 	";
+	//req.sendAsJson( status = 0, message = "UPDATE Got #SerializeJSON( form )#" );
 }
 
 
@@ -144,14 +154,15 @@ try {
 		 ,insertedby = "NOBODY"
 		 ,oth1       = fv.oth1
 		 ,oth2       = fv.oth2
-		 ,prctgrade  = fv.grade
+		 ,prctgrade  = fv.prctgrade
 		 ,rpm        = fv.rpm
 		 ,mchntype   = fv.mchntype
 		 ,speed      = fv.speed
-		 ,watres     = fv.watts_resistance
+		 ,watres     = fv.watres
 		 ,dwk        = fv.dayofwk
 		 ,swk        = fv.stdywk
 		 ,staffid    = fv.staffId
+		 ,rthrd      = fv.recordthread
 		} 
 	);
 

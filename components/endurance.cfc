@@ -22,29 +22,24 @@ component name="endurance" {
 		] );
 
 		//Label defaults for endurance
-		this.labelDefaults = queryNew( 
-			"uom,label,min,max,step,formName,type,frequency,show", 
-			"Varchar,Varchar,Integer,Integer,Integer,Varchar,Integer,Integer,Bit",
-			[
-				{ uom="rpm", label="RPM", min=20, max=120, step=1, formName="rpm", type=1, frequency=0, show=false }
-			 ,{ uom="lb" , label="Watts/Resistance", min=20, max=120, step=1, formName="watres", type=1, frequency=0, show=false }
-			 ,{ uom="mph", label="Speed", min=20, max=120, step=1, formName="mph", type=2, frequency=0, show=false }
-			 ,{ uom="%"  , label="Percent Grade", min=20, max=120, step=1, formName="prctgrade", type=2, frequency=0, show=false }
-			 ,{ uom="%"  , label="Perceived Exertion Rating", min=20, max=120, step=1, formName="per", type=1, frequency=0, show=false }
-			 ,{ uom="?"  , label="Affect", min=20, max=120, step=1, formName="affect", type=0, frequency=0, show=false }
-			]
-		);	
+		//NOTE: RPE, Affect and Heart Rate will not always show (wish i oculd use a query for this...)
+		this.labelDefaults = [
+				{ uom="rpm", label="RPM", min=20, max=120, step=1, formName="rpm", type=1, frequency=0 }
+			 ,{ uom="lb" , label="Watts/Resistance", min=20, max=120, step=1, formName="watres", type=1, frequency=0 }
+			 ,{ uom="mph", label="Speed", min=20, max=120, step=1, formName="speed", type=2, frequency=0 }
+			 ,{ uom="%"  , label="Percent Grade", min=20, max=120, step=1, formName="prctgrade", type=2, frequency=0 }
+			 //,{ uom="%"  , label="Perceived Exertion Rating", min=20, max=120, step=1, formName="per", type=1, frequency=0 }
+			 //,{ uom="?"  , label="Affect", min=20, max=120, step=1, formName="affect", type=0, frequency=0 }
+		];
 		return this;
 	}
 
-	public Query function getLabelsFor( Required Numeric id ) {
-		qs = new query();	
-		qs.setName( "juice" );
-		qs.setDBType( "query" );
-		qs.setAttributes( sourceQuery = this.labelDefaults );
-		qs.addParam( name = "id", value = id, cfsqltype = "cf_sql_numeric"  );
-		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE type = :id OR type = 0" );
-		return qr.getResult();	
+	public function getLabelsFor( Required Numeric id ) {
+		ld = [];
+		for ( n in this.labelDefaults ) {
+			if ( n.type eq 0 || n.type eq id ) ArrayAppend( ld, n );
+		}
+		return ld;
 	}
 
 	public Query function getTimeInfo( Required Numeric id ) {
