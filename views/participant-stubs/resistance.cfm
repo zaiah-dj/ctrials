@@ -8,14 +8,14 @@
 	<!--- Let's see all of these in a list ---> <ul class="inner-selection">
 	<cfset cnt=0>
 		<a href="#link( 'input.cfm?id=#url.id#' )#"><li class="smaller">5 Minute Warmup</li></a>
-	<cfloop query = "#reExList#">
+	<cfloop query = "#public.reExList#">
 		<cfif Len(pname) gte 13>
 			<cfset classnames="smaller">
 		<CFELSE>
 			<cfset classnames="">
 		</cfif>
 
-		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(type eq id, DE('selected'),DE(''))# #classnames#">#pname#</li></a>
+		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(public.type eq id, DE('selected'),DE(''))# #classnames#">#pname#</li></a>
 	</cfloop>
 		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red">Stop Session</li></a>
 	</ul>
@@ -31,11 +31,11 @@
 		</table>
 
 		<table class="table table-striped participant-entry resistance">
-	<cfloop array="#values#" index="vv">
+	<cfloop array="#public.formValues#" index="vv">
 		<cfif #vv.label# neq "">
 		<tr class="heading">
 			<td class="chopt">Last Visit's Results</td>
-			<td><b>#vv.label# - #reExSel.results.et_name#</b></td>
+			<td><b>#vv.label# - #public.reExSel.results.et_name#</b></td>
 		</tr>
 		</cfif>
 		<tr>
@@ -46,7 +46,7 @@
 				<div class="row">
 					<div class="col-sm-8">
 						<cfset def=iif( vv.def eq "", 0, vv.def )>
-						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#def#" defaultvalue="0" name="#vv.name#" step="#vv.step#">
+						<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#def#" defaultvalue="0" name="#vv.formName#" step="#vv.step#">
 					</div>
 					<div class="catch cc col-sm-1"><span>#def#</span><span> #vv.uom#</span></div>
 					<div class="col-sm-1">

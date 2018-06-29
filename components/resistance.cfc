@@ -20,7 +20,20 @@ component name="resistance" {
 			,{ type = 13, desig = "shoulder2" }
 			,{ type = 14, desig = "triceppress" }
 		]);
+
+		this.labelDefaults = [
+			 {label="Set 1", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt1" }
+			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep1" }
+			,{label="Set 2", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt2" }
+			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep2"  }
+			,{label="Set 3", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt3" }
+			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep3" }
+		];
 		return this;
+	}
+
+	public function getLabels() {
+		return this.labelDefaults;
 	}
 
 	public Query function getResistance( ) {

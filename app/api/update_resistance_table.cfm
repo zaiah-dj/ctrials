@@ -44,12 +44,20 @@ try {
 		,dayofwk = { req = true }
 		,staffId = { req = false, ifNone = 1 }
 		,recordThread = { req = false, ifNone = "hi" }
+		/*
 		,reps1 = { req = true }
 		,reps2 = { req = true }
 		,reps3 = { req = true }
 		,weight1 = { req = true }
 		,weight2 = { req = true }
 		,weight3 = { req = true }
+		*/
+		,Rep1 = { req = true }
+		,Rep2 = { req = true }
+		,Rep3 = { req = true }
+		,Wt1  = { req = true }
+		,Wt2  = { req = true }
+		,Wt3  = { req = true }
 	});	
 
 	if ( !stat.status ) {
@@ -91,7 +99,8 @@ if ( !upd.prefix.recordCount ) {
 	sqlString = "
 		INSERT INTO 
 			#data.data.resistance#	
-		(  participantGUID
+		(  
+			 participantGUID
 			,recordthread
 			,insertedBy
 			,dayofwk
@@ -104,8 +113,9 @@ if ( !upd.prefix.recordCount ) {
 			,#desig#Wt3
 		)
 		VALUES
-		(  :pid
-			,:recThr
+		(  
+			 :pid
+			,:rthrd
 			,:insBy
 			,:dwk
 			,:swk
@@ -131,6 +141,8 @@ else {
 		WHERE
 			participantGUID = :pid
 		AND
+			recordthread = :rthrd
+		AND
 			stdywk = :swk
 		AND
 			dayofwk = :dwk
@@ -147,16 +159,16 @@ try {
 			pid      = fv.pid 
 		 ,sid      = fv.sess_id
 		 ,staffId  = fv.staffId 
-		 ,recThr   = fv.recordThread
+		 ,rthrd    = fv.recordThread
 		 ,insBy    = "NOBODY" 
 		 ,dwk      = fv.dayofwk
 		 ,swk      = fv.stdywk
-		 ,rep1     = fv.reps1 
-		 ,rep2     = fv.weight1 
-		 ,rep3     = fv.reps2 
-		 ,wt1      = fv.weight2 
-		 ,wt2      = fv.reps3 
-		 ,wt3      = fv.weight3 
+		 ,rep1     = fv.Rep1 
+		 ,rep2     = fv.Wt1 
+		 ,rep3     = fv.Rep2 
+		 ,wt1      = fv.Wt2 
+		 ,wt2      = fv.Rep3 
+		 ,wt3      = fv.Wt3 
 		} 
 	);
 
