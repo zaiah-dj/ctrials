@@ -59,60 +59,12 @@
 	<th>Session</th>
 	<tr><td>Session Data:</td><td>#sess.key#</td></tr>
 	<tr><td>Session Status:</td><td>#sess.status#</td></tr>
-	<tr>
-		<cfdump var = #session#>
-	</tr>
-<!---
-<cfloop collection="#session#" item="s">
-	<tr>
-	<cfif IsSimpleValue( session[s] )>
-		<td>#s#</td><td>#session[s]#</td>
-	<cfelse>
-		<td></td><td><table>
-		<th>session</th><th>[ #s# ]</th>
-	<cfloop collection="#session[s]#" item="ss">
-		<cfif ss eq "recordThreads" >
-			<tr>
-				<td>#ss#</td>
-				<td>
-				<cfloop collection="#session[s][ss]#" item="tw">
-					<small style="font-size:0.6em">'#tw#' -> #session[s][ss][tw]#</small><br />
-				</cfloop>
-				</td>
-			</tr>
-		<cfelse>
-		<tr><td>#ss#</td><td>#session[s][ss]#</td></tr>
-		</cfif>
-	</cfloop>	
-		</table></td>
-	</cfif>
-	</tr>
-</cfloop>	
---->
-
-	<th>Page Data</th>
-<cfif (data.loaded eq "check-in") or (data.loaded eq "input")>
-	<tr><td>Current Date</td><td>#date#</td></tr>
-	<tr><td>Current Day</td><td>#sess.current.day#</td></tr>
-	<tr><td>Start Week</td><td>#startDate#</td></tr>
-<!---
-	<tr><td>Current Week</td><td>#sess.csp.week#</td></tr>
---->
-	<!--- .... --->
-	<cfif data.loaded eq "check-in">
-<!---
-		<cfloop collection="#checkIn#" item="cc">
-		<cfif IsSimpleValue( checkIn[cc] )>
-		<tr><td>#cc#</td><td>#checkIn[ cc ]#</td></tr>
-		<cfelse>
-<!---
-		<tr><td>#cc#</td><td>#checkIn[ cc ]#</td></tr>
---->
-		</cfif>
-		</cfloop>	
---->
-	</cfif>
-</cfif>	
+	<!---
+	<tr><cfdump var = #session#></tr>
+		--->
+	<!---
+		--->
+	<tr><cfdump var = #session#></tr>
 	</table>
 </div>
 <div id="sessionKey" style="display:none">#sess.key#</div>

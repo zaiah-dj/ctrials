@@ -5,17 +5,18 @@ input.cfm
 <cfscript>
 if ( isDefined( "currentParticipant" ) ) {
 	if ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) {
+		//No way to actually do a publically exposed model, so I'll settle for this...
 		clijs = CreateObject( "component", "components.writeback" );
-		times = CreateObject( "component", "components.endurance" ).init().getEndurance();
-		dtb = ( StructKeyExists( url, "time" ) ) ? url.time : 0;
-		cssClassName = "endurance-class";
-
-		//Figure out the form field name 
-		if (dtb < 0 || dtb > 50 ) {writeoutput( "Endurance time value is too big." ); abort;}
-		desig = (dtb eq 0) ? "wrmup_" : (dtb eq 50) ? "m5_rec" : "m#dtb#_ex";
+		ptime = (StructKeyExists( url, "time" )) ? url.time : 0;
+		obj   = CreateObject( "component", "components.endurance" ).init();
+		private = {
+		  time = ptime 
+		 ,designation = (ptime eq 50) ? "m5_rec" : obj.getTimeInfo( ptime ).label 
+		 ,eTypeLabels = [ "Cycle", "Treadmill", "Other" ]
+		};
 
 		//Recall endurance data from the current or last session
-		qu = ezdb.exec(
+		private.query = qu = ezdb.exec(
 			string = "
 			SELECT * FROM
 				( SELECT * FROM
@@ -33,13 +34,13 @@ if ( isDefined( "currentParticipant" ) ) {
 				,participantGUID as p_participantGUID
 				,dayofwk as p_dayofwk
 				,stdywk as p_stdywk
-				,#desig#hr as p_#desig#hr
-				,#desig#oth1 as p_#desig#oth1
-				,#desig#oth2 as p_#desig#oth2
-				,#desig#prctgrade as p_#desig#prctgrade
-				,#desig#rpm as p_#desig#rpm
-				,#desig#speed as p_#desig#speed
-				,#desig#watres as p_#desig#watres
+				,#private.designation#hr as p_#private.designation#hr
+				,#private.designation#oth1 as p_#private.designation#oth1
+				,#private.designation#oth2 as p_#private.designation#oth2
+				,#private.designation#prctgrade as p_#private.designation#prctgrade
+				,#private.designation#rpm as p_#private.designation#rpm
+				,#private.designation#speed as p_#private.designation#speed
+				,#private.designation#watres as p_#private.designation#watres
 				,mchntype as p_mchntype
 				,nomchntype as p_nomchntype
 				,Sessionmisd as p_Sessionmisd
@@ -63,10 +64,29 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
 			});
 
+		public = {
+		  cssClassName = "endurance-class"
+		 ,eTypeLabel   = private.eTypeLabels[ sess.csp.exerciseParameter ]
+		 ,formValues   = obj.getLabelsFor( sess.csp.exerciseParameter )
+		 ,selectedTime = private.time 
+		 ,timeList     = obj.getEndurance()
+		};
+
+		cssClassName = "endurance-class";
+
+		//Figure out the form field name 
+		//if (dtb < 0 || dtb > 50 ) {writeoutput( "Endurance time value is too big." ); abort;}
+		//desig = (dtb eq 0) ? "wrmup_" : (dtb eq 50) ? "m5_rec" : "m#dtb#_ex";
+
+
 
 		//Prefill any values that need to be prefilled	 
-		rc = qu.prefix.recordCount;	
+		//rc = qu.prefix.recordCount;	
+		for ( n in public.formValues ) {
+			//public.formValues[ "wish" ] = "asdf";
+		} 
 
+	/*
 		values = [
 			{ show = ( sess.csp.exerciseParameter eq 1 ) ? true : false, 
 				label = "RPM", uom = "RPM",  min = 20, max = 120, step = 1, name = "rpm"
@@ -80,13 +100,14 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,{ show = ( sess.csp.exerciseParameter eq 2 ) ? true : false, 
 				label = "Percent Grade", uom = "%",    min = 0, max = 15, step = 1, name = "grade"
 				,def = qu.results[ "#desig#prctgrade" ], prv = qu.results[ "p_#desig#prctgrade" ] }
-	/*	 ,{ show = ( sess.csp.exerciseParameter eq 1 ), 
-				label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe"
-				,def = qu.results[ "#desig#rpe" ] }*/
+		 ,{ show = ( sess.csp.exerciseParameter eq 1 ), 
+				label = "Perceived Exertion Rating",uom = "",    min = 0, max = 5,step = 1, name = "rpe
+				,def = qu.results[ "#desig#rpe" ] }
 		 ,{ show = true, 
 				label = "Affect", uom = "",    min = -5, max = 5, step = 1, name = "affect"
 				,def = 0, prv = 0 }
 		];
+	*/
 
 		// Initialize client side AJAX code 
 		AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 

@@ -1,7 +1,7 @@
 <!--- endurance.cfm --->
 <cfoutput>
 	<!--- Set a time --->
-	<input type="hidden" value="#dtb#" name="timeblock">
+	<input type="hidden" value="#public.selectedTime#" name="timeblock">
 
 	<cfif data.debug eq 1>
 		<cfset DebugClientCode = ajax.ClientDebug()>
@@ -10,11 +10,11 @@
 	<!--- TODO: This shouldn't take two loops.  Think about it more. --->
 	<div class="inner-selection">
 		<ul class="inner-selection">
-		<cfloop query=#times#> 
+		<cfloop query=#public.timeList#> 
 		<cfset timelink = link( "input.cfm?id=#url.id#&time=#index#" )> 
-		<cfif index eq dtb>
+		<cfif index eq public.selectedTime>
 			<a href="#timelink#"><li class="selected">#text#</li></a>
-		<cfelseif index lt dtb>
+		<cfelseif index lt public.selectedTime>
 			<a href="#timelink#"><li class="completed">#text#</li></a>
 		<cfelse>
 			<a href="#timelink#"><li>#text#</li></a>
@@ -29,20 +29,11 @@
 		<tbody>
 			<tr>
 				<td class="title">Exercise Type</td>
-				<td>
-					<cfif sess.csp.exerciseParameter eq 1>	
-						Cycle
-					<cfelseif sess.csp.exerciseParameter eq 2>	
-						Treadmill	
-					<cfelseif sess.csp.exerciseParameter eq 3>	
-						Other	
-					</cfif>
-				</td>
+				<td>#public.eTypeLabel#</td>
 			</tr>
 		</tbody>
 	</table>
-<cfloop array = #values#  index = "val">
-	<cfif val.show>
+<cfloop query = #public.formValues#> 
 	<table class="table table-striped endurance">
 		<tbody>
 			<tr class="heading">
@@ -50,22 +41,24 @@
 					Last Visit's Results
 				</td>
 				<td> 
-					<center><b>#val.label#</b></center>
+					<center><b>#label#</b></center>
 				</td>
 			</tr>
 			<tr>
 				<td class="title">
-					<cfif val.prv eq "">*<cfelse>#val.prv# #val.uom#</cfif>
+					<!---<cfif val.prv eq "">*<cfelse>{val.prv} #uom#</cfif>--->
 				</td>
 				<td>
 					<div class="row">
+<!---
 						<cfset def=iif( val.def eq "", 0, val.def )>
+--->
 						<div class="cc col-sm-8">
 							<cfif !structKeyExists( val, "type" )>
-							<input type="range" min="#val.min#" max="#val.max#" class="slider" value="#def#" defaultvalue="#def#" name="#val.name#">
+							<input type="range" min="#min#" max="#max#" class="slider" value="##" defaultvalue="##" name="#formName#">
 							</cfif>
 						</div>
-						<div class="catch cc col-sm-1"><span>#def#</span><span> #val.uom#</span></div>
+						<div class="catch cc col-sm-1"><span>##</span><span> #uom#</span></div>
 						<div class="col-sm-1">
 							<button class="incrementor">+</button>
 							<button class="incrementor">-</button>
@@ -73,10 +66,9 @@
 					</div>
 				</td>
 			</tr>
-	</cfif>
-</cfloop>
 		</tbody>
 	</table>
+</cfloop>
 
 	<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 	<!--- Real ugly front end initialization code --->
