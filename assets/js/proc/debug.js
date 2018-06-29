@@ -141,12 +141,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 	}
 
 	dd = DINIT();
-	dd.log( "yadda" );
-	dd.log( "buss-ya=in-da-mouf" );
-	dd.log( "buss-ya=in-da-mouf" );
-	dd.log( "buss-ya=in-da-mouf" );
-	dd.log( "buss-ya=in-da-mouf" );
-	dd.log( "buss-ya=in-da-mouf" );
+	//dd.log( "yadda" );
 	//Initialize debugging routes
 	//dx = new Routex({routes:DebugRouter, verbose:1});
 	//dx.init();
