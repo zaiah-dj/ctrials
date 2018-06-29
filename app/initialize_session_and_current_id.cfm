@@ -337,96 +337,86 @@ A full session ought to look like:
  */
 
 
+//Pass in the current session ( session[ session.ivId ] )
+/*
+If SelectedParticipants is not defined, 
+	most likely nothing has started, so return a blank table
+If SelectedParticipants is defined, 
+	then extract the GUIDs from the query
+	create a table using participantSchema
+	and match it as the value for the participant GUID
+	you should have
+	[ guid ] = ParticipantSchema
+*/
 //Build all record threads
-function buildRecordThreads( ) {
-	//Pass in the current session ( session[ session.ivId ] )
-	/*
-	If SelectedParticipants is not defined, 
-		most likely nothing has started, so return a blank table
-	If SelectedParticipants is defined, 
-		then extract the GUIDs from the query
-		create a table using participantSchema
-		and match it as the value for the participant GUID
-		you should have
-		[ guid ] = ParticipantSchema
-	*/
-
-	// Check to see if I've already created a table for this session, should be blank until one starts
-
-	// At start of session, build a list of participants, and add some keys to session:
-	// needsRebuild = [0,1] = means that a new person has logged in or out to the current interventionst
-	// interventionist = varchar = the id of the interventionist using the app (should be in db)
-	// 
-	// Also build a table of with participant id as keys
-	// Each of these should hold specific data that can be switched between like a pointer
-	// Keys in this table are:
-
-	if ( StructKeyExists( session, session.ivId ) ) {
-		if ( !StructKeyExists( session[ session.ivId ], "participants" ) ) {
-			sp = session[ session.ivId ][ "participants" ] = {};
-			if ( isDefined( "selectedParticipants" ) ) {
-				for ( p in selectedParticipants.results ) {
-					//Create a key that can be referenced by the participant GUID
-					cp = sp[ Trim( p.participantGUID ) ] = {};
-					cp.recordThread = Trim( ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID );
-					cp.checkInCompleted = 0 ;
-					cp.recoveryCompleted = 0;
-					cp.lastExerciseCompleted = 0;
-					cp.lastLocation = 0;
-					cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
-					cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
-					cp.week = week;
-					cp.getNewBP = 0;	
-					//This has to be initialized later...
-					cp.BPDaysLeft = 0;
-					cp.BPSystolic = 0;
-					cp.BPDiastolic = 0;
-					cp.BPMinSystolic = 0;
-					cp.BPMaxSystolic = 0;
-					cp.BPMinDiastolic = 0;
-					cp.BPMaxDiastolic = 0;
-					cp.targetHR = 0;
-					cp.weight = 0;
-					cp.exlist = 0;
-				}
+function buildRecordThreads( t ) {
+	if ( !StructKeyExists( t, "participants" ) ) { 
+		t.participants = {};
+		if ( isDefined( "selectedParticipants" ) ) {
+			for ( p in selectedParticipants.results ) {
+				//Create a key that can be referenced by the participant GUID
+				cp = t.participants[ Trim( p.participantGUID ) ] = {};
+				cp.recordThread = Trim( ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID );
+				cp.checkInCompleted = 0 ;
+				cp.exerciseParameter = 0 ;
+				cp.recoveryCompleted = 0;
+				cp.lastExerciseCompleted = 0;
+				cp.lastLocation = 0;
+				cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
+				cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
+				cp.week = week;
+				cp.getNewBP = 0;	
+				//This has to be initialized later...
+				cp.BPDaysLeft = 0;
+				cp.BPSystolic = 0;
+				cp.BPDiastolic = 0;
+				cp.targetHR = 0;
+				cp.weight = 0;
+				cp.exlist = 0;
 			}
-		}
-		else {
-			; //run whatever needs to be run to build this... or just use closures ;)
 		}
 	}
 }
 
 
+//Redefine this to make life easy
+if ( !StructKeyExists( session, session.ivId ) ) 
+	cs = session[ session.ivId ] = {};
+else {
+	cs = session[ session.ivId ]; 
+}
+
 //Build a session
-session[ session.ivId ] = {
-	 id = session.ivId 
-	,day = DayOfWeek( Now() )
-	,dayName = DateTimeFormat( Now(), "EEE" )
-	,location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#"
-	,needsRebuild = 0
-	,plocation = 0
-	,selected = 0
-	,participantId = currentId 
-	,participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : ""
-	,staff = {
-		 email     =  (isDefined( 'session.email' )) ? session.email : ""
-  	,guid      =  (isDefined( 'session.userguid' )) ? session.userguid : ""
-		,userid    =  (isDefined( 'session.userid' )) ? session.userid : ""
-		,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
-		,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
-	}
+cs.id = session.ivId ;
+cs.day = DayOfWeek( Now() );
+cs.dayName = DateTimeFormat( Now(), "EEE" );
+cs.location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#";
+cs.needsRebuild = 0;
+cs.plocation = 0;
+cs.selected = 0;
+cs.participantId = currentId ;
+cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : "";
+cs.staff = {
+	 email     =  (isDefined( 'session.email' )) ? session.email : ""
+	,guid      =  (isDefined( 'session.userguid' )) ? session.userguid : ""
+	,userid    =  (isDefined( 'session.userid' )) ? session.userid : ""
+	,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
+	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
 };
 
+//...
+sess.current = cs;
 
-//Build record threads
-buildRecordThreads( session[ session.ivId ] );
+//Only build a new participant database after initial submission
+if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
+	buildRecordThreads( session[ session.ivId ] );
+}
 
-
-//Only define this if someone is selected...
-sess.current = session[ "#session.ivId#" ];
-if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
-	sess.csp = sess.current.participants[ sess.current.participantId ];
+//Short name again
+if ( StructKeyExists( sess.current, "participants" ) ) {
+	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
+		sess.csp = sess.current.participants[ sess.current.participantId ];
+	}
 }
 
 
@@ -486,10 +476,10 @@ else if ( data.loaded eq "check-in" ) {
 	sess.csp.BPDaysLeft = privateBPDaysLimit - privateBPDaysElapsed;
 	sess.csp.BPSystolic = (privateReBP) ? 40 : privateBPQ.bp_systolic;
 	sess.csp.BPDiastolic = (privateReBP) ? 40 : privateBPQ.bp_diastolic;
-	sess.csp.BPMinSystolic = 40 ;
-	sess.csp.BPMaxSystolic = 160;
-	sess.csp.BPMinDiastolic = 40;
-	sess.csp.BPMaxDiastolic = 90;
+	BPMinSystolic = 40 ;
+	BPMaxSystolic = 160;
+	BPMinDiastolic = 40;
+	BPMaxDiastolic = 90;
 	
 
 	//Target Heart Rate
@@ -541,6 +531,4 @@ else if ( data.loaded eq "check-in" ) {
 		abort;	
 	}	
 }
-	sess.csp.exerciseParameter =  ( StructKeyExists( form, "param" ) ) ?
-		form.param : "6";
 </cfscript>

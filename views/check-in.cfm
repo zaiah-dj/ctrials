@@ -94,7 +94,7 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<span style="top: -2px" class="sameline">Systolic</span>
-									<input type="range" min="#sess.csp.BPMinSystolic#" max="#sess.csp.BPMaxSystolic#" class="slider" name="bp_systolic" value="#sess.csp.BPSystolic#" required>
+									<input type="range" min="#BPMinSystolic#" max="#BPMaxSystolic#" class="slider" name="bp_systolic" value="#sess.csp.BPSystolic#" required>
 								</div>
 								<div class="catch cc col-sm-1"><span>#sess.csp.BPSystolic#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
@@ -109,7 +109,7 @@
 							<div class="row">
 								<div class="cc col-sm-8">
 									<span style="top: -2px" class="sameline">Diastolic</span>
-									<input type="range" min="#sess.csp.BPMinDiastolic#" max="#sess.csp.BPMaxDiastolic#" class="slider" name="bp_diastolic" value="#sess.csp.BPDiastolic#" required>
+									<input type="range" min="#BPMinDiastolic#" max="#BPMaxDiastolic#" class="slider" name="bp_diastolic" value="#sess.csp.BPDiastolic#" required>
 								</div>
 								<div class="catch cc col-sm-1"><span>#sess.csp.BPDiastolic#</span><span> mmHg</span></div>
 								<div class="col-sm-1">
