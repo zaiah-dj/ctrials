@@ -390,7 +390,6 @@ else {
 cs.id = session.ivId ;
 cs.day = DayOfWeek( Now() );
 cs.dayName = DateTimeFormat( Now(), "EEE" );
-cs.location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#";
 cs.needsRebuild = 0;
 cs.plocation = 0;
 cs.selected = 0;
@@ -403,6 +402,26 @@ cs.staff = {
 	,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
 	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
 };
+
+//Add a location queue
+footprint = {
+	location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#"
+ ,time = Now()
+ ,partiicpantGUID = cs.participantId
+};
+
+if ( !StructKeyExists( cs, "footprints" ) ) { 
+	cs.footprints = [ footprint, {},{},{},{} ]; 
+}
+else {
+	if ( !FindNoCase( "sessdata.cfm", cgi.script_name ) ) {
+		cs.footprints[ 5 ] = cs.footprints[ 4 ];
+		cs.footprints[ 4 ] = cs.footprints[ 3 ];
+		cs.footprints[ 3 ] = cs.footprints[ 2 ];
+		cs.footprints[ 2 ] = cs.footprints[ 1 ];
+		cs.footprints[ 1 ] = footprint;
+	}
+}
 
 //...
 sess.current = cs;
