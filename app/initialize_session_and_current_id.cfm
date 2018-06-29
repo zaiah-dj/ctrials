@@ -304,8 +304,7 @@ A full session ought to look like:
 	id = <for reference only: the random ID that is now session.ivId>
 	needsRebuild [boolean]      - defines whether or not to rebuild record thread table
 	interventionist [ varchar ] - the current interventionist logged in for this session
-	location [ varchar ]        - the current location that the session is on
-	plocation [ varchar ]       - the last location?
+	footprints [ table ]        - queue of the last five locations, ids and dates of use of app
 	status [ integer ]          - can be used for anything (like rebuild etc)
 	selected [ varchar ]        - the ID of the currently selected participant
 	participants [ table ]      - list of participants and accompanying data
@@ -390,9 +389,7 @@ else {
 cs.id = session.ivId ;
 cs.day = DayOfWeek( Now() );
 cs.dayName = DateTimeFormat( Now(), "EEE" );
-cs.location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#";
 cs.needsRebuild = 0;
-cs.plocation = 0;
 cs.selected = 0;
 cs.participantId = currentId ;
 cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : "";
@@ -403,6 +400,26 @@ cs.staff = {
 	,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
 	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
 };
+
+//Add a location queue
+footprint = {
+	location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#"
+ ,time = Now()
+ ,partiicpantGUID = cs.participantId
+};
+
+if ( !StructKeyExists( cs, "footprints" ) ) { 
+	cs.footprints = [ footprint, {},{},{},{} ]; 
+}
+else {
+	if ( !FindNoCase( "sessdata.cfm", cgi.script_name ) ) {
+		cs.footprints[ 5 ] = cs.footprints[ 4 ];
+		cs.footprints[ 4 ] = cs.footprints[ 3 ];
+		cs.footprints[ 3 ] = cs.footprints[ 2 ];
+		cs.footprints[ 2 ] = cs.footprints[ 1 ];
+		cs.footprints[ 1 ] = footprint;
+	}
+}
 
 //...
 sess.current = cs;
