@@ -5,9 +5,10 @@ ezdb  = CreateObject( "component", "components.quella" );
 rl    = CreateObject( "component", "components.requestLogger" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 val   = CreateObject( "component", "components.validate" );
-exe   = CreateObject( "component", "components.exercises" ).init();
+endobj= CreateObject( "component", "components.endurance" ).init();
+resobj= CreateObject( "component", "components.resistance").init();
 
-//val.validate( {}, {} );
+//Set a datasource for all things
 ezdb.setDs( datasource = "#data.source#" );
 
 //Set labels from over here somewhere
@@ -537,9 +538,6 @@ else if ( data.loaded eq "check-in" ) {
 		 ,wk  = sess.csp.week
 		}
 	);
-
-	//Exercise list
-	sess.csp.elist = CreateObject( "component", "components.exercises" ).init();
 
 	//...
 	for ( n in ListToArray( ValueList( qCompletedDays.results.dayofwk, "," ) ) ) {

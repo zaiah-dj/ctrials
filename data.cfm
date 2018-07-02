@@ -40,9 +40,10 @@ I can do more with this concept...
  ,"notes"          = "ac_mtr_participant_notes"
  ,"sessionTable"   = "ac_mtr_logging_progress_tracker_v2"
  ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
- ,"exerciseList"   = "ac_mtr_resistance_exercise_list"
  ,"checkin"        = "ac_mtr_checkinstatus_v2"
  ,"bloodpressure"  = "ac_mtr_bloodpressure_v2"
+
+ ,"serverlog"      = "ac_mtr_serverlog"
 }
 ,"css"    = [
 	 "zero.css"

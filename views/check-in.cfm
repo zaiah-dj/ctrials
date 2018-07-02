@@ -77,7 +77,7 @@
 
 
 				<tr>
-					<td class="title">Blood Pressure</td>
+					<td class="title">Resting Blood Pressure</td>
 					<td>
 
 					<cfif !sess.csp.getNewBP>
@@ -173,12 +173,14 @@
 							</div>
 						<cfelse>
 							<div class="clabel">
-								Upper Body
+								<!--- Upper Body --->
+								Chest, shoulders, triceps, abdominals, calves	
 								<input type="radio" name="param" value="4"  #iif(sess.csp.exerciseParameter eq 4,DE("checked"),DE(""))# required>
 								<br /><span class="checkmark"></span>
 							</div>
 							<div class="clabel">
-								Lower Body
+								<!--- Lower Body --->
+								Hips, thighs, back, biceps	
 								<input type="radio" name="param" value="5" #iif(sess.csp.exerciseParameter eq 5,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 							</div>

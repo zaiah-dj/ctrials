@@ -32,15 +32,16 @@
 <cfelseif ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)>
 	<!--- Create a seperate list for looping --->
 	<cfset NameList=[]>
-	<Cfloop query=reExList.results>
-		<cfset ArrayAppend( NameList, "#et_formname#" )>
+
+	<Cfloop query=reExList>
+		<cfset ArrayAppend( NameList, "#formName#" )>
 	</cfloop>
 
 	<!--- Create the column header --->
 	<thead>
 		<th>Resistance Exercises</th>
-	<cfloop query = reExList.results >
-		<th style="width:6.5%">#et_name#</th>
+	<cfloop query = reExList>
+		<th style="width:6.5%">#pname#</th>
 	</cfloop>
 	</thead>
 

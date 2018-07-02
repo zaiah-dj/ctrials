@@ -3,12 +3,11 @@
 if ( isDefined( "currentParticipant" ) ) {
 	if ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) {
 		//No way to actually do a publically exposed model, so I'll settle for this...
-		obj   = CreateObject( "component", "components.endurance" ).init();
 		ptime = (StructKeyExists( url, "time" )) ? url.time : 0;
 
 		private = {
 		  time = ptime 
-		 ,designation = (ptime eq 50) ? "m5_rec" : obj.getTimeInfo( ptime ).label 
+		 ,designation = (ptime eq 50) ? "m5_rec" : endobj.getTimeInfo( ptime ).label 
 		 ,eTypeLabels = [ "Cycle", "Treadmill", "Other" ]
 		};
 
@@ -122,9 +121,9 @@ if ( isDefined( "currentParticipant" ) ) {
 		public = {
 		  cssClassName = "endurance-class"
 		 ,eTypeLabel   = private.eTypeLabels[ sess.csp.exerciseParameter ]
-		 ,formValues   = obj.getLabelsFor( sess.csp.exerciseParameter )
+		 ,formValues   = endobj.getLabelsFor( sess.csp.exerciseParameter )
 		 ,selectedTime = private.time 
-		 ,timeList     = obj.getEndurance()
+		 ,timeList     = endobj.getEndurance()
 		};
 
 		cssClassName = "endurance-class";
@@ -167,19 +166,17 @@ if ( isDefined( "currentParticipant" ) ) {
 		);
 	}
 	else if ( ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) {
-		//...
-		obj=createObject("component","components.resistance").init();
-
 		private = {
 			cssClassName="resistance-class"
-		 ,exlist = exe.getSpecificExercises( sess.csp.exerciseParameter )
 
-		 //Pull exercise name	
+		 ,exlist = resobj.getSpecificExercises( sess.csp.exerciseParameter )
+
 		 ,type = (StructKeyExists(url,"extype")) ? url.extype : 
 				( sess.csp.exerciseParameter eq 4 ) ? 1 : 3
 		};
 
-		private.designation = obj.getExerciseName( private.type ).desig;
+		private.loadedExercise = resobj.getExerciseName( private.type );
+		private.designation = private.loadedExercise.formName;
 
 		//Get the entries in the table.
 		private.query = ezdb.exec(
@@ -227,12 +224,9 @@ if ( isDefined( "currentParticipant" ) ) {
 
 		//...
 		public = {
-			//Pull a single exercise
-			reExSel =ezdb.exec( 
-			 string="SELECT * FROM #data.data.exerciseList# WHERE et_id = :et_id", 
-			 bindArgs={ et_id = private.type } )
-		 ,reExList=exe.getSpecificExercises( sess.csp.exerciseParameter )
-		 ,formValues = obj.getLabels()
+		  selName = private.loadedExercise.pname
+		 ,reExList = private.exlist
+		 ,formValues = resobj.getLabels()
 		 ,type = private.type
 		};
 
