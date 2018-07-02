@@ -17,6 +17,8 @@ components/cfwriteback
 components/cfquella
 components/cfsesseract
 components/*.cfm
+
+#nly track
 app/dev
 
 JAVASCRIPT
