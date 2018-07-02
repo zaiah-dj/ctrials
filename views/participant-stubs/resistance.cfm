@@ -35,7 +35,7 @@
 		<cfif #vv.label# neq "">
 		<tr class="heading">
 			<td class="chopt">Last Visit's Results</td>
-			<td><b>#vv.label# - #public.reExSel.results.et_name#</b></td>
+			<td><b>#vv.label# - #public.selName#</b></td>
 		</tr>
 		</cfif>
 		<tr>

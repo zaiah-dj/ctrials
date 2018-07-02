@@ -1,11 +1,22 @@
 <cfscript>
 errstr = "Error at /api/resistance/* - ";
+vpath = 1;
 try {
 	//Auto select exercise type if it's nowhere to be found
 	if ( !StructKeyExists( form, "extype" ) )
-		form.extype = 0;
+		form.extype = 1;
 
 	//Figure out the form type.
+	if ( form.extype lt 1 || form.extype gt 14 ) {
+		
+		req.sendAsJson( status = 0, message = "#errstr# - Invalid exercise type #form.extype# specified." );
+	}
+
+	//Get the formname
+	obj=createObject("component","components.resistance").init();
+	desig = obj.getExerciseName( form.extype ).formName;
+
+/*	
 	if ( form.extype == 0 || form.extype == 1 )
 		desig = "abdominalcrunch";
 	else if ( form.extype == 2 )
@@ -35,6 +46,7 @@ try {
 	else if ( form.extype == 14 ) {
 		desig = "triceppress";
 	}
+*/
 
 	//...
 	stat = val.validate( form, {
@@ -96,6 +108,7 @@ catch (any ff) {
 //Choose a SQL statment
 sqlStatement = "";
 if ( !upd.prefix.recordCount ) {
+	vpath = 0;
 	sqlString = "
 		INSERT INTO 
 			#data.data.resistance#	
@@ -128,6 +141,7 @@ if ( !upd.prefix.recordCount ) {
 		);";
 	}
 else {
+	vpath = 1;
 	sqlString = " 
 		UPDATE
 			#data.data.resistance#	
@@ -179,6 +193,14 @@ try {
 catch (any ff) {
 	req.sendAsJson( status = 0, message = "#errstr# - #ff#" );
 }
-req.sendAsJson( status = 1, message = "SUCCESS at /api/resistance/* - #upd.message#" );	
+req.sendAsJson( 
+	status = 1, 
+
+	message = ( !vpath ) ? 
+		"SUCCESS @ /api/resistance/* - Inserted into #data.data.resistance# with values #SerializeJSON( fv )#" :
+		"SUCCESS @ /api/resistance/* - Updated #data.data.resistance# with values #SerializeJSON( fv )#"
+
+);	
+
 abort;
 </cfscript>

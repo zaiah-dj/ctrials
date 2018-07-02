@@ -21,6 +21,26 @@ component name="resistance" {
 			,{ type = 14, desig = "triceppress" }
 		]);
 
+		this.exercises = queryNew( 
+			"type,id,etype,pname,formName,description", 
+			"Integer,Integer,Integer,Varchar,Varchar,Varchar", [
+/*	 { type=0, id=0,  etype=4, pname = 'Abdominal Crunch', formName = 'abdominalcrunch', description = '' }, */
+		 { type=1, id=1,  etype=4, pname = 'Abdominal Crunch', formName = 'abdominalcrunch', description = '' }
+		,{ type=2, id=2,  etype=4, pname = 'Bicep Curl', formName = 'bicepcurl', description = '' }
+		,{ type=3, id=3,  etype=5, pname = 'Calf Press', formName = 'calfpress', description = '' }
+		,{ type=4, id=4,  etype=4, pname = 'Chest', formName = 'chest2', description = '' }
+		,{ type=5, id=5,  etype=4, pname = 'Chest Press', formName = 'chestpress', description = '' }
+		,{ type=6, id=6,  etype=5, pname = 'Dumbbell Squat', formName = 'dumbbellsquat', description = '' }
+		,{ type=7, id=7,  etype=5, pname = 'Knee Extension', formName = 'kneeextension', description = '' }
+		,{ type=8, id=8,  etype=5, pname = 'Leg Curl', formName = 'legcurl', description = '' }
+		,{ type=9, id=9,  etype=5, pname = 'Leg Press', formName = 'legpress', description = '' }
+		,{ type=10, id=10,  etype=4, pname = 'Overhead Press', formName = 'overheadpress', description = '' }
+		,{ type=11, id=11,  etype=4, pname = 'Pulldown', formName = 'pulldown', description = '' }
+		,{ type=12, id=12,  etype=4, pname = 'Seated Row', formName = 'seatedrow', description = '' }
+		,{ type=13, id=13,  etype=4, pname = 'Shoulder', formName = 'shoulder2', description = '' }
+		,{ type=14, id=14,  etype=4, pname = 'Tricep Press', formName = 'triceppress', description = '' }
+		]);
+
 		this.labelDefaults = [
 			 {label="Set 1", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt1" }
 			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep1" }
@@ -32,8 +52,27 @@ component name="resistance" {
 		return this;
 	}
 
+	public function getExercises() {
+		qs = new query();	
+		qs.setName( "juice" );
+		qs.setDBType( "query" );
+		qs.setAttributes( sourceQuery = this.exercises ); 
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery" );
+		return qr.getResult();	
+	}
+
 	public function getLabels() {
 		return this.labelDefaults;
+	}
+
+	public Query function getSpecificExercises( Required Numeric id ) {
+		qs = new query();	
+		qs.setName( "juice" );
+		qs.setDBType( "query" );
+		qs.setAttributes( sourceQuery = this.exercises ); 
+		qs.addParam( name="id", value=arguments.id, cfsqltype="cf_sql_numeric" );
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE etype = :id" );
+		return qr.getResult();	
 	}
 
 	public Query function getResistance( ) {
@@ -48,7 +87,7 @@ component name="resistance" {
 	public Query function getExerciseName( Required Numeric id ) {
 		qs = new query();	
 		qs.setDBType( "query" );
-		qs.setAttributes( sourceQuery = this.srcQuery ); 
+		qs.setAttributes( sourceQuery = this.exercises ); 
 		qs.addParam( name="id", value=arguments.id, cfsqltype="cf_sql_numeric" );
 		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE type = :id" );
 		return qr.getResult();	

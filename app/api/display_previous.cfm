@@ -52,7 +52,8 @@ if ( isDefined( "currentParticipant" ) && ListContains(ENDURANCE, currentPartici
 }
 else if ( isDefined( "currentParticipant" ) && ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) 
 {
-	reExList=ezdb.exec( string="SELECT * FROM #data.data.exerciseList#" );
+	obj=createObject("component","components.resistance").init();
+	reExList=obj.getExercises();
 	rr = ezdb.exec(
 		string = "SELECT * FROM 
 			#data.data.resistance# 

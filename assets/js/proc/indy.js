@@ -83,10 +83,6 @@ function updateNeighborBoxFromSI (ev) {
 }
 
 
-function ribbit(ev) {
-	alert( "i've been reloaded" );
-}
-
 //Handles fetching and serializing participant results from previous weeks 
 function getNextResults(ev) {
 	ev.preventDefault();
@@ -242,7 +238,6 @@ function updateExerciseSession ( ev ) {
 	var x = new XMLHttpRequest();
 	//console.log( l );
 	
-x.addEventListener("load", ribbit );
 	x.open( "GET", l , false); 
 	x.send();
 	q.innerHTML = x.responseText;	
@@ -278,7 +273,6 @@ Router = {
 	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: makeModal }
 	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
-	 ,{ domSelector: "#feed", event: "load"  , f: ribbit }
 	]
 
 	,"input": [
