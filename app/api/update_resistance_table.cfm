@@ -54,7 +54,7 @@ try {
 		,sess_id = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
-		,staffId = { req = false, ifNone = 1 }
+		,staffid = { req = true }
 		,recordThread = { req = false, ifNone = "hi" }
 		/*
 		,reps1 = { req = true }
@@ -118,6 +118,7 @@ if ( !upd.prefix.recordCount ) {
 			,insertedBy
 			,dayofwk
 			,stdywk
+			,staffID
 			,#desig#Rep1
 			,#desig#Rep2
 			,#desig#Rep3
@@ -132,6 +133,7 @@ if ( !upd.prefix.recordCount ) {
 			,:insBy
 			,:dwk
 			,:swk
+			,:staff_id
 			,:rep1
 			,:rep2
 			,:rep3
@@ -152,6 +154,7 @@ else {
 			,#desig#Wt2  = :wt2
 			,#desig#Rep3 = :rep3
 			,#desig#Wt3  = :wt3
+			,staffID     = :staff_id
 		WHERE
 			participantGUID = :pid
 		AND
@@ -172,7 +175,7 @@ try {
  	 ,bindArgs = {
 			pid      = fv.pid 
 		 ,sid      = fv.sess_id
-		 ,staffId  = fv.staffId 
+		 ,staff_id = fv.staffId 
 		 ,rthrd    = fv.recordThread
 		 ,insBy    = "NOBODY" 
 		 ,dwk      = fv.dayofwk

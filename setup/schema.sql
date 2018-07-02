@@ -875,12 +875,15 @@ BEGIN
 END
 CREATE TABLE ac_mtr_session_metadata (
 	 sm_id int IDENTITY(1,1) NOT NULL
-	,sm_ivid VARCHAR(64)
+	,sm_sessdayid VARCHAR(50) NOT NULL DEFAULT (newid())
 	,sm_siteid VARCHAR(64)
-	,sm_datetimestarted DATE
+	,sm_datetimestarted DATETIME NOT NULL DEFAULT (getdate())
 	,sm_dayofweek INT
+	,sm_dayofmonth INT
+	,sm_month INT
+	,sm_year INT
 );
- 
+ 	
  
  /* ---------------------------
 ac_mtr_session_staff_selected
@@ -901,13 +904,14 @@ BEGIN
 END
 CREATE TABLE ac_mtr_session_staff_selected (
 	 ss_id int IDENTITY(1,1) NOT NULL
-	,ss_ivid VARCHAR(64)
+	,ss_sessdayid VARCHAR(64)
 	,ss_staffid VARCHAR(64)
-	,ss_participantrecordkey VARCHAR(64)
-	,ss_datelastaccessed DATE
+	,ss_staffsessionid VARCHAR(64)
+	,ss_participantrecordkey VARCHAR(64) NOT NULL DEFAULT (newid())
+	,ss_datelastaccessed DATETIME NOT NULL DEFAULT (getdate())
 );
  
- 
+
 /* ---------------------------
 ac_mtr_session_participants_selected
 
@@ -925,12 +929,12 @@ IF OBJECT_ID( N'ac_mtr_session_participants_selected', N'U') IS NOT NULL
 BEGIN
 	DROP TABLE ac_mtr_session_participants_selected;
 END
-CREATE TABLE ac_mtr_session_participant_selected (
+CREATE TABLE ac_mtr_session_participants_selected (
 	 sp_id int IDENTITY(1,1) NOT NULL
-	,sp_ivid VARCHAR(64)
+	,sp_sessdayid VARCHAR(64)
 	,sp_participantrecordkey VARCHAR(64)
 	,sp_participantGUID VARCHAR(64)
-	,sp_participantRecordThread DATE
+	,sp_participantRecordThread VARCHAR(64)
 );
  
  

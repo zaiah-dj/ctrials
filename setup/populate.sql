@@ -20,10 +20,10 @@ INSERT INTO ac_mtr_participants_v3 VALUES ( '46D412E1-0245-4040-896D-2DB8253A7CD
 INSERT INTO ac_mtr_participants_v3 VALUES ( '67BBDC07-D6BB-4C6C-A5F0-19CDBD65D503',1099064, 'Richard', 'Skeykunk', '',1022,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
 */
 
-INSERT INTO ac_mtr_test_staff VALUES ( newid(), 'Ramar', 'Ramar', 'Collins', 999 );
-INSERT INTO ac_mtr_test_staff VALUES ( newid(), 'Kristy', 'Julia', 'Gordon', 999 );
-INSERT INTO ac_mtr_test_staff VALUES ( newid(), 'Alba', 'Willis', 'McIntyre', 999 );
+INSERT INTO ac_mtr_test_staff VALUES ( "RZILPFVZ", 'Ramar', 'Ramar', 'Collins', 999 );
+INSERT INTO ac_mtr_test_staff VALUES ( "YXWBMLAY",'Kristy', 'Julia', 'Gordon', 999 );
+INSERT INTO ac_mtr_test_staff VALUES ( "UBFKOEFA",'Alba', 'Willis', 'McIntyre', 999 );
 
-INSERT INTO ac_mtr_test_staff VALUES ( newid(), 'Aldous', 'Graham', 'Huxley', 777 );
-INSERT INTO ac_mtr_test_staff VALUES ( newid(), 'Cameron', 'Joseph', 'Fontana', 777 );
-INSERT INTO ac_mtr_test_staff VALUES ( newid(), 'Majel', 'Lucille', 'Barrett', 777 );
+INSERT INTO ac_mtr_test_staff VALUES ( "CLWWBZGS",'Aldous', 'Graham', 'Huxley', 777 );
+INSERT INTO ac_mtr_test_staff VALUES ( "ZELNVFIK",'Cameron', 'Joseph', 'Fontana', 777 );
+INSERT INTO ac_mtr_test_staff VALUES ( "OFSIUHRJ",'Majel', 'Lucille', 'Barrett', 777 );

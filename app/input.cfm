@@ -162,6 +162,7 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,{ name="dayofwk", value= "#sess.current.day#" }
 		 ,{ name="stdywk", value= "#sess.csp.week#" }
 		 ,{ name="sess_id", value= "#sess.key#" }
+		 ,{ name = "staffid", value = "#sess.current.staffId#" }
 			]
 		);
 	}
@@ -244,11 +245,12 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,additional = [ 
 				{ name = "this", value = "resistance" }
 			 ,{ name = "sess_id", value = "#sess.key#" }
-			 ,{ name="recordThread", value= "#sess.csp.recordthread#" }
+			 ,{ name = "recordThread", value= "#sess.csp.recordthread#" }
 			 ,{ name = "pid", value = "#sess.current.participantId#" }
 			 ,{ name = "dayofwk", value= "#sess.current.day#" }
 			 ,{ name = "stdywk", value= "#sess.csp.week#" }
 			 ,{ name = "extype", value = "#private.type#" }
+			 ,{ name = "staffid", value = "#sess.current.staffId#" }
 			]
 		 ,querySelector = {
 				dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"

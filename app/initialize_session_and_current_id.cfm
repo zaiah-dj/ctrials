@@ -8,6 +8,9 @@ val   = CreateObject( "component", "components.validate" );
 endobj= CreateObject( "component", "components.endurance" ).init();
 resobj= CreateObject( "component", "components.resistance").init();
 
+//Set a site ID from here
+siteId = 999;
+
 //Set a datasource for all things
 ezdb.setDs( datasource = "#data.source#" );
 
@@ -78,32 +81,80 @@ else {
 sess.status = 2;
 //writedump( session );abort;
 
-//get the data from the session
+//Look for a matching key of some sort.
 cs = ezdb.exec(
 	datasource = "#data.source#"
- ,string = "SELECT * FROM ac_mtr_participant_transaction_set WHERE p_transaction_id = :sid"
- ,bindArgs = { sid = sess.key }
+ ,string = "
+		SELECT 
+			sm_sessdayid as sid 
+		 ,sm_datetimestarted as sdate 
+		FROM 
+			#data.data.sessiondappl# 
+		WHERE 
+			sm_dayofweek = :dayofwk
+		AND
+			sm_siteid    = :siteid	
+	"
+ ,bindArgs = { 
+		siteid  = siteId
+	 ,dayofwk = DayOfWeek( Now() )
+	 ,dayofmonth = DateTimeFormat( Now(), "d" )
+	 ,month = DateTimeFormat( Now(), "MM" )
+	 ,year = DateTimeFormat( Now(), "YYYY" )
+	}
 );
 
+
+csDate = cs.results.sdate;
+csSid = cs.results.sid;
+
 //if there is no record of a current session, time to write it in
-if ( !cs.prefix.recordCount ) {
-	ds = ezdb.exec(
-		datasource = "#data.source#"
-	 ,string = "INSERT INTO ac_mtr_participant_transaction_set VALUES ( :sid, :cdt, :lut, 0, NULL )"
+if ( csDate eq "" || csSid eq "" ) { 
+	cs = ezdb.exec(
+	  string = "
+			INSERT INTO #data.data.sessiondappl# 
+				( sm_siteid, sm_dayofweek )
+			VALUES 
+				( :site_id , :dayofwk     )
+		"  
 	 ,bindArgs = { 
-			sid = sess.key 
-		 ,cdt = { value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cf_sql_datetime"}
-		 ,lut = { value=DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ),type="cf_sql_datetime"}
+		  site_id = siteId ,dayofwk = DayOfWeek( Now() )
 		}
 	);
-}
-else {
-	//DateDiff
-	unixTime = DateDiff( "s", CreateDate(1970,1,1), CreateODBCDateTime(Now()));
-	updateTime = DateDiff( "s", CreateDate(1970,1,1), cs.results.p_lastUpdateTime);
-	timePassed = unixTime - updateTime;
 
+	//re-run query and get the data I want
+	cs = ezdb.exec(
+		datasource = "#data.source#"
+	 ,string = "
+			SELECT 
+				sm_sessdayid as SID 
+			 ,sm_datetimestarted as sdate 
+			FROM 
+				#data.data.sessiondappl# 
+			WHERE 
+				sm_dayofweek = :dayofwk
+			AND
+				sm_siteid    = :siteid	
+		"
+	 ,bindArgs = { 
+			siteid  = siteId
+		 ,dayofwk = DayOfWeek( Now() )
+		 ,dayofmonth = DateTimeFormat( Now(), "d" )
+		 ,month = DateTimeFormat( Now(), "MM" )
+		 ,year = DateTimeFormat( Now(), "YYYY" )
+		}
+	);
+
+	csDate = cs.results.sdate;
+	csSid = cs.results.sid;
+}
+else { 
+	unixTime = DateDiff( "s", CreateDate(1970,1,1), CreateODBCDateTime(Now()));
+	updateTime = DateDiff( "s", CreateDate(1970,1,1), cs.results.sdate );
+	timePassed = unixTime - updateTime;
 	/*
+	//DateDiff
+
 	//This is all here in case you forget how to do math.
 	writeoutput( 'Unix Time: ' & unixTime );
 	writeoutput( "<br />" );
@@ -116,8 +167,6 @@ else {
 	writeoutput( 'Time Passed (minutes): ' & ( timePassed / 60 ) & " minutes" );
 	writeoutput( "<br />" );
 	writeoutput( 'Time passed (hours): ' & (( timePassed / 60 ) / 60 ) & " hours" );
-	*/
-	if ( data.debug eq 3 ) abort;
 
 	//after 2 hours (or whatever expireTime is), the session needs to completely expire
 	if ( superExpire neq -1 && timePassed >= expireTime ) {
@@ -125,7 +174,7 @@ else {
 		if ( StructKeyExists( session, "ivId" ) ) {
 			//really doesn't matter if this fails.
 			ezdb.exec( 
-			  string="DELETE FROM ac_mtr_participant_transaction_set WHERE p_transaction_id = :sid" 
+			  string="DELETE FROM #data.data.sessiondappl# WHERE p_transaction_id = :sid" 
 			 ,bindArgs={sid=session.ivId}
 			);
 			StructDelete( session, "ivId" );
@@ -133,6 +182,10 @@ else {
 
 		//This staff member needs to run checkin again
 		location( url="#link( '' )#", addtoken="no" );
+	}
+	*/
+	if ( 0 ) {
+		;
 	}
 
 	//after 15 min, THIS page needs to trigger a desire for credentials. 
@@ -145,10 +198,15 @@ else {
 
 	//if neither of these has happened, then update the lastMod field in transaction_set
 	else {
+		/*
 		ds = ezdb.exec( 
-			string = "UPDATE ac_mtr_participant_transaction_set
-				SET p_lastUpdateTime = :dut
-				WHERE p_transaction_id = :sid",
+			string = "
+			UPDATE 
+				#data.data.sessiondappl#
+			SET 
+				p_lastUpdateTime = :dut
+			WHERE 
+				p_transaction_id = :sid",
 			bindArgs = {
 				sid = sess.key 
 			 ,dut = { 
@@ -163,8 +221,101 @@ else {
 			0;
 			throw "DEATH AT SESSION UPDATE - #ds.message#";
 		}
+		*/
 	}
 }
+
+
+//Staff should be defiend pretty early
+session.userguid = "CLWWBZGS";
+staffId = 0;
+
+if ( StructKeyExists( url, "staffid" ) )
+	staffId = url.staffid;
+else {
+	if ( StructKeyExists( session, "userguid" ) ) {
+		staffId = session.userguid;
+	}
+}
+
+
+
+//Check if the staff member has been logged in as well
+stf = ezdb.exec( 
+	string = "
+		SELECT 
+			ss_id,
+			ss_sessdayid,
+			ss_staffid,
+			ss_staffsessionid,
+			ss_participantrecordkey,
+			ss_datelastaccessed
+		FROM 
+			#data.data.sessiondstaff# 
+		WHERE
+			ss_sessdayid = :sid
+		AND
+			ss_staffsessionid = :staff_ssid
+		AND
+			ss_staffid = :staff_id
+	"
+ ,bindArgs = { 
+		sid = csSid 
+	 ,staff_id = staffId
+	 ,staff_ssid = session.ivId
+	}
+);
+
+stfPrk = stf.results.ss_participantrecordkey;
+
+//Make a record
+if ( stf.results.ss_staffid eq "" ) {
+	stf = ezdb.exec( 
+		string = "
+			INSERT INTO #data.data.sessiondstaff# 
+				( ss_sessdayid
+				 ,ss_staffid
+				 ,ss_staffsessionid )
+			VALUES 
+				( :sessdayid
+				 ,:staff_id
+				 ,:staff_ssid )
+		"
+	 ,bindArgs = { 
+		  sessdayid = csSid 
+		 ,staff_id = staffId
+		 ,staff_ssid = session.ivId
+		}
+	);
+
+	stf = ezdb.exec( 
+		string = "
+			SELECT 
+				ss_id,
+				ss_sessdayid,
+				ss_staffid,
+				ss_staffsessionid,
+				ss_participantrecordkey,
+				ss_datelastaccessed
+			FROM 
+				#data.data.sessiondstaff# 
+			WHERE
+				ss_sessdayid = :sid
+			AND
+				ss_staffsessionid = :staff_ssid
+			AND
+				ss_staffid = :staff_id
+		"
+	 ,bindArgs = { 
+			sid = csSid 
+		 ,staff_id = staffId
+		 ,staff_ssid = session.ivId
+		}
+	);
+
+	stfPrk = stf.results.ss_participantrecordkey;
+}
+
 
 //Logic to get the most current ID.
 currentId = 0;
@@ -175,6 +326,7 @@ if ( StructKeyExists( form, "pid" ) )
 else if ( StructKeyExists( url, "id" ) )
 	currentId = url.id;
 else {
+	/*
 	//Get the newest one
 	if ( !isDefined("sess.key" ) )
 		currentId = 0;
@@ -192,50 +344,17 @@ else {
 			}
 		).results.active_pid;
 	}
-}
-
-//Recall the last valid session data
-try {
-	//Select from the progress table and use this to prefill fields that don't exist
-	p = ezdb.exec( 
-		string = 
-		"SELECT * FROM
-			#data.data.sessionTable#	
-		 WHERE
-			active_pid = :pid 
-		 AND
-			session_id = :sid"
-	 ,bindArgs = {
-			pid = currentId
-		 ,sid = sess.key
-		}
-	);
-
-	//There was an error
-	if ( !p.status ) {
-		writedump( p );
-		abort;
-	}
-
-	old_ws = {};
-	
-	//Deserialize the old records
-	if ( p.prefix.recordCount ) {
-		old_ws = DeserializeJSON( p.results.misc );
-	}
-}
-catch (any e) {
-	req.sendAsJSON( status = 0, message = "#e.message#" );
-	abort;
+	*/
 }
 
 
 //Get participant data 
 currentParticipant = ezdb.exec( 
 	string = "SELECT * FROM #data.data.participants# WHERE participantGUID = :pid"
- ,bindArgs = { pid = currentId }
+ ,bindArgs = { 
+		pid = { value = currentId, type="cf_sql_varchar" }
+	}
 );
-
 
 //If a current ID is initialized, figure out which group they belong to
 randomCode = currentParticipant.results.randomGroupCode;
@@ -248,23 +367,24 @@ if ( sess.status gt 1 ) {
 		SELECT
 			*
 		FROM
-		( SELECT 
-				p_pid, p_participantGUID
-			FROM 
-				#data.data.sessionMembers#	
+		( SELECT * FROM
+				#data.data.sessiondpart#	
 			WHERE 
-				p_transaction_id = :sid	
-		) AS CurrentTransactionIDList
+				sp_participantrecordkey = :prk
+			AND
+				sp_sessdayid = :sid
+		) AS AssociatedParts 
 		LEFT JOIN
 		( SELECT
 				* 
 			FROM 
 				#data.data.participants#	
 		) AS amp
-		ON CurrentTransactionIDList.p_participantGUID = amp.participantGUID;
+		ON AssociatedParts.sp_participantGUID = amp.participantGUID;
 		"
 		,bindArgs = {
-			sid = sess.key
+			prk = stfPrk 
+		 ,sid = csSid 
 		}	
 	);
 
@@ -273,19 +393,16 @@ if ( sess.status gt 1 ) {
 		SELECT * FROM 
 			#data.data.participants# 
 		WHERE participantGUID NOT IN (
-		  SELECT DISTINCT p_participantGUID FROM 
-				#data.data.sessionMembers#	
+		  SELECT DISTINCT sp_participantGUID FROM 
+				#data.data.sessiondpart#	
 			WHERE 
-				p_transaction_id = :sid 
+				sp_participantrecordkey = :prk
 		) ORDER BY lastname ASC"
 	 ,bindArgs = {
-			sid = sess.key
+			prk = stfPrk 
 		}
 	);
 }
-
-
-
 
 /*
 A full session ought to look like:
@@ -380,8 +497,9 @@ cs.day = DayOfWeek( Now() );
 cs.dayName = DateTimeFormat( Now(), "EEE" );
 cs.needsRebuild = 0;
 cs.selected = 0;
+cs.staffId = staffId;
 cs.participantId = currentId ;
-cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : "";
+cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.participantGUID, ", ") : "";
 cs.staff = {
 	 email     =  (isDefined( 'session.email' )) ? session.email : ""
 	,guid      =  (isDefined( 'session.userguid' )) ? session.userguid : ""

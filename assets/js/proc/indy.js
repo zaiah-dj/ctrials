@@ -180,6 +180,8 @@ function save_session_users (ev) {
 	payload = [
 		 "staffer_id=" + this.staffer_id.value  
 		,"transact_id=" + this.transact_id.value 
+		,"sessday_id=" + this.sessday_id.value 
+		,"prk_id=" + this.prk_id.value 
 		,"list=" + this.list.value 
 		,"this=startSession"
 	].join( '&' );
