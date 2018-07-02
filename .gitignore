@@ -1,24 +1,30 @@
-.*.swp
-.*.swo
-.*.swn
-*.xls
-*.xlsx
+# Exclude all of these binary formats
+*.png
 *.jpg
 *.jpeg
 *.bmp
-*.png
 *.gif
-*.md
-assets/img
-assets/libs/mobileSelect.js
+*.tiff
+*.wav
+*.mp3
+*.ogg
+*.webm
+*.mp4
+*.ogv
+*.avi
+*.aiff
+
+# And any swap files
+.*.swo
+.*.swn
+.*.swp
+
+# Some things are just for me.
 TODO
-CHANGELOG
-components/cfwriteback
-components/cfquella
-components/cfsesseract
-components/*.cfm
 
-#nly track
-app/dev
+# Exclude these directories
+components/*
+app/dev/
 
-JAVASCRIPT
+# Always track CFCs
+!components/*.cfc
