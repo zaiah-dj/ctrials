@@ -1,5 +1,6 @@
 <cfoutput>
 	<div class="container-body">
+<!---
 		<table>
 			<tr>
 				<th>ID</th>
@@ -14,5 +15,13 @@
 			</tr>
 		</cfloop>
 		</table>
+--->
+
+		<cfloop query=public.sel.results>
+		<div>
+			<u>#firstname# #lastname# ( #acrostic# )</u>
+		</div>
+		</cfloop>
+
 	</div>
 </cfoutput>
