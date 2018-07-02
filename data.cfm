@@ -185,19 +185,16 @@ I can do more with this concept...
 	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
 	 	}
 
-	,"compare"= { 
-		"hint"  =  "Compare the participant's previous weeks history."
-	 ,"model" = [ 
-			 "initialize_session_and_current_id"
-		]
-	 ,"view"  = [ 
-			"master/head"
-			,"participant/list" 
-			,"participant/nav"
-			,"compare"
-			,"master/tail" 
-		] 
-		}
+
+,"clearalldata" = {
+		"model" = "destroy_data"
+   ,"view"  = "proceed"
+	 ,"hint"  =  "Use this endpoint to destroy all exercise data." 
+	}
+
+
+
+
 
 		,"log"   = { 
 			"hint"  =  "See the access log."
