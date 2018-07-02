@@ -1,5 +1,18 @@
 <!--- save recovery data (for both exericses) --->
 <cfscript>
+
+/*
+Save:
+
+breaks (how many)
+session stopped early
+reason
+heart rate, rpe, and affect here if stopped early (will need session trickery)
+
+
+ */
+
+
 if ( StructKeyExists( form, "pid" ) ) {
 	//Get type
 	type = ezdb.exec(

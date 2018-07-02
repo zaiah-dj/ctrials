@@ -19,7 +19,7 @@
 	padding: 10px;
 	overflow: auto;
 }
-.cfdebug table { color: white; }
+.cfdebug table { color: black !important; }
 .cfdebug table.td {	padding-right: 10px; }
 .cfdebug table th {	background-color: white; color: black; }
 </style>
@@ -64,7 +64,11 @@
 		--->
 	<!---
 		--->
+	<tr><cfdump var = #url#></tr>
+	<tr><cfdump var = #form#></tr>
 	<tr><cfdump var = #session#></tr>
+	<cfif isDefined('private')><tr><cfdump var = #private#></tr></cfif>
+	<cfif isDefined('public')><tr><cfdump var = #public#></tr></cfif>
 	</table>
 </div>
 <div id="sessionKey" style="display:none">#sess.key#</div>

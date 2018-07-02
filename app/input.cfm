@@ -12,11 +12,70 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,eTypeLabels = [ "Cycle", "Treadmill", "Other" ]
 		};
 
+		//Check if there are any entries at all.
+		private.checkAny = ezdb.exec(
+			string = "
+				SELECT * FROM #data.data.endurance#
+				WHERE participantGUID = :pid
+			"
+		 ,bindArgs = { pid = sess.current.participantId }
+		);
+	
+		private.lastPrev = ezdb.exec(
+			string = "
+				SELECT TOP (1) 
+					 rec_id as p_rec_id
+					,recordthread as p_recordthread
+					,participantGUID as p_participantGUID
+					,dayofwk as p_dayofwk
+					,stdywk as p_stdywk
+					,#private.designation#hr as p_#private.designation#hr
+					,#private.designation#oth1 as p_#private.designation#oth1
+					,#private.designation#oth2 as p_#private.designation#oth2
+					,#private.designation#prctgrade as p_#private.designation#prctgrade
+					,#private.designation#rpm as p_#private.designation#rpm
+					,#private.designation#speed as p_#private.designation#speed
+					,#private.designation#watres as p_#private.designation#watres
+					,mchntype as p_mchntype
+					,nomchntype as p_nomchntype
+					,Sessionmisd as p_Sessionmisd
+					,breaks as p_breaks 
+				FROM
+					#data.data.endurance#
+				WHERE
+					participantGUID = :pid
+				AND
+					stdywk <= :cweek
+				ORDER BY
+					stdywk DESC, dayofwk DESC
+			"
+		, bindArgs = {
+				pid = sess.current.participantId 
+			 ,cweek = sess.csp.week
+		});
+				
 		//Recall endurance data from the current or last session
 		private.query = qu = ezdb.exec(
 			string = "
 			SELECT * FROM
-				( SELECT * FROM
+				( SELECT
+						 rec_id 
+						,recordthread 
+						,participantGUID 
+						,dayofwk 
+						,stdywk 
+						,#private.designation#hr 
+						,#private.designation#oth1 
+						,#private.designation#oth2 
+						,#private.designation#prctgrade 
+						,#private.designation#rpm 
+						,#private.designation#speed 
+						,#private.designation#watres 
+						,mchntype 
+						,nomchntype 
+						,Sessionmisd 
+						,breaks 
+					FROM
 					#data.data.endurance#
 				WHERE
 					participantGUID = :pid
@@ -25,30 +84,31 @@ if ( isDefined( "currentParticipant" ) ) {
 					AND recordthread = :rthrd
 				) as cweek
 			INNER JOIN
-			( SELECT
-				 rec_id as p_rec_id
-				,recordthread as p_recordthread
-				,participantGUID as p_participantGUID
-				,dayofwk as p_dayofwk
-				,stdywk as p_stdywk
-				,#private.designation#hr as p_#private.designation#hr
-				,#private.designation#oth1 as p_#private.designation#oth1
-				,#private.designation#oth2 as p_#private.designation#oth2
-				,#private.designation#prctgrade as p_#private.designation#prctgrade
-				,#private.designation#rpm as p_#private.designation#rpm
-				,#private.designation#speed as p_#private.designation#speed
-				,#private.designation#watres as p_#private.designation#watres
-				,mchntype as p_mchntype
-				,nomchntype as p_nomchntype
-				,Sessionmisd as p_Sessionmisd
-				,breaks as p_breaks 
+			(	SELECT TOP (1) 
+					 rec_id as p_rec_id
+					,recordthread as p_recordthread
+					,participantGUID as p_participantGUID
+					,dayofwk as p_dayofwk
+					,stdywk as p_stdywk
+					,#private.designation#hr as p_#private.designation#hr
+					,#private.designation#oth1 as p_#private.designation#oth1
+					,#private.designation#oth2 as p_#private.designation#oth2
+					,#private.designation#prctgrade as p_#private.designation#prctgrade
+					,#private.designation#rpm as p_#private.designation#rpm
+					,#private.designation#speed as p_#private.designation#speed
+					,#private.designation#watres as p_#private.designation#watres
+					,mchntype as p_mchntype
+					,nomchntype as p_nomchntype
+					,Sessionmisd as p_Sessionmisd
+					,breaks as p_breaks 
 				FROM
 					#data.data.endurance#
 				WHERE
 					participantGUID = :pid
-				AND stdywk = :pstdywk
-				AND dayofwk = :pdayofwk ) as pweek
-
+				AND
+					stdywk <= :stdywk
+				ORDER BY
+					stdywk DESC, dayofwk DESC ) as pweek
 			ON pweek.p_participantGUID = cweek.participantGUID
 			"
 		 ,datasource = "#data.source#"
@@ -57,8 +117,6 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,rthrd = sess.csp.recordthread
 			 ,stdywk = sess.csp.week 
 			 ,dayofwk = sess.current.day 
-			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.csp.week - 1 : sess.csp.week
-			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
 			});
 
 		public = {

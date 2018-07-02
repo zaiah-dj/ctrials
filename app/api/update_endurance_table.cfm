@@ -1,6 +1,7 @@
 <cfscript>
 //Define an error string for use throughout this part
 errstr = "Error at /api/endurance/* - ";
+vpath = 1;
 try {
 	//Differentiate between Cycles, Treadmills and Other
 	CYCLE = 1;
@@ -85,12 +86,14 @@ catch (any thing) {
 
 sqlString = "";
 if ( !upd.prefix.recordCount ) {
+	vpath = 0;
 	sqlString = "
 	INSERT INTO 
 		#data.data.endurance#	
 	( participantGUID
 	 ,recordthread
 	 ,insertedBy
+	 ,d_inserted
 	 ,mchntype
 	 ,#desig#oth1
 	 ,#desig#oth2
@@ -106,6 +109,7 @@ if ( !upd.prefix.recordCount ) {
 	(  :pid
 		,:rthrd
 		,:insertedby
+		,:dtstamp
 		,:mchntype
 		,:oth1
 		,:oth2
@@ -117,14 +121,15 @@ if ( !upd.prefix.recordCount ) {
 		,:swk
 		,:staffid
 	)";
-	//req.sendAsJson( status = 0, message = "INSERT" );
 }
 else {
+	vpath = 1;
 	sqlString = "
 	 UPDATE 
 		#data.data.endurance#	
 	 SET
 		 mchntype = :mchntype
+		,d_inserted = :dtstamp
 		,#desig#oth1 = :oth1
 		,#desig#oth2 = :oth2
 		,#desig#prctgrade = :prctgrade
@@ -152,6 +157,7 @@ try {
 	 ,bindArgs = {
 			pid        = fv.pid
 		 ,insertedby = "NOBODY"
+		 ,dtstamp    = { value = DateTimeFormat( Now(),"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
 		 ,oth1       = fv.oth1
 		 ,oth2       = fv.oth2
 		 ,prctgrade  = fv.prctgrade
@@ -174,5 +180,9 @@ catch (any ff) {
 	req.sendAsJson( status = 0, message = "#errstr# #ff#" );
 }
 
-req.sendAsJson( status = 1, message = "SUCCESS @ /api/endurance/* - #upd.message#" );	
+req.sendAsJson( 
+	status = 1, 
+	message = ( !vpath ) ? 
+		"SUCCESS @ /api/endurance/* - Inserted into #data.data.endurance# with values #SerializeJSON( fv )#" :
+		"SUCCESS @ /api/endurance/* - Updated #data.data.endurance# with values #SerializeJSON( fv )#" ) ;
 </cfscript>

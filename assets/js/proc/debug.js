@@ -140,7 +140,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		xhr.send( );
 	}
 
-	dd = DINIT();
+	//dd = DINIT();
 	//dd.log( "yadda" );
 	//Initialize debugging routes
 	//dx = new Routex({routes:DebugRouter, verbose:1});
