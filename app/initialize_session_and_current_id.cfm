@@ -193,6 +193,17 @@ else {
 	}
 }
 
+
+//Logic to get the most current ID.
+siteId = 0;
+
+//If an ID is specified in the URL or in POST (POST getting preference), then it is the current one
+if ( StructKeyExists( url, "siteid" ) )
+	siteId = url.siteid;
+else {
+	siteId = 999;	
+}
+
 //Recall the last valid session data
 try {
 	//Select from the progress table and use this to prefill fields that don't exist
@@ -379,6 +390,7 @@ cs.day = DayOfWeek( Now() );
 cs.dayName = DateTimeFormat( Now(), "EEE" );
 cs.needsRebuild = 0;
 cs.selected = 0;
+cs.siteid = siteId ;
 cs.participantId = currentId ;
 cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.p_participantGUID, ", ") : "";
 cs.staff = {
@@ -421,6 +433,23 @@ if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
 if ( StructKeyExists( sess.current, "participants" ) ) {
 	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
 		sess.csp = sess.current.participants[ sess.current.participantId ];
+
+		if ( StructKeyExists( url, "staffid" ) )
+			sess.current.staff.userid = url.staffid;
+		if ( StructKeyExists( url, "staffguid" ) )
+			sess.current.staff.guid = url.staffguid;
+		if ( StructKeyExists( url, "siteid" ) )
+			sess.current.staff.guid = url.siteid;
+		if ( StructKeyExists( url, "day" ) )
+			sess.current.day = url.day;
+		if ( StructKeyExists( url, "week" ) )
+			sess.csp.week = url.week;
+		/*
+		if ( StructKeyExists( url, "timeblock" ) )
+			sess.current.staff.guid = url.time;
+		if ( StructKeyExists( url, "param" ) )
+			sess.csp.exerciseParameter = url.param;
+		*/
 	}
 }
 
