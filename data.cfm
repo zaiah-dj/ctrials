@@ -50,6 +50,7 @@ I can do more with this concept...
  ,"sessiondappl"          = "ac_mtr_session_metadata"
  ,"sessiondpart" = "ac_mtr_session_participants_selected"
  ,"sessiondstaff"        = "ac_mtr_session_staff_selected"
+ ,"staff"   = "ac_mtr_test_staff"
 }
 ,"css"    = [
 	 "zero.css"
@@ -136,6 +137,18 @@ I can do more with this concept...
 		"hint" = "Used to mark the end of a session for a user."
 		,"model" = [ "initialize_session_and_current_id", "recovery-done" ]
 		,"view" = "recovery-done"
+	}
+
+	,"staff" = {
+		"hint" = "See staff members and which participants belong to them"
+		,"model" = [ "initialize_session_and_current_id", "staff" ]
+		,"view" = [ "master/head", "reassign", "master/tail" ]
+	}
+
+	,"reassign" = {
+		"hint" = "Move members around"
+		,"model" = [ "initialize_session_and_current_id", "reassign" ]
+		,"view" = [ "master/head", "reassign", "master/tail" ]
 	}
 
 	,"input"  = { 
