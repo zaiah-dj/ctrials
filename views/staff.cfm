@@ -19,7 +19,7 @@
 
 		<cfloop query=public.sel.results>
 		<div>
-			<u>#firstname# #lastname# ( #acrostic# )</u>
+			<u>#firstname# #lastname# ( #acrostic# ) | #participantGUID#</u>
 		</div>
 		</cfloop>
 
