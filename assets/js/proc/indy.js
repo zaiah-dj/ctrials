@@ -180,6 +180,8 @@ function save_session_users (ev) {
 	payload = [
 		 "staffer_id=" + this.staffer_id.value  
 		,"transact_id=" + this.transact_id.value 
+		,"sessday_id=" + this.sessday_id.value 
+		,"prk_id=" + this.prk_id.value 
 		,"list=" + this.list.value 
 		,"this=startSession"
 	].join( '&' );
@@ -243,6 +245,73 @@ function updateExerciseSession ( ev ) {
 	q.innerHTML = x.responseText;	
 }
 
+
+activatedOPT = 0;
+/*
+function activateOtherParamText ( ev ) {
+	opt = document.getElementById( "otherParamText" );
+
+	if ( ev.target.id == "activateOtherParamText" ) {
+		if ( !activatedOPT ) {
+			opt.style.display = "block";
+			opt.style.height = "30px";
+			opt.style.border = "1px solid black";
+			activatedOPT = 1;
+		}
+	}
+
+	//When blurring I need to check where we are ( but this will only fire once... )
+	if ( ev.target.id == "" ) {
+		if ( activatedOPT == 1 ) {
+			opt.style.display = "block";
+			opt.style.height = "0px";
+			opt.style.border = "0px solid black";
+			activatedOPT = 0;
+		}
+	}
+}
+*/
+
+
+function activateOtherParamText ( ev ) {
+	opt = [].slice.call( document.getElementsByClassName( "param-ta" ) );
+
+	if ( ev.target.id == "activateOtherParamText" ) {
+		if ( !activatedOPT ) {
+			for ( div in opt ) {
+				d = opt[ div ];
+console.log( d.tagName );
+				if ( d.tagName == "LABEL" )
+					d.style.height = "30px";
+				else {
+					d.style.height = "50px";
+					d.style.border = "1px solid black";
+				}
+			}
+			activatedOPT = 1;
+		}
+	}
+
+	//When blurring I need to check where we are
+	if ( ev.target.id == "" ) {
+		if ( activatedOPT == 1 ) {
+			for ( div in opt ) {
+				d = opt[ div ];
+				if ( d.tagName == "LABEL" )
+					d.style.height = "0px";
+				else {
+					d.style.height = "0px";
+					d.style.border = "0px solid black";
+				}
+			}
+			activatedOPT = 0;
+		}
+	}
+}
+/*
+*/
+
+
 /*
 //The Router structure is key to make interfaces work.
 //Can't wait for WASM
@@ -273,6 +342,8 @@ Router = {
 	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: makeModal }
 	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
+	 ,{ domSelector: ".params"             , event: "focus"   , f: activateOtherParamText }
+	 ,{ domSelector: ".params"             , event: "blur"    , f: activateOtherParamText }
 	]
 
 	,"input": [
@@ -295,6 +366,6 @@ Router = {
 
 //main()
 document.addEventListener("DOMContentLoaded", function(ev) {
-	rx = new Routex({routes:Router, verbose:0});
+	rx = new Routex( {routes:Router, verbose:0} );
 	rx.init();
 });

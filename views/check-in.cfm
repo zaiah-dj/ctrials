@@ -155,21 +155,28 @@
 						<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 							<div class="clabel">
 								Cycle
-								<input type="radio" name="param" value="1" #iif(sess.csp.exerciseParameter eq 1,DE("checked"),DE(""))# required>
+								<input class="params" type="radio" name="param" value="1" #iif(sess.csp.exerciseParameter eq 1,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
 								Treadmill
-								<input type="radio" name="param" value="2"  #iif(sess.csp.exerciseParameter eq 2,DE("checked"),DE(""))# required>
+								<input class="params" type="radio" name="param" value="2"  #iif(sess.csp.exerciseParameter eq 2,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
 							</div>
 							<div class="clabel">
 								Other
-								<input type="radio" name="param" value="3"  #iif(sess.csp.exerciseParameter eq 3,DE("checked"),DE(""))# required>
+								<input class="params" id="activateOtherParamText" type="radio" name="param" value="3"  #iif(sess.csp.exerciseParameter eq 3,DE("checked"),DE(""))# required>
 								<span class="checkmark"></span>
 								<br />
+								<!--- TODO: I used textareas here b/c for some reason, inputs just would not show themselves.  Fix this later.--->
+								<label class="param-ta">Other Equipment A</label>
+								<textarea class="param-ta" name="opt1"></textarea>	
+								<label class="param-ta">Other Equipment B</label>
+								<textarea class="param-ta" name="opt2"></textarea>	
+							</div>	
+						</div>
 							</div>
 						<cfelse>
 							<div class="clabel">

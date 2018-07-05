@@ -38,12 +38,18 @@ I can do more with this concept...
  ,"participants"   = "ac_mtr_participants_v2"
 
  ,"notes"          = "ac_mtr_participant_notes"
- ,"sessionTable"   = "ac_mtr_logging_progress_tracker_v2"
- ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
  ,"checkin"        = "ac_mtr_checkinstatus_v2"
  ,"bloodpressure"  = "ac_mtr_bloodpressure_v2"
 
  ,"serverlog"      = "ac_mtr_serverlog"
+
+ ,"sessionTable"   = "ac_mtr_logging_progress_tracker_v2"
+ ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
+
+
+ ,"sessiondappl"          = "ac_mtr_session_metadata"
+ ,"sessiondpart" = "ac_mtr_session_participants_selected"
+ ,"sessiondstaff"        = "ac_mtr_session_staff_selected"
 }
 ,"css"    = [
 	 "zero.css"
@@ -185,19 +191,16 @@ I can do more with this concept...
 	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
 	 	}
 
-	,"compare"= { 
-		"hint"  =  "Compare the participant's previous weeks history."
-	 ,"model" = [ 
-			 "initialize_session_and_current_id"
-		]
-	 ,"view"  = [ 
-			"master/head"
-			,"participant/list" 
-			,"participant/nav"
-			,"compare"
-			,"master/tail" 
-		] 
-		}
+
+,"clearalldata" = {
+		"model" = "destroy_data"
+   ,"view"  = "proceed"
+	 ,"hint"  =  "Use this endpoint to destroy all exercise data." 
+	}
+
+
+
+
 
 		,"log"   = { 
 			"hint"  =  "See the access log."

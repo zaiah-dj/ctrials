@@ -27,7 +27,7 @@ try {
 		,dayofwk = { req = true }
 		,timeblock = { req = true }
 		,affect = { req = false, ifNone = 0 }
-		,staffId = { req = false, ifNone = 1 }
+		,staffId = { req = true }
 		,mchntype = { req = false, ifNone = form.exParam }
 		,rpm = { req = (form.exParam eq CYCLE), ifNone = 0 }
 		,watres = { req = (form.exParam eq CYCLE), ifNone = 0 }
@@ -119,7 +119,7 @@ if ( !upd.prefix.recordCount ) {
 		,:watres
 		,:dwk
 		,:swk
-		,:staffid
+		,:staff_id
 	)";
 }
 else {
@@ -130,6 +130,7 @@ else {
 	 SET
 		 mchntype = :mchntype
 		,d_inserted = :dtstamp
+		,staffid = :staff_id
 		,#desig#oth1 = :oth1
 		,#desig#oth2 = :oth2
 		,#desig#prctgrade = :prctgrade
@@ -145,7 +146,6 @@ else {
 	 AND
 		stdywk = :swk
 	";
-	//req.sendAsJson( status = 0, message = "UPDATE Got #SerializeJSON( form )#" );
 }
 
 
@@ -167,7 +167,7 @@ try {
 		 ,watres     = fv.watres
 		 ,dwk        = fv.dayofwk
 		 ,swk        = fv.stdywk
-		 ,staffid    = fv.staffId
+		 ,staff_id   = fv.staffId
 		 ,rthrd      = fv.recordthread
 		} 
 	);

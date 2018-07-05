@@ -67,6 +67,9 @@
 	<tr><cfdump var = #url#></tr>
 	<tr><cfdump var = #form#></tr>
 	<tr><cfdump var = #session#></tr>
+	<cfif isDefined('currentParticipant')><tr><cfdump var = #currentParticipant#></tr></cfif>
+	<cfif isDefined('selectedParticipants')><tr><cfdump var = #selectedParticipants#></tr></cfif>
+	<cfif isDefined('unselectedParticipants')><tr><cfdump var = #unselectedParticipants#></tr></cfif>
 	<cfif isDefined('private')><tr><cfdump var = #private#></tr></cfif>
 	<cfif isDefined('public')><tr><cfdump var = #public#></tr></cfif>
 	</table>

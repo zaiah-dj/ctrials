@@ -71,6 +71,8 @@ if ( isDefined( "currentParticipant" ) ) {
 						,#private.designation#speed 
 						,#private.designation#watres 
 						,mchntype 
+						,othMchn1
+						,othMchn2
 						,nomchntype 
 						,Sessionmisd 
 						,breaks 
@@ -132,7 +134,12 @@ if ( isDefined( "currentParticipant" ) ) {
 		for ( n in public.formValues ) {
 			n.prv = private.query.results[ "p_#private.designation##n.formname#" ]; 
 			n.def = private.query.results[ "#private.designation##n.formname#" ]; 
+			if ( n.type eq 3 ) {
+				n.uom = "uom";
+				n.label = private.query.results[ "#n.label#" ];
+			}
 		}
+
 /*
 		//Add heart rate
 		if ( ListContains( private.time, "0,10,20,30,45" ) )
@@ -143,7 +150,8 @@ if ( isDefined( "currentParticipant" ) ) {
 			ArrayAppend( public.formValues, {uom="", label="RPE (Borg)",min=10,max=300,step=1,formName="rpe" } );
 			ArrayAppend( public.formValues, {uom="", label="Affect",min=10,max=300,step=1,formName="affect" } );
 		}
-*/				
+*/
+				
 		// Initialize client side AJAX code 
 		AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 			location = link( "update.cfm" )
@@ -155,13 +163,14 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,send = "input, select" 
 			}]
 		 ,additional = [ 
-			{ name="this", value= "endurance" }
-		 ,{ name="exParam", value= "#sess.csp.exerciseParameter#" }
-		 ,{ name="pid", value= "#sess.current.participantId#" }
-		 ,{ name="recordThread", value= "#sess.csp.recordthread#" }
-		 ,{ name="dayofwk", value= "#sess.current.day#" }
-		 ,{ name="stdywk", value= "#sess.csp.week#" }
-		 ,{ name="sess_id", value= "#sess.key#" }
+				{ name="this", value= "endurance" }
+			 ,{ name="exParam", value= "#sess.csp.exerciseParameter#" }
+			 ,{ name="pid", value= "#sess.current.participantId#" }
+			 ,{ name="recordThread", value= "#sess.csp.recordthread#" }
+			 ,{ name="dayofwk", value= "#sess.current.day#" }
+			 ,{ name="stdywk", value= "#sess.csp.week#" }
+			 ,{ name="sess_id", value= "#sess.key#" }
+			 ,{ name = "staffid", value = "#sess.current.staffId#" }
 			]
 		);
 	}
@@ -244,11 +253,12 @@ if ( isDefined( "currentParticipant" ) ) {
 		 ,additional = [ 
 				{ name = "this", value = "resistance" }
 			 ,{ name = "sess_id", value = "#sess.key#" }
-			 ,{ name="recordThread", value= "#sess.csp.recordthread#" }
+			 ,{ name = "recordThread", value= "#sess.csp.recordthread#" }
 			 ,{ name = "pid", value = "#sess.current.participantId#" }
 			 ,{ name = "dayofwk", value= "#sess.current.day#" }
 			 ,{ name = "stdywk", value= "#sess.csp.week#" }
 			 ,{ name = "extype", value = "#private.type#" }
+			 ,{ name = "staffid", value = "#sess.current.staffId#" }
 			]
 		 ,querySelector = {
 				dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
