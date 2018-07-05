@@ -911,7 +911,7 @@ span.huge { font-weight: bold; font-size: 1.5em; }
 	height: 50px;
 }
 
-table.table select
+ table.table select
 ,table.table input[type=date]
 ,table.table input[type=text]
 ,table.table textarea 
@@ -1191,9 +1191,30 @@ table.inner th {
 	height: 10px;
 	border: 1px solid black;
 }
+
 table.inner td, 
 table.inner tr {
 	padding: 5px;
 	border: 1px solid black;
 	height: 25px;
 }
+
+table.table .clabel textarea
+{
+	height: 0px;
+	width:  100%;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: 0px solid black;
+	display: block;
+	margin-bottom: 10px;
+	transition: height 0.3s, border-width 0.1s linear;
+}
+
+label.param-ta {
+	height: 0px;
+	overflow: hidden;
+	width: 100%;
+}
+

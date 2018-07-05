@@ -28,8 +28,10 @@ component name="endurance" {
 			 ,{ uom="lb" , label="Watts/Resistance", min=20, max=120, step=1, formName="watres", type=1, frequency=0 }
 			 ,{ uom="mph", label="Speed", min=20, max=120, step=1, formName="speed", type=2, frequency=0 }
 			 ,{ uom="%"  , label="Percent Grade", min=20, max=120, step=1, formName="prctgrade", type=2, frequency=0 }
-			 //,{ uom="%"  , label="Perceived Exertion Rating", min=20, max=120, step=1, formName="per", type=1, frequency=0 }
-			 //,{ uom="?"  , label="Affect", min=20, max=120, step=1, formName="affect", type=0, frequency=0 }
+			 ,{ uom=""  , label="othMchn1", min=20, max=120, step=1, formName="oth1", type=3, frequency=0 }
+			 ,{ uom=""  , label="othMchn2", min=20, max=120, step=1, formName="oth2", type=3, frequency=0 }
+		 //,{ uom="%"  , label="Perceived Exertion Rating", min=20, max=120, step=1, formName="per", type=1, frequency=0 }
+		 //,{ uom="?"  , label="Affect", min=20, max=120, step=1, formName="affect", type=0, frequency=0 }
 		];
 		return this;
 	}

@@ -20,6 +20,8 @@ if ( !StructIsEmpty( form ) ) {
 		 ,ps_next_sched = { req = false , ifNone = 0 }
 		 ,bp_systolic = { req = false, ifNone = 0 }
 		 ,bp_diastolic = { req = false, ifNone = 0 }
+		 ,opt1 = { req = false , ifNone = "" }
+		 ,opt2 = { req = false , ifNone = "" }
 		} );
 
 		if ( !stat.status ) {
@@ -76,30 +78,57 @@ if ( !StructIsEmpty( form ) ) {
 		if ( exists eq "" ) {
 			sqlString	= "
 				INSERT INTO #tbName# 
-					( staffId , insertedBy, weight, participantGUID, recordthread, dayofwk, 
-					stdywk )
+					( staffId 
+					, insertedBy
+					, weight
+					, participantGUID
+					, recordthread
+					, dayofwk
+					, stdywk 
+					, othMchn1
+					, othMchn2
+					)
 		    VALUES 
-					( :stf    , :iby      , :wt   ,:pid            , :rthd       , :dwk   , 
-					:swk   )";
+					( :staffid
+					, :iby 
+					, :weight 
+					, :pid
+					, :rthd
+					, :dwk
+					, :swk   
+					, :om1
+					, :om2
+					)
+				";
 		}
 		else { 
-			sqlString	= "UPDATE #tbName# 
+			sqlString	= "
+				UPDATE 
+					#tbName# 
 				SET 
-					weight = :wt 
-				WHERE participantGUID = :pid AND recordthread = :rthd
-				  AND dayofwk = :dwk AND stdywk = :swk";
+					weight  = :weight
+				 ,staffId = :staffid 
+				 ,othMchn1= :om1
+				 ,othMchn2= :om2
+				WHERE participantGUID = :pid 
+				AND recordthread = :rthd
+				AND dayofwk = :dwk 
+				AND stdywk = :swk
+			";
 		}
 
 		qh = ezdb.exec(
 			string = sqlString
 		 ,bindArgs = {
-			  stf = fv.staffid
-			 ,iby = fv.insby
-			 ,wt  = fv.ps_weight
-			 ,pid = fv.ps_pid
-			 ,rthd= { value = sess.csp.recordthread, type = "varchar" }
-			 ,dwk = sess.current.day
-			 ,swk = fv.ps_week
+			  staffid = fv.staffid
+			 ,iby     = fv.insby
+			 ,weight  = fv.ps_weight
+			 ,pid     = fv.ps_pid
+			 ,rthd    = { value = sess.csp.recordthread, type = "varchar" }
+			 ,dwk     = sess.current.day
+			 ,swk     = fv.ps_week
+			 ,om1     = fv.opt1
+			 ,om2     = fv.opt2
 		 }
 		);
 
