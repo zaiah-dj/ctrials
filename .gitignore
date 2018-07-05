@@ -28,3 +28,6 @@ app/dev/
 
 # Always track CFCs
 !components/*.cfc
+
+# This is for all that motrpac stuff
+docs
