@@ -50,6 +50,8 @@
 		<!---<a href="#link( "save.cfm" )#">Save Session</a>--->
 		<a href="#link( "logout.cfm" )#">Logout</a>
 		<a href="#link( "input.cfm" )#">Input</a>
+		<a href="#link( "staff.cfm" )#">Staff</a>
+		<a href="#link( "reassign.cfm" )#">Reassign</a>
 	</div>
 
 	<div class="container">

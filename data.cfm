@@ -33,23 +33,24 @@ I can do more with this concept...
 ,"master-post" = false
 ,"data"   = {
 
-	"endurance"      = "ac_mtr_endurance_new"
- ,"resistance"     = "ac_mtr_resistance_new"
- ,"participants"   = "ac_mtr_participants_v2"
+	"endurance"     = "ac_mtr_endurance_new"
+ ,"resistance"    = "ac_mtr_resistance_new"
+ ,"participants"  = "ac_mtr_participants_v2"
 
- ,"notes"          = "ac_mtr_participant_notes"
- ,"checkin"        = "ac_mtr_checkinstatus_v2"
- ,"bloodpressure"  = "ac_mtr_bloodpressure_v2"
+ ,"notes"         = "ac_mtr_participant_notes"
+ ,"checkin"       = "ac_mtr_checkinstatus_v2"
+ ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
 
- ,"serverlog"      = "ac_mtr_serverlog"
+ ,"serverlog"     = "ac_mtr_serverlog"
 
- ,"sessionTable"   = "ac_mtr_logging_progress_tracker_v2"
- ,"sessionMembers" = "ac_mtr_participant_transaction_members_v2"
+ ,"sessionTable"  = "ac_mtr_logging_progress_tracker_v2"
+ ,"sessionMembers"= "ac_mtr_participant_transaction_members_v2"
 
 
- ,"sessiondappl"          = "ac_mtr_session_metadata"
- ,"sessiondpart" = "ac_mtr_session_participants_selected"
- ,"sessiondstaff"        = "ac_mtr_session_staff_selected"
+ ,"sessiondappl"  = "ac_mtr_session_metadata"
+ ,"sessiondpart"  = "ac_mtr_session_participants_selected"
+ ,"sessiondstaff" = "ac_mtr_session_staff_selected"
+ ,"staff"         = "ac_mtr_test_staff"
 }
 ,"css"    = [
 	 "zero.css"
@@ -136,6 +137,18 @@ I can do more with this concept...
 		"hint" = "Used to mark the end of a session for a user."
 		,"model" = [ "initialize_session_and_current_id", "recovery-done" ]
 		,"view" = "recovery-done"
+	}
+
+	,"staff" = {
+		"hint" = "See staff members and which participants belong to them"
+		,"model" = [ "initialize_session_and_current_id", "staff" ]
+		,"view" = [ "master/head", "staff", "master/tail" ]
+	}
+
+	,"reassign" = {
+		"hint" = "Move members around"
+		,"model" = [ "initialize_session_and_current_id", "reassign" ]
+		,"view" = [ "master/head", "staff", "master/tail" ]
 	}
 
 	,"input"  = { 

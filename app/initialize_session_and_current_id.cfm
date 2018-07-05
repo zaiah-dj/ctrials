@@ -226,6 +226,9 @@ else {
 }
 
 
+//if ( !StructKeyExists( session, "" )
+
+
 //Staff should be defiend pretty early
 session.userguid = "CLWWBZGS";
 staffId = 0;

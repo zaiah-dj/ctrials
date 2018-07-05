@@ -905,7 +905,7 @@ END
 CREATE TABLE ac_mtr_session_staff_selected (
 	 ss_id int IDENTITY(1,1) NOT NULL
 	,ss_sessdayid VARCHAR(64)
-	,ss_staffid VARCHAR(64)
+	,ss_staffid VARCHAR(10)
 	,ss_staffsessionid VARCHAR(64)
 	,ss_participantrecordkey VARCHAR(64) NOT NULL DEFAULT (newid())
 	,ss_datelastaccessed DATETIME NOT NULL DEFAULT (getdate())
