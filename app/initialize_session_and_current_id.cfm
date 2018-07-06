@@ -8,11 +8,10 @@ val   = CreateObject( "component", "components.validate" );
 endobj= CreateObject( "component", "components.endurance" ).init();
 resobj= CreateObject( "component", "components.resistance").init();
 
-//Set a site ID from here
-siteId = 999;
 
 //Set a datasource for all things
 ezdb.setDs( datasource = "#data.source#" );
+
 
 //Set labels from over here somewhere
 ENDURANCE_CLASSIFIERS = "ADUEndur,ATHEndur,ADUEnddur";
@@ -26,6 +25,58 @@ CONTROL = "ADUControl";
 E = 1;
 R = 2;
 C = 3;
+
+
+//Set a site ID from here
+staffId = 0;
+if ( StructKeyExists( form, "setstaffid" ) ) {
+	staffId = form.setstaffid;
+	session.userguid = staffId;
+}
+else if ( StructKeyExists( url, "staffid" ) ) {
+	staffId = url.staffid;
+	session.userguid = staffId;
+}
+else {
+	if ( !isDefined( "session.userguid" ) ) {
+		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid is not defined</h2>" );abort;}
+		session.userguid = "CLWWBZGS";
+		staffId = session.userguid;
+		//No default will be set if no guid exists, just redirect and get credentials again
+	}
+	else {
+		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid defined and is '#session.userguid#'</h2>" );abort;}
+		staffId = session.userguid;
+	}
+}
+
+
+//Logic to get the most current ID.
+currentId = 0;
+if ( StructKeyExists( form, "pid" ) )
+	currentId = form.pid;	
+else if ( StructKeyExists( url, "id" ) )
+	currentId = url.id;
+else {
+}
+
+
+//Logic to get the most current ID.
+siteId = 0;
+if ( StructKeyExists( url, "siteid" ) )
+	siteId = url.siteid;
+else {
+	siteId = 999;	
+	/*
+	if ( StructKeyExists( session, "siteid" ) )
+		siteId = session.siteid;
+	else {
+		//Why would this not be set?
+		session.siteid;
+	}
+	*/
+}
+
 
 //Always start new weeks on Sunday
 startDate = ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) 
@@ -82,7 +133,7 @@ sess.status = 2;
 //writedump( session );abort;
 
 //Look for a matching key of some sort.
-cs = ezdb.exec(
+csQuery = ezdb.exec(
 	datasource = "#data.source#"
  ,string = "
 		SELECT 
@@ -98,32 +149,32 @@ cs = ezdb.exec(
  ,bindArgs = { 
 		siteid  = siteId
 	 ,dayofwk = DayOfWeek( Now() )
-	 ,dayofmonth = DateTimeFormat( Now(), "d" )
-	 ,month = DateTimeFormat( Now(), "MM" )
-	 ,year = DateTimeFormat( Now(), "YYYY" )
 	}
 );
 
 
-csDate = cs.results.sdate;
-csSid = cs.results.sid;
+csDate = csQuery.results.sdate;
+csSid = csQuery.results.sid;
 
 //if there is no record of a current session, time to write it in
 if ( csDate eq "" || csSid eq "" ) { 
-	cs = ezdb.exec(
+	csQuery = ezdb.exec(
 	  string = "
 			INSERT INTO #data.data.sessiondappl# 
-				( sm_siteid, sm_dayofweek )
-			VALUES 
-				( :site_id , :dayofwk     )
+				( sm_siteid, sm_dayofweek, sm_dayofmonth, sm_month, sm_year )
+			VALUES
+				( :site_id , :dayofwk    , :dayofmonth  , :month  , :year   )
 		"  
 	 ,bindArgs = { 
 		  site_id = siteId ,dayofwk = DayOfWeek( Now() )
+		 ,dayofmonth = DateTimeFormat( Now(), "d" )
+		 ,month = DateTimeFormat( Now(), "MM" )
+		 ,year = DateTimeFormat( Now(), "YYYY" )
 		}
 	);
 
 	//re-run query and get the data I want
-	cs = ezdb.exec(
+	csQuery = ezdb.exec(
 		datasource = "#data.source#"
 	 ,string = "
 			SELECT 
@@ -145,12 +196,12 @@ if ( csDate eq "" || csSid eq "" ) {
 		}
 	);
 
-	csDate = cs.results.sdate;
-	csSid = cs.results.sid;
+	csDate = csQuery.results.sdate;
+	csSid = csQuery.results.sid;
 }
 else { 
 	unixTime = DateDiff( "s", CreateDate(1970,1,1), CreateODBCDateTime(Now()));
-	updateTime = DateDiff( "s", CreateDate(1970,1,1), cs.results.sdate );
+	updateTime = DateDiff( "s", CreateDate(1970,1,1), csQuery.results.sdate );
 	timePassed = unixTime - updateTime;
 	/*
 	//DateDiff
@@ -225,58 +276,6 @@ else {
 	}
 }
 
-
-
-
-//Set staff ID
-staffId = 0;
-if ( StructKeyExists( form, "setstaffid" ) ) {
-	staffId = form.setstaffid;
-	session.userguid = staffId;
-}
-else if ( StructKeyExists( url, "staffid" ) ) {
-	staffId = url.staffid;
-	session.userguid = staffId;
-}
-else {
-	if ( !isDefined( "session.userguid" ) ) {
-		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid is not defined</h2>" );abort;}
-		session.userguid = "CLWWBZGS";
-		staffId = session.userguid;
-		//No default will be set if no guid exists, just redirect and get credentials again
-	}
-	else {
-		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid defined and is '#session.userguid#'</h2>" );abort;}
-		staffId = session.userguid;
-	}
-}
-
-
-//Logic to get the most current ID.
-currentId = 0;
-if ( StructKeyExists( form, "pid" ) )
-	currentId = form.pid;	
-else if ( StructKeyExists( url, "id" ) )
-	currentId = url.id;
-else {
-}
-
-
-//Logic to get the most current ID.
-siteId = 0;
-if ( StructKeyExists( url, "siteid" ) )
-	siteId = url.siteid;
-else {
-	siteId = 999;	
-	/*
-	if ( StructKeyExists( session, "siteid" ) )
-		siteId = session.siteid;
-	else {
-		//Why would this not be set?
-		session.siteid;
-	}
-	*/
-}
 
 
 //Check if the staff member has been logged in as well
@@ -408,10 +407,10 @@ if ( sess.status gt 1 ) {
 		  SELECT DISTINCT sp_participantGUID FROM 
 				#data.data.sessiondpart#	
 			WHERE 
-				sp_participantrecordkey = :prk
+				sp_sessdayid = :sid
 		) ORDER BY lastname ASC"
 	 ,bindArgs = {
-			prk = stfPrk 
+			sid = csSid 
 		}
 	);
 }

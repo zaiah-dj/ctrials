@@ -910,7 +910,7 @@ CREATE TABLE ac_mtr_session_staff_selected (
 	,ss_participantrecordkey VARCHAR(64) NOT NULL DEFAULT (newid())
 	,ss_datelastaccessed DATETIME NOT NULL DEFAULT (getdate())
 );
- 
+  
 
 /* ---------------------------
 ac_mtr_session_participants_selected

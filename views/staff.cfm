@@ -17,11 +17,32 @@
 		</table>
 --->
 
-		<cfloop query=public.sel.results>
-		<div>
-			<u>#firstname# #lastname# ( #acrostic# ) | #participantGUID#</u>
-		</div>
-		</cfloop>
+		<div id="staff-reorder">
+			<div class="listing">
+			<cfloop query=public.sel.results>
+			<div>
+				<u>#firstname# #lastname# ( #acrostic# ) </u>
+			</div>
+			</cfloop>
+			</div>
 
+			<div class="listing">
+			<cfloop query=public.allSel.results>
+			<div>
+				<u>#firstname# #lastname# ( Assigned to #ts_staffid# ) </u>
+			</div>
+			</cfloop>
+			</div>
+
+			<div class="listing">
+			<cfloop query=unselectedParticipants.results>
+			<div>
+				<u>#firstname# #lastname# ( #acrostic# ) </u>
+			</div>
+			</cfloop>
+			</div>
+		</div>
+
+			
 	</div>
 </cfoutput>

@@ -1218,3 +1218,13 @@ label.param-ta {
 	width: 100%;
 }
 
+#staff-reorder .listing {
+	width: 33.33%;
+	float: left;
+}
+
+#staff-reorder:after {
+	content: "";
+	display: table;
+	clear: both;
+}

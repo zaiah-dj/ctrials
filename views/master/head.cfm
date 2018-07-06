@@ -48,7 +48,11 @@
 		<a href="/motrpac/web/secure/dataentry">Back to MoTrPAC</a>
 		<a href="#link( "default.cfm" )#">Select</a>
 		<!---<a href="#link( "save.cfm" )#">Save Session</a>--->
+	<cfif isDefined( "staffId" )>
+		<a href="#link( "logout.cfm?staffid=" & staffId )#">Logout</a>
+	<cfelse>
 		<a href="#link( "logout.cfm" )#">Logout</a>
+	</cfif>
 		<a href="#link( "input.cfm" )#">Input</a>
 		<a href="#link( "staff.cfm" )#">Staff</a>
 		<a href="#link( "reassign.cfm" )#">Reassign</a>
