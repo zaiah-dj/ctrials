@@ -226,21 +226,57 @@ else {
 }
 
 
-//if ( !StructKeyExists( session, "" )
 
 
-//Staff should be defiend pretty early
-session.userguid = "CLWWBZGS";
+//Set staff ID
 staffId = 0;
-
-if ( StructKeyExists( url, "staffid" ) )
+if ( StructKeyExists( form, "setstaffid" ) ) {
+	staffId = form.setstaffid;
+	session.userguid = staffId;
+}
+else if ( StructKeyExists( url, "staffid" ) ) {
 	staffId = url.staffid;
+	session.userguid = staffId;
+}
 else {
-	if ( StructKeyExists( session, "userguid" ) ) {
+	if ( !isDefined( "session.userguid" ) ) {
+		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid is not defined</h2>" );abort;}
+		session.userguid = "CLWWBZGS";
+		staffId = session.userguid;
+		//No default will be set if no guid exists, just redirect and get credentials again
+	}
+	else {
+		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid defined and is '#session.userguid#'</h2>" );abort;}
 		staffId = session.userguid;
 	}
 }
 
+
+//Logic to get the most current ID.
+currentId = 0;
+if ( StructKeyExists( form, "pid" ) )
+	currentId = form.pid;	
+else if ( StructKeyExists( url, "id" ) )
+	currentId = url.id;
+else {
+}
+
+
+//Logic to get the most current ID.
+siteId = 0;
+if ( StructKeyExists( url, "siteid" ) )
+	siteId = url.siteid;
+else {
+	siteId = 999;	
+	/*
+	if ( StructKeyExists( session, "siteid" ) )
+		siteId = session.siteid;
+	else {
+		//Why would this not be set?
+		session.siteid;
+	}
+	*/
+}
 
 
 //Check if the staff member has been logged in as well
@@ -269,7 +305,9 @@ stf = ezdb.exec(
 	}
 );
 
+
 stfPrk = stf.results.ss_participantrecordkey;
+
 
 //Make a record
 if ( stf.results.ss_staffid eq "" ) {
@@ -320,82 +358,6 @@ if ( stf.results.ss_staffid eq "" ) {
 }
 
 
-//Logic to get the most current ID.
-currentId = 0;
-
-//If an ID is specified in the URL or in POST (POST getting preference), then it is the current one
-if ( StructKeyExists( form, "pid" ) )
-	currentId = form.pid;	
-else if ( StructKeyExists( url, "id" ) )
-	currentId = url.id;
-else {
-	/*
-	//Get the newest one
-	if ( !isDefined("sess.key" ) )
-		currentId = 0;
-	else { 
-		currentId = ezdb.exec(
-			string = "SELECT 
-				TOP 1 active_pid 
-			FROM 
-				#data.data.sessionTable#
-			WHERE
-				session_id = :sid
-			"
-		 ,bindArgs = {
-				sid = sess.key
-			}
-		).results.active_pid;
-	}
-	*/
-}
-
-
-//Logic to get the most current ID.
-siteId = 0;
-
-//If an ID is specified in the URL or in POST (POST getting preference), then it is the current one
-if ( StructKeyExists( url, "siteid" ) )
-	siteId = url.siteid;
-else {
-	siteId = 999;	
-}
-
-//Recall the last valid session data
-try {
-	//Select from the progress table and use this to prefill fields that don't exist
-	p = ezdb.exec( 
-		string = 
-		"SELECT * FROM
-			#data.data.sessionTable#	
-		 WHERE
-			active_pid = :pid 
-		 AND
-			session_id = :sid"
-	 ,bindArgs = {
-			pid = currentId
-		 ,sid = sess.key
-		}
-	);
-
-	//There was an error
-	if ( !p.status ) {
-		writedump( p );
-		abort;
-	}
-
-	old_ws = {};
-	
-	//Deserialize the old records
-	if ( p.prefix.recordCount ) {
-		old_ws = DeserializeJSON( p.results.misc );
-	}
-}
-catch (any e) {
-	req.sendAsJSON( status = 0, message = "#e.message#" );
-	abort;
-}
-
 
 //Get participant data 
 currentParticipant = ezdb.exec( 
@@ -404,6 +366,7 @@ currentParticipant = ezdb.exec(
 		pid = { value = currentId, type="cf_sql_varchar" }
 	}
 );
+
 
 //If a current ID is initialized, figure out which group they belong to
 randomCode = currentParticipant.results.randomGroupCode;
@@ -552,7 +515,7 @@ cs.participantId = currentId ;
 cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.participantGUID, ", ") : "";
 cs.staff = {
 	 email     =  (isDefined( 'session.email' )) ? session.email : ""
-	,guid      =  (isDefined( 'session.userguid' )) ? session.userguid : ""
+	,guid      = 	staffId 
 	,userid    =  (isDefined( 'session.userid' )) ? session.userid : ""
 	,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
 	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""

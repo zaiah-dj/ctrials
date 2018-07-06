@@ -55,6 +55,16 @@
 </script>
 <style type="text/css">table.cfdump_struct { color: black; }</style>
 <div class="cfdebug" id="cfdebug">
+	<!--- The links here... --->
+	<cfquery name="ittybitty" datasource="#data.source#">
+		SELECT * FROM #data.data.staff# WHERE ts_siteid = <cfqueryparam value=#sess.current.siteid# cfsqltype="CF_SQL_NUMERIC"> 
+	</cfquery>
+	<ul>
+	<cfloop query="ittybitty">
+		<li><a href="#link( 'default.cfm?staffid=' & ts_staffid )#">default.cfm?staffid=#ts_staffid#</a></li>
+	</cfloop>
+	</ul>
+
 	<table>
 	<th>Session</th>
 	<tr><td>Session Data:</td><td>#sess.key#</td></tr>

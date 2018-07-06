@@ -361,6 +361,16 @@ Router = {
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: save_session_users }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
 	]
+
+	,"default":      [
+		{ domSelector: ".part-drop-list li" , event: "dragstart"   , attr: { draggable: true }, f: drag }
+	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: ts }
+	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: te }
+	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
+	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: tc }
+	 ,{ domSelector: "#wash-id"           , event: "click"       , f: save_session_users }
+	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
+	]
 };
 
 

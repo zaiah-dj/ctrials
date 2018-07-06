@@ -22,28 +22,28 @@ component {
 	switch ( #CGI.HTTP_HOST# ) {
 		// LOCAL
 		case "127.0.0.1:8500":
-			This.applicationTimeout = "#createtimespan(1,0,0,0)#";
-			This.sessionTimeout = "#createtimespan(0,0,20,0)#";
-			This.setClientCookies = "yes";
-			This.clientStorage = "cookie";
-			This.clientManagement = "yes";
+			this.applicationTimeout = "#createtimespan(1,0,0,0)#";
+			this.sessionTimeout = "#createtimespan(0,0,20,0)#";
+			this.setClientCookies = "yes";
+			this.clientStorage = "cookie";
+			this.clientManagement = "yes";
 			request.whichserver = "local";
 			application.dsn = "Iv_Tracker_Db";
 			break;
 		// DEVELOPMENT ---
 		case "dev1cf16.phs.wakehealth.edu":
-			This.applicationTimeout = "#createtimespan(1,0,0,0)#";
-			This.sessionTimeout = "#createtimespan(0,0,20,0)#";
-			This.setClientCookies = "yes";
-			This.clientStorage = "cookie";
-			This.clientManagement = "yes";
+			this.applicationTimeout = "#createtimespan(1,0,0,0)#";
+			this.sessionTimeout = "#createtimespan(0,0,20,0)#";
+			this.setClientCookies = "yes";
+			this.clientStorage = "cookie";
+			this.clientManagement = "yes";
 			request.whichserver = "dev";
 			application.dsn = "motrpac";
 			break;
 		// PRODUCTION SERVER ---
 		default:
-			This.applicationTimeout = "#createtimespan(1,0,0,0)#";
-			This.sessionTimeout = "#createtimespan(0,0,30,0)#";
+			this.applicationTimeout = "#createtimespan(1,0,0,0)#";
+			this.sessionTimeout = "#createtimespan(0,0,30,0)#";
 			request.whichserver = "prod";
 			application.dsn = "motrpac";
 			//error type="EXCEPTION" template="/errorException.cfm" mailto="#application.siteadminemail#"
