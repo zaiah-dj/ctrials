@@ -74,6 +74,7 @@
 		--->
 	<!---
 		--->
+	<cfif isDefined("csQuery")><tr><cfdump var = #csQuery#></tr></cfif>
 	<tr><cfdump var = #url#></tr>
 	<tr><cfdump var = #form#></tr>
 	<tr><cfdump var = #session#></tr>
