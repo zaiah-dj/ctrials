@@ -584,6 +584,7 @@ input.collapsible:checked + div > table { display: block; }
 
 .bigly li {
 	position: relative;
+	overflow: hidden;
 	border: 0px;
 	padding: 5px;
 	padding-top: 10px;
@@ -593,11 +594,11 @@ input.collapsible:checked + div > table { display: block; }
 	margin-bottom: 10px;
 	width: 90%;
 	box-shadow: 10px 10px 5px gray;
-	transition: color 0.1s, background-color 0.1s;
+	transition: color 0.1s, background-color 0.1s, height 0.1s;
 	font-weight: bold;
 }
 
-.bigly li:active {
+.bigly-left li:active {
 	height: 50px;
 	width: 100%;
 	font-size: 1.8em;
@@ -704,7 +705,7 @@ ul.part-drop-list li span:nth-child(2) ,
 
 .endurance-class-dropped,
 .endurance-class-container
-{ text-align: center;
+{ 
 	background-color: #b3d1ff; /*staid blue*/ }
 
 .resistance-class-dropped,
@@ -1227,4 +1228,19 @@ label.param-ta {
 	content: "";
 	display: table;
 	clear: both;
+}
+
+
+.left {
+	position: absolute;
+	left: 10px;
+	display: inline-block;
+}
+
+
+.right {
+	display: inline-block;
+	position: absolute;
+	right: 10px;
+	float: right;
 }

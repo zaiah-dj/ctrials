@@ -1,5 +1,3 @@
-// An example Javascript implementation (w/o Angular or Vue) might look something like this...
-
 /* ----------------------------------------------------*
  * index.js
  * --------
@@ -149,27 +147,34 @@ function checkInSaveNote ( ev ) {
 
 
 //Handle user sessions
-function save_session_users (ev) {
+function saveSessionUsers (ev) {
+	//Cancel default
 	ev.preventDefault();
+
+	//Find the default div, and log stuff if it's there
+	isDebugPresent = document.getElementById( "cfdebug" );
+
 	//Serialize all the data
 	vv=[];
 	vals = [].slice.call(document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" )); 
 	if ( vals.length > 0 ) {
 		for ( i=0; i < vals.length; i++) vv[i] = vals[i].innerHTML; 
 	}
+
 	//Prepare a list from the users that have been selected. 
 	this.list.value = vv.join(',');
 	var frm = this, xhr = new XMLHttpRequest();
+
 	//Read that XML	
 	xhr.onreadystatechange = function () {
 		if ( this.readyState == 4 && this.status == 200 ) {
 			try {
-				console.log( this.responseText );
+				( isDebugPresent ) ? console.log( this.responseText ) : 0;
 				parsed = JSON.parse( this.responseText );
 			}
 			catch (err) {
-				console.log( err.message );
-				console.log( this.responseText );
+				( isDebugPresent ) ? console.log( err.message ) : 0;
+				( isDebugPresent ) ? console.log( this.responseText ) : 0;
 				return;
 			}
 			( parsed.status ) ? frm.submit() : onError( this.responseText );
@@ -190,7 +195,10 @@ function save_session_users (ev) {
 	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( payload );
-	//console.log( payload );console.log( xhr.responseText );
+/*
+	console.log( payload );
+	console.log( xhr.responseText );
+*/
 	return false;
 };
 
@@ -308,8 +316,55 @@ console.log( d.tagName );
 		}
 	}
 }
-/*
-*/
+
+
+function releaseParticipant ( ev ) {
+	ev.preventDefault();
+
+	//Find the ID of the participant selected
+	par = ev.target.parentElement.parentElement;
+	id = par.querySelector( "span:nth-child(2)" ).innerHTML;
+	console.log( id );
+
+	//Assemble a POST request with the ID and other info
+	f = document.getElementById( "wash-id" );
+	
+	payload = [
+		 "staffer_id=" + f.staffer_id.value  
+		,"transact_id=" + f.transact_id.value 
+		,"sessday_id=" + f.sessday_id.value 
+		,"prk_id=" + f.prk_id.value 
+		,"pid=" + id
+		,"this=releaseParticipant"
+	].join( '&' );
+
+	//Start a timer to acutally remove the element from the DOM
+	setTimeout( function () { par.parentElement.removeChild( par ); }, 2000 );	
+
+	//Remove the element from view
+	par.style.height = "0px";
+	par.style.padding = "0px";
+	par.style.margin = "0px";
+
+	//Send a POST to the server
+	var xhr = new XMLHttpRequest();	
+	xhr.onreadystatechange = function (ev) { 
+		if ( this.readyState == 4 && this.status == 200 ) {
+			try
+				{ console.log( this.responseText );parsed = JSON.parse( this.responseText ); }
+			catch (err) {
+				console.log( this.responseText );
+				return;
+			}
+		}
+	}
+	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
+	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+	xhr.send( payload );
+
+	//Return false
+	return false;
+}
 
 
 /*
@@ -358,8 +413,9 @@ Router = {
 	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: te }
 	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
 	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: tc }
-	 ,{ domSelector: "#wash-id"           , event: "click"       , f: save_session_users }
+	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
+	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
 	]
 
 	,"default":      [
@@ -368,8 +424,9 @@ Router = {
 	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: te }
 	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
 	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: tc }
-	 ,{ domSelector: "#wash-id"           , event: "click"       , f: save_session_users }
+	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
+	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
 	]
 };
 

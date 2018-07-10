@@ -1,6 +1,5 @@
 <!--- save recovery data (for both exericses) --->
 <cfscript>
-
 /*
 Save:
 
@@ -9,7 +8,17 @@ session stopped early
 reason
 heart rate, rpe, and affect here if stopped early (will need session trickery)
 
+endurance fields to be written are these?	
+	 breaks
+	,[m3_rechr]
+	,[m3_recoth1]
+	,[m3_recoth2]
+	,[m3_recprctgrade]
+	,[m3_recrpm]
+	,[m3_recspeed]
+	,[m3_recwatres]
 
+Find resistance fields and see if it saves
  */
 
 

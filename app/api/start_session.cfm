@@ -18,20 +18,49 @@ if ( StructKeyExists( form, "this" ) && form.this eq "startSession" ) {
 		fv = exist.results;
 
 		//Save each participantGUID to its own row
-		for ( pid in ListToArray( fv.list )) {	
+		for ( pid in ListToArray( fv.list ) ) {
+			//Check for the PID
 			stmt = ezdb.exec(
 				string = "
-				INSERT INTO #data.data.sessiondpart# 
-					( sp_sessdayid, sp_participantrecordkey, sp_participantGUID, sp_participantrecordthread )
-				VALUES 
-					( :sessdayid  , :prkid, :guid, '' )
-				"
+				SELECT
+					sp_participantGUID as PID
+				FROM 
+					#data.data.sessiondpart# 
+				WHERE
+					sp_sessdayid = :sessdayid
+				AND	
+					sp_participantrecordkey = :prkid
+				AND	
+					sp_participantGUID = :guid
+				"	
 			 ,bindArgs = {
 					sessdayid = fv.sessday_id
 			   ,prkid     = fv.prk_id
 				 ,guid      = pid 
 				}
 			);
+
+			//If not there, add it
+			if ( stmt.results.pid eq "" ) {
+				//Add the PID if it's not already there
+				stmt = ezdb.exec(
+					string = "
+					INSERT INTO #data.data.sessiondpart# 
+						( sp_sessdayid, 
+							sp_participantrecordkey, 
+							sp_participantGUID, 
+							sp_participantrecordthread 
+						)
+					VALUES 
+						( :sessdayid  , :prkid, :guid, '' )
+					"
+				 ,bindArgs = {
+						sessdayid = fv.sessday_id
+					 ,prkid     = fv.prk_id
+					 ,guid      = pid 
+					}
+				);
+			}
 
 			if ( !stmt.status ) {
 				req.sendAsJson( status=0, message="Failed to add members to new session - #stmt.message#" );
@@ -45,6 +74,8 @@ if ( StructKeyExists( form, "this" ) && form.this eq "startSession" ) {
 		);
 	}
 
+
+	//Send a response
 	req.sendAsJson( 
 		status = 1, 
 		message = "Successfully began new Intervention Tracking session with: "

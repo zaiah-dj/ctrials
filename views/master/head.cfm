@@ -55,7 +55,11 @@
 	</cfif>
 		<a href="#link( "input.cfm" )#">Input</a>
 		<a href="#link( "staff.cfm" )#">Staff</a>
-		<a href="#link( "reassign.cfm" )#">Reassign</a>
+	<cfif data.debug eq 1>
+		<div style="float: right;">
+			<a href="#link( "logout.cfm?staffid=" & staffId )#">Super Logout</a>
+		</div>
+	</cfif>
 	</div>
 
 	<div class="container">

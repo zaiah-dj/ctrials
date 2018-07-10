@@ -11,8 +11,12 @@ else if ( StructKeyExists( form, "this" ) && form.this eq "control" )
 	include "api/update_control_table.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) 
 	include "api/update_endurance_table.cfm";
-else if ( StructKeyExists( form, "this" ) && form.this eq "resistance" ) {
+else if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 	include "api/update_resistance_table.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "addParticipant" ) 
+	include "api/add_participant.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "releaseParticipant" ) {
+	include "api/release_participant.cfm";
 }
 
 //Get completed days
