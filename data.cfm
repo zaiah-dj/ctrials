@@ -178,6 +178,12 @@ I can do more with this concept...
 		]
 		}
 
+	,"superlogout" = { 
+		"model" = "destroyAllSession"
+	 ,"view"  =  "logout"
+	 ,"hint"  =  "Use this endpoint to revoke all session keys." 
+	 	}
+
 	,"logout" = { 
 		"model" = "destroy_session"
 	 ,"view"  =  "logout"
