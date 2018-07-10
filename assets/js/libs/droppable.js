@@ -6,12 +6,13 @@ function allowDrop(ev) {
 }
 
 function drag(ev, optArg) {
+	var isDebugPresent = document.getElementById( "cfdebug" );
 	if ( optArg ) {
-		console.log( "swipe complete..." );
+		( isDebugPresent ) ? console.log( "swipe complete..." ) : 0;
 		return;
 	}
 	else {
-		console.log( "drag complete..." );
+		( isDebugPresent ) ? console.log( "drag complete..." ) : 0;
 		//ev.dataTransfer.setData("text", ev.target.id);
 		//console.log( ev.target.innerHTML );
 		fw[fw.index] = { 
@@ -42,11 +43,22 @@ function drop(ev) {
 	//Add a new node otherwise
 	node = document.createElement( "li" );
 	node.className =  fw[fw.index].className + "-dropped";//"endurance-class-dropped"; 
+	divL = document.createElement( "div" );
+	divL.className = "left";
+	divR = document.createElement( "div" );
+	divR.className = "right";
 	span1 = document.createElement( "span" );
-	span1.innerHTML = fw[fw.index].string;
+	//console.log( "'" + fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","") + "'" );
+	span1.innerHTML = fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","");
 	span2 = document.createElement( "span" );
 	span2.innerHTML = fw[fw.index].id;
-	node.appendChild( span1 ); 
-	node.appendChild( span2 ); 
+	divL.appendChild( span1 ); 
+	divL.appendChild( span2 ); 
+	ahref = document.createElement( "a" );
+	ahref.className = "release"; 
+	ahref.innerHTML = "Release"; 
+	divR.appendChild( ahref );
+	node.appendChild( divL );
+	node.appendChild( divR );
 	ev.target.children[0].appendChild( node ); 
 }

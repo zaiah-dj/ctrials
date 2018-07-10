@@ -492,6 +492,33 @@ function buildRecordThreads( t ) {
 			}
 		}
 	}
+
+	else {
+		//Check for the participant key in the partiicpants struct
+		for ( p in selectedParticipants.results ) {	
+			//Regenerate if this is not there.
+			if ( !StructKeyExists( t.participants, p.participantGUID ) ) {
+				//Create a key that can be referenced by the participant GUID
+				cp = t.participants[ Trim( p.participantGUID ) ] = {};
+				cp.recordThread = Trim( ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID );
+				cp.checkInCompleted = 0 ;
+				cp.exerciseParameter = 0 ;
+				cp.recoveryCompleted = 0;
+				cp.lastExerciseCompleted = 0;
+				cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
+				cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
+				cp.week = 0;
+				cp.getNewBP = 0;	
+				//This has to be initialized later...
+				cp.BPDaysLeft = 0;
+				cp.BPSystolic = 0;
+				cp.BPDiastolic = 0;
+				cp.targetHR = 0;
+				cp.weight = 0;
+				cp.exlist = 0;
+			}
+		}
+	}
 }
 
 
@@ -550,6 +577,7 @@ if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
 
 //Short name again
 if ( StructKeyExists( sess.current, "participants" ) ) {
+
 	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
 		sess.csp = sess.current.participants[ sess.current.participantId ];
 

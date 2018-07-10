@@ -37,6 +37,8 @@ function changeSliderNeighborValue ( ev ) {
 	//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value; 
 
 	//console.log( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes.length );
+	var nodeset = ev.target.parentElement.parentElement.childNodes[ 3 ];
+
 	if ( ev.target.parentElement.parentElement.childNodes[ 3 ].childNodes.length <= 1 ) 
 		ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value;
 	else {
@@ -195,10 +197,8 @@ function saveSessionUsers (ev) {
 	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( payload );
-/*
-	console.log( payload );
-	console.log( xhr.responseText );
-*/
+/*console.log( payload );
+	console.log( xhr.responseText );*/
 	return false;
 };
 
