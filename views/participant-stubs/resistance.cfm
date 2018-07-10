@@ -17,20 +17,21 @@
 
 		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(public.type eq id, DE('selected'),DE(''))# #classnames#">#pname#</li></a>
 	</cfloop>
-		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red">Stop Session</li></a>
+		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red stop-sess">Stop Session</li></a>
 	</ul>
 
 	<div class="selection">
 		<table class="table table-striped">
-			<tbody>
+			<thead>
 				<tr>
 					<td class="title">Machine Settings</td>
 					<td>Paramount XL-300</td>
 				</tr>
-			</tbody>
+			</thead>
+		<!---
 		</table>
-
 		<table class="table table-striped participant-entry resistance">
+		--->
 	<cfloop array="#public.formValues#" index="vv">
 		<cfif #vv.label# neq "">
 		<tr class="heading">
@@ -60,6 +61,27 @@
 		<tr></tr>	
 		</cfif>
 	</cfloop> 
+			<tr>
+				<td class="title">Superset ##1</td>
+				<td>
+					<input type=number>
+					<input type=number>
+				</td>
+			</tr>
+			<tr>
+				<td class="title">Superset ##2</td>
+				<td>
+					<input type=number>
+					<input type=number>
+				</td>
+			</tr>
+			<tr>
+				<td class="title">Superset ##3</td>
+				<td>
+					<input type=number>
+					<input type=number>
+				</td>
+			</tr>
 		</table>
 	</div>
 

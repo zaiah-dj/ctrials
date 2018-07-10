@@ -37,12 +37,12 @@
 .slider::-webkit-slider-thumb {
 	-webkit-appearance: none; /* Override default look */
 	appearance: none;
-	width: 25px; /* Set a specific slider handle width */
-	height: 35px; /* Slider handle height */
+	width: 26px; /* Set a specific slider handle width */
+	height: 26px; /* Slider handle height */
 	cursor: pointer; /* Cursor on hover */
-	-moz-border-radius: 5px;	
-	-gecko-border-radius: 5px;	
-	border-radius: 5px;	
+	-moz-border-radius: 13px;	
+	-gecko-border-radius: 13px;	
+	border-radius: 13px;	
 	background-color: #e6f2ff;
 	border: 5px solid #728ab2; 
 	box-shadow: 5px 5px 5px gray;

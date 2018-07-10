@@ -9,6 +9,10 @@ p, div {
 	font-family: 'Montserrat', sans-serif;
 }
 
+.stop-sess {
+	width: 100%;
+}
+
 pre {
 	width: 95%;
 	margin: 0 auto;
