@@ -1,7 +1,7 @@
+<cfscript>
 //Bring in ezdb
 ezdb  = CreateObject( "component", "components.quella" );
 
-writedump( "hi" );abort;
 
 //
 siteId = 0;
@@ -44,8 +44,6 @@ csQuery = ezdb.exec(
 );
 
 
-writedump( csQuery );abort;
-
 csDate = csQuery.results.sdate;
 csSid = csQuery.results.sid;
 
@@ -60,3 +58,4 @@ ezdb.exec(
 	string = "DELETE FROM #data.data.sessiondstaff#	WHERE ss_sessdayid = :sdid"
  ,bindArgs = { sdid = csSid }
 );
+</cfscript>
