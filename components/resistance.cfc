@@ -3,7 +3,16 @@ component name="resistance" {
 
 	//
 	resistance function init () {
-		this.srcQuery = queryNew( "type,desig", "Integer,Varchar", [
+		this.labelDefaults = [
+			 {label="Set 1", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt1" }
+			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep1" }
+			,{label="Set 2", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt2" }
+			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep2"  }
+			,{label="Set 3", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt3" }
+			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep3" }
+		];
+
+		/*
 			 { type = 0, desig = "abdominalcrunch" }
 			,{ type = 1, desig = "abdominalcrunch" }
 			,{ type = 2, desig = "bicepcurl" }
@@ -19,12 +28,30 @@ component name="resistance" {
 			,{ type = 12, desig = "seatedrow" }
 			,{ type = 13, desig = "shoulder2" }
 			,{ type = 14, desig = "triceppress" }
+		*/
+
+		this.srcQuery = queryNew( "type,order,desig", "Integer,Integer,Varchar", [
+			 { type = 0, order=1, desig = "abdominalcrunch" }
+			,{ type = 1, order=10, desig = "abdominalcrunch" }
+			,{ type = 2, order=7, desig = "bicepcurl" }
+			,{ type = 3, order=1, desig = "calfpress" }
+			,{ type = 4, order=9, desig = "chest2" }
+			,{ type = 5, order=8, desig = "chestpress" }
+			,{ type = 6, order=1, desig = "dumbbellsquat" }
+			,{ type = 7, order=6, desig = "kneeextension" }
+			,{ type = 8, order=4, desig = "legcurl" }
+			,{ type = 9, order=1, desig = "legpress" }
+			,{ type = 10, order=11, desig = "overheadpress" }
+			,{ type = 11, order=3, desig = "pulldown" }
+			,{ type = 12, order=5, desig = "seatedrow" }
+			,{ type = 13, order=13, desig = "shoulder2" }
+			,{ type = 14, order=14, desig = "triceppress" }
 		]);
 
+/*
 		this.exercises = queryNew( 
 			"type,id,etype,pname,formName,description", 
 			"Integer,Integer,Integer,Varchar,Varchar,Varchar", [
-/*	 { type=0, id=0,  etype=4, pname = 'Abdominal Crunch', formName = 'abdominalcrunch', description = '' }, */
 		 { type=1, id=1,  etype=4, pname = 'Abdominal Crunch', formName = 'abdominalcrunch', description = '' }
 		,{ type=2, id=2,  etype=4, pname = 'Bicep Curl', formName = 'bicepcurl', description = '' }
 		,{ type=3, id=3,  etype=5, pname = 'Calf Press', formName = 'calfpress', description = '' }
@@ -41,17 +68,34 @@ component name="resistance" {
 		,{ type=14, id=14,  etype=4, pname = 'Tricep Press', formName = 'triceppress', description = '' }
 		]);
 
-		this.labelDefaults = [
-			 {label="Set 1", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt1" }
-			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep1" }
-			,{label="Set 2", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt2" }
-			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep2"  }
-			,{label="Set 3", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt3" }
-			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep3" }
-		];
+*/
+
+		this.exercises = queryNew( 
+			"type,id,etype,ssGroup,pname,formName,desc", 
+			"Integer,Integer,Integer,Integer,Varchar,Varchar,Varchar", [
+			
+		//Chest, shoulders, triceps, ads, calves
+		 { type=1, id=1, etype=4,ssGroup=2,pname='Abdominal Crunch', formName='abdominalcrunch', desc='' }
+		,{ type=4, id=4, etype=4,ssGroup=2,pname='Chest No. 2', formName='chest2', desc='' }
+		,{ type=5, id=5, etype=4,ssGroup=1,pname='Chest Press', formName='chestpress', desc='' }
+		,{ type=10,id=10,etype=4,ssGroup=3,pname='Overhead Press', formName='overheadpress', desc='' }
+		,{ type=12,id=12,etype=4,ssGroup=3,pname='Seated Row', formName='seatedrow', desc='' }
+		,{ type=13,id=13,etype=4,ssGroup=4,pname='Shoulder No. 2', formName='shoulder2', desc='' }
+		,{ type=14,id=14,etype=4,ssGroup=4,pname='Tricep Press-Down', formName='triceppress', desc='' }
+	
+		//Hips/thighs, back, biceps	
+		,{ type=2, id=2, etype=4,ssGroup=4,pname='Biceps Curl', formName='bicepcurl', desc='' }
+		,{ type=3, id=3, etype=5,ssGroup=1,pname='Calf Press', formName='calfpress', desc='' }
+		,{ type=6, id=6, etype=5,ssGroup=0,pname='Dumbbell Squat', formName='dumbbellsquat', desc='' }
+		,{ type=7, id=7, etype=5,ssGroup=4,pname='Knee Extension', formName='kneeextension', desc='' }
+		,{ type=8, id=8, etype=5,ssGroup=3,pname='Leg Curl', formName='legcurl', desc='' }
+		,{ type=9, id=9, etype=5,ssGroup=0,pname='Leg Press', formName='legpress', desc='' }
+		,{ type=11,id=11,etype=4,ssGroup=2,pname='Pulldown', formName='pulldown', desc='' }
+			] 
+		);
+
 		return this;
 	}
-
 	public function getExercises() {
 		qs = new query();	
 		qs.setName( "juice" );

@@ -27,6 +27,39 @@ R = 2;
 C = 3;
 
 
+//Current date
+		//if ( DateDiff( "ww", startDate, date ) < 0 )
+		//	date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
+	try
+		{ usedDate = DateTimeFormat( url.date, "YYYY-MM-DD HH:nn:ss" ); }
+	catch (any e) {
+		usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+	}
+}
+else {
+	usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+}
+
+
+currentDayOfWeek = DayOfWeek( usedDate );
+currentDayOfWeekName = DateTimeFormat( usedDate, "EEE" );
+currentDayOfMonth = DateTimeFormat( usedDate, "d" );
+currentMonth = DateTimeFormat( usedDate, "m" );
+currentYear = DateTimeFormat( usedDate, "YYYY" );
+currentWeek = DateTimeFormat( usedDate, "w" );
+/*
+writedump( "currentDayOfWeek: " & currentDayOfWeek );
+writedump( "currentDayOfMonth: " & currentDayOfMonth );
+writedump( "currentMonth: " & currentMonth );
+writedump( "currentYear: " & currentYear );
+writedump( "currentDayName: " & currentDayName );
+writedump( "currentWeek: " & currentWeek );
+writedump( usedDate );
+abort;
+*/
+
+
 //Set a site ID from here
 staffId = 0;
 if ( StructKeyExists( form, "setstaffid" ) ) {
@@ -78,25 +111,6 @@ else {
 }
 
 
-//Always start new weeks on Sunday
-startDate = ( isDefined( "url.startDate" ) && StructKeyExists( url, "startDate" ) ) 
-	? url.startDate : DateTimeFormat( createDate( 2018, 5, 13 ), "YYYY-MM-DD" );
-
-//Current date
-if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
-	try {
-		date = DateTimeFormat( url.date, "YYYY-MM-DD HH:nn:ss" );
-		if ( DateDiff( "ww", startDate, date ) < 0 ) {
-			date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-		}
-	}
-	catch (any e) {
-		date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-	}
-}
-else {
-	date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-}
 
 //Session detection and initialization (if need be)
 expireTime = 60 /*secs*/ * 60 /*minutes*/ * 2 /*hours*/;
@@ -148,7 +162,7 @@ csQuery = ezdb.exec(
 	"
  ,bindArgs = { 
 		siteid  = siteId
-	 ,dayofwk = DayOfWeek( Now() )
+	 ,dayofwk = currentDayOfWeek
 	}
 );
 
@@ -166,10 +180,11 @@ if ( csDate eq "" || csSid eq "" ) {
 				( :site_id , :dayofwk    , :dayofmonth  , :month  , :year   )
 		"  
 	 ,bindArgs = { 
-		  site_id = siteId ,dayofwk = DayOfWeek( Now() )
-		 ,dayofmonth = DateTimeFormat( Now(), "d" )
-		 ,month = DateTimeFormat( Now(), "MM" )
-		 ,year = DateTimeFormat( Now(), "YYYY" )
+		  site_id = siteId 
+		 ,dayofwk = currentDayOfWeek
+		 ,dayofmonth = currentDayOfMonth
+		 ,month = currentMonth
+		 ,year = currentYear
 		}
 	);
 
@@ -189,10 +204,10 @@ if ( csDate eq "" || csSid eq "" ) {
 		"
 	 ,bindArgs = { 
 			siteid  = siteId
-		 ,dayofwk = DayOfWeek( Now() )
-		 ,dayofmonth = DateTimeFormat( Now(), "d" )
-		 ,month = DateTimeFormat( Now(), "MM" )
-		 ,year = DateTimeFormat( Now(), "YYYY" )
+		 ,dayofwk = currentDayOfWeek
+		 ,dayofmonth = currentDayOfMonth
+		 ,month = currentMonth
+		 ,year = currentYear
 		}
 	);
 
@@ -361,9 +376,7 @@ if ( stf.results.ss_staffid eq "" ) {
 //Get participant data 
 currentParticipant = ezdb.exec( 
 	string = "SELECT * FROM #data.data.participants# WHERE participantGUID = :pid"
- ,bindArgs = { 
-		pid = { value = currentId, type="cf_sql_varchar" }
-	}
+ ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }}
 );
 
 
@@ -531,8 +544,9 @@ else {
 
 //Build a session
 cs.id = session.ivId ;
-cs.day = DayOfWeek( Now() );
-cs.dayName = DateTimeFormat( Now(), "EEE" );
+cs.date = usedDate;
+cs.day = currentDayOfWeek;
+cs.dayName = currentDayOfWeekName; //DateTimeFormat( Now(), "EEE" );
 cs.needsRebuild = 0;
 cs.selected = 0;
 cs.siteid = siteId ;
@@ -577,7 +591,6 @@ if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
 
 //Short name again
 if ( StructKeyExists( sess.current, "participants" ) ) {
-
 	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
 		sess.csp = sess.current.participants[ sess.current.participantId ];
 
@@ -588,9 +601,12 @@ if ( StructKeyExists( sess.current, "participants" ) ) {
 		if ( StructKeyExists( url, "siteid" ) )
 			sess.current.staff.guid = url.siteid;
 		if ( StructKeyExists( url, "day" ) )
-			sess.current.day = url.day;
-		if ( StructKeyExists( url, "week" ) )
-			sess.csp.week = url.week;
+			sess.current.day = currentDayOfWeek; //url.day;
+			//sess.current.day = url.day; 
+		if ( StructKeyExists( url, "week" ) ) {
+			sess.csp.week = currentWeek; //url.week;
+			//sess.csp.week = url.week;
+		}
 		/*
 		if ( StructKeyExists( url, "timeblock" ) )
 			sess.current.staff.guid = url.time;
