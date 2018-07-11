@@ -682,7 +682,14 @@ input.collapsible:checked + div > table { display: block; }
 
 
 ul.part-drop-list li span:nth-child(2) ,
-.listing li span:nth-child(2) {
+.listing li span:nth-child(2) 
+{
+	display: none;	
+}
+
+ul.part-drop-list li span:nth-child(3) ,
+.listing li span:nth-child(3) 
+{
 	display: none;	
 }
 

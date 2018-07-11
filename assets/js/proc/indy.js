@@ -7,8 +7,17 @@
  * it here?
  * ----------------------------------------------------*/
 
-// For check-in
+//For check-in
 var local_data = {};
+
+
+//Bad way to go about it, but use a global and get things done
+var fw = { arr:[], index:0 };
+
+
+//Bad global
+var activatedOPT = 0;
+
 
 // printf (str, ....) - Works like the C version that you know and love.
 function printf(str) {
@@ -16,8 +25,90 @@ function printf(str) {
 	//Check for same number of arguments
 }
 
+
 function checkAtSubmit( ev ) {
 	//Check that all ranges have been touched 
+}
+
+
+function allowDrop(ev) {
+	ev.preventDefault();
+}
+
+
+function drag(ev, optArg) {
+	var isDebugPresent = document.getElementById( "cfdebug" );
+	if ( optArg ) {
+		( isDebugPresent ) ? console.log( "swipe complete..." ) : 0;
+		return;
+	}
+	else {
+		( isDebugPresent ) ? console.log( "drag complete..." ) : 0;
+		//ev.dataTransfer.setData("text", ev.target.id);
+		//console.log( ev.target.innerHTML );
+		fw[fw.index] = { 
+			id: ev.target.children[1].innerHTML
+		, string: ev.target.children[0].innerHTML 
+		, ref: ev.target
+		, className: ev.target.className
+		};
+		//console.log( fw[ fw.index ] );
+		console.log( ev.target.parentElement );
+		console.log( ev.target );
+		//ev.target.parentElement.removeChild( ev.target );
+	}
+}
+
+
+//...
+function drop(ev) {
+	var isDebugPresent = document.getElementById( "cfdebug" );
+	//No default
+	ev.preventDefault();
+
+	//Always check against drop list and make sure the duplicate entries aren't getting in
+	aa = [].slice.call( document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" ) ); 
+
+	//check what's in aa
+	if ( aa.length > 0 ) {
+		for ( i=0; i<aa.length; i++) {
+			if ( aa[i].innerHTML == fw[fw.index].id ) {
+				console.log( "Looks like this id is already here, stopping request..." );
+				return;
+			}
+		}
+	}
+
+	//Add a new node otherwise
+	node = document.createElement( "li" );
+	node.className =  fw[fw.index].className + "-dropped";//"endurance-class-dropped"; 
+	divL = document.createElement( "div" );
+	divL.className = "left";
+	divR = document.createElement( "div" );
+	divR.className = "right";
+	span1 = document.createElement( "span" );
+	span1.innerHTML = fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","");
+	span2 = document.createElement( "span" );
+	span2.innerHTML = fw[fw.index].id;
+	span3 = document.createElement( "span" );
+	span3.innerHTML = fw[fw.index].string.match(/([0-9].*)/)[1].replace(")","");
+	divL.appendChild( span1 ); 
+	divL.appendChild( span2 ); 
+	divL.appendChild( span3 ); 
+	ahref = document.createElement( "a" );
+	ahref.className = "release"; 
+	ahref.innerHTML = "Release"; 
+	ahref.addEventListener( "click", releaseParticipant );
+	divR.appendChild( ahref );
+	node.appendChild( divL );
+	node.appendChild( divR );
+	ev.target.children[0].appendChild( node ); 
+	( isDebugPresent ) ? console.log( "drop complete..." ) : 0;
+	( isDebugPresent ) ? console.log( fw[ fw.index ].ref ) : 0;
+	
+	//Remove the original element
+	ce = fw[ fw.index ].ref;
+	ce.parentElement.removeChild( ce ); 
 }
 
 
@@ -32,6 +123,8 @@ function searchParticipants ( ev ) {
 	}
 }
 
+
+//
 function changeSliderNeighborValue ( ev ) {
 	//Change the whole value if the inner value has no nodes...
 	//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value; 
@@ -254,33 +347,6 @@ function updateExerciseSession ( ev ) {
 }
 
 
-activatedOPT = 0;
-/*
-function activateOtherParamText ( ev ) {
-	opt = document.getElementById( "otherParamText" );
-
-	if ( ev.target.id == "activateOtherParamText" ) {
-		if ( !activatedOPT ) {
-			opt.style.display = "block";
-			opt.style.height = "30px";
-			opt.style.border = "1px solid black";
-			activatedOPT = 1;
-		}
-	}
-
-	//When blurring I need to check where we are ( but this will only fire once... )
-	if ( ev.target.id == "" ) {
-		if ( activatedOPT == 1 ) {
-			opt.style.display = "block";
-			opt.style.height = "0px";
-			opt.style.border = "0px solid black";
-			activatedOPT = 0;
-		}
-	}
-}
-*/
-
-
 function activateOtherParamText ( ev ) {
 	opt = [].slice.call( document.getElementsByClassName( "param-ta" ) );
 
@@ -288,7 +354,6 @@ function activateOtherParamText ( ev ) {
 		if ( !activatedOPT ) {
 			for ( div in opt ) {
 				d = opt[ div ];
-console.log( d.tagName );
 				if ( d.tagName == "LABEL" )
 					d.style.height = "30px";
 				else {
@@ -323,18 +388,25 @@ function releaseParticipant ( ev ) {
 
 	//Find the ID of the participant selected
 	par = ev.target.parentElement.parentElement;
-	id = par.querySelector( "span:nth-child(2)" ).innerHTML;
-	console.log( id );
 
 	//Assemble a POST request with the ID and other info
 	f = document.getElementById( "wash-id" );
 	
+	//Keep all the things
+	var thisGuy = { 
+		id: par.querySelector( "span:nth-child(2)" ).innerHTML
+	, string: par.querySelector( "span:nth-child(1)" ).innerHTML
+	, className: par.className.replace( "-dropped", "" )
+	, acrostic: par.querySelector( "span:nth-child(3)" ).innerHTML
+	};
+
+	//....
 	payload = [
 		 "staffer_id=" + f.staffer_id.value  
 		,"transact_id=" + f.transact_id.value 
 		,"sessday_id=" + f.sessday_id.value 
 		,"prk_id=" + f.prk_id.value 
-		,"pid=" + id
+		,"pid=" + thisGuy.id
 		,"this=releaseParticipant"
 	].join( '&' );
 
@@ -346,7 +418,7 @@ function releaseParticipant ( ev ) {
 	par.style.padding = "0px";
 	par.style.margin = "0px";
 
-	//Send a POST to the server
+	//Create and prepare the XHR object
 	var xhr = new XMLHttpRequest();	
 	xhr.onreadystatechange = function (ev) { 
 		if ( this.readyState == 4 && this.status == 200 ) {
@@ -358,9 +430,21 @@ function releaseParticipant ( ev ) {
 			}
 		}
 	}
+
+	//Send the POST request to server
 	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( payload );
+
+	//Add the other element to the other side
+	node = document.createElement( "li" );
+	node.innerHTML = thisGuy.string + " (" + thisGuy.acrostic + ")";
+	node.className =  thisGuy.className;
+
+	//Would add to the bottom of the list, but it needs to be at the top
+	a = document.querySelector( "ul.part-drop-list li:nth-child(1)" );
+	console.log( a );
+	a.parentElement.insertBefore( node, a );
 
 	//Return false
 	return false;
