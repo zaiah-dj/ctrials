@@ -292,8 +292,16 @@ function saveSessionUsers (ev) {
 	xhr.send( payload );
 /*console.log( payload );
 	console.log( xhr.responseText );*/
+	//ev.target.innerHTML = "Changes Saved!";
 	return false;
 };
+
+
+//Simply change the value
+function sendPageValsChange (ev) {
+	console.log( ev.target );
+	ev.target.value = "Changes Saved!";
+}
 
 
 //Simply lists what functions are being called with each listener.
@@ -489,6 +497,7 @@ Router = {
 		{ domSelector: ".slider"            , event: "input"   , f: changeSliderNeighborValue } 
 	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal }
+	 ,{ domSelector: "#sendPageVals"      , event: "click"   , f: sendPageValsChange }
 	]
 
 	,"/":      [
