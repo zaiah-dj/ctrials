@@ -51,6 +51,17 @@ I can do more with this concept...
  ,"sessiondpart"  = "ac_mtr_session_participants_selected"
  ,"sessiondstaff" = "ac_mtr_session_staff_selected"
  ,"staff"         = "ac_mtr_test_staff"
+
+ ,"et"   = "equipmentTracking"
+ ,"eteq" = "equipmentTrackingEquipment"
+ ,"etex" = "equipmentTrackingExercises"
+ ,"etin" = "equipmentTrackingInterventions"
+ ,"etma" = "equipmentTrackingMachines"
+ ,"etmn" = "equipmentTrackingManufacturers"
+ ,"etmo" = "equipmentTrackingModels"
+ ,"etst" = "equipmentTrackingSettings"
+ ,"etvr" = "equipmentTrackingVersions"
+
 }
 ,"css"    = [
 	 "zero.css"

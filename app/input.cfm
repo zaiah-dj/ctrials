@@ -187,6 +187,128 @@ if ( isDefined( "currentParticipant" ) ) {
 		private.loadedExercise = resobj.getExerciseName( private.type );
 		private.designation = private.loadedExercise.formName;
 
+
+		private.exarr = [
+		 "268AA2A1-24B9-439D-A249-8BB77C14A203"
+		,"918EE32D-EA22-48B2-810F-B0B80F6DE011"
+		,"D7307741-EA1C-44A2-A0D8-ECBA549334DA"
+		,"6B026296-D237-41EB-9B3C-EFD932CA3282"
+		,"08334B5D-114D-4576-9EDC-FBB9163F5B61"
+		,"5C8D84BE-63FF-49F5-A095-BCD9C68EC049"
+		,"3BD0A9C3-BA50-485A-802B-28D927250481"
+		,"162D5A58-B5E2-4A9F-9255-00CB2FAE560A"
+		,"75A86ADB-BA66-48BB-ABE4-946608D6D298"
+		,"D60B18B7-08B3-489F-B869-D0E4582DFA61"
+		,"C2576D22-0925-4ED8-9863-EBC7B9968646"
+		,"2534F4B4-A551-4FDF-A4A5-D8E26D157609"
+		,"8446D9BD-8656-45E4-9B95-87E5E6B54EC7"
+		,"21CCBAEF-9F5E-4EB6-A3AC-71AB47B8781A"
+		,"E42C8006-567E-4666-A395-1B6D8673758E"
+		,"8FCA3C6B-2ADF-4BDA-8A42-4CBFA91137CC"];
+
+
+		//Can load machines per exercise (sometimes there's multiple that could be chosen, should be a dropdown)
+		//Can load settings per machine
+	
+
+		//Equipment log
+		exerciseId = private.exarr[ 9 ];	
+		private.allSettingsPerExercise = ezdb.exec(
+			string = "
+	SELECT DISTINCT * FROM
+	( SELECT settingGUID AS stgGUID, settingDescription FROM #data.data.etst# ) As Sett
+	INNER JOIN
+	(	SELECT * FROM
+		( 
+			SELECT * FROM
+			( 
+				SELECT * FROM
+				( SELECT 
+						machineGUID as a_maguid
+					 ,manufacturerGUID as a_mnguid
+					FROM #data.data.etma# ) As Ma
+				INNER JOIN
+				( SELECT
+						manufacturerGUID
+					 ,manufacturerDescription
+					FROM #data.data.etmn# ) As Mn
+				ON Ma.a_mnguid = Mn.manufacturerGUID
+			) As AllManufacturers
+			INNER JOIN
+			( 
+				SELECT * FROM
+				( SELECT 
+						machineGUID as b_maguid
+				   ,modelGUID as b_moguid
+					FROM #data.data.etma# ) As Ma
+				INNER JOIN
+				( SELECT 
+						modelGUID
+					 ,modelDescription
+					FROM #data.data.etmo# ) As Mo
+				ON Ma.b_moguid = Mo.modelGUID
+			) As AllModels
+			ON AllManufacturers.a_maguid = AllModels.b_maguid 
+		) As Machines
+
+		INNER JOIN
+		(
+			SELECT * FROM
+				( SELECT * FROM #data.data.etex# ) AS EXY
+				INNER JOIN
+				(
+					SELECT * FROM
+					( SELECT * FROM 
+						#data.data.participants# 
+						WHERE participantGUID = :pid ) AS PT
+					INNER JOIN
+					(
+						SELECT 
+							 siteGUID AS sGUID
+							,equipmentGUID
+							,settingGUID	
+							,machineGUID
+							,exerciseGUID AS exGUID
+						FROM
+							( SELECT DISTINCT
+									siteGUID AS ETSSITEGUID
+								 ,equipmentGUID AS eGUID
+								 ,settingGUID	
+								FROM
+								#data.data.et#
+							) AS ETS
+						INNER JOIN
+							( SELECT DISTINCT
+									siteGUID
+								 ,machineGUID
+								 ,equipmentGUID
+								 ,exerciseGUID
+								 ,active
+								FROM 
+									#data.data.eteq# 
+								WHERE 
+									active = 1
+								AND
+									interventionGUID = 'BE3D6628-7BC2-452C-92AC-9F03B992316B'
+							) AS ETE
+						ON ETS.ETSSITEGUID = ETE.siteGUID 
+					) AS PE 
+					ON PT.siteGUID = PE.sGUID  
+					WHERE exGUID = :exc
+				) AS AXY
+				ON EXY.exerciseGUID = AXY.exGUID
+			) As ABB 
+			ON Machines.a_maguid = ABB.machineGUID
+		) AS Other
+		ON Sett.stgGUID = Other.settingGUID
+			"
+		 ,bindArgs = {
+				pid = sess.current.participantId,
+				exc = exerciseId
+			}	
+		);
+
+
 		//Get the entries in the table.
 		private.query = ezdb.exec(
 			string = "
@@ -231,12 +353,21 @@ if ( isDefined( "currentParticipant" ) ) {
 			});
 
 
+		//To just get the machine name, I can use qoq and trim further	
+		mn = new query();	
+		mn.setName( "juice" );
+		mn.setDBType( "query" );
+		mn.setAttributes( sourceQuery = private.allSettingsPerExercise.results );
+		qr = mn.execute( sql = "SELECT DISTINCT manufacturerdescription, modeldescription FROM sourceQuery" );
+		qr = qr.getResult();
+
 		//...
 		public = {
 		  selName = private.loadedExercise.pname
 		 ,reExList = private.exlist
 		 ,formValues = resobj.getLabels()
 		 ,type = private.type
+		 ,machineFullName = qr.manufacturerdescription & " " & qr.modeldescription
 		};
 
 		//Loop through and add query results to the source data.

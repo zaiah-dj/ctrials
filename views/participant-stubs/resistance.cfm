@@ -25,7 +25,7 @@
 			<thead>
 				<tr>
 					<td class="title">Machine Settings</td>
-					<td>Paramount XL-300</td>
+					<td>#public.machineFullName#</td>
 				</tr>
 			</thead>
 		<!---
