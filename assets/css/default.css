@@ -291,15 +291,16 @@ div.inner-selection {
 ul.inner-selection {
 	position: relative;
 	margin-bottom: 10px;
+	width : 20%;
+	border-right: 1px solid black;
+	float: left;
 }
 
 .container-body .inner-selection li 
 {
 	position: relative;
-	min-width: 70px;
-	min-height: 45px;
-	width: 16%;
-	width: 8%;
+	height: 35px;
+	width: 90%;
 	left: 0.5%;
 	font-weight: bold;
 	text-align: center;
@@ -322,6 +323,7 @@ ul.inner-selection {
 
 .container-body .inner-selection li.selected {
 	background-color: #728ab2;
+	height: 200px;
 	color: black; 
 }
 
@@ -332,7 +334,7 @@ ul.inner-selection {
 
 @media ( max-width: 943px ) {
 	.container-body .inner-selection li {
-		min-height: 50px;
+		min-height: 35px;
 		top: 0px;
 	}
 }
@@ -970,7 +972,8 @@ table.participant-entry tr.heading {
 }
 
 .selection {
-	width: 90%;
+	width: 78%;
+	float: right;
 	min-width: 300px;
 	margin: 0 auto;
 }
@@ -1053,13 +1056,18 @@ table.participant-entry tr.heading {
 	font-weight: bold;
 }
 
+.incrementor:hover {
+	background-color: #e6f2ff;
+}
+
+.incrementor:active {
+	background-color: white;
+	border: 0px;
+}
+
 .inc-button {
 	width: 40%;
 	top: 10px;
-}
-
-.incrementor {
-	width: 100%;
 }
 
 .inc-button:hover {
@@ -1254,4 +1262,29 @@ label.param-ta {
 	position: absolute;
 	right: 10px;
 	float: right;
+}
+
+.selection .links {
+	margin: 0 auto;
+	margin-bottom: 20px;
+}
+
+.selection .links a {
+	font-weight: bold;
+}
+
+
+.selection .links a::before {
+	content: "| ";
+	text-decoration: none;
+	color: black;
+}
+
+.selection .links a:first-child::before {
+	content: "";
+	text-decoration: none;
+}
+
+.endurance-class-container ul.inner-selection li.selected {
+	height: 100px;
 }

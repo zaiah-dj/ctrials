@@ -4,12 +4,20 @@ component name="resistance" {
 	//
 	resistance function init () {
 		this.labelDefaults = [
-			 {label="Set 1", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt1" }
-			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep1" }
-			,{label="Set 2", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt2" }
-			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep2"  }
-			,{label="Set 3", uom="lb"  ,min = 5, max = 100, step = 5, formName = "Wt3" }
-			,{label=""     , uom="reps",min = 0, max = 15, step = 1, formName = "Rep3" }
+			 {label="Set 1",uom="lb"  ,min = 5,max = 100,step = 5,formName = "Wt1" ,index=1 }
+			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "Rep1",index=1 }
+			,{label="Set 2",uom="lb"  ,min = 5,max = 100,step = 5,formName = "Wt2" ,index=2 }
+			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "Rep2",index=2 }
+			,{label="Set 3",uom="lb"  ,min = 5,max = 100,step = 5,formName = "Wt3" ,index=3 }
+			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "Rep3",index=3 }
+
+			//Superset
+			,{label="Superset 1",uom="lb"  ,min = 5,max = 100,step = 5,formName = "SuWt1" ,index=4 }
+			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "SuRep1",index=4 }
+			,{label="Superset 2",uom="lb"  ,min = 5,max = 100,step = 5,formName = "SuWt2" ,index=5 }
+			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "SuRep2",index=5 }
+			,{label="Superset 3",uom="lb"  ,min = 5,max = 100,step = 5,formName = "SuWt3" ,index=6 }
+			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "SuRep3",index=6 }
 		];
 
 		/*
@@ -107,6 +115,12 @@ component name="resistance" {
 
 	public function getLabels() {
 		return this.labelDefaults;
+	}
+
+	public function getSpecificLabels( Required Numeric id ) {
+		ld = [];
+		for ( n in this.labelDefaults ) ( n.index eq id ) ? ArrayAppend( ld, n ) : 0;
+		return ld; //this.labelDefaults;
 	}
 
 	public Query function getSpecificExercises( Required Numeric id ) {

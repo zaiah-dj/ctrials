@@ -16,37 +16,9 @@ try {
 	obj=createObject("component","components.resistance").init();
 	desig = obj.getExerciseName( form.extype ).formName;
 
-/*	
-	if ( form.extype == 0 || form.extype == 1 )
-		desig = "abdominalcrunch";
-	else if ( form.extype == 2 )
-		desig = "bicepcurl";
-	else if ( form.extype == 3 )
-		desig = "calfpress";
-	else if ( form.extype == 4 )
-		desig = "chest2";
-	else if ( form.extype == 5 )
-		desig = "chestpress";
-	else if ( form.extype == 6 )
-		desig = "dumbbellsquat";
-	else if ( form.extype == 7 )
-		desig = "kneeextension";
-	else if ( form.extype == 8 )
-		desig = "legcurl";
-	else if ( form.extype == 9 )
-		desig = "legpress";
-	else if ( form.extype == 10 )
-		desig = "overheadpress";
-	else if ( form.extype == 11 )
-		desig = "pulldown";
-	else if ( form.extype == 12 )
-		desig = "seatedrow";
-	else if ( form.extype == 13 )
-		desig = "shoulder2";
-	else if ( form.extype == 14 ) {
-		desig = "triceppress";
-	}
-*/
+	//Where do the supersets go?	
+	temp = val.validate( form, {
+	});	
 
 	//...
 	stat = val.validate( form, {
@@ -55,28 +27,31 @@ try {
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
 		,staffid = { req = true }
+		,set = { req = true }
 		,recordThread = { req = false, ifNone = "hi" }
-		/*
-		,reps1 = { req = true }
-		,reps2 = { req = true }
-		,reps3 = { req = true }
-		,weight1 = { req = true }
-		,weight2 = { req = true }
-		,weight3 = { req = true }
-		*/
-		,Rep1 = { req = true }
-		,Rep2 = { req = true }
-		,Rep3 = { req = true }
-		,Wt1  = { req = true }
-		,Wt2  = { req = true }
-		,Wt3  = { req = true }
-	});	
+		,Rep1 = { req = ( form.set == 1 ), ifNone = 0 }
+		,Rep2 = { req = ( form.set == 2 ), ifNone = 0 }
+		,Rep3 = { req = ( form.set == 3 ), ifNone = 0 }
+		,Wt1  = { req = ( form.set == 1 ), ifNone = 0 }
+		,Wt2  = { req = ( form.set == 2 ), ifNone = 0 }
+		,Wt3  = { req = ( form.set == 3 ), ifNone = 0 }
+		,SuRep1 = { req = ( form.set == 4 ), ifNone = 0 }
+		,SuRep2 = { req = ( form.set == 5 ), ifNone = 0 }
+		,SuRep3 = { req = ( form.set == 6 ), ifNone = 0 }
+		,SuWt1  = { req = ( form.set == 4 ), ifNone = 0 }
+		,SuWt2  = { req = ( form.set == 5 ), ifNone = 0 }
+		,SuWt3  = { req = ( form.set == 6 ), ifNone = 0 }
+	});
 
 	if ( !stat.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #stat.message#" );	
 	}
 
 	fv = stat.results;
+
+	if ( fv.set gt 3 ) {
+		req.sendAsJson( status = 1, message = "Can't update supersets yet." );
+	} 
 
 	//Insert or update if the row is not there...
 	upd = ezdb.exec( 

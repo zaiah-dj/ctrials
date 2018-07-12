@@ -9,33 +9,34 @@
 	<cfset cnt=0>
 		<a href="#link( 'input.cfm?id=#url.id#' )#"><li class="smaller">5 Minute Warmup</li></a>
 	<cfloop query = "#public.reExList#">
-		<cfif Len(pname) gte 13>
-			<cfset classnames="smaller">
-		<CFELSE>
-			<cfset classnames="">
-		</cfif>
-
-		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(public.type eq id, DE('selected'),DE(''))# #classnames#">#pname#</li></a>
+		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(public.type eq id, DE('selected'),DE(''))#">#pname#</li></a>
 	</cfloop>
 		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red stop-sess">Stop Session</li></a>
 	</ul>
 
 	<div class="selection">
+		<div class="links">
+			<cfloop array=#public.setlinks# index="lk">
+				<a href="#lin#&set=#lk.index#">#lk.name#</a>
+			</cfloop>
+		</div>
+
 		<table class="table table-striped">
-			<thead>
-				<tr>
-					<td class="title">Machine Settings</td>
-					<td>#public.machineFullName#</td>
-				</tr>
-			</thead>
-		<!---
+			<tr>
+				<td class="title">Exercise</td>
+				<td>#public.selName#</td>
+			</tr>
+			<tr>
+				<td class="title">Machine</td>
+				<td>#public.machineFullName# <a href="">Settings</a></td>
+			</tr>
 		</table>
-		<table class="table table-striped participant-entry resistance">
-		--->
+
+		<table class="table table-striped endurance-result-set">
 	<cfloop array="#public.formValues#" index="vv">
 		<cfif #vv.label# neq "">
 		<tr class="heading">
-			<td class="chopt">Last Visit's Results</td>
+			<td>Last Visit's Results</td>
 			<td><b>#vv.label# - #public.selName#</b></td>
 		</tr>
 		</cfif>
@@ -61,27 +62,6 @@
 		<tr></tr>	
 		</cfif>
 	</cfloop> 
-			<tr>
-				<td class="title">Superset ##1</td>
-				<td>
-					<input type=number>
-					<input type=number>
-				</td>
-			</tr>
-			<tr>
-				<td class="title">Superset ##2</td>
-				<td>
-					<input type=number>
-					<input type=number>
-				</td>
-			</tr>
-			<tr>
-				<td class="title">Superset ##3</td>
-				<td>
-					<input type=number>
-					<input type=number>
-				</td>
-			</tr>
 		</table>
 	</div>
 

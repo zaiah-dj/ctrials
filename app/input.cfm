@@ -177,16 +177,17 @@ if ( isDefined( "currentParticipant" ) ) {
 	else if ( ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) {
 		private = {
 			cssClassName="resistance-class"
-
 		 ,exlist = resobj.getSpecificExercises( sess.csp.exerciseParameter )
-
 		 ,type = (StructKeyExists(url,"extype")) ? url.extype : 
 				( sess.csp.exerciseParameter eq 4 ) ? 1 : 3
 		};
 
-		private.loadedExercise = resobj.getExerciseName( private.type );
-		private.designation = private.loadedExercise.formName;
+		private.selection = (StructKeyExists( url, "set" )) ? 
+			(( url.set < 1 || url.set > 6 ) ? 1 : url.set ) : 1;
 
+		private.loadedExercise = resobj.getExerciseName( private.type );
+		
+		private.designation = private.loadedExercise.formName;
 
 		private.exarr = [
 		 "268AA2A1-24B9-439D-A249-8BB77C14A203"
@@ -308,6 +309,13 @@ if ( isDefined( "currentParticipant" ) ) {
 			}	
 		);
 
+		//To just get the machine name, I can use qoq and trim further	
+		mn = new query();	
+		mn.setName( "juice" );
+		mn.setDBType( "query" );
+		mn.setAttributes( sourceQuery = private.allSettingsPerExercise.results );
+		qr = mn.execute( sql = "SELECT DISTINCT manufacturerdescription, modeldescription FROM sourceQuery" );
+		qr = qr.getResult();
 
 		//Get the entries in the table.
 		private.query = ezdb.exec(
@@ -353,22 +361,26 @@ if ( isDefined( "currentParticipant" ) ) {
 			});
 
 
-		//To just get the machine name, I can use qoq and trim further	
-		mn = new query();	
-		mn.setName( "juice" );
-		mn.setDBType( "query" );
-		mn.setAttributes( sourceQuery = private.allSettingsPerExercise.results );
-		qr = mn.execute( sql = "SELECT DISTINCT manufacturerdescription, modeldescription FROM sourceQuery" );
-		qr = qr.getResult();
-
-		//...
+		//TODO: Create a superset db, and change these indices again
 		public = {
 		  selName = private.loadedExercise.pname
 		 ,reExList = private.exlist
-		 ,formValues = resobj.getLabels()
+		 ,formValues = resobj.getSpecificLabels( private.selection )
 		 ,type = private.type
 		 ,machineFullName = qr.manufacturerdescription & " " & qr.modeldescription
+		 ,selection = private.selection
+		 ,setlinks = [
+				{ index=1, name="Set 1" }	
+			 ,{ index=1, name="Superset 1" }	
+			 ,{ index=2, name="Set 2" }	
+			 ,{ index=2, name="Superset 2" }	
+			 ,{ index=3, name="Set 3" }	
+			 ,{ index=3, name="Superset 3" }	
+			]
 		};
+
+		//Eww, all of these links are so ugly...
+		lin = "#cgi.script_name#?id=#sess.current.participantId#&extype=#public.type#";
 
 		//Loop through and add query results to the source data.
 		for ( n in public.formValues ) {
@@ -386,6 +398,7 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,{ name = "sess_id", value = "#sess.key#" }
 			 ,{ name = "recordThread", value= "#sess.csp.recordthread#" }
 			 ,{ name = "pid", value = "#sess.current.participantId#" }
+			 ,{ name = "set", value = "#public.selection#" }
 			 ,{ name = "dayofwk", value= "#sess.current.day#" }
 			 ,{ name = "stdywk", value= "#sess.csp.week#" }
 			 ,{ name = "extype", value = "#private.type#" }
