@@ -26,6 +26,7 @@ I can do more with this concept...
 ,"base"   = "/motrpac/web/secure/dataentry/iv/"
 ,"Home"   = "tmp"
 ,"name"   = "iv"
+,"useEquip" = false
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
 ,"debug"  =  0

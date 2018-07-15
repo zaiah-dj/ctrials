@@ -27,18 +27,20 @@ R = 2;
 C = 3;
 
 
+try {
 //Current date
-		//if ( DateDiff( "ww", startDate, date ) < 0 )
-		//	date = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+
+//Make a date object first and just use that...
+
 if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 	try
 		{ usedDate = DateTimeFormat( url.date, "YYYY-MM-DD HH:nn:ss" ); }
 	catch (any e) {
-		usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+		usedDate = Now(); //DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
 	}
 }
 else {
-	usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+	usedDate = Now(); //DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
 }
 
 
@@ -48,6 +50,11 @@ currentDayOfMonth = DateTimeFormat( usedDate, "d" );
 currentMonth = DateTimeFormat( usedDate, "m" );
 currentYear = DateTimeFormat( usedDate, "YYYY" );
 currentWeek = DateTimeFormat( usedDate, "w" );
+}
+catch (any ee) {
+	writedump( ee );
+	abort;
+}
 /*
 writedump( "currentDayOfWeek: " & currentDayOfWeek );
 writedump( "currentDayOfMonth: " & currentDayOfMonth );

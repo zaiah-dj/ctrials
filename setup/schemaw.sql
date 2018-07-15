@@ -6,17 +6,7 @@ tables.
 
 Still only works with SQL server.
  ---------------------------- */
-
-/*Create databases*/
-CREATE DATABASE localmotrpac;
-GO
-
-USE localmotrpac;
-GO
-
-/*Create user (if needed)*/
-
-
+ 
 /* ---------------------------
 ac_mtr_test_staff
 
@@ -361,11 +351,11 @@ here as well:
 ,sl_message VARCHAR(MAX)          - Custom message (AJAX here)
 ----------------------------------
  */
-IF OBJECT_ID( N'ac_mtr_serverlog', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_serverlog_v3', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_serverlog;
+	DROP TABLE ac_mtr_serverlog_v3;
 END
-CREATE TABLE ac_mtr_serverlog
+CREATE TABLE ac_mtr_serverlog_v3
 (
 	 sl_id INT IDENTITY(1,1) NOT NULL
 	,sl_session_id VARCHAR(64)
@@ -409,11 +399,11 @@ ps_notes              Other notes concerning the patient's condition.
 ,ps_date_time_assessed datetime   - Date assessed
  ----------------------------
  */
-IF OBJECT_ID( N'ac_mtr_checkinstatus_v2', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_checkinstatus_v3', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_checkinstatus_v2;
+	DROP TABLE ac_mtr_checkinstatus_v3;
 END
-CREATE TABLE ac_mtr_checkinstatus_v2 (	
+CREATE TABLE ac_mtr_checkinstatus_v3 (	
 	 ps_id INT IDENTITY(1,1) NOT NULL
 	,ps_pid VARCHAR(64)
 	,ps_session_id VARCHAR(64)
@@ -441,11 +431,11 @@ participant if needed.
 ,bp_notes varchar(max)            - Notes?
  ----------------------------
  */
-IF OBJECT_ID( N'ac_mtr_bloodpressure_v2', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_bloodpressure_v3', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_bloodpressure_v2;
+	DROP TABLE ac_mtr_bloodpressure_v3;
 END
-CREATE TABLE ac_mtr_bloodpressure_v2 (
+CREATE TABLE ac_mtr_bloodpressure_v3 (
 	 bp_id INT IDENTITY(1,1) NOT NULL
 	,bp_pid VARCHAR(64)
 	,bp_systolic int
@@ -502,11 +492,11 @@ other data source.
 ,siteGUID varchar(256) NULL              - 
 ,d_session datetime NULL                 - ?
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_participants_v2', N'U') IS NOT NULL
+IF OBJECT_ID( N'ac_mtr_participants_v3', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_participants_v2;
+	DROP TABLE ac_mtr_participants_v3;
 END
-CREATE TABLE ac_mtr_participants_v2 (
+CREATE TABLE ac_mtr_participants_v3 (
 	[p_id] [int] IDENTITY(1,1) NOT NULL,
 	[participantGUID] [varchar](50) NOT NULL,
 	[pid] [int] NOT NULL,
@@ -966,4 +956,4 @@ CREATE TABLE ac_mtr_session_participants_selected (
  
  
  
-GO
+
