@@ -11,10 +11,11 @@
 		<cfargument name="status">
 		<cfargument name="message">
 
+	<!---
 		<cfset aa = CreateObject("component", "components.requestLogger" )
 			.init(table = "ac_mtr_serverlog", ds="#this.datasource#")
 			.append(message = "#arguments.message#")>
-
+		--->
 		<cfcontent type="application/json">
 			<cfoutput>{ "status": #arguments.status#, "message": "#arguments.message#" }</cfoutput>  
 		</cfcontent>
