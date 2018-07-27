@@ -8,7 +8,6 @@ try {
 
 	//Figure out the form type.
 	if ( form.extype lt 1 || form.extype gt 14 ) {
-		
 		req.sendAsJson( status = 0, message = "#errstr# - Invalid exercise type #form.extype# specified." );
 	}
 
@@ -26,32 +25,25 @@ try {
 		,sess_id = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
-		,staffid = { req = true }
-		,set = { req = true }
+		,insBy = { req = true }
 		,recordThread = { req = false, ifNone = "hi" }
-		,Rep1 = { req = ( form.set == 1 ), ifNone = 0 }
-		,Rep2 = { req = ( form.set == 2 ), ifNone = 0 }
-		,Rep3 = { req = ( form.set == 3 ), ifNone = 0 }
-		,Wt1  = { req = ( form.set == 1 ), ifNone = 0 }
-		,Wt2  = { req = ( form.set == 2 ), ifNone = 0 }
-		,Wt3  = { req = ( form.set == 3 ), ifNone = 0 }
-		,SuRep1 = { req = ( form.set == 4 ), ifNone = 0 }
-		,SuRep2 = { req = ( form.set == 5 ), ifNone = 0 }
-		,SuRep3 = { req = ( form.set == 6 ), ifNone = 0 }
-		,SuWt1  = { req = ( form.set == 4 ), ifNone = 0 }
-		,SuWt2  = { req = ( form.set == 5 ), ifNone = 0 }
-		,SuWt3  = { req = ( form.set == 6 ), ifNone = 0 }
+
+		//These are required, but if one is not present it could mean many things
+		,Rep1 = { req = false, ifNone = 0 }
+		,Rep2 = { req = false, ifNone = 0 }
+		,Rep3 = { req = false, ifNone = 0 }
+		,Wt1  = { req = false, ifNone = 0 }
+		,Wt2  = { req = false, ifNone = 0 }
+		,Wt3  = { req = false, ifNone = 0 }
 	});
+
+	//req.sendAsJson( status = 0, message = "#SerializeJSON( stat )#" );
 
 	if ( !stat.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #stat.message#" );	
 	}
 
 	fv = stat.results;
-
-	if ( fv.set gt 3 ) {
-		req.sendAsJson( status = 1, message = "Can't update supersets yet." );
-	} 
 
 	//Insert or update if the row is not there...
 	upd = ezdb.exec( 
@@ -61,8 +53,10 @@ try {
 			#data.data.resistance#	
 		WHERE 
 			participantGUID = :pid
-			AND stdywk = :stdywk
-			AND dayofwk = :dayofwk
+		AND 
+			stdywk = :stdywk
+		AND 
+			dayofwk = :dayofwk
 		"
 		,bindArgs = { 
 			pid = fv.pid
@@ -90,10 +84,10 @@ if ( !upd.prefix.recordCount ) {
 		(  
 			 participantGUID
 			,recordthread
+			,d_inserted
 			,insertedBy
 			,dayofwk
 			,stdywk
-			,staffID
 			,#desig#Rep1
 			,#desig#Rep2
 			,#desig#Rep3
@@ -105,10 +99,10 @@ if ( !upd.prefix.recordCount ) {
 		(  
 			 :pid
 			,:rthrd
+			,:dtstamp
 			,:insBy
 			,:dwk
 			,:swk
-			,:staff_id
 			,:rep1
 			,:rep2
 			,:rep3
@@ -129,7 +123,8 @@ else {
 			,#desig#Wt2  = :wt2
 			,#desig#Rep3 = :rep3
 			,#desig#Wt3  = :wt3
-			,staffID     = :staff_id
+			,d_inserted  = :dtstamp
+			,insertedBy  = :insBy
 		WHERE
 			participantGUID = :pid
 		AND
@@ -144,15 +139,21 @@ else {
 
 //Then perform the query
 try {
+	//This is in case I find myself modifying dates from other times
+	dstmp = LSParseDateTime( 
+		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
+		& DateTimeFormat( Now(), "HH:nn:ss" )
+	);
+
 	qu = ezdb.exec(
 		string = sqlString
 	 ,datasource = "#data.source#"
  	 ,bindArgs = {
 			pid      = fv.pid 
 		 ,sid      = fv.sess_id
-		 ,staff_id = fv.staffId 
 		 ,rthrd    = fv.recordThread
-		 ,insBy    = "NOBODY" 
+		 ,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
+		 ,insBy    = fv.insBy
 		 ,dwk      = fv.dayofwk
 		 ,swk      = fv.stdywk
 		 ,rep1     = fv.Rep1 

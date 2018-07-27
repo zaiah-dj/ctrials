@@ -18,6 +18,16 @@ try {
 		);
 	}
 
+	//Also stop if the timeblock is not there.
+	if ( !StructKeyExists( form, "timeblock" ) ) {
+		req.sendAsJson( 
+			status = 0, 
+			message = "#errstr# Parameter 'exParam' " &
+								"is not available in FORM (Can't " &
+								"tell exercise type... so can't move further.)" 
+		);
+	}
+
 	//Pull all required values out of the form scope.
 	stat = val.validate( form, { 
 		 pid = { req = true }
@@ -25,28 +35,41 @@ try {
 		,recordthread = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
+		,insBy = { req = true }
 		,timeblock = { req = true }
-		,affect = { req = false, ifNone = 0 }
-		,staffId = { req = true }
 		,mchntype = { req = false, ifNone = form.exParam }
+
+		//Only required when exercise chosen is cycle
 		,rpm = { req = (form.exParam eq CYCLE), ifNone = 0 }
 		,watres = { req = (form.exParam eq CYCLE), ifNone = 0 }
+
+		//Only required when exercise chosen is treadmill 
 		,prctgrade = { req = (form.exParam eq TREADMILL), ifNone = 0 }
 		,speed = { req = (form.exParam eq TREADMILL), ifNone = 0 }
+
+		//Only required when exercise chosen is other 
 		,oth1 = { req = (form.exParam eq OTHER), ifNone = 0 }
 		,oth2 = { req = (form.exParam eq OTHER), ifNone = 0 }
+
+		//These are only required at times 0 (warm-up), 20m and 45m
+		,othafct = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
+		,hr = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
+		,rpe = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
 	});
 
 	if ( !stat.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# #stat.message#" );
 	}
 
+
 	//Set fv to validated form values	
 	fv = stat.results;
 
 	//Figure out the form field name 
 	desig = "";
-	if ( fv.timeblock eq 0 )
+	if ( fv.timeblock lt 0 )
+		req.sendAsJson( status = 0, message = "#errstr# - Timeblock cannot be less than 0 and not more than 45." );		
+	else if ( fv.timeblock eq 0 )
 		desig = "wrmup_";
 	else if ( fv.timeblock gt 45 )
 		desig = "m5_rec";
@@ -61,9 +84,12 @@ try {
 			#data.data.endurance#	
 		WHERE
 			participantGUID = :pid
-		AND stdywk = :stdywk
-		AND recordthread = :recordthread
-		AND dayofwk = :dayofwk
+		AND 
+			stdywk = :stdywk
+		AND 
+			recordthread = :recordthread
+		AND 
+			dayofwk = :dayofwk
 		"
 	 ,datasource="#data.source#"
 	 ,bindArgs = { 
@@ -101,14 +127,16 @@ if ( !upd.prefix.recordCount ) {
 	 ,#desig#rpm
 	 ,#desig#speed
 	 ,#desig#watres  
+	 ,#desig#hr
+	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#Othafct'),DE(''))#
+	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#rpe'),DE(''))#
 	 ,dayofwk
 	 ,stdywk
-	 ,staffid
 	)
 	VALUES
 	(  :pid
 		,:rthrd
-		,:insertedby
+		,:insBy
 		,:dtstamp
 		,:mchntype
 		,:oth1
@@ -117,9 +145,11 @@ if ( !upd.prefix.recordCount ) {
 		,:rpm
 		,:speed
 		,:watres
+		,:hr
+		#iif(ListContains(fv.timeblock,'0,20,45') ,DE(',:afct'),DE(''))#
+		#iif(ListContains(fv.timeblock,'0,20,45') ,DE(',:rpe'),DE(''))#
 		,:dwk
 		,:swk
-		,:staff_id
 	)";
 }
 else {
@@ -130,13 +160,16 @@ else {
 	 SET
 		 mchntype = :mchntype
 		,d_inserted = :dtstamp
-		,staffid = :staff_id
+		,insertedBy = :insBy
 		,#desig#oth1 = :oth1
 		,#desig#oth2 = :oth2
 		,#desig#prctgrade = :prctgrade
 		,#desig#rpm = :rpm
 		,#desig#speed = :speed
 		,#desig#watres = :watres
+		,#desig#hr = :hr
+	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#Othafct = :afct'),DE(''))#
+	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#rpe = :rpe'),DE(''))#
 	 WHERE
 		participantGUID = :pid
 	 AND
@@ -148,32 +181,50 @@ else {
 	";
 }
 
-
+/*
+		if ( 1 ) {
+			req.sendAsJson( 
+				status = 0
+			 ,message = "Form values received were: #SerializeJSON(stat)#" 
+			);
+		}
+*/
 
 try {
+	//This is in case I find myself modifying dates from other times
+	dstmp = LSParseDateTime( 
+		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
+		& DateTimeFormat( Now(), "HH:nn:ss" )
+	);
+
 	qu = ezdb.exec( 
 		string = sqlString
 	 ,datasource = "#data.source#"
 	 ,bindArgs = {
-			pid        = fv.pid
-		 ,insertedby = "NOBODY"
-		 ,dtstamp    = { value = DateTimeFormat( Now(),"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
-		 ,oth1       = fv.oth1
-		 ,oth2       = fv.oth2
-		 ,prctgrade  = fv.prctgrade
-		 ,rpm        = fv.rpm
-		 ,mchntype   = fv.mchntype
-		 ,speed      = fv.speed
-		 ,watres     = fv.watres
-		 ,dwk        = fv.dayofwk
-		 ,swk        = fv.stdywk
-		 ,staff_id   = fv.staffId
-		 ,rthrd      = fv.recordthread
+			pid      = fv.pid
+		 ,insBy    = fv.insBy
+		 ,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
+		 ,oth1     = fv.oth1
+		 ,oth2     = fv.oth2
+		 ,prctgrade= fv.prctgrade
+		 ,rpm      = fv.rpm
+		 ,mchntype = fv.mchntype
+		 ,speed    = fv.speed
+		 ,watres   = fv.watres
+		 ,dwk      = fv.dayofwk
+		 ,swk      = fv.stdywk
+		 ,rthrd    = fv.recordthread
+		 ,afct     = fv.othafct
+		 ,hr       = fv.hr
+		 ,rpe      = fv.rpe
 		} 
 	);
 
 	if ( !qu.status ) {
-		req.sendAsJson( status = 0, message = "#errstr# #qu.message#" );
+		req.sendAsJson( 
+			status = 0, 
+			message = "#errstr# #iif(vpath,DE("UPDATE"),DE("INSERT"))# #qu.message#" 
+		);
 	}
 }
 catch (any ff) {

@@ -24,22 +24,25 @@ component name="endurance" {
 		//Label defaults for endurance
 		//NOTE: RPE, Affect and Heart Rate will not always show (wish i oculd use a query for this...)
 		this.labelDefaults = [
-				{ uom="rpm", label="RPM", min=20, max=120, step=1, formName="rpm", type=1, frequency=0 }
-			 ,{ uom="lb" , label="Watts/Resistance", min=20, max=120, step=1, formName="watres", type=1, frequency=0 }
-			 ,{ uom="mph", label="Speed", min=20, max=120, step=1, formName="speed", type=2, frequency=0 }
-			 ,{ uom="%"  , label="Percent Grade", min=20, max=120, step=1, formName="prctgrade", type=2, frequency=0 }
-			 ,{ uom=""  , label="othMchn1", min=20, max=120, step=1, formName="oth1", type=3, frequency=0 }
-			 ,{ uom=""  , label="othMchn2", min=20, max=120, step=1, formName="oth2", type=3, frequency=0 }
-		 //,{ uom="%"  , label="Perceived Exertion Rating", min=20, max=120, step=1, formName="per", type=1, frequency=0 }
-		 //,{ uom="?"  , label="Affect", min=20, max=120, step=1, formName="affect", type=0, frequency=0 }
+			{ uom="rpm", label="RPM", min=30, max=130, step=1, formName="rpm", type=1, frequency="0" }
+		 ,{ uom="lb" , label="Watts/Resistance", min=0, max=50, step=1, formName="watres", type=1, frequency="0" }
+		 ,{ uom="mph", label="Speed", min=0, max=50, step=1, formName="speed", type=2, frequency="0" }
+		 ,{ uom="%"  , label="Percent Grade", min=0, max=20, step=1, formName="prctgrade", type=2, frequency="0" }
+		 ,{ uom=""   , label="othMchn1", min=20, max=120, step=1, formName="oth1", type=3, frequency="0" }
+		 ,{ uom=""   , label="othMchn2", min=20, max=120, step=1, formName="oth2", type=3, frequency="0" }
+		 ,{ uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", type=0, frequency="0" }
+		 ,{ uom="rpe", label="RPE", min=20, max=120, step=1, formName="rpe", type=0, frequency="0,20,45" }
+		 ,{ uom="%"  , label="Affect", min=20, max=120, step=1, formName="Othafct", type=0, frequency="0,20,45" }
 		];
 		return this;
 	}
 
-	public function getLabelsFor( Required Numeric id ) {
+	public function getLabelsFor( Required Numeric id, Required Numeric tb ) {
 		ld = [];
 		for ( n in this.labelDefaults ) {
-			if ( n.type eq 0 || n.type eq id ) ArrayAppend( ld, n );
+			if ( ( n.type eq 0 || n.type eq id ) && (n.frequency eq "0" || ListFind( n.frequency, tb ) )) { 
+				ArrayAppend( ld, n );
+			}
 		}
 		return ld;
 	}

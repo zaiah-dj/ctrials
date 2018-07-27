@@ -143,57 +143,63 @@
 					</td>
 				</tr>
 
+				<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 				<tr>
 					<td class="title">
-					<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
 						Machine Selection
-					<cfelse>
-						Exercise Selection
-					</cfif>
 					</td>
 					<td>
-						<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
-							<div class="clabel">
-								Cycle
-								<input class="params" type="radio" name="param" value="1" #iif(sess.csp.exerciseParameter eq 1,DE("checked"),DE(""))# required>
-								<span class="checkmark"></span>
-								<br />
-							</div>
-							<div class="clabel">
-								Treadmill
-								<input class="params" type="radio" name="param" value="2"  #iif(sess.csp.exerciseParameter eq 2,DE("checked"),DE(""))# required>
-								<span class="checkmark"></span>
-								<br />
-							</div>
-							<div class="clabel">
-								Other
-								<input class="params" id="activateOtherParamText" type="radio" name="param" value="3"  #iif(sess.csp.exerciseParameter eq 3,DE("checked"),DE(""))# required>
-								<span class="checkmark"></span>
-								<br />
-								<!--- TODO: I used textareas here b/c for some reason, inputs just would not show themselves.  Fix this later.--->
-								<label class="param-ta">Other Equipment A</label>
-								<textarea class="param-ta" name="opt1"></textarea>	
-								<label class="param-ta">Other Equipment B</label>
-								<textarea class="param-ta" name="opt2"></textarea>	
-							</div>	
+						<div class="clabel">
+							Cycle
+							<input class="params" type="radio" name="param" value="1" #iif(sess.csp.exerciseParameter eq 1,DE("checked"),DE(""))# required>
+							<span class="checkmark"></span>
+							<br />
 						</div>
-							</div>
-						<cfelse>
-							<div class="clabel">
-								<!--- Upper Body --->
-								Chest, shoulders, triceps, abdominals, calves	
-								<input type="radio" name="param" value="4"  #iif(sess.csp.exerciseParameter eq 4,DE("checked"),DE(""))# required>
-								<br /><span class="checkmark"></span>
-							</div>
-							<div class="clabel">
-								<!--- Lower Body --->
-								Hips, thighs, back, biceps	
-								<input type="radio" name="param" value="5" #iif(sess.csp.exerciseParameter eq 5,DE("checked"),DE(""))# required>
-								<span class="checkmark"></span>
-							</div>
-						</cfif>
+						<div class="clabel">
+							Treadmill
+							<input class="params" type="radio" name="param" value="2"  #iif(sess.csp.exerciseParameter eq 2,DE("checked"),DE(""))# required>
+							<span class="checkmark"></span>
+							<br />
+						</div>
+						<div class="clabel">
+							Other
+							<input class="params" id="activateOtherParamText" type="radio" name="param" value="3"  #iif(sess.csp.exerciseParameter eq 3,DE("checked"),DE(""))# required>
+							<span class="checkmark"></span>
+							<br />
+							<!--- TODO: I used textareas here b/c for some reason, inputs just would not show themselves.  Fix this later.--->
+							<label class="param-ta">Other Equipment A</label>
+							<textarea class="param-ta" name="opt1"></textarea>	
+							<label class="param-ta">Other Equipment B</label>
+							<textarea class="param-ta" name="opt2"></textarea>	
+						</div>	
+						</div>
+						</div>
 					</td>
 				</tr>
+
+				<!--- Resistance --->
+				<cfelseif ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)>
+				<tr>
+					<td class="title">
+						Exercise Selection
+					</td>
+					<td>
+						<div class="clabel">
+							<!--- Upper Body --->
+							Chest, shoulders, triceps, abdominals, calves	
+							<input type="radio" name="param" value="4"  #iif(sess.csp.exerciseParameter eq 4,DE("checked"),DE(""))# required>
+							<br /><span class="checkmark"></span>
+						</div>
+						<div class="clabel">
+							<!--- Lower Body --->
+							Hips, thighs, back, biceps	
+							<input type="radio" name="param" value="5" #iif(sess.csp.exerciseParameter eq 5,DE("checked"),DE(""))# required>
+							<span class="checkmark"></span>
+						</div>
+					</td>
+				</tr>
+				</cfif>
+
 				<tr>
 					<td class="title">Participant Notes</td>
 					<td>

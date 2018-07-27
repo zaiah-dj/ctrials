@@ -459,6 +459,51 @@ function releaseParticipant ( ev ) {
 }
 
 
+function redirectEngine() {
+	//Define an object and split the URL
+	local = {};
+	local.locationArray = location.href.split( "/" ) ;
+	va = local.locationArray[ local.locationArray.length - 1 ];
+	qi = va.indexOf("?");
+	queryStrings = {};
+	qs = va.substr( qi + 1, va.length ).split( "&" );
+	console.log( queryStrings );
+
+	//Convert this to an object for easy access
+	for ( i=0; i < qs.length; i++ ) {
+		var id = qs[ i ].indexOf( "=" ), name = qs[i].substr( 0, id ); 
+		queryStrings[name] = qs[i].substr( id+1, qs[i].length );
+	}
+
+	//Check for a query string and run this if so
+	if ( queryStrings.err ) { 
+		local.bg = document.createElement( "div" );
+		local.bg.className = "errorBg";
+		local.bg.style.zIndex = "99";
+
+		//Create an element, give it focus
+		local.div = document.createElement( "div" );
+		local.div.className = "errorEngine";
+		local.div.id = "errorEngine";
+		local.div.style.zIndex = "99";
+		local.div.innerHTML = decodeURI( queryStrings.err ).replace(/\+/g, " " );
+	
+		//...
+		document.body.appendChild( local.bg );
+		local.bg.appendChild( local.div );
+		setTimeout( function () { 
+			local.bg.style.backgroundColor = "rgba( 255, 255, 255, 0.1 )";
+			local.div.style.height = "0%";	
+			local.div.style.border = "0";	
+			local.div.style.padding = "0";
+			setTimeout( function () {	
+				document.body.removeChild( local.bg ); 
+			}, 300 );
+		}, 2000 );
+	}	
+}
+
+
 /*
 //The Router structure is key to make interfaces work.
 //Can't wait for WASM
@@ -523,9 +568,11 @@ Router = {
 	]
 };
 
+//Another main() for error handling
 
 //main()
 document.addEventListener("DOMContentLoaded", function(ev) {
-	rx = new Routex( {routes:Router, verbose:0} );
+	rx = new Routex( {routes:Router, verbose:1} );
 	rx.init();
+//	redirectEngine();
 });

@@ -30,7 +30,7 @@ public = {
 							( SELECT * FROM #data.data.sessiondpart# ) as SelParts
 						ON SiteMembers.ss_participantrecordkey = SelParts.sp_participantrecordkey
 					) as M
-				ON Staff.ts_staffid = M.ss_staffid ) as StaffPlus
+				ON Staff.ts_staffguid = M.ss_staffguid ) as StaffPlus
 		ON Parts.participantGUID = StaffPlus.sp_participantGUID
 		"
    ,bindArgs = { 
@@ -58,7 +58,7 @@ public = {
 							( SELECT * FROM #data.data.sessiondpart# ) as SelParts
 						ON SiteMembers.ss_participantrecordkey = SelParts.sp_participantrecordkey
 					) as M
-				ON Staff.ts_staffid = M.ss_staffid ) as StaffPlus
+				ON Staff.ts_staffguid = M.ss_staffguid ) as StaffPlus
 		ON Parts.participantGUID = StaffPlus.sp_participantGUID
 		"
    ,bindArgs = { 
@@ -69,16 +69,12 @@ public = {
 
 	,junior = ezdb.exec(
 		string = " 
-							SELECT * FROM 
-								#data.data.sessiondstaff# 
-							WHERE
-								ss_sessdayid = :sid"
+			SELECT * FROM 
+				#data.data.sessiondstaff# 
+			WHERE
+				ss_sessdayid = :sid"
 	 ,bindArgs = { sid = csSid }
 	)
 
 };
-
-
-
-//writedump( public.junior ); abort;
 </cfscript>

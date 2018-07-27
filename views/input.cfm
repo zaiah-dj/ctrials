@@ -4,7 +4,10 @@
 			<cfinclude template="participant-stubs/nothing.cfm">
 		<cfelse>
 			<!--- Include control --->
-			<cfif ListContains(CONTROL, currentParticipant.results.randomGroupCode)>
+			<cfif currentParticipant.results.randomGroupCode eq "">
+				<cfinclude template="participant-stubs/nothing.cfm">
+		
+			<cfelseif ListContains(CONTROL, currentParticipant.results.randomGroupCode)>
 				<cfinclude template="participant-stubs/control.cfm">
 
 			<!--- Include endurance --->
@@ -14,7 +17,7 @@
 			<!--- Include resistance --->
 			<cfelseif ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)>
 				<cfinclude template="participant-stubs/resistance.cfm">
-		
+
 			<!--- Include --->	
 			</cfif>
 		</cfif>

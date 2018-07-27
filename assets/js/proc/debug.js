@@ -132,6 +132,7 @@ DebugRouter = {
 document.addEventListener( "DOMContentLoaded", function (ev) 
 {
 	//Do an XHR every time to a resource called 'sessdata' to see what's going on when the app changes pages.
+	/*
 	if ( sid = document.getElementById( "sessionKey" ) ) { 
 		xhr = new XMLHttpRequest();
 		sid = sid.innerHTML;
@@ -139,6 +140,7 @@ document.addEventListener( "DOMContentLoaded", function (ev)
 		xhr.open( "GET", "/motrpac/web/secure/dataentry/iv/sessdata.cfm?sid="+sid, true );
 		xhr.send( );
 	}
+	*/
 
 	//dd = DINIT();
 	//dd.log( "yadda" );

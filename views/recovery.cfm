@@ -46,7 +46,6 @@
 				</td>
 			</tr>
 
-			<cfif ListContains(ENDURANCE, selectedParticipants.results.randomGroupCode)>
 			<tr>
 				<td>Was the session stopped early?</td>
 				<td>
@@ -138,7 +137,6 @@
 					</table>
 				</td>
 			</tr>
-			</cfif>
 		</table>
 		<input id="sendPageVals" type="submit" value="Finish!" style="width: 200px;color:white;"></input>
 	</form>

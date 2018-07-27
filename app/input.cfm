@@ -1,6 +1,69 @@
 <cfscript>
 /* input.cfm */
+
+/*
+
+run thru this w/ me
+
+
+STEP 1: ARRANGE ALL OF THIS CODE SO THAT IT SUCKS LESS
+======================================================
+regardless of choice, I need:
+
+past res (prev day if same week contains additional results, last week's last day if currentweek > 1 and no other results for the current week )
+present res (if available)
+a magic identifier ( re = exercise set, ee = exercise timeblock )
+an exercise list
+
+optional: a component file with labels and units of measure, but this can just as easily be done in either of the above queries
+
+
+
+STEP 2: MERGE THE GIANT QUERIES
+======================================================
+after this, to not write a whole lot of extra template code, combine the two queries using the following: 
+for ( n in prefix ) {
+	ArrayAppend( columnNames, n );
+	ArrayAppend( columnTypes, n.getType() );
+}
+
+for ( n in results ) {
+	ArrayAppend( queryValues, { n.key = n.value } );
+}
+
+mn = new query(
+	ArrayToList( columnNames )
+ ,ArrayToList( columnTypes )
+ ,queryValues
+);	
+mn.setName( "c_and_p" );
+mn.setDBType( "query" );
+mn.setAttributes( sourceQuery = c_and_p );
+
+//Writeout what's going in frere                                    
+//writedump( mn );
+
+//loop through on the frontend
+
+
+STEP 3: CHECK AGAINST PREVIOUS RECORDS THAT WERE IN THE ORIGINAL TABLE
+======================================================
+this is probably the most time consuming piece
+
+go through previous weeks and check that results pulling works. 
+
+use my own table for this
+
+
+
+
+ */
+
+
+
 if ( isDefined( "currentParticipant" ) ) {
+
+
 	if ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) {
 		//No way to actually do a publically exposed model, so I'll settle for this...
 		ptime = (StructKeyExists( url, "time" )) ? url.time : 0;
@@ -19,111 +82,21 @@ if ( isDefined( "currentParticipant" ) ) {
 			"
 		 ,bindArgs = { pid = sess.current.participantId }
 		);
-	
-		private.lastPrev = ezdb.exec(
-			string = "
-				SELECT TOP (1) 
-					 rec_id as p_rec_id
-					,recordthread as p_recordthread
-					,participantGUID as p_participantGUID
-					,dayofwk as p_dayofwk
-					,stdywk as p_stdywk
-					,#private.designation#hr as p_#private.designation#hr
-					,#private.designation#oth1 as p_#private.designation#oth1
-					,#private.designation#oth2 as p_#private.designation#oth2
-					,#private.designation#prctgrade as p_#private.designation#prctgrade
-					,#private.designation#rpm as p_#private.designation#rpm
-					,#private.designation#speed as p_#private.designation#speed
-					,#private.designation#watres as p_#private.designation#watres
-					,mchntype as p_mchntype
-					,nomchntype as p_nomchntype
-					,Sessionmisd as p_Sessionmisd
-					,breaks as p_breaks 
-				FROM
-					#data.data.endurance#
-				WHERE
-					participantGUID = :pid
-				AND
-					stdywk <= :cweek
-				ORDER BY
-					stdywk DESC, dayofwk DESC
-			"
-		, bindArgs = {
-				pid = sess.current.participantId 
-			 ,cweek = sess.csp.week
-		});
-				
-		//Recall endurance data from the current or last session
-		private.query = qu = ezdb.exec(
-			string = "
-			SELECT * FROM
-				( SELECT
-						 rec_id 
-						,recordthread 
-						,participantGUID 
-						,dayofwk 
-						,stdywk 
-						,#private.designation#hr 
-						,#private.designation#oth1 
-						,#private.designation#oth2 
-						,#private.designation#prctgrade 
-						,#private.designation#rpm 
-						,#private.designation#speed 
-						,#private.designation#watres 
-						,mchntype 
-						,othMchn1
-						,othMchn2
-						,nomchntype 
-						,Sessionmisd 
-						,breaks 
-					FROM
-					#data.data.endurance#
-				WHERE
-					participantGUID = :pid
-					AND stdywk = :stdywk
-					AND dayofwk = :dayofwk 
-					AND recordthread = :rthrd
-				) as cweek
-			INNER JOIN
-			(	SELECT TOP (1) 
-					 rec_id as p_rec_id
-					,recordthread as p_recordthread
-					,participantGUID as p_participantGUID
-					,dayofwk as p_dayofwk
-					,stdywk as p_stdywk
-					,#private.designation#hr as p_#private.designation#hr
-					,#private.designation#oth1 as p_#private.designation#oth1
-					,#private.designation#oth2 as p_#private.designation#oth2
-					,#private.designation#prctgrade as p_#private.designation#prctgrade
-					,#private.designation#rpm as p_#private.designation#rpm
-					,#private.designation#speed as p_#private.designation#speed
-					,#private.designation#watres as p_#private.designation#watres
-					,mchntype as p_mchntype
-					,nomchntype as p_nomchntype
-					,Sessionmisd as p_Sessionmisd
-					,breaks as p_breaks 
-				FROM
-					#data.data.endurance#
-				WHERE
-					participantGUID = :pid
-				AND
-					stdywk <= :stdywk
-				ORDER BY
-					stdywk DESC, dayofwk DESC ) as pweek
-			ON pweek.p_participantGUID = cweek.participantGUID
-			"
-		 ,datasource = "#data.source#"
+
+		private.query = dbExec(
+			filename = "input-eePastAndCurrent.sql"
 		 ,bindArgs = {
 				pid = sess.current.participantId 
+			 ,endurance = data.data.endurance
 			 ,rthrd = sess.csp.recordthread
 			 ,stdywk = sess.csp.week 
 			 ,dayofwk = sess.current.day 
-			});
+		});
 
 		public = {
 		  cssClassName = "endurance-class"
 		 ,eTypeLabel   = private.eTypeLabels[ sess.csp.exerciseParameter ]
-		 ,formValues   = endobj.getLabelsFor( sess.csp.exerciseParameter )
+		 ,formValues   = endobj.getLabelsFor( sess.csp.exerciseParameter, private.time )
 		 ,selectedTime = private.time 
 		 ,timeList     = endobj.getEndurance()
 		};
@@ -139,19 +112,9 @@ if ( isDefined( "currentParticipant" ) ) {
 				n.label = private.query.results[ "#n.label#" ];
 			}
 		}
-
-/*
-		//Add heart rate
-		if ( ListContains( private.time, "0,10,20,30,45" ) )
-			ArrayAppend( public.formValues, {uom="", label="Heart Rate",min=10,max=300,step=1,formName="hr" } );
-
-		//Add rpe and affect
-		if ( ListContains( private.time, "0,20,45" ) ) {
-			ArrayAppend( public.formValues, {uom="", label="RPE (Borg)",min=10,max=300,step=1,formName="rpe" } );
-			ArrayAppend( public.formValues, {uom="", label="Affect",min=10,max=300,step=1,formName="affect" } );
-		}
-*/
 				
+//writedump( private );
+//abort;
 		// Initialize client side AJAX code 
 		AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 			location = link( "update.cfm" )
@@ -170,10 +133,13 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,{ name="dayofwk", value= "#sess.current.day#" }
 			 ,{ name="stdywk", value= "#sess.csp.week#" }
 			 ,{ name="sess_id", value= "#sess.key#" }
-			 ,{ name = "staffid", value = "#sess.current.staffId#" }
+			 ,{ name="insBy", value = "#sgid#" }
 			]
 		);
 	}
+
+
+
 	else if ( ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) {
 		private = {
 			cssClassName="resistance-class"
@@ -317,65 +283,28 @@ if ( isDefined( "currentParticipant" ) ) {
 		qr = mn.execute( sql = "SELECT DISTINCT manufacturerdescription, modeldescription FROM sourceQuery" );
 		qr = qr.getResult();
 
-		//Get the entries in the table.
-		private.query = ezdb.exec(
-			string = "
-			SELECT * FROM
-			( SELECT
-				 [rec_id] as p_rec_id
-				,[recordthread] as p_recordthread
-				,[participantGUID] as pguid 
-				,[#private.designation#Wt1] as p_#private.designation#Wt1
-				,[#private.designation#Wt2] as p_#private.designation#Wt2
-				,[#private.designation#Wt3] as p_#private.designation#Wt3
-				,[#private.designation#Rep1] as p_#private.designation#Rep1
-				,[#private.designation#Rep2] as p_#private.designation#Rep2
-				,[#private.designation#Rep3] as p_#private.designation#Rep3
-				FROM 
-					#data.data.resistance#
-				WHERE 
-					participantGUID = :pid 
-					AND stdywk = :pstdywk
-					AND dayofwk = :pdayofwk
-			) AS pweek
-			INNER JOIN
-			( SELECT 
-					* 
-				FROM 
-					#data.data.resistance#	
-				WHERE 
-					participantGUID = :pid 
-					AND stdywk = :stdywk
-					AND dayofwk = :dayofwk
-					AND recordthread = :rthrd
-			) AS cweek
-			ON pweek.pguid = cweek.participantGUID
-			"
+		private.query = dbExec(
+			filename = "input-rePastAndCurrent.sql"
 		 ,bindArgs = {
-				pid = sess.current.participantId
-			 ,rthrd = { value = sess.csp.recordthread, type = "varchar" }
+				pid = sess.current.participantId 
+			 ,resistance = data.data.resistance
+			 ,rthrd = sess.csp.recordthread
 			 ,stdywk = sess.csp.week 
-			 ,dayofwk = sess.current.day
-			 ,pstdywk = ((sess.current.day - 1) == 0) ? sess.csp.week - 1 : sess.csp.week
-			 ,pdayofwk = (( sess.current.day - 1 ) == 0) ? 4 : sess.current.day - 1
-			});
-
+			 ,dayofwk = sess.current.day 
+		});
 
 		//TODO: Create a superset db, and change these indices again
 		public = {
 		  selName = private.loadedExercise.pname
 		 ,reExList = private.exlist
-		 ,formValues = resobj.getSpecificLabels( private.selection )
+		 ,formValues = resobj.getLabels( )
 		 ,type = private.type
 		 ,machineFullName = qr.manufacturerdescription & " " & qr.modeldescription
 		 ,selection = private.selection
 		 ,setlinks = [
 				{ index=1, name="Set 1" }	
-			 ,{ index=1, name="Superset 1" }	
 			 ,{ index=2, name="Set 2" }	
-			 ,{ index=2, name="Superset 2" }	
 			 ,{ index=3, name="Set 3" }	
-			 ,{ index=3, name="Superset 3" }	
 			]
 		};
 
@@ -388,6 +317,11 @@ if ( isDefined( "currentParticipant" ) ) {
 			n.def = private.query.results[ "#private.designation##n.formname#" ]; 
 		}
 
+
+writedump( private );
+abort;
+
+
 		//Initialize AJAX
 		AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
 			location = link( "update.cfm" ) 
@@ -398,11 +332,10 @@ if ( isDefined( "currentParticipant" ) ) {
 			 ,{ name = "sess_id", value = "#sess.key#" }
 			 ,{ name = "recordThread", value= "#sess.csp.recordthread#" }
 			 ,{ name = "pid", value = "#sess.current.participantId#" }
-			 ,{ name = "set", value = "#public.selection#" }
 			 ,{ name = "dayofwk", value= "#sess.current.day#" }
 			 ,{ name = "stdywk", value= "#sess.csp.week#" }
 			 ,{ name = "extype", value = "#private.type#" }
-			 ,{ name = "staffid", value = "#sess.current.staffId#" }
+			 ,{ name = "insBy", value = "#sgid#" }
 			]
 		 ,querySelector = {
 				dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"

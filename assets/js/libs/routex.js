@@ -78,7 +78,12 @@ function Routex ( args ) {
 						try {
 							//Find the DOM elements This call will only fail if the syntax of the selector was wrong.
 							//TODO: Would it be helpful to let the dev know that this has occurred and on which index?
-							dom = [].slice.call( document.querySelectorAll( tt.domSelector ) );
+							if ( tt.domSelector != "document" )
+								dom = [].slice.call( document.querySelectorAll( tt.domSelector ) );
+							else if ( tt.domSelector == "document" ) {
+								dom = []; dom[0] = document;
+							}
+
 							( local.verbose ) ? console.log( "Binding to '" + tt.domSelector + "'.  Element references below:" ) : 0;
 							( local.verbose ) ? console.log( dom ) : 0;
 						}

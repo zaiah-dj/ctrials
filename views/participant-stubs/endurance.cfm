@@ -51,7 +51,7 @@
 						<div class="row">
 							<cfset def=iif( pfv.def eq "", 0, pfv.def )>
 							<div class="cc col-sm-8">
-								<input type="range" min="#min#" max="#max#" class="slider" value="#def#" defaultvalue="#def#" name="#pfv.formName#">
+								<input type="range" min="#pfv.min#" max="#pfv.max#" class="slider" value="#def#" defaultvalue="#def#" name="#pfv.formName#">
 							</div>
 							<div class="catch cc col-sm-1"><span>#def#</span><span> #pfv.uom#</span></div>
 							<div class="col-sm-1">
@@ -64,9 +64,9 @@
 			</tbody>
 		</table>
 	</cfloop>
+	<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 		</div>
 
-	<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 	<!--- Real ugly front end initialization code --->
 	#AjaxClientInitCode#
 </cfoutput>

@@ -10,34 +10,14 @@ to reorganize participants.
 
 <cfoutput>
 	<div class="container-header">
-		<div class="container-header-inner">
-			<!---
-			<div class="container-header-left">
-				<!--- Search for names --->
-				<label>Search Names</label> <input id="bigly-search" type="search">
-			</div>
-			<div class="container-header-right">
-				<label>Legend</label>
-				<div class="legend">
-					<div>
-					<div class="box endurance-class"></div> Endurance
-					</div>
-					<div>
-					<div class="box resistance-class"></div> Resistance
-					</div>
-				</div>
-			</div>
-				--->
+		<div class="legend">
 			<!--- Legend --->
-			<label>Legend</label>
-			<div class="legend" style="position:relative; left: 100px; top:-30px;">
-				<div>
-				<div class="box endurance-class"></div> Endurance
-				</div>
-				<div>
-				<div class="box resistance-class"></div> Resistance
-				</div>
-			</div>
+			<ul>
+				<li><b>Legend</b></li>
+				<li><div class="box endurance-class"></div> Endurance</li>
+				<li><div class="box resistance-class"></div> Resistance	</li>
+				<li><div class="box control-class"></div> Control</li> 
+			</ul>
 		</div>
 	</div>
 
@@ -47,7 +27,14 @@ to reorganize participants.
 				<div class="listing">
 					<ul class="part-drop-list">
 						<cfloop query = unselectedParticipants.results>
-							<li class="#iif( ListContains(ENDURANCE, randomGroupCode), DE("endurance"), DE("resistance"))#-class">
+							<cfif ListContains( ENDURANCE, randomGroupCode )>
+								<cfset listClassPrefix="endurance">
+							<cfelseif ListContains( RESISTANCE, randomGroupCode )>
+								<cfset listClassPrefix="resistance">
+							<cfelse>
+								<cfset listClassPrefix="control">
+							</cfif>
+							<li class="#listClassPrefix#-class">
 								<span>#firstname# #lastname# (#pid#)</span>
 								<span>#participantGUID#</span>
 							</li>	
@@ -61,7 +48,14 @@ to reorganize participants.
 					<ul> 
 				<cfif sess.status gte 2>
 					<cfloop query = selectedParticipants.results>
-						<li class="#iif( ListContains(ENDURANCE, randomGroupCode), DE("endurance"), DE("resistance"))#-class-dropped">
+						<cfif ListContains( ENDURANCE, randomGroupCode )>
+							<cfset listClassPrefix="endurance">
+						<cfelseif ListContains( RESISTANCE, randomGroupCode )>
+							<cfset listClassPrefix="resistance">
+						<cfelse>
+							<cfset listClassPrefix="control">
+						</cfif>
+						<li class="#listClassPrefix#-class-dropped">
 							<div class="left">
 							<span>#firstname# #lastname#</span>
 							<span>#participantGUID#</span>

@@ -10,14 +10,6 @@ component name="resistance" {
 			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "Rep2",index=2 }
 			,{label="Set 3",uom="lb"  ,min = 5,max = 100,step = 5,formName = "Wt3" ,index=3 }
 			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "Rep3",index=3 }
-
-			//Superset
-			,{label="Superset 1",uom="lb"  ,min = 5,max = 100,step = 5,formName = "SuWt1" ,index=4 }
-			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "SuRep1",index=4 }
-			,{label="Superset 2",uom="lb"  ,min = 5,max = 100,step = 5,formName = "SuWt2" ,index=5 }
-			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "SuRep2",index=5 }
-			,{label="Superset 3",uom="lb"  ,min = 5,max = 100,step = 5,formName = "SuWt3" ,index=6 }
-			,{label=""     ,uom="reps",min = 0,max = 15 ,step = 1,formName = "SuRep3",index=6 }
 		];
 
 		/*
@@ -83,22 +75,25 @@ component name="resistance" {
 			"Integer,Integer,Integer,Integer,Varchar,Varchar,Varchar", [
 			
 		//Chest, shoulders, triceps, ads, calves
-		 { type=1, id=1, etype=4,ssGroup=2,pname='Abdominal Crunch', formName='abdominalcrunch', desc='' }
+		 { type=5, id=5, etype=4,ssGroup=1,pname='Chest Press', formName='chestpress', desc='' }
 		,{ type=4, id=4, etype=4,ssGroup=2,pname='Chest No. 2', formName='chest2', desc='' }
-		,{ type=5, id=5, etype=4,ssGroup=1,pname='Chest Press', formName='chestpress', desc='' }
+		,{ type=1, id=1, etype=4,ssGroup=2,pname='Abdominal Crunch', formName='abdominalcrunch', desc='' }
 		,{ type=10,id=10,etype=4,ssGroup=3,pname='Overhead Press', formName='overheadpress', desc='' }
 		,{ type=12,id=12,etype=4,ssGroup=3,pname='Seated Row', formName='seatedrow', desc='' }
 		,{ type=13,id=13,etype=4,ssGroup=4,pname='Shoulder No. 2', formName='shoulder2', desc='' }
 		,{ type=14,id=14,etype=4,ssGroup=4,pname='Tricep Press-Down', formName='triceppress', desc='' }
 	
 		//Hips/thighs, back, biceps	
-		,{ type=2, id=2, etype=4,ssGroup=4,pname='Biceps Curl', formName='bicepcurl', desc='' }
+
+		//Calf Press should be 'Modified Leg Press'
+		//Dumbbell Squat should be 'Seated Row'
+		,{ type=9, id=9, etype=5,ssGroup=0,pname='Leg Press', formName='legpress', desc='' }
 		,{ type=3, id=3, etype=5,ssGroup=1,pname='Calf Press', formName='calfpress', desc='' }
+		,{ type=11,id=11,etype=5,ssGroup=2,pname='Pulldown', formName='pulldown', desc='' }
+		,{ type=8, id=8, etype=5,ssGroup=3,pname='Leg Curl', formName='legcurl', desc='' }
 		,{ type=6, id=6, etype=5,ssGroup=0,pname='Dumbbell Squat', formName='dumbbellsquat', desc='' }
 		,{ type=7, id=7, etype=5,ssGroup=4,pname='Knee Extension', formName='kneeextension', desc='' }
-		,{ type=8, id=8, etype=5,ssGroup=3,pname='Leg Curl', formName='legcurl', desc='' }
-		,{ type=9, id=9, etype=5,ssGroup=0,pname='Leg Press', formName='legpress', desc='' }
-		,{ type=11,id=11,etype=4,ssGroup=2,pname='Pulldown', formName='pulldown', desc='' }
+		,{ type=2, id=2, etype=5,ssGroup=4,pname='Biceps Curl', formName='bicepcurl', desc='' }
 			] 
 		);
 
@@ -118,8 +113,7 @@ component name="resistance" {
 	}
 
 	public function getSpecificLabels( Required Numeric id ) {
-		ld = [];
-		for ( n in this.labelDefaults ) ( n.index eq id ) ? ArrayAppend( ld, n ) : 0;
+		ld = []; for ( n in this.labelDefaults ) ( n.index eq id ) ? ArrayAppend( ld, n ) : 0;
 		return ld; //this.labelDefaults;
 	}
 

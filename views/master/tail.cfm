@@ -61,7 +61,7 @@
 	</cfquery>
 	<ul>
 	<cfloop query="ittybitty">
-		<li><a href="#link( 'default.cfm?staffid=' & ts_staffid )#">default.cfm?staffid=#ts_staffid#</a></li>
+		<li><a href="#link( 'default.cfm?staffid=' & ts_staffguid )#">default.cfm?staffid=#ts_staffguid#</a></li>
 	</cfloop>
 	</ul>
 
@@ -69,11 +69,15 @@
 	<th>Session</th>
 	<tr><td>Session Data:</td><td>#sess.key#</td></tr>
 	<tr><td>Session Status:</td><td>#sess.status#</td></tr>
-	<!---
-	<tr><cfdump var = #session#></tr>
-		--->
-	<!---
-		--->
+
+	<tr><td>session->currentDayOfWeek:</td><td>#session.currentDayOfWeek#</td></tr>
+	<tr><td>session->currentDayOfWeekName:</td><td>#session.currentDayOfWeekName#</td></tr>
+	<tr><td>session->currentDayOfMonth:</td><td>#session.currentDayOfMonth#</td></tr>
+	<tr><td>session->currentMonth:</td><td>#session.currentMonth#</td></tr>
+	<tr><td>session->currentYear:</td><td>#session.currentYear#</td></tr>
+	<tr><td>session->currentWeek:</td><td>#session.currentWeek#</td></tr>
+	<tr><td>session->userDate:</td><td>#session.userDate#</td></tr>
+	<!---|--->
 	<cfif isDefined("csQuery")><tr><cfdump var = #csQuery#></tr></cfif>
 	<tr><cfdump var = #url#></tr>
 	<tr><cfdump var = #form#></tr>

@@ -15,6 +15,7 @@ Application.cfc
 @end
 */ 
 component {
+//component extends="motrpac.web.secure.Application"
 
 	setting showdebugoutput="false";
 	this.sessionManagement = true;
@@ -77,18 +78,30 @@ component {
 			{
 				//Short note the tag with the information.
 				av = e.TagContext[ 1 ];
-
-				//Better exception handling is needed here....
+/*
+writedump( av );
+writedump( e );
+abort;
+*/
 				status_code    = 500;
+
+				try {
 				status_message = 
 					"<ul>" &
-					"<li>Page '" & arguments.targetPage & "' does not exist.<li>" &
-					"<li>At line " & av.line & "</li>" &
-					"<li><pre>" & av.codePrintHTML & "</pre></li>" &
+					"<li>Could not process page: '#arguments.targetPage#'.<li>" &
+					"<li>Error encountered at line #av.line#, column #av.column#</li>" &
+					"<li>#iif( StructKeyExists( av, 'codePrintHTML'), DE(av.codePrintHTML),DE(''))#</li>" &
+					"<li>##</li>" &
 					"</ul>";
-					av.codePrintHTML &
-					"Page '" & arguments.targetPage & "' does not exist."
 				;
+				}
+				catch (any errMsgMsg) {
+					// Just die and let us know something
+					writedump( errMsgMsg );
+					writedump( av );
+					writedump( e );
+					abort;
+				}
 
 				//error...
 				err = {
@@ -127,7 +140,7 @@ component {
 		if ( StructKeyExists( e, "TagContext" ) )
 		{
 			//Short note the tag with the information.
-			av = e.TagContext[ 0 ];
+			av = e.TagContext[ 1 ];
 			//writeoutput( e.TagContext.line );
 
 			//Better exception handling is needed here....

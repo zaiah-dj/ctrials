@@ -82,6 +82,13 @@ a.selected {
 	}
 }
 
+
+/*By extending Application.cfc, my app is now 
+ * wrapped with deaconmenubar let's hide it this way. */
+#deaconmenubar {
+	display: none;
+}
+
 .container-navAndBodyWrapper {
 /*	background-color: #ced6e4; */
 	padding: 0px;
@@ -191,6 +198,7 @@ a.selected {
 	width: 160px;
 
 	padding: 5px;
+	padding-top: 10px;
 
 	border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
@@ -201,7 +209,7 @@ a.selected {
 	border-right: 5px solid black;
 	border-bottom: 5px solid black;
 */
-	color: black;
+	color: white;
 /*	background-color: #728ab2;*/
 
 	transition: 
@@ -217,9 +225,9 @@ a.selected {
 .container-header li:hover {
 	font-size: 0.9em;
 	font-weight: bold;
-	background-color: #e6f2ff;
+/*	background-color: #e6f2ff; */
 /*	border-bottom: 5px solid #e6f2ff; */
-	color: black;
+	color: white;
 }
 
 .container-header li.selected {
@@ -289,11 +297,9 @@ div.inner-selection {
 }
 
 ul.inner-selection {
-	position: relative;
+	position: fixed;
 	margin-bottom: 10px;
 	width : 20%;
-	border-right: 1px solid black;
-	float: left;
 }
 
 .container-body .inner-selection li 
@@ -323,7 +329,7 @@ ul.inner-selection {
 
 .container-body .inner-selection li.selected {
 	background-color: #728ab2;
-	height: 200px;
+	height: 70px;
 	color: black; 
 }
 
@@ -599,32 +605,24 @@ input.collapsible:checked + div > table { display: block; }
 	margin: 5px;
 	margin-bottom: 10px;
 	width: 90%;
-	box-shadow: 10px 10px 5px gray;
+	box-shadow: 5px 5px 5px gray;
 	transition: color 0.1s, background-color 0.1s, height 0.1s;
-	font-weight: bold;
 }
 
 .bigly-left li:active {
 	height: 50px;
-	width: 100%;
 	font-size: 1.8em;
-	background-color: blue;
-/*	
  	animation-name: shake;
 	animation-duration: 1s;
-*/
 }
 
 .bigly li:hover {
-	color: white;
+	color: black;
+	font-size: 1.6em;
+	height: 55px;
 }
 
-.container-header-inner label { border: 1px solid black; padding: 5px;}
-.container-header-right .legend {
-	position: relative;
-	left: 50%;
-	top: -30px;
-}
+
 
 #bigly-search {
 	width: 80%;
@@ -640,13 +638,14 @@ input.collapsible:checked + div > table { display: block; }
 }	
 
 
-
 .box, .box:hover { 
 	height: 20px;
 	width: 20px;
 	display: inline-block;
 	text-align: right;
 	position: relative;
+	top: 5px;
+	left: -5px;
 }
 
 #bigly-search:focus {
@@ -654,17 +653,6 @@ input.collapsible:checked + div > table { display: block; }
 	width: 90%;
 	left: 5%;
 }
-
-/*
-.bigly:hover {
-	width: 56%;
-	position: absolute;
-	height: 100%;
-	left: -20px;
-	background-color: cyan;
-	z-index: 99;
-}
-*/
 
 .listing {
 	overflow: hidden;
@@ -695,41 +683,47 @@ ul.part-drop-list li span:nth-child(3) ,
 	display: none;	
 }
 
+/*#cddc39 - pukey green */
+/*#009688 - teal*/
+
+.endurance-class, 
+.endurance-class-dropped, 
+.endurance-class-container
+{ background-color: #17365D;
+  color: white; }
+
 .endurance-class:hover
 { background-color: #b3c6ef; }
 
+.endurance-class-container 
+{ text-align: center; }
+
+
+
+.resistance-class, .resistance-class-dropped, .resistance-class-container
+{ background-color: #76923c;
+  color: white; }
+
 .resistance-class:hover
-{ background-color: #ffc1ee; }
+{ background-color: #c8f767; }
+
+.resistance-class-container
+{ text-align: center; }
+
+.resistance-class-dropped:hover
+{ text-align: center;
+  background-color: #ffc1ee; }
+
+
+.control-class, .control-class-dropped, .control-class-container
+{ background-color: #aaaaaa;
+	color: white; }
 
 .control-class:hover
 { background-color: #fac0b0; }
 
-/*#cddc39 - pukey green */
-/*#009688 - teal*/
-
-.endurance-class
-{ background-color: #7da1ee; /*staid blue*/ }
-
-.resistance-class
-{ background-color: #ffc107; /*yellow*/ }
-
-.control-class
-{ background-color: #aaaaaa; /*something "controlly"*/ }
-
-.endurance-class-dropped,
-.endurance-class-container
-{ 
-	background-color: #b3d1ff; /*staid blue*/ }
-
-.resistance-class-dropped,
-.resistance-class-container
-{ text-align: center;
-  background-color: #ffd699; /*yellow*/ }
-
-.control-class-dropped,
 .control-class-container
-{ text-align: center;
-  background-color: #cccccc; /*something "controlly"*/ }
+{ text-align: center; }
 
 .control-class-container
 ,.resistance-class-container
@@ -738,9 +732,14 @@ ul.part-drop-list li span:nth-child(3) ,
 	text-align: left;
 }
 
-.resistance-class-dropped:hover
-{ text-align: center;
-  background-color: #ffc1ee; }
+
+.unselected-class, 
+.unselected-class-dropped, 
+.unselected-class-container
+{ background-color: #eeeeee;
+  color: white; 
+  text-align: center; 
+}
 
 a.tiny-link { 
 	text-transform: uppercase;
@@ -903,11 +902,16 @@ input[type=search] {
 	margin: 0;
 	display: inline-block;
 	padding: 0;
+	width: 100%;
 }
 
 .persistent-nav a {
 	position: relative;
-	margin-right: 10px;
+	margin-right: 20px;
+}
+
+.persistent-nav a:hover {
+	font-weight: bold;
 }
 
 span.huge { font-weight: bold; font-size: 1.5em; }
@@ -1267,12 +1271,18 @@ label.param-ta {
 .selection .links {
 	margin: 0 auto;
 	margin-bottom: 20px;
+	position: fixed;
+	z-index: 99;
+	width: 300px;
+	padding-bottom: 5px;
+	padding-right: 5px;
+	padding-left: 5px;
+	background-color: white;
 }
 
 .selection .links a {
 	font-weight: bold;
 }
-
 
 .selection .links a::before {
 	content: "| ";
@@ -1285,6 +1295,86 @@ label.param-ta {
 	text-decoration: none;
 }
 
+.links + .table {
+	position: relative;
+	top: 40px; 
+}
+
 .endurance-class-container ul.inner-selection li.selected {
-	height: 100px;
+	height: 70px;
+}
+
+.errorBg {
+	width: 100%;
+	height: 100%;	
+	top: 0px;
+	position: fixed;
+	background-color: rgba( 204, 230, 255, 0.6 );
+	transition: background-color 0.3s; 
+}
+
+.errorEngine {
+	height: 50%;
+	border: 1px solid black;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-gecko-border-radius: 10px;
+	background-color: white;
+	box-shadow: 10px 10px 10px #000000;  
+	color: black;
+	position: fixed;
+	overflow: hidden;
+	padding: 20px;
+	top: 25%;
+	left: 5%;
+	width: 90%;
+	margin: 0 auto;	
+	transition: height 0.3s, padding 0.3s, border 0.2s;
+}
+
+.endurance-result-set {
+	margin-top: 50px;
+}
+
+.endurance-result-set:tr(3) {
+	margin-bottom: 50px;
+}
+
+div.heightFull {
+	height: 100%;
+}
+
+div.paddMe {
+	margin-bottom: 200px;
+}
+
+.legend {
+	text-align: left;
+	height: 20px;
+	position: relative;
+	top: 20px;
+} 
+
+.legend ul {
+	position: relative;
+	top: 0px;
+	left: -35px;
+}
+
+.legend ul,
+.legend ul li, 
+.legend ul li:hover { 
+	display: inline-block;
+	color: black;
+	font-size: 13px;
+	font-weight: normal;
+	transition: none;
+	padding: 0px;
+	padding-top: 0px;
+	border: 0px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-gecko-border-radius: 0px;
+	top: 0px;
+	margin: 0px;
 }

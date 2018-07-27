@@ -1,9 +1,29 @@
 <cfscript>
 //Display a message upon redirection
-function errAndRedirect( msg ) {
+function errAndRedirect( Required String goto, Required String msg, parameters ) {
 	//clearly, this is not a good way to handle this...
-	writeoutput( msg );
-	abort;
+	if ( StructKeyExists( arguments, "parameters" ) && !IsStruct( StructFind( arguments, "parameters" ) ) ) {
+		throw "Parameters argument is not a struct!";
+	} 
+
+	//Create an array for the link
+	theLink = link( goto & ".cfm" ) & "?";
+	theLink &= "err=" & EncodeForURL( msg ) & "";
+
+	//Add the params
+	if ( StructKeyExists( arguments, "parameters" ) ) {
+		//Loop through?
+		for ( Par in arguments.parameters ) {
+			theLink &= "&#Par#=#arguments.parameters[ Par ]#";
+		}
+	}
+
+
+	//Redirect
+	location( 
+		addtoken="no" 
+	 ,url = theLink
+	);
 }
 
 if ( !StructIsEmpty( form ) ) {
@@ -22,10 +42,15 @@ if ( !StructIsEmpty( form ) ) {
 		 ,bp_diastolic = { req = false, ifNone = 0 }
 		 ,opt1 = { req = false , ifNone = "" }
 		 ,opt2 = { req = false , ifNone = "" }
+//		 ,ashkah = { req =true }
 		} );
 
 		if ( !stat.status ) {
-			errAndRedirect( "form values were expected and not there: #SerializeJSON(stat)#" );
+			errAndRedirect( 
+				goto="check-in"
+			 ,msg="Form values were expected and not there: #SerializeJSON(stat)#" 
+			 ,parameters = { id = url.id }
+			);
 		}
 
 		fv = stat.results;
@@ -52,8 +77,7 @@ if ( !StructIsEmpty( form ) ) {
 					 id        = fv.ps_pid
 					,systolic  = fv.bp_systolic
 					,diastolic = fv.bp_diastolic
-					//,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cf_sql_date" }
-					,recorddate= { value=Now(), type="cf_sql_date" }
+					,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime" }
 				});
 
 			if ( !bpi.status ) {
@@ -138,8 +162,10 @@ if ( !StructIsEmpty( form ) ) {
 		}
 	}
 	catch (any ff) {
-		errAndRedirect( "Error at process_checkin_form.cfm: #ff#" );
+		errAndRedirect( goto="check-in", msg="Error at process_checkin_form.cfm: #ff#" );
 	}
+
+	//At this point the check-in form was successfully completed, so mark it
 
 	//Get the form part id, and redirect to end or res based on that	
 	location( url="input.cfm?id=#form.ps_pid#", addtoken="no" ); 

@@ -16,9 +16,8 @@
   --->
 <html>
 <head>
-<cfif #data.localOverride.4xx#>
- <link rel=stylesheet href="/assets/5xx-view.css" type=text/css>
-<cfelse>
+<link rel=stylesheet href="/assets/5xx-view.css" type=text/css>
+<cfif 0>
  <style type="text/css">
  /* Borrowed and modified from http://meyerweb.com/eric/tools/css/reset/ */
  html, body, div, 

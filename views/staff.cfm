@@ -29,7 +29,7 @@
 			<div class="listing">
 			<cfloop query=public.allSel.results>
 			<div>
-				<u>#firstname# #lastname# ( Assigned to #ts_staffid# ) </u>
+				<u>#firstname# #lastname# ( Assigned to #ts_staffguid# ) </u>
 			</div>
 			</cfloop>
 			</div>
