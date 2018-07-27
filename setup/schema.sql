@@ -947,23 +947,164 @@ CREATE TABLE ac_mtr_session_participants_selected (
 	,sp_participantRecordThread VARCHAR(64)
 );
  
+IF OBJECT_ID( N'equipmentTracking', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTracking;
+END
+CREATE TABLE equipmentTracking (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[siteGUID] [varchar](50) NULL,
+	[equipmentGUID] [varchar](50) NULL,
+	[settingGUID] [varchar](50) NULL
+);
+
  
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+IF OBJECT_ID( N'equipmentTrackingEquipment', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingEquipment;
+END
+CREATE TABLE equipmentTrackingEquipment (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[siteGUID] [varchar](50) NULL,
+	[machineGUID] [varchar](50) NULL,
+	[equipmentGUID] [varchar](50) NULL,
+	[exerciseGUID] [varchar](50) NULL,
+	[active] [int] NULL,
+	[interventionGUID] [varchar](50) NULL,
+	[versionText] [varchar](max) NULL,
+	[dateVersionChanged] [datetime] NULL
+); 
+
+IF OBJECT_ID( N'equipmentTrackingExercises', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingExercises;
+END
+CREATE TABLE equipmentTrackingExercises (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[exerciseGUID] [varchar](50) NULL,
+	[exerciseDescription] [varchar](max) NULL,
+	[exerciseOrder] [int] NULL,
+	[formVariableName] [varchar](max) NULL
+); 
+
+
+IF OBJECT_ID( N'equipmentTrackingInterventions', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingInterventions;
+END
+CREATE TABLE equipmentTrackingInterventions (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[interventionGUID] [varchar](50) NULL,
+	[interventionDescription] [varchar](max) NULL
+); 
+
+
+IF OBJECT_ID( N'equipmentTrackingMachines', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingMachines;
+END
+CREATE TABLE equipmentTrackingMachines (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[machineGUID] [varchar](50) NULL,
+	[manufacturerGUID] [varchar](50) NULL,
+	[modelGUID] [varchar](50) NULL
+);
+
+IF OBJECT_ID( N'equipmentTrackingManufacturers', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingManufacturers;
+END
+CREATE TABLE equipmentTrackingManufacturers (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[manufacturerGUID] [varchar](50) NULL,
+	[manufacturerDescription] [varchar](max) NULL
+) ;
+
+
+IF OBJECT_ID( N'equipmentTrackingModels', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingModels;
+END
+CREATE TABLE equipmentTrackingModels (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[modelGUID] [varchar](50) NULL,
+	[modelDescription] [varchar](max) NULL
+);
+
+
+IF OBJECT_ID( N'equipmentTrackingSettings', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingSettings;
+END
+CREATE TABLE equipmentTrackingSettings (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[settingGUID] [varchar](50) NULL,
+	[settingDescription] [varchar](max) NULL
+); 
+
+
+IF OBJECT_ID( N'equipmentTrackingVersions', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE equipmentTrackingVersions;
+END
+CREATE TABLE equipmentTrackingVersions (
+	[recID] [int] IDENTITY(1,1) NOT NULL,
+	[d_inserted] [datetime] NULL,
+	[insertedBy] [varchar](50) NULL,
+	[deleted] [int] NULL,
+	[deletedBy] [varchar](50) NULL,
+	[d_deleted] [datetime] NULL,
+	[deleteReason] [varchar](max) NULL,
+	[versionGUID] [varchar](50) NULL,
+	[versionDescription] [varchar](max) NULL
+); 
+
 GO

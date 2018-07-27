@@ -26,18 +26,16 @@ I can do more with this concept...
 ,"base"   = "/motrpac/web/secure/dataentry/iv/"
 ,"Home"   = "tmp"
 ,"name"   = "iv"
-,"useEquip" = false
 ,"neverExpire"   = -1
 ,"title"  = "Motrpac Intervention Tracking"
-,"debug"  =  0
+,"debug"  =  1
 ,"ajaxEveryTime"  =  0
 ,"master-post" = false
 ,"data"   = {
 
-	"endurance"     = "ac_mtr_endurance_new"
- ,"resistance"    = "ac_mtr_resistance_new"
- ,"participants"  = "ac_mtr_participants_v2"
-
+	"endurance"      = "ac_mtr_endurance_new"
+ ,"resistance"     = "ac_mtr_resistance_new"
+ ,"participants"   = "ac_mtr_participants_v2"
  ,"notes"         = "ac_mtr_participant_notes"
  ,"checkin"       = "ac_mtr_checkinstatus_v2"
  ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
@@ -240,14 +238,6 @@ I can do more with this concept...
 		 ,"view"  =  "robocop"
 		}
 
-		,"sessdata" = { 
-			"model" =  [ 
-				"initialize_session_and_current_id"
-			 ,"show_valid_session" 
-			]
-		 ,"view"  =  "logout"
-		 ,"hint"  =  "An AJAX endpoint to tell me information about where the user is."
-			}
 		,"eqlog"= { 
 			"model" =  [ "initialize_session_and_current_id", "eqlog" ], "view" = "eqlog"
 		}

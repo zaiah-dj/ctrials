@@ -52,7 +52,8 @@ if ( !StructIsEmpty( form ) ) {
 					 id        = fv.ps_pid
 					,systolic  = fv.bp_systolic
 					,diastolic = fv.bp_diastolic
-					,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime" }
+					//,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cf_sql_date" }
+					,recorddate= { value=Now(), type="cf_sql_date" }
 				});
 
 			if ( !bpi.status ) {

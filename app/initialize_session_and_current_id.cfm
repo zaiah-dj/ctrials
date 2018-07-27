@@ -27,42 +27,37 @@ R = 2;
 C = 3;
 
 
-try {
 //Current date
-
-//Make a date object first and just use that...
-
 if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
-	try
-		{ usedDate = DateTimeFormat( url.date, "YYYY-MM-DD HH:nn:ss" ); }
+	try {
+		userDateObject = LSParseDateTime( url.date );
+	}
 	catch (any e) {
-		usedDate = Now(); //DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+		userDateObject = Now();
 	}
 }
 else {
-	usedDate = Now(); //DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+	//usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
+	userDateObject = Now(); 
 }
 
 
-currentDayOfWeek = DayOfWeek( usedDate );
-currentDayOfWeekName = DateTimeFormat( usedDate, "EEE" );
-currentDayOfMonth = DateTimeFormat( usedDate, "d" );
-currentMonth = DateTimeFormat( usedDate, "m" );
-currentYear = DateTimeFormat( usedDate, "YYYY" );
-currentWeek = DateTimeFormat( usedDate, "w" );
-}
-catch (any ee) {
-	writedump( ee );
-	abort;
-}
+//Calculate all of these date variables
+currentDayOfWeek = DayOfWeek( userDateObject );
+currentDayOfWeekName = DateTimeFormat( userDateObject, "EEE" );
+currentDayOfMonth = DateTimeFormat( userDateObject, "d" );
+currentMonth = DateTimeFormat( userDateObject, "m" );
+currentYear = DateTimeFormat( userDateObject, "YYYY" );
+currentWeek = DateTimeFormat( userDateObject, "w" );
+userDate = DateTimeFormat( userDateObject, "YYYY-MM-DD HH:nn:ss" );
 /*
-writedump( "currentDayOfWeek: " & currentDayOfWeek );
-writedump( "currentDayOfMonth: " & currentDayOfMonth );
-writedump( "currentMonth: " & currentMonth );
-writedump( "currentYear: " & currentYear );
-writedump( "currentDayName: " & currentDayName );
-writedump( "currentWeek: " & currentWeek );
-writedump( usedDate );
+writeoutput( "currentDayOfWeek: " & currentDayOfWeek & "<br />" );
+writeoutput( "currentDayOfMonth: " & currentDayOfMonth & "<br />" );
+writeoutput( "currentMonth: " & currentMonth & "<br />" );
+writeoutput( "currentYear: " & currentYear & "<br />" );
+writeoutput( "currentDayOfWeekName: " & currentDayOfWeekName & "<br />" );
+writeoutput( "currentWeek: " & currentWeek & "<br />" );
+writedump( userDateObject );
 abort;
 */
 
@@ -118,7 +113,6 @@ else {
 }
 
 
-
 //Session detection and initialization (if need be)
 expireTime = 60 /*secs*/ * 60 /*minutes*/ * 2 /*hours*/;
 refreshTime = 60 /*secs*/ * 15 /*minutes*/; 
@@ -142,6 +136,7 @@ if ( data.debug eq 1 ) {
 	expireTime = (StructKeyExists( url, "expireTime" )) ? url.expireTime : expireTime;
 }
 
+
 //Get the last session key in the browser or make a new one.
 if ( StructKeyExists( session, "ivId" ) ) 
 	sess.key = session.ivId;
@@ -150,8 +145,11 @@ else {
 	sess.key = session.ivId; 
 }
 
+
+//....
 sess.status = 2;
 //writedump( session );abort;
+
 
 //Look for a matching key of some sort.
 csQuery = ezdb.exec(
@@ -160,16 +158,26 @@ csQuery = ezdb.exec(
 		SELECT 
 			sm_sessdayid as sid 
 		 ,sm_datetimestarted as sdate 
+,sm_id
+,sm_siteid
+,sm_dayofweek
+,sm_dayofmonth
+,sm_month
+,sm_year
 		FROM 
 			#data.data.sessiondappl# 
-		WHERE 
-			sm_dayofweek = :dayofwk
-		AND
-			sm_siteid    = :siteid	
+		WHERE sm_dayofweek = :dow
+		AND sm_dayofmonth  = :dom
+		AND sm_month = :mon
+		AND sm_year = :year
+		AND sm_siteid = :siteid	
 	"
  ,bindArgs = { 
-		siteid  = siteId
-	 ,dayofwk = currentDayOfWeek
+		siteid = siteId
+	 ,dow    = currentDayOfWeek
+	 ,dom    = currentDayOfMonth
+	 ,mon    = currentMonth
+	 ,year   = currentYear
 	}
 );
 
@@ -182,12 +190,13 @@ if ( csDate eq "" || csSid eq "" ) {
 	csQuery = ezdb.exec(
 	  string = "
 			INSERT INTO #data.data.sessiondappl# 
-				( sm_siteid, sm_dayofweek, sm_dayofmonth, sm_month, sm_year )
+				( sm_siteid, sm_datetimestarted, sm_dayofweek, sm_dayofmonth, sm_month, sm_year )
 			VALUES
-				( :site_id , :dayofwk    , :dayofmonth  , :month  , :year   )
+				( :site_id , :dtstarted, :dayofwk, :dayofmonth, :month, :year )
 		"  
 	 ,bindArgs = { 
 		  site_id = siteId 
+		 ,dtstarted = { value = userDate, type = "cfsqldate" }
 		 ,dayofwk = currentDayOfWeek
 		 ,dayofmonth = currentDayOfMonth
 		 ,month = currentMonth
@@ -551,9 +560,9 @@ else {
 
 //Build a session
 cs.id = session.ivId ;
-cs.date = usedDate;
+cs.date = userDate;
 cs.day = currentDayOfWeek;
-cs.dayName = currentDayOfWeekName; //DateTimeFormat( Now(), "EEE" );
+cs.dayName = currentDayOfWeekName;
 cs.needsRebuild = 0;
 cs.selected = 0;
 cs.siteid = siteId ;
@@ -568,6 +577,7 @@ cs.staff = {
 	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
 };
 
+
 //Add a location queue
 footprint = {
 	location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#"
@@ -575,17 +585,17 @@ footprint = {
  ,partiicpantGUID = cs.participantId
 };
 
-if ( !StructKeyExists( cs, "footprints" ) ) { 
+
+//Track the last location
+if ( !StructKeyExists( cs, "footprints" ) )
 	cs.footprints = [ footprint, {},{},{},{} ]; 
-}
 else {
-	if ( !FindNoCase( "sessdata.cfm", cgi.script_name ) ) {
-		cs.footprints[ 5 ] = cs.footprints[ 4 ];
-		cs.footprints[ 4 ] = cs.footprints[ 3 ];
-		cs.footprints[ 3 ] = cs.footprints[ 2 ];
-		cs.footprints[ 2 ] = cs.footprints[ 1 ];
-		cs.footprints[ 1 ] = footprint;
-	}
+	//if ( !FindNoCase( "sessdata.cfm", cgi.script_name ) ) { ; }
+	cs.footprints[ 5 ] = cs.footprints[ 4 ];
+	cs.footprints[ 4 ] = cs.footprints[ 3 ];
+	cs.footprints[ 3 ] = cs.footprints[ 2 ];
+	cs.footprints[ 2 ] = cs.footprints[ 1 ];
+	cs.footprints[ 1 ] = footprint;
 }
 
 //...
