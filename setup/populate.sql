@@ -1,5 +1,7 @@
 /*populate.sql*/
 /*Insert fake participants*/
+USE localmotrpac;
+
 DECLARE @BUILD_EQUIPMENT_LOG integer;
 SET @BUILD_EQUIPMENT_LOG = 1;
 

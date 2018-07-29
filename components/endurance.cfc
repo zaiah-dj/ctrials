@@ -18,6 +18,7 @@ component name="endurance" {
 		,{ label="m35_ex", index=35, text="<35m" }
 		,{ label="m40_ex", index=40, text="<40m" }
 		,{ label="m45_ex", index=45, text="<45m" }
+		,{ label="m5_rec", index=50, text="Recovery" }
 	//,{ index=50, text="<50m" }
 		] );
 
@@ -57,7 +58,7 @@ component name="endurance" {
 		return qr.getResult();	
 	}
 
-	public Query function getEndurance( ) {
+	public Query function getModifiers( ) {
 		qs = new query();	
 		qs.setName( "juice" );
 		qs.setDBType( "query" );

@@ -1,7 +1,7 @@
 <!--- endurance.cfm --->
 <cfoutput>
 	<!--- Set a time --->
-	<input type="hidden" value="#public.selectedTime#" name="timeblock">
+	<input type="hidden" value="#private.magic#" name="timeblock">
 
 	<cfif data.debug eq 1>
 		<cfset DebugClientCode = ajax.ClientDebug()>
@@ -32,38 +32,40 @@
 				</tr>
 			</thead>
 		</table>
-	<cfloop array=#public.formValues# index="pfv"> 
-		<table class="table table-striped endurance">
-			<tbody>
-				<tr class="heading">
-					<td class="chopt">
-						Last Visit's Results
-					</td>
-					<td> 
-						<center><b>#pfv.label#</b></center>
-					</td>
-				</tr>
-				<tr>
-					<td class="title">
-						<cfif pfv.prv eq "">*<cfelse>#pfv.prv# #pfv.uom#</cfif>
-					</td>
-					<td>
-						<div class="row">
-							<cfset def=iif( pfv.def eq "", 0, pfv.def )>
-							<div class="cc col-sm-8">
-								<input type="range" min="#pfv.min#" max="#pfv.max#" class="slider" value="#def#" defaultvalue="#def#" name="#pfv.formName#">
-							</div>
-							<div class="catch cc col-sm-1"><span>#def#</span><span> #pfv.uom#</span></div>
-							<div class="col-sm-1">
-								<button class="incrementor">+</button>
-								<button class="incrementor">-</button>
-							</div>
+<cfloop array=#private.formValues# index="v"> 
+	<!--- Reference the SQL value up here --->
+	<cfset svMostRecent = private.combinedResults[ "p_#private.dbPrefix##v.formName#" ]>
+	<cfset svCurrent = private.combinedResults[ "c_#private.dbPrefix##v.formName#" ]>
+
+	<!--- Now start templating --->
+	<table class="table table-striped endurance">
+		<tbody>
+			<tr class="heading">
+				<td class="chopt">Last Visit Results</td>
+				<td><center><b>#v.label#</b></center></td>
+			</tr>
+			<tr>
+				<td class="title">
+					<!--- An asterisk should show if nothing is there --->
+					#iif(svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & v.uom))#
+				</td>
+				<td>
+					<div class="row">
+						<cfset def=iif( svCurrent eq "", 0, svCurrent )>
+						<div class="cc col-sm-8">
+							<input type="range" min="#v.min#" max="#v.max#" class="slider" value="#def#" defaultvalue="#def#" name="#v.formName#">
 						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</cfloop>
+						<div class="catch cc col-sm-1"><span>#def#</span><span> #v.uom#</span></div>
+						<div class="col-sm-1">
+							<button class="incrementor">+</button>
+							<button class="incrementor">-</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</cfloop>
 	<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 		</div>
 

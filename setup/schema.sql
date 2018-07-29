@@ -6,12 +6,17 @@ tables.
 
 Still only works with SQL server.
  ---------------------------- */
-DECLARE @BUILD_EQUIPMENT_LOG integer;
-SET @BUILD_EQUIPMENT_LOG = 1;
-
 /* -------------------------------
  PRODUCTION SCHEMA
  ------------------------------- */
+CREATE DATABASE localmotrpac;
+GO
+
+USE localmotrpac;
+GO
+
+DECLARE @BUILD_EQUIPMENT_LOG integer;
+SET @BUILD_EQUIPMENT_LOG = 1;
 
 /*
 ----------------------------------

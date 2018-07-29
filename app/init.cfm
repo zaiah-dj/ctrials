@@ -1,12 +1,11 @@
 <cfscript>
+//writedump( session );abort;
 //Include all CFCs first hereq
 ajax  = CreateObject( "component", "components.writeback" );
 ezdb  = CreateObject( "component", "components.quella" );
 rl    = CreateObject( "component", "components.requestLogger" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 val   = CreateObject( "component", "components.validate" );
-endobj= CreateObject( "component", "components.endurance" ).init();
-resobj= CreateObject( "component", "components.resistance").init();
 
 
 //Set a datasource for all things
@@ -55,10 +54,25 @@ currentYear = DateTimeFormat( userDateObject, "YYYY" );
 currentWeek = DateTimeFormat( userDateObject, "w" );
 userDate = DateTimeFormat( userDateObject, "YYYY-MM-DD HH:nn:ss" );
 
-//Also check for session.cfid
-if ( !StructKeyExists( session, "cfid" ) ) {
-	location( addtoken = "no", url = data.redirectForLogin );
+//Check for session.userguid
+if ( !StructKeyExists( session, "userguid" ) ) {
+	//Redirect if I am not on an approved server
+	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) ) {
+		writeoutput( "this is redirecting? " );
+		writeoutput( data.localdev );
+		writeoutput( cgi.http_host );
+		abort;
+		location( addtoken = "no", url = data.redirectForLogin );
+	}
+	else {
+		//Generate at least a cfid, so that this works
+		//session.cfid = ezdb.exec( "SELECT newid() as id" ).results.id;
+
+		//Also requires a userGUID
+		session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
+	}	
 }
+
 
 //If isDateSet is not set, that means that there is no date in the session 
 if ( !StructKeyExists( session, "isAppDateSet" ) ) {
@@ -95,7 +109,7 @@ if ( data.debug eq 1 ) {
 	else if ( data.loaded eq "default" && StructKeyExists( url, "staffid" ) )
 		session.userguid = sgid = url.staffid;
 	//This condition could break API updates... so if there are any exceptions look here first...
-	else if ( !StructKeyExists( session, "userguid" ) || !isDefined( "session.userguid" ) )
+	else if ( !StructKeyExists( session, "userguid" ) )
 		location( addtoken = "no", url = data.redirectForLogin );
 	else {
 		sgid = session.userguid;

@@ -9,7 +9,7 @@ Application routes, datasources and more
 are all updated here.
 * ------------------------------------------- */
 useDebug = 1;
-useProd = 1;
+useProd = 0;
 
 /*This variable is used by ColdMVC to load all configuration data*/
 manifest={
@@ -19,6 +19,12 @@ manifest={
 /*----------------- USER-MODIFIABLE STUFF ------------------*/
 /*Turn on debugging, yes or no?*/
 ,"debug"  = useDebug 
+
+/*Add some locations for local development*/
+,"localdev"  = [ "localhost:8888" ]
+
+/*Add some places where this app should be running*/
+/* ... */
 
 /*Select a datasource*/
 ,"source" = "motrpac"

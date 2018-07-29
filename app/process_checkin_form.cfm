@@ -27,6 +27,8 @@ function errAndRedirect( Required String goto, Required String msg, parameters )
 }
 
 if ( !StructIsEmpty( form ) ) {
+
+
 	try {
 		//A lot of this can be cleaned up using the validate() function
 		stat = val.validate( form, {
@@ -77,8 +79,9 @@ if ( !StructIsEmpty( form ) ) {
 					 id        = fv.ps_pid
 					,systolic  = fv.bp_systolic
 					,diastolic = fv.bp_diastolic
-					,recorddate= { value=DateTimeFormat( Now(), "YYYY-MM-DD" ),type="cfsqldatetime" }
+					,recorddate= { value=Now(), type="cf_sql_date" }
 				});
+
 
 			if ( !bpi.status ) {
 				errAndRedirect( "Error at process_checkin_form.cfm: #SerializeJSON(bpi)#" );	
@@ -162,7 +165,8 @@ if ( !StructIsEmpty( form ) ) {
 		}
 	}
 	catch (any ff) {
-		errAndRedirect( goto="check-in", msg="Error at process_checkin_form.cfm: #ff#" );
+		writedump( ff );
+		errAndRedirect( goto="check-in", msg="Error at process_checkin_form.cfm: " );
 	}
 
 	//At this point the check-in form was successfully completed, so mark it

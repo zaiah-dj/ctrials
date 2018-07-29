@@ -14,8 +14,8 @@
 	<ul class="inner-selection">
 	<cfset cnt=0>
 		<a href="#link( 'input.cfm?id=#url.id#' )#"><li class="smaller">5 Minute Warmup</li></a>
-	<cfloop query = "#public.reExList#">
-		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(public.type eq id, DE('selected'),DE(''))#">#pname#</li></a>
+	<cfloop query = "#private.modNames#">
+		<a href="#link( 'input.cfm?id=#url.id#&extype=#id#' )#"><li class="#iif(private.magic eq id, DE('selected'),DE(''))#">#pname#</li></a>
 	</cfloop>
 		<a href="#link( 'recovery.cfm?id=#url.id#' )#"><li class="bg-red stop-sess">Stop Session</li></a>
 	</ul>
@@ -31,15 +31,15 @@
 			<tbody>
 			<tr>
 				<td class="title">Exercise</td>
-				<td>#public.selName#</td>
+				<td>#private.magicName#</td>
 			</tr>
 			<tr>
 				<td class="title">Machine</td>
-				<td>#public.machineFullName#</td>
+				<td>##</td>
 			</tr>
 			<tr>
 				<td class="title">Machine Settings</td>
-				<td>#public.machineFullName# <a href="">Settings</a></td>
+				<td>## <a href="">Settings</a></td>
 			</tr>
 			<tr>
 				<td class="title">Was exercise done?</td>
@@ -63,24 +63,28 @@
 		</table><br />
 
 		<table class="table table-striped endurance-result-set">
-	<cfloop array="#public.formValues#" index="vv">
-			<cfif #vv.label# neq "">
+	<cfloop array="#private.formValues#" index="v">
+		<cfset svMostRecent = private.combinedResults[ "p_#private.dbPrefix##v.formName#" ]>
+		<cfset svCurrent = private.combinedResults[ "c_#private.dbPrefix##v.formName#" ]>
+
+		<cfif #v.label# neq "">
 			<tr class="heading">
-				<td>Last Visit's Results</td>
-				<td id="set#vv.index#"><b>#vv.label# - #public.selName#</b></td>
+				<td>Last Visit Results</td>
+				<td id="set#v.index#"><b>#v.label# - $EXERCISENAME</b></td>
 			</tr>
-			</cfif>
+		</cfif>
 			<tr> 
 				<td> 
-					<cfif #vv.prv# eq "">*<cfelse>#vv.prv# #vv.uom#</cfif>
+					<!--- An asterisk should show if nothing is there --->
+					#iif(svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & v.uom))#
 				</td>
 				<td>
 					<div class="row">
+						<cfset def=iif( svCurrent eq "", 0, svCurrent )>
 						<div class="col-sm-8">
-							<cfset def=iif( vv.def eq "", 0, vv.def )>
-							<input type="range" min="#vv.min#" max="#vv.max#" class="slider" value="#def#" defaultvalue="0" name="#vv.formName#" step="#vv.step#">
+							<input type="range" min="#v.min#" max="#v.max#" class="slider" value="#def#" defaultvalue="0" name="#v.formName#" step="#v.step#">
 						</div>
-						<div class="catch cc col-sm-1"><span>#def#</span><span> #vv.uom#</span></div>
+						<div class="catch cc col-sm-1"><span>#def#</span><span> #v.uom#</span></div>
 						<div class="col-sm-1">
 							<button class="incrementor">+</button>
 							<button class="incrementor">-</button>
@@ -88,7 +92,7 @@
 					</div>
 				</td>
 			</tr>
-			<cfif #vv.label# eq "">
+			<cfif #v.label# eq "">
 			<tr></tr>	
 			</cfif>
 	</cfloop> 
