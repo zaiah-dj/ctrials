@@ -96,6 +96,9 @@ else {
 		}
 	); 
 
+	//The current result will tell me a lot
+	private.exdone = (isEnd) ? 0 : private.currentResult.results[ private.dbPrefix ];
+ 
 	//To make it easy to use this data within a template, combine these two queries
 	//the form values, prevResult and currentResult all should come together,
 	//super-wide columns, but this is far better than other stuff

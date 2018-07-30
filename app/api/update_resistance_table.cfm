@@ -14,6 +14,7 @@ try {
 	//Get the formname
 	obj=createObject("component","components.resistance").init();
 	desig = obj.getExerciseName( form.extype ).prefix;
+	req.sendAsJson( status = 0, message = "#errstr# - #SerializeJSON(form)#" );	
 
 	//...
 	stat = val.validate( form, {
@@ -40,11 +41,14 @@ try {
 	fv = stat.results;
 
 	//Check what was submitted from metadata
-	exIsDone = 0;	
-	if ( fv.is_exercise_done eq true && fv.is_superset eq true ) 
-		exIsDone = 2;
-	else if	( fv.is_exercise_done eq true )
-		exIsDone = 1;
+	fv.exIsDone = 0;	
+	if ( fv.is_exercise_done eq "on" && fv.is_superset eq "on" ) 
+		fv.exIsDone = 2;
+	else if	( fv.is_exercise_done eq "on" )
+		fv.exIsDone = 1;
+
+	req.sendAsJson( status = 0, message = "#errstr# - #SerializeJSON(fv)#" );	
+
 
 	//Insert or update if the row is not there...
 	upd = ezdb.exec( 
