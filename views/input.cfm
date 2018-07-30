@@ -83,7 +83,7 @@
 					<td class="title">Was exercise done?</td>
 					<td>
 						<label class="switch">
-							<input class="toggler-input" type="checkbox" name="exercise_done">
+							<input class="toggler-input" type="checkbox" name="is_exercise_done">
 							<span class="toggler round"></span>
 						</label>
 					</td>

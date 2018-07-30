@@ -169,7 +169,7 @@ else {
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
 		 ,event = "click"
 		 ,noPreventDefault = true
-		 ,send = ".slider"
+		 ,send = ".slider, .toggler-input"
 		}
 	);
 
