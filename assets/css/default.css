@@ -1109,6 +1109,7 @@ table.participant-entry tr.heading {
 .wash input[type=text] 
 	{ display: none; }
 
+/*
 table.endurance tr:nth-child(1), 
 table.resistance tr:nth-child(1) {
 	height: 30px;
@@ -1140,6 +1141,7 @@ table.endurance tr td.chopt {
 	padding-top: 5px;
 	background-color: #ccc;
 }
+*/
 
 .modal-activate {
 	width: 50%;
@@ -1377,4 +1379,48 @@ div.paddMe {
 	-gecko-border-radius: 0px;
 	top: 0px;
 	margin: 0px;
+}
+
+.selection h5 {
+	color: black;
+}
+
+div.table-border-meta {
+	padding-bottom: 0px;
+	padding-left: 20px;
+	padding-right: 20px;
+	margin-bottom: 40px;
+	border: 2px solid #cccccc;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+}
+
+table.table-results-header {
+	font-style: italic;
+	padding: 0px !important;
+	margin: 0px !important;
+	font-size: 1.1em;
+	background-color: #aaaaaa;
+	color: white;
+	line-height: 20px;
+	height: 20px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	overflow: hidden;
+}
+
+table.table-meta {
+	position: relative;
+	top: 20px;
+/*
+	border-radius: 15px !important;
+	-moz-border-radius: 15px !important;		
+	-gecko-border-radius: 15px !important;
+*/
+}
+
+table.table-results {
+	position: relative;
+	top: 0px;
 }
