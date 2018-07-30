@@ -62,7 +62,7 @@
 			</tbody>
 		</table><br />
 
-		<table class="table table-striped endurance-result-set">
+		<table class="table table-striped"> 
 	<cfloop array="#private.formValues#" index="v">
 		<cfset svMostRecent = private.combinedResults[ "p_#private.dbPrefix##v.formName#" ]>
 		<cfset svCurrent = private.combinedResults[ "c_#private.dbPrefix##v.formName#" ]>

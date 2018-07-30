@@ -6,19 +6,19 @@ component name="endurance" {
 	endurance function init () {
 		//Label time defaults for endurance
 		this.srcQuery = queryNew( 
-		 "label,index,text", 
+		 "prefix,urlparam,pname", 
 		 "Varchar,Integer,Varchar", [
-		 { label="wrmup_", index=0,  text="Warm-Up" }
-		,{ label="m5_ex" , index=5,  text="<5m"  }
-		,{ label="m10_ex", index=10, text="<10m" }
-		,{ label="m15_ex", index=15, text="<15m" }
-		,{ label="m20_ex", index=20, text="<20m" }
-		,{ label="m25_ex", index=25, text="<25m" }
-		,{ label="m30_ex", index=30, text="<30m" }
-		,{ label="m35_ex", index=35, text="<35m" }
-		,{ label="m40_ex", index=40, text="<40m" }
-		,{ label="m45_ex", index=45, text="<45m" }
-		,{ label="m5_rec", index=50, text="Recovery" }
+		 { prefix="wrmup_", urlparam=0,  pname="Warm-Up" }
+		,{ prefix="m5_ex" , urlparam=5,  pname="<5m"  }
+		,{ prefix="m10_ex", urlparam=10, pname="<10m" }
+		,{ prefix="m15_ex", urlparam=15, pname="<15m" }
+		,{ prefix="m20_ex", urlparam=20, pname="<20m" }
+		,{ prefix="m25_ex", urlparam=25, pname="<25m" }
+		,{ prefix="m30_ex", urlparam=30, pname="<30m" }
+		,{ prefix="m35_ex", urlparam=35, pname="<35m" }
+		,{ prefix="m40_ex", urlparam=40, pname="<40m" }
+		,{ prefix="m45_ex", urlparam=45, pname="<45m" }
+	//,{ prefix="m5_rec", urlparam=50, pname="Stop Session" }
 	//,{ index=50, text="<50m" }
 		] );
 
@@ -54,7 +54,7 @@ component name="endurance" {
 		qs.setDBType( "query" );
 		qs.setAttributes( sourceQuery = this.srcQuery ); 
 		qs.addParam( name = "id", value = id, cfsqltype = "cf_sql_numeric"  );
-		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE index = :id" );
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE urlparam = :id" );
 		return qr.getResult();	
 	}
 

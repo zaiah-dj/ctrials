@@ -27,6 +27,7 @@ else {
 	obj = CreateObject( "component", "components.#partClass#" ).init();	
 	private.dbName = ( isEnd ) ? "#data.data.endurance#" : "#data.data.resistance#";
 	private.mpName = (isEnd) ? "time" : "extype";
+	private.hiddenVarName= (isEnd) ? "timeblock" : "extype";
 	private.rp = (isRes) ? ((sess.csp.exerciseParameter eq 4) ? 1 : 3 ) : 0;
 	private.magic = (StructKeyExists(url, private.mpName )) ? url[ private.mpName ] : private.rp;
 	private.magicName = "SELECTED EXERCISE";
@@ -34,7 +35,7 @@ else {
 	private.exSetTypeLabel = private.labels[ sess.csp.exerciseParameter ];
 	private.modNames = (isEnd) ? obj.getModifiers() : obj.getSpecificModifiers( private.exSetType );
 	//private.dbPrefix = (private.magic eq 50) ? "m5_rec" : obj.getTimeInfo(private.magic).label;
-	private.dbPrefix = (isEnd) ? obj.getTimeInfo( private.magic ).label : obj.getExerciseName( private.magic ).formName;
+	private.dbPrefix = (isEnd) ? obj.getTimeInfo( private.magic ).prefix : obj.getExerciseName( private.magic ).prefix ;
 	private.cssPrefix = partClass;
 	private.formValues = (isEnd) ? obj.getLabelsFor( sess.csp.exerciseParameter, private.magic ) : obj.getLabels();
 

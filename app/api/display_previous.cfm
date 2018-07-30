@@ -53,7 +53,10 @@ if ( isDefined( "currentParticipant" ) && ListContains(ENDURANCE, currentPartici
 else if ( isDefined( "currentParticipant" ) && ListContains(RESISTANCE, currentParticipant.results.randomGroupCode) ) 
 {
 	obj=createObject("component","components.resistance").init();
-	reExList=obj.getExercises();
+
+	//This is wrong, fix it...
+	reExList=obj.getAllModifiers();
+
 	rr = ezdb.exec(
 		string = "SELECT * FROM 
 			#data.data.resistance# 
