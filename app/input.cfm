@@ -88,7 +88,7 @@ else {
 			iic.setDBType( "query" );	
 			iic.setAttributes( srcQuery = private.lastDays.results ); 
 			iic.addParam( name = "dow", value = session.currentDayOfWeek, cfsqltype = "cf_sql_numeric"  );
-			iicd = iic.execute(	sql="SELECT TOP (1) FROM srcQuery WHERE dayofwk < :dow" );
+			iicd = iic.execute(	sql="SELECT * FROM srcQuery WHERE dayofwk < :dow" );
 			iicd = iicd.getResult();
 			//writedump( iicd ); abort;
 			private.previous = { day=iicd.dayofwk, week=iicd.stdywk };
