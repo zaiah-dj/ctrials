@@ -505,10 +505,6 @@ function redirectEngine() {
 
 
 
-//Submittal of data on input pages.
-document.addEventListener('DOMContentLoaded',function(ev) {
-	
-
 /*	
 function ajax_input_submit ( ) {	
 	//I can just apply these later...

@@ -45,13 +45,21 @@ else {
 
 	//Select the last two days for this user.
 	private.lastdays = dbExec(
-		string = "SELECT dayofwk, stdywk FROM #private.dbName# 
-			WHERE participantGUID = :pid AND stdywk <= :stdywk"
+		string = "
+			SELECT TOP(2) dayofwk, stdywk FROM #private.dbName# 
+			WHERE 
+				participantGUID = :pid 
+			AND 
+				stdywk <= :stdywk
+			ORDER BY stdywk, dayofwk DESC"
 	 ,bindArgs = { 
 			pid = sess.current.participantId 
-		 ,stdywk = session.currentWeek
+		 ,stdywk = sess.csp.week
 		}
 	);
+
+	//The first entry ought to be my entry
+	//writedump( private.lastdays.results ); 
 
 	//Calculate the previous day according to what is already here
 	pl = private.lastDays;
@@ -69,8 +77,22 @@ else {
 		}
 	}
 	else {
-		//2 or more are there, make sure you choose correctly
-		private.previous= { day=0, week=0 };
+		//If currentweek and pl.results.stdywk are different, then the first result is what I want 
+		//Likewise if currentWeek eq previous week, but day is different, then go with this one	
+		if ((sess.csp.week gt pl.results.stdywk) || (( sess.csp.week eq pl.results.stdywk ) && (session.currentDayOfWeek gt pl.results.dayofwk)))
+			private.previous = { day=pl.results.dayofwk, week=pl.results.stdywk };
+	
+		//If currentWeek and pl.results.stdywk are the same, then I want the one the one before it (because hte day is different)
+		else if (( sess.csp.week eq pl.results.stdywk ) && (session.currentDayOfWeek eq pl.results.dayofwk)) {
+			iic = new query();
+			iic.setDBType( "query" );	
+			iic.setAttributes( srcQuery = private.lastDays.results ); 
+			iic.addParam( name = "dow", value = session.currentDayOfWeek, cfsqltype = "cf_sql_numeric"  );
+			iicd = iic.execute(	sql="SELECT TOP (1) FROM srcQuery WHERE dayofwk < :dow" );
+			iicd = iicd.getResult();
+			//writedump( iicd ); abort;
+			private.previous = { day=iicd.dayofwk, week=iicd.stdywk };
+		}
 	}
 	
 	//Define the query string ahead of time, since I'm just recycling it
@@ -150,7 +172,12 @@ else {
 
 	//More Debugging Items 
 	//writedump( session );	
-	//writedump( private );	
+	/*
+	writeoutput( "<h2>LAST DAYS</h2>" ); writedump( private.lastDays );		
+	writeoutput( "<h2>PREVIOUS</h2>" ); writedump( private.previousResult );		
+	writeoutput( "<h2>CURRENT</h2>" ); writedump( private.currentResult );		
+	abort;
+	*/
 
 	//Finally, initialize some backend AJAX magic to handle sending updates to server.
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 

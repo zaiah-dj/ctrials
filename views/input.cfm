@@ -91,13 +91,11 @@
 				<tr>
 					<td class="title">Is this a Superset?</td>
 					<td>
-						<input class="toggler-input" type="checkbox" name="is_superset">
-						<!---
 						<label class="switch">
-							<input class="toggler-input" type="checkbox" name="is_superset"> <!--- #iif(private.exdone eq 2,DE('checked'),DE(''))#> --->
+							<input class="toggler-input" type="checkbox" name="is_superset"> 
+							<!--- #iif(private.exdone eq 2,DE('checked'),DE(''))#> --->
 							<span class="toggler round"></span>
 						</label>
-						--->
 					</td>
 				</tr>
 			</cfif>

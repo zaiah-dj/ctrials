@@ -225,12 +225,13 @@ csQuery = ezdb.exec(
 );
 
 
-csDate = csQuery.results.sdate;
-csSid = csQuery.results.sid;
-
 //if there is no record of a current session, time to write it in
-if ( csDate eq "" || csSid eq "" ) { 
-	csQuery = ezdb.exec(
+if ( csQuery.prefix.recordCount gt 0 ) {
+	csDate = csQuery.results.sdate;
+	csSid = csQuery.results.sid;
+}
+else {
+	csQuery = dbExec(
 	  string = "
 			INSERT INTO #data.data.sessiondappl# 
 				( sm_siteid, sm_datetimestarted, sm_dayofweek, sm_dayofmonth, sm_month, sm_year )
@@ -239,7 +240,7 @@ if ( csDate eq "" || csSid eq "" ) {
 		"  
 	 ,bindArgs = { 
 		  site_id = session.siteid 
-		 ,dtstarted = { value = userDate, type = "cfsqldate" }
+		 ,dtstarted = { value = userDateObject, type = "cf_sql_date" }
 		 ,dayofwk = session.currentDayOfWeek
 		 ,dayofmonth = session.currentDayOfMonth
 		 ,month = session.currentMonth
@@ -247,8 +248,15 @@ if ( csDate eq "" || csSid eq "" ) {
 		}
 	);
 
+	//We really SHOULDN'T move forward if I can't identify who is supposed to be here...
+	if ( !csQuery.status ) {
+		throw "Fatal Exception at app/init.cfm. " & 
+			"Database failed to generate new day ID." &
+			"#csQuery.message#";
+	}
+
 	//re-run query and get the data I want
-	csQuery = ezdb.exec(
+	csQuery = dbExec(
 		datasource = "#data.source#"
 	 ,string = "
 			SELECT 
@@ -273,82 +281,6 @@ if ( csDate eq "" || csSid eq "" ) {
 
 	csDate = csQuery.results.sdate;
 	csSid = csQuery.results.sid;
-}
-else { 
-	unixTime = DateDiff( "s", CreateDate(1970,1,1), CreateODBCDateTime(Now()));
-	updateTime = DateDiff( "s", CreateDate(1970,1,1), csQuery.results.sdate );
-	timePassed = unixTime - updateTime;
-	/*
-	//DateDiff
-
-	//This is all here in case you forget how to do math.
-	writeoutput( 'Unix Time: ' & unixTime );
-	writeoutput( "<br />" );
-	writeoutput( 'Update Time: ' & updateTime );
-	writeoutput( "<br />" );
-	writeoutput( 'Time Passed: ' & timePassed );
-	writeoutput( "<br />" );
-	writeoutput( 'Time Passed in Seconds: ' & timePassed & " secs" );
-	writeoutput( "<br />" );
-	writeoutput( 'Time Passed (minutes): ' & ( timePassed / 60 ) & " minutes" );
-	writeoutput( "<br />" );
-	writeoutput( 'Time passed (hours): ' & (( timePassed / 60 ) / 60 ) & " hours" );
-
-	//after 2 hours (or whatever expireTime is), the session needs to completely expire
-	if ( superExpire neq -1 && timePassed >= expireTime ) {
-		//writeoutput( "#expireTime# seconds have passed.  Kill the session..." );abort;
-		if ( StructKeyExists( session, "ivId" ) ) {
-			//really doesn't matter if this fails.
-			ezdb.exec( 
-			  string="DELETE FROM #data.data.sessiondappl# WHERE p_transaction_id = :sid" 
-			 ,bindArgs={sid=session.ivId}
-			);
-			StructDelete( session, "ivId" );
-		}
-
-		//This staff member needs to run checkin again
-		location( url="#link( '' )#", addtoken="no" );
-	}
-	*/
-	if ( 0 ) {
-		;
-	}
-
-	//after 15 min, THIS page needs to trigger a desire for credentials. 
-	else if ( refreshTime neq -1 && timePassed >= refreshTime ) {
-		//writeoutput( "#refreshTime# seconds have passed.  Refresh the session..." );abort;
-		sess.needsRefresh = 1;
-		//
-		//location( url="#link( 'stale.cfm' )#", addtoken="no" );
-	}
-
-	//if neither of these has happened, then update the lastMod field in transaction_set
-	else {
-		/*
-		ds = ezdb.exec( 
-			string = "
-			UPDATE 
-				#data.data.sessiondappl#
-			SET 
-				p_lastUpdateTime = :dut
-			WHERE 
-				p_transaction_id = :sid",
-			bindArgs = {
-				sid = sess.key 
-			 ,dut = { 
-				 type  = "cf_sql_datetime"
-			 	,value = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" ) 
-				}
-			}
-		);
-
-		//If this fails, it's kind of a problem...
-		if ( !ds.status ) {
-			0;
-			throw "DEATH AT SESSION UPDATE - #ds.message#";
-		}
-		*/
-	}
 }
 
 

@@ -7,7 +7,8 @@
 	<!--- All the CSS files --->
 	<link rel="stylesheet" href="#link( 'assets/css/zero.css' )#">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!---<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--->
+	<link rel="stylesheet" href="#link( 'assets/css/bootstrap.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/c3.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/chart.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/default.css' )#">
@@ -17,15 +18,17 @@
 	<link rel="stylesheet" href="#link( 'assets/css/checkbox-radio.css' )#">
 
 	<!--- All the Javascript files --->
+	<!---
 	<script src="https://d3js.org/d3.v3.js" type="text/javascript"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/c3.min.js'  )#" type="text/javascript"></script>
+	<script src="#link( 'assets/js/libs/handlebars-v4.0.11.js'  )#" type="text/javascript"></script>
+	--->
 	<script src="#link( 'assets/js/libs/swipesensejs.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/sliders.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/modal.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/touch.js'  )#" type="text/javascript"></script>
-	<script src="#link( 'assets/js/libs/handlebars-v4.0.11.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/unhide.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/routex.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/proc/debug.js'  )#" type="text/javascript"></script>
