@@ -18,7 +18,7 @@ else {
 	public = {};
 
 	//Define static data here for easy editing
-	private.labels = [ "Cycle", "Treadmill", "Other", "Hips/Thighs", "Chest" ];
+	private.labels = [ "Cycle", "Treadmill", "Other", "Chest, Shoulders...", "Hips/Thighs" ];
 
 	//Figure out The text name will do a lot
 	partClass = ( isEnd ) ? "endurance" : "resistance";	
@@ -30,7 +30,7 @@ else {
 	private.hiddenVarName= (isEnd) ? "timeblock" : "extype";
 	private.rp = (isRes) ? ((sess.csp.exerciseParameter eq 4) ? 1 : 3 ) : 0;
 	private.magic = (StructKeyExists(url, private.mpName )) ? url[ private.mpName ] : private.rp;
-	private.magicName = "SELECTED EXERCISE";
+	private.magicName = (isEnd) ? "" : obj.getExerciseName( private.magic ).pname;
 	private.exSetType = sess.csp.exerciseParameter;
 	private.exSetTypeLabel = private.labels[ sess.csp.exerciseParameter ];
 	private.modNames = (isEnd) ? obj.getModifiers() : obj.getSpecificModifiers( private.exSetType );
@@ -157,12 +157,12 @@ else {
 	 ,additional = [ 
 			{ name = "this", value = private.cssPrefix }
 		 ,{ name = "sess_id", value = "#sess.key#" }
-		 ,{ name="exParam", value= "#sess.csp.exerciseParameter#" }
+		 ,{ name = "exparam", value= "#sess.csp.exerciseParameter#" }
 		 ,{ name = "recordThread", value= "#sess.csp.recordthread#" }
 		 ,{ name = "pid", value = "#sess.current.participantId#" }
 		 ,{ name = "dayofwk", value= "#sess.current.day#" }
 		 ,{ name = "stdywk", value= "#sess.csp.week#" }
-		 ,{ name = "extype", value = "#private.magic#" }
+		 ,{ name = "#private.hiddenVarName#", value = "#private.magic#" }
 		 ,{ name = "insBy", value = "#sgid#" }
 		]
 	 ,querySelector = {
@@ -172,5 +172,7 @@ else {
 		 ,send = ".slider"
 		}
 	);
+
+	//writedump( AjaxClientInitCode );abort;
 }
 </cfscript>

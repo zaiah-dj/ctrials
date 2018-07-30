@@ -9,10 +9,10 @@ try {
 	OTHER = 3;
 
 	//Stop if no type was found
-	if ( !StructKeyExists( form, "exParam" ) ) {
+	if ( !StructKeyExists( form, "exparam" ) ) {
 		req.sendAsJson( 
 			status = 0, 
-			message = "#errstr# Parameter 'exParam' " &
+			message = "#errstr# Parameter 'exparam' " &
 								"is not available in FORM (Can't " &
 								"tell exercise type... so can't move further.)" 
 		);
@@ -22,7 +22,7 @@ try {
 	if ( !StructKeyExists( form, "timeblock" ) ) {
 		req.sendAsJson( 
 			status = 0, 
-			message = "#errstr# Parameter 'exParam' " &
+			message = "#errstr# Parameter 'timeblock' " &
 								"is not available in FORM (Can't " &
 								"tell exercise type... so can't move further.)" 
 		);
@@ -37,19 +37,19 @@ try {
 		,dayofwk = { req = true }
 		,insBy = { req = true }
 		,timeblock = { req = true }
-		,mchntype = { req = false, ifNone = form.exParam }
+		,mchntype = { req = false, ifNone = form.exparam }
 
 		//Only required when exercise chosen is cycle
-		,rpm = { req = (form.exParam eq CYCLE), ifNone = 0 }
-		,watres = { req = (form.exParam eq CYCLE), ifNone = 0 }
+		,rpm = { req = (form.exparam eq CYCLE), ifNone = 0 }
+		,watres = { req = (form.exparam eq CYCLE), ifNone = 0 }
 
 		//Only required when exercise chosen is treadmill 
-		,prctgrade = { req = (form.exParam eq TREADMILL), ifNone = 0 }
-		,speed = { req = (form.exParam eq TREADMILL), ifNone = 0 }
+		,prctgrade = { req = (form.exparam eq TREADMILL), ifNone = 0 }
+		,speed = { req = (form.exparam eq TREADMILL), ifNone = 0 }
 
 		//Only required when exercise chosen is other 
-		,oth1 = { req = (form.exParam eq OTHER), ifNone = 0 }
-		,oth2 = { req = (form.exParam eq OTHER), ifNone = 0 }
+		,oth1 = { req = (form.exparam eq OTHER), ifNone = 0 }
+		,oth2 = { req = (form.exparam eq OTHER), ifNone = 0 }
 
 		//These are only required at times 0 (warm-up), 20m and 45m
 		,othafct = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
@@ -203,7 +203,8 @@ try {
 	 ,bindArgs = {
 			pid      = fv.pid
 		 ,insBy    = fv.insBy
-		 ,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
+		 //,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cf_sql_date" }
+		 ,dtstamp  = { value = dstmp, type="cf_sql_date" }
 		 ,oth1     = fv.oth1
 		 ,oth2     = fv.oth2
 		 ,prctgrade= fv.prctgrade

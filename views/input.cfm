@@ -17,14 +17,14 @@
 	</cfif>
 
 <cfelse>
+
+	<!--- Place the time or exercise type on the page so that JS can query it. --->
+	<input type="hidden" value="#private.magic#" name="#private.hiddenVarName#">
+
 	<!--- This is for CF AJAX --->
 	<cfif data.debug eq 1>
 		<cfset DebugClientCode = ajax.ClientDebug()>
 	</cfif>
-
-
-	<!--- Place the time or exercise type on the page so that JS can query it. --->
-	<input type="hidden" value="#private.magic#" name="#private.hiddenVarName#">
 
 
 	<!--- Generate the modifier list per each participant type --->
@@ -148,6 +148,7 @@
 		</table>
 			</cfloop>
 		<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
+	#AjaxClientInitCode#
 	</div>
 </cfif>
 </cfoutput>

@@ -13,7 +13,7 @@ try {
 
 	//Get the formname
 	obj=createObject("component","components.resistance").init();
-	desig = obj.getExerciseName( form.extype ).formName;
+	desig = obj.getExerciseName( form.extype ).prefix;
 
 	//Where do the supersets go?	
 	temp = val.validate( form, {
@@ -152,7 +152,8 @@ try {
 			pid      = fv.pid 
 		 ,sid      = fv.sess_id
 		 ,rthrd    = fv.recordThread
-		 ,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
+		 //,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cf_sql_date" }
+		 ,dtstamp  = { value = dstmp, type="cf_sql_date" }
 		 ,insBy    = fv.insBy
 		 ,dwk      = fv.dayofwk
 		 ,swk      = fv.stdywk
