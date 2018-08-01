@@ -1,0 +1,14 @@
+HEY!  SWITCH TO recoverySave AND DO THE RECOVERY STUFF FIRST
+
+then go to the equipment log and other problems...
+
+- let debbie know that the exercises have changed
+
+- let them know you won't be around today
+
+- checklist before submitting
+	data.cfm must be off
+	make sure I'm reading from the session tickler
+
+- onSessionEnd() vs just letting it go after the fact	
+
