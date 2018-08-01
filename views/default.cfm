@@ -59,7 +59,7 @@ to reorganize participants.
 							<div class="left">
 							<span>#firstname# #lastname#</span>
 							<span>#participantGUID#</span>
-							<span>#pid#</span>
+							<span>(#pid#)</span>
 							</div>
 							<div class="right">
 							<a href="" class="release">Release</a>

@@ -10,9 +10,7 @@ isEnd = ListContains(ENDURANCE, currentParticipant.results.randomGroupCode );
 isRes = ListContains(RESISTANCE, currentParticipant.results.randomGroupCode );
 
 //If moving forward, then start calculations
-if ( !isEnd && !isRes ) 
-	0;
-else {
+if ( isEnd || isRes ) {
 	//Define these for the purposes of this model
 	private = {};
 	public = {};
@@ -34,11 +32,9 @@ else {
 	private.exSetType = sess.csp.exerciseParameter;
 	private.exSetTypeLabel = private.labels[ sess.csp.exerciseParameter ];
 	private.modNames = (isEnd) ? obj.getModifiers() : obj.getSpecificModifiers( private.exSetType );
-	//private.dbPrefix = (private.magic eq 50) ? "m5_rec" : obj.getTimeInfo(private.magic).label;
 	private.dbPrefix = (isEnd) ? obj.getTimeInfo( private.magic ).prefix : obj.getExerciseName( private.magic ).prefix ;
 	private.cssPrefix = partClass;
-	private.formValues = (isEnd) ? obj.getLabelsFor( sess.csp.exerciseParameter, private.magic ) : obj.getLabels();
-
+	private.formValues = obj.getLabelsFor( sess.csp.exerciseParameter, private.magic ); 
 
 	//Check check-in completed first (the tab should have at least been visited)
 	//sess.csp.checkInCompleted = 1;
@@ -57,9 +53,6 @@ else {
 		 ,stdywk = sess.csp.week
 		}
 	);
-
-	//The first entry ought to be my entry
-	//writedump( private.lastdays.results ); 
 
 	//Calculate the previous day according to what is already here
 	pl = private.lastDays;
@@ -98,80 +91,22 @@ else {
 		}
 	}
 
-
 	//Define the query string ahead of time, since I'm just recycling it
 	private.queryString = "
 		SELECT * FROM #private.dbName# WHERE participantGUID = :pid 
 			AND stdywk = :stdywk AND dayofwk = :dayofwk AND insertedby != '0'";
 	
-	//Select the most recent set of results
-	private.previousResult = dbExec(
-		string = private.queryString, bindArgs = {
-		//filename = "input#iif(isEnd,DE('EE'),DE('RE'))#Past.sql", bindArgs = {
-			pid = sess.current.participantId 
-		 ,stdywk = private.previous.week
-		 ,dayofwk = private.previous.day
-		}
-	);
-
-	//Now, select the most recent result
-	private.currentResult = dbExec(
-		string = private.queryString, bindArgs = {
-		//filename = "input#iif(isEnd,DE('EE'),DE('RE'))#Current.sql", bindArgs = {
+	//Select the most recent and current set of results
+	private.etc = dbExec(
+		//string = private.queryString, bindArgs = {
+		filename = "input#iif(isEnd,DE('EE'),DE('RE'))#PastCurrent.sql", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = sess.csp.week
-		 ,dayofwk = session.currentDayOfWeek 
+		 ,dayofwk = session.currentDayOfWeek
+		 ,pstdywk = private.previous.week
+		 ,pdayofwk = private.previous.day
 		}
 	);
-
-	//Get dbinfo
-	cfdbinfo( name="tcnt", type="columns", datasource="#data.source#", table="#private.dbName#" );
- 
-//writedump( test );
-writedump( private.currentResult );
-writedump( private.previousResult );abort;
-
-	//The current result will tell me a lot
-	private.exdone = (isEnd) ? 0 : private.currentResult.results[ private.dbPrefix ];
- 
-	//To make it easy to use this data within a template, combine these two queries
-	//the form values, prevResult and currentResult all should come together,
-	//super-wide columns, but this is far better than other stuff
-
-	//Loop through each query
-	pc = private.queryCreator = { names = [], types = [], values = {} }; 
-
-	//The supported column types are: [ Integer | BigInt | Double | Decimal | VarChar | Binary | Bit | Time | Date | Timestamp | Object]
-	types = { 
-		"int identity" = "Varchar", 
-		"int" = "Integer", 
-		"numeric" = "Decimal", 
-		"nvarchar" = "Varchar", 
-		"varchar(max)" = "Varchar", 
-		"datetime" = "Timestamp" 
-	};
-
-	//TODO: Generate these columns as a CFC when the application restarts, will be very slow to do each time.
-	for ( v in tcnt ) {
-		//writeoutput( "#v.column_name# #v.type_name#" );
-		prefixes=[ "p_", "c_" ];
-		for ( nn in prefixes ) {
-			ArrayAppend( pc.names, "#nn##v.column_name#");
-			ArrayAppend( pc.types, (StructKeyExists( types, v.type_name )) ? types[v.type_name] : v.type_name );
-			val = ( nn eq "p_" ) ? private.previousResult.results[ v.column_name ] : private.currentResult.results[ v.column_name ]; 
-			if ( val eq "" && ( v.type_name eq "int" || v.type_name eq "int identity") ) 
-				pc.values[ "#nn##v.column_name#" ] = 0;
-			else {
-				pc.values[ "#nn##v.column_name#" ] = val;
-			}
-		}
-	}
-
-	//Create a query object
-	private.combinerQuery = queryNew(
-		ArrayToList(private.queryCreator.names),
-		ArrayToList(private.queryCreator.types),
-		private.queryCreator.values );
 
 	//Then create the SQL needed to get the data I want for easy looping
 	private.gcValues = [];
@@ -183,13 +118,9 @@ writedump( private.previousResult );abort;
 	//Now get the result
 	private.getCombinedResults = new query();
 	private.getCombinedResults.setDBType( "query" );	
-	private.getCombinedResults.setAttributes( srcQuery = private.combinerQuery ); 
-	private.combinedResults = private.getCombinedResults.execute(	sql="SELECT #ArrayToList( private.gcValues)# FROM srcQuery" );
+	private.getCombinedResults.setAttributes( srcQuery = private.etc.results ); 
+	private.combinedResults = private.getCombinedResults.execute(	sql="SELECT #ArrayToList(private.gcValues)# FROM srcQuery" );
 	private.combinedResults = private.combinedResults.getResult();
-
-
-
-
 
 	//If this is an RE participant, pull equipment log 
 	//and get the exercise name that has been selected.
@@ -237,7 +168,5 @@ writedump( private.previousResult );abort;
 		 ,send = ".slider, .toggler-input"
 		}
 	);
-
-	//writedump( AjaxClientInitCode );abort;
 }
 </cfscript>

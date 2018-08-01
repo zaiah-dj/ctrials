@@ -51,12 +51,6 @@
 	<!--- Place the time or exercise type on the page so that JS can query it. --->
 	<input type="hidden" value="#private.magic#" name="#private.hiddenVarName#">
 
-	<!--- This is for CF AJAX --->
-	<cfif data.debug eq 1>
-		<cfset DebugClientCode = ajax.ClientDebug()>
-	</cfif>
-
-
 	<!--- Generate the modifier list per each participant type --->
 	<ul class="inner-selection">
 	<cfloop query = "#private.modNames#">
@@ -80,6 +74,25 @@
 			<a href="##set3">Set 3</a>
 		</cfif>
 		</div>
+
+		<!--- The first question always looks the same, so I'll keep that here --->
+	<cfif private.magic eq 0>
+		<h5>Exercise Prep</h5>
+		<table class="table table-striped table-meta">
+			<tbody>
+				<tr>
+					<td>Is the Heart Rate monitor working properly?</td>
+					<td>
+						<label class="switch">
+							<input class="toggler-input" type="checkbox" name="hrMonitor"> 
+							<span class="toggler round"></span>
+						</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</cfif>
+
 
 		<!--- Show all the exercise metadata here --->
 		<br />
@@ -144,30 +157,30 @@
 			</thead>
 		</table>
 
-			<cfloop array=#private.formValues# index="v"> 
+			<cfloop query=#private.formValues#> <!---index="v" --->
 				<!--- Reference the SQL value up here --->
-				<cfset svMostRecent=private.combinedResults[ "p_#private.dbPrefix##v.formName#" ]>
-				<cfset svCurrent=private.combinedResults[ "c_#private.dbPrefix##v.formName#" ]>
+				<cfset svMostRecent=private.combinedResults[ "p_#private.dbPrefix##formName#" ]>
+				<cfset svCurrent=private.combinedResults[ "c_#private.dbPrefix##formName#" ]>
 				<cfset def=iif( svCurrent eq "", 0, svCurrent )>
 
 
 		<table class="table table-results">
 			<tbody>
-				<cfif isEnd or (isRes and v.label neq "")>
+				<cfif isEnd or (isRes and label neq "")>
 				<tr> 
-					<td><b>#v.label#</b></td>
+					<td><b>#label#</b></td>
 					<td></td>
 				</tr>
 				</cfif>
 				<tr>
 					<!--- An asterisk should show if nothing is there --->
-					<td>#iif(svMostRecent eq 0 || svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & v.uom))#</td>
+					<td>#iif(svMostRecent eq 0 || svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & uom))#</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
-								<input type="range" min="#v.min#" max="#v.max#" class="slider" value="#def#" defaultvalue="#def#" name="#v.formName#">
+								<input type="range" min="#min#" max="#max#" class="slider" value="#def#" defaultvalue="#def#" name="#formName#">
 							</div>
-							<div class="catch cc col-sm-1"><span>#def#</span><span> #v.uom#</span></div>
+							<div class="catch cc col-sm-1"><span>#def#</span><span> #uom#</span></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>

@@ -86,12 +86,18 @@ function drop(ev) {
 	divL.className = "left";
 	divR = document.createElement( "div" );
 	divR.className = "right";
+
+	console.log( fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","") );
+	console.log( fw[fw.index].id);
+	console.log( fw[fw.index].string.match(/([0-9].*)/)[1].replace(")","") );
+
 	span1 = document.createElement( "span" );
 	span1.innerHTML = fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","");
 	span2 = document.createElement( "span" );
 	span2.innerHTML = fw[fw.index].id;
 	span3 = document.createElement( "span" );
-	span3.innerHTML = fw[fw.index].string.match(/([0-9].*)/)[1].replace(")","");
+
+	span3.innerHTML = " (" + fw[fw.index].string.match(/([0-9].*)/)[1].replace(")","")  + ")";
 	divL.appendChild( span1 ); 
 	divL.appendChild( span2 ); 
 	divL.appendChild( span3 ); 
@@ -301,6 +307,8 @@ function saveSessionUsers (ev) {
 		,"this=startSession"
 	].join( '&' );
 
+//console.log( payload );return;
+
 	//Send a POST to the server
 	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
@@ -420,7 +428,7 @@ function releaseParticipant ( ev ) {
 		id: par.querySelector( "span:nth-child(2)" ).innerHTML
 	, string: par.querySelector( "span:nth-child(1)" ).innerHTML
 	, className: par.className.replace( "-dropped", "" )
-	, acrostic: par.querySelector( "span:nth-child(3)" ).innerHTML
+	, acrostic: par.querySelector( "span:nth-child(3)" ).innerHTML //.replace(" (","").replace(")","")
 	};
 
 	//....
@@ -432,6 +440,7 @@ function releaseParticipant ( ev ) {
 		,"pid=" + thisGuy.id
 		,"this=releaseParticipant"
 	].join( '&' );
+
 
 	//Start a timer to acutally remove the element from the DOM
 	setTimeout( function () { par.parentElement.removeChild( par ); }, 2000 );	

@@ -6,7 +6,7 @@ component name="resistance" {
 		this.srcQuery = queryNew( 
 		 "prefix,urlparam,pname,class", 
 		 "Varchar,Integer,Varchar,Integer", [
-			 { prefix="wrmup"          , urlparam=0, pname="5 Minute Warmup", class=0 }
+			 { prefix="wrmup_"         , urlparam=0, pname="5 Minute Warmup", class=0 }
 			,{ prefix="chestpress"     , urlparam=1, pname="Chest Press", class=4 }
 			,{ prefix="chest2"         , urlparam=2, pname="Chest ##2", class=4 }
 			,{ prefix="abdominalcrunch", urlparam=3, pname="Abdominal Crunch", class=4 }
@@ -24,17 +24,19 @@ component name="resistance" {
 		 ]);
 
 		//Form label defaults for resistance exericses.
-		this.labelDefaults = [
-			 {uom="lb"  ,label="Set 1",min=5,max=100, step=5, formName = "Wt1" ,index=1 }
-			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep1",index=1 }
-			,{uom="lb"  ,label="Set 2",min=5,max=100, step=5, formName = "Wt2" ,index=2 }
-			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep2",index=2 }
-			,{uom="lb"  ,label="Set 3",min=5,max=100, step=5, formName = "Wt3" ,index=3 }
-			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep3",index=3 }
-		 //,{ uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", type=0, frequency="0" }
-		 //,{ uom="rpe", label="RPE", min=20, max=120, step=1, formName="rpe", type=0, frequency="0,20,45" }
-		 //,{ uom="%"  , label="Affect", min=20, max=120, step=1, formName="Othafct", type=0, frequency="0,20,45" }
-		];
+		this.labelDefaults = queryNew( 
+		 "uom,label,min,max,step,formName,index,paramMatch",
+		 "Varchar,Varchar,Integer,Integer,Integer,Varchar,Integer,Integer", [
+			 {uom="lb"  ,label="Set 1",min=5,max=100, step=5, formName = "Wt1" ,index=1, paramMatch=1}
+			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep1",index=1, paramMatch=1}
+			,{uom="lb"  ,label="Set 2",min=5,max=100, step=5, formName = "Wt2" ,index=2, paramMatch=1}
+			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep2",index=2, paramMatch=1}
+			,{uom="lb"  ,label="Set 3",min=5,max=100, step=5, formName = "Wt3" ,index=3, paramMatch=1}
+			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep3",index=3, paramMatch=1}
+		  ,{uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", index=0, paramMatch=0}
+		//,{uom="rpe", label="RPE",        min=20, max=120, step=1, formName="rpe", index=0, paramMatch=0}
+		//,{uom="%"  , label="Affect",     min=20, max=120, step=1, formName="Othafct", index=0, paramMatch=0}
+		]);
 
 		this.exercises = queryNew( 
 			"type,id,etype,ssGroup,pname,formName,desc", 
@@ -70,8 +72,17 @@ component name="resistance" {
 	}
 
 	//USe this to clean up the result set
-	public function getLabelsFor() {
-		return this.labelDefaults;
+	public function getLabelsFor( Required Numeric a, Required Numeric b ) {
+//writedump( private.formValues );writedump( private.magic );abort;
+		pullFrom = ( b ) ? 1 : 0;
+		qs = new query();	
+		qs.setName( "juice" );
+		qs.setDBType( "query" );
+		qs.setAttributes( sourceQuery = this.labelDefaults );
+		qs.addParam( name = "t", value = pullFrom, cfsqltype="cf_sql_numeric" );
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE paramMatch = :t" ); 
+//writedump( qr ); abort;
+		return qr.getResult();	
 	}
 
 	public function getSpecificLabels( Required Numeric id ) {
