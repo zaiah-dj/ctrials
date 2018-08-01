@@ -623,6 +623,22 @@ CREATE TABLE ac_mtr_session_participants_selected (
 );
  
  
+ /* ---------------------------
+ac_mtr_session_participant_data_tracker
+
+-
+
+ spdt_id int IDENTITY(1,1) NOT NULL
+,spdt_sessdayid VARCHAR( 50 )
+,spdt_check_in_completed BIT
+,spdt_recovery_completed BIT
+,spdt_exercise_parameter INTEGER
+,spdt_exercise_list VARCHAR(1024)
+,spdt_exercise_last_completed INTEGER
+,spdt_week_chosen INTEGER
+,spdt_last_interventionist_guid VARCHAR(50)
+,spdt_user_guid VARCHAR(50)
+ ---------------------------- */
 IF OBJECT_ID( N'ac_mtr_session_participant_data_tracker', N'U') IS NOT NULL
 BEGIN
 	DROP TABLE ac_mtr_session_participant_data_tracker;
@@ -669,6 +685,42 @@ CREATE TABLE ac_mtr_test_staff (
 	,ts_siteid VARCHAR(64)
 );
 
+/* ---------------------------
+ac_participant_notes_v2
+
+New participant notes table to
+more accurately match what is 
+going on.
+
+ [recID]            int IDENTITY(1,1) NOT NULL
+,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
+,[participantGUID]  varchar(50) NULL
+,[noteText]         varchar(max) NULL
+,[noteCategory]     int NULL
+,[noteDate]         datetime NULL
+,[d_inserted]       datetime NOT NULL DEFAULT (getdate())
+,[insertedby]       varchar(50) NULL
+,[deleted]          int NULL
+,[deletedby]        varchar(50) NULL
+,[d_deleted]        datetime NULL
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_participant_notes_v2', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_participant_notes_v2;
+END
+CREATE TABLE ac_mtr_participant_notes_v2 (
+	 [recID]            int IDENTITY(1,1) NOT NULL
+	,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
+	,[participantGUID]  varchar(50) NULL
+	,[noteText]         varchar(max) NULL
+	,[noteCategory]     int NULL
+	,[noteDate]         datetime NULL
+	,[d_inserted]       datetime NOT NULL DEFAULT (getdate())
+	,[insertedby]       varchar(50) NULL
+	,[deleted]          int NULL
+	,[deletedby]        varchar(50) NULL
+	,[d_deleted]        datetime NULL
+);
 
 IF @BUILD_EQUIPMENT_LOG = 1
 BEGIN
