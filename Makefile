@@ -16,3 +16,8 @@ change:
 	@cat CHANGELOG.ACTIVE CHANGELOG > CHANGELOG.NEW
 	@rm CHANGELOG.ACTIVE CHANGELOG.USER
 	@mv CHANGELOG.NEW CHANGELOG
+
+
+# Package
+pkg:
+	tar chzf ../iv.`date +%F-%H-%m-%s`.tgz --exclude=./Application.cfc ./*

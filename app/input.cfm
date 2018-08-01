@@ -18,7 +18,7 @@ else {
 	public = {};
 
 	//Define static data here for easy editing
-	private.labels = [ "Cycle", "Treadmill", "Other", "Hips/Thighs", "Chest" ];
+	private.labels = [ "Cycle", "Treadmill", "Other", "Chest, Shoulders...", "Hips/Thighs" ];
 
 	//Figure out The text name will do a lot
 	partClass = ( isEnd ) ? "endurance" : "resistance";	
@@ -27,14 +27,15 @@ else {
 	obj = CreateObject( "component", "components.#partClass#" ).init();	
 	private.dbName = ( isEnd ) ? "#data.data.endurance#" : "#data.data.resistance#";
 	private.mpName = (isEnd) ? "time" : "extype";
+	private.hiddenVarName= (isEnd) ? "timeblock" : "extype";
 	private.rp = (isRes) ? ((sess.csp.exerciseParameter eq 4) ? 1 : 3 ) : 0;
 	private.magic = (StructKeyExists(url, private.mpName )) ? url[ private.mpName ] : private.rp;
-	private.magicName = "SELECTED EXERCISE";
+	private.magicName = (isEnd) ? "" : obj.getExerciseName( private.magic ).pname;
 	private.exSetType = sess.csp.exerciseParameter;
 	private.exSetTypeLabel = private.labels[ sess.csp.exerciseParameter ];
 	private.modNames = (isEnd) ? obj.getModifiers() : obj.getSpecificModifiers( private.exSetType );
 	//private.dbPrefix = (private.magic eq 50) ? "m5_rec" : obj.getTimeInfo(private.magic).label;
-	private.dbPrefix = (isEnd) ? obj.getTimeInfo( private.magic ).label : obj.getExerciseName( private.magic ).formName;
+	private.dbPrefix = (isEnd) ? obj.getTimeInfo( private.magic ).prefix : obj.getExerciseName( private.magic ).prefix ;
 	private.cssPrefix = partClass;
 	private.formValues = (isEnd) ? obj.getLabelsFor( sess.csp.exerciseParameter, private.magic ) : obj.getLabels();
 
@@ -44,13 +45,21 @@ else {
 
 	//Select the last two days for this user.
 	private.lastdays = dbExec(
-		string = "SELECT dayofwk, stdywk FROM #private.dbName# 
-			WHERE participantGUID = :pid AND stdywk <= :stdywk"
+		string = "
+			SELECT TOP(2) dayofwk, stdywk FROM #private.dbName# 
+			WHERE 
+				participantGUID = :pid 
+			AND 
+				stdywk <= :stdywk
+			ORDER BY stdywk, dayofwk DESC"
 	 ,bindArgs = { 
 			pid = sess.current.participantId 
-		 ,stdywk = session.currentWeek
+		 ,stdywk = sess.csp.week
 		}
 	);
+
+	//The first entry ought to be my entry
+	//writedump( private.lastdays.results ); 
 
 	//Calculate the previous day according to what is already here
 	pl = private.lastDays;
@@ -68,8 +77,22 @@ else {
 		}
 	}
 	else {
-		//2 or more are there, make sure you choose correctly
-		private.previous= { day=0, week=0 };
+		//If currentweek and pl.results.stdywk are different, then the first result is what I want 
+		//Likewise if currentWeek eq previous week, but day is different, then go with this one	
+		if ((sess.csp.week gt pl.results.stdywk) || (( sess.csp.week eq pl.results.stdywk ) && (session.currentDayOfWeek gt pl.results.dayofwk)))
+			private.previous = { day=pl.results.dayofwk, week=pl.results.stdywk };
+	
+		//If currentWeek and pl.results.stdywk are the same, then I want the one the one before it (because hte day is different)
+		else if (( sess.csp.week eq pl.results.stdywk ) && (session.currentDayOfWeek eq pl.results.dayofwk)) {
+			iic = new query();
+			iic.setDBType( "query" );	
+			iic.setAttributes( srcQuery = private.lastDays.results ); 
+			iic.addParam( name = "dow", value = session.currentDayOfWeek, cfsqltype = "cf_sql_numeric"  );
+			iicd = iic.execute(	sql="SELECT * FROM srcQuery WHERE dayofwk < :dow" );
+			iicd = iicd.getResult();
+			//writedump( iicd ); abort;
+			private.previous = { day=iicd.dayofwk, week=iicd.stdywk };
+		}
 	}
 	
 	//Define the query string ahead of time, since I'm just recycling it
@@ -79,7 +102,8 @@ else {
 	
 	//Select the most recent set of results
 	private.previousResult = dbExec(
-		string = private.queryString, bindArgs = {
+		//string = private.queryString, bindArgs = {
+		filename = "input#iif( isEnd, DE('EE'), DE('RE'))#Past", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = private.previous.week
 		 ,dayofwk = private.previous.day
@@ -88,13 +112,17 @@ else {
 
 	//Now, select the most recent result
 	private.currentResult = dbExec(
-		string = private.queryString, bindArgs = {
+		//string = private.queryString, bindArgs = {
+		filename = "input#iif( isEnd, DE('EE'), DE('RE'))#Current", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = sess.csp.week
 		 ,dayofwk = session.currentDayOfWeek 
 		}
 	); 
 
+	//The current result will tell me a lot
+	private.exdone = (isEnd) ? 0 : private.currentResult.results[ private.dbPrefix ];
+ 
 	//To make it easy to use this data within a template, combine these two queries
 	//the form values, prevResult and currentResult all should come together,
 	//super-wide columns, but this is far better than other stuff
@@ -146,7 +174,12 @@ else {
 
 	//More Debugging Items 
 	//writedump( session );	
-	//writedump( private );	
+	/*
+	writeoutput( "<h2>LAST DAYS</h2>" ); writedump( private.lastDays );		
+	writeoutput( "<h2>PREVIOUS</h2>" ); writedump( private.previousResult );		
+	writeoutput( "<h2>CURRENT</h2>" ); writedump( private.currentResult );		
+	abort;
+	*/
 
 	//Finally, initialize some backend AJAX magic to handle sending updates to server.
 	AjaxClientInitCode = CreateObject( "component", "components.writeback" ).Client( 
@@ -156,20 +189,22 @@ else {
 	 ,additional = [ 
 			{ name = "this", value = private.cssPrefix }
 		 ,{ name = "sess_id", value = "#sess.key#" }
-		 ,{ name="exParam", value= "#sess.csp.exerciseParameter#" }
+		 ,{ name = "exparam", value= "#sess.csp.exerciseParameter#" }
 		 ,{ name = "recordThread", value= "#sess.csp.recordthread#" }
 		 ,{ name = "pid", value = "#sess.current.participantId#" }
 		 ,{ name = "dayofwk", value= "#sess.current.day#" }
 		 ,{ name = "stdywk", value= "#sess.csp.week#" }
-		 ,{ name = "extype", value = "#private.magic#" }
+		 ,{ name = "#private.hiddenVarName#", value = "#private.magic#" }
 		 ,{ name = "insBy", value = "#sgid#" }
 		]
 	 ,querySelector = {
 			dom = "##participant_list li, .participant-info-nav li, .inner-selection li, ##sendPageVals"
 		 ,event = "click"
 		 ,noPreventDefault = true
-		 ,send = ".slider"
+		 ,send = ".slider, .toggler-input"
 		}
 	);
+
+	//writedump( AjaxClientInitCode );abort;
 }
 </cfscript>

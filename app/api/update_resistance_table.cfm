@@ -13,11 +13,7 @@ try {
 
 	//Get the formname
 	obj=createObject("component","components.resistance").init();
-	desig = obj.getExerciseName( form.extype ).formName;
-
-	//Where do the supersets go?	
-	temp = val.validate( form, {
-	});	
+	desig = obj.getExerciseName( form.extype ).prefix;
 
 	//...
 	stat = val.validate( form, {
@@ -26,9 +22,9 @@ try {
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
 		,insBy = { req = true }
+		,is_exercise_done = { req = true }
+		,is_superset = { req = true }
 		,recordThread = { req = false, ifNone = "hi" }
-
-		//These are required, but if one is not present it could mean many things
 		,Rep1 = { req = false, ifNone = 0 }
 		,Rep2 = { req = false, ifNone = 0 }
 		,Rep3 = { req = false, ifNone = 0 }
@@ -37,26 +33,27 @@ try {
 		,Wt3  = { req = false, ifNone = 0 }
 	});
 
-	//req.sendAsJson( status = 0, message = "#SerializeJSON( stat )#" );
-
 	if ( !stat.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #stat.message#" );	
 	}
 
 	fv = stat.results;
 
+	//Check what was submitted from metadata
+	fv.exIsDone = 0;	
+	if ( fv.is_exercise_done eq "on" && fv.is_superset eq "on" ) 
+		fv.exIsDone = 2;
+	else if	( fv.is_exercise_done eq "on" )
+		fv.exIsDone = 1;
+
 	//Insert or update if the row is not there...
 	upd = ezdb.exec( 
 		string = "
-		SELECT * 
-		FROM 
+		SELECT * FROM 
 			#data.data.resistance#	
-		WHERE 
-			participantGUID = :pid
-		AND 
-			stdywk = :stdywk
-		AND 
-			dayofwk = :dayofwk
+		WHERE participantGUID = :pid
+			AND stdywk = :stdywk
+			AND dayofwk = :dayofwk
 		"
 		,bindArgs = { 
 			pid = fv.pid
@@ -88,6 +85,7 @@ if ( !upd.prefix.recordCount ) {
 			,insertedBy
 			,dayofwk
 			,stdywk
+			,#desig#
 			,#desig#Rep1
 			,#desig#Rep2
 			,#desig#Rep3
@@ -103,6 +101,7 @@ if ( !upd.prefix.recordCount ) {
 			,:insBy
 			,:dwk
 			,:swk
+			,:exIsDone
 			,:rep1
 			,:rep2
 			,:rep3
@@ -117,7 +116,8 @@ else {
 		UPDATE
 			#data.data.resistance#	
 		SET 
-			 #desig#Rep1 = :rep1
+			 #desig# = :exIsDone
+			,#desig#Rep1 = :rep1
 			,#desig#Wt1  = :wt1
 			,#desig#Rep2 = :rep2
 			,#desig#Wt2  = :wt2
@@ -152,15 +152,17 @@ try {
 			pid      = fv.pid 
 		 ,sid      = fv.sess_id
 		 ,rthrd    = fv.recordThread
-		 ,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cfsqldate" }
+		 //,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cf_sql_date" }
+		 ,dtstamp  = { value = dstmp, type="cf_sql_date" }
+		 ,exIsDone = fv.exIsDone 
 		 ,insBy    = fv.insBy
 		 ,dwk      = fv.dayofwk
 		 ,swk      = fv.stdywk
 		 ,rep1     = fv.Rep1 
-		 ,rep2     = fv.Wt1 
-		 ,rep3     = fv.Rep2 
-		 ,wt1      = fv.Wt2 
-		 ,wt2      = fv.Rep3 
+		 ,rep2     = fv.Rep2 
+		 ,rep3     = fv.Rep3
+		 ,wt1      = fv.Wt1 
+		 ,wt2      = fv.Wt2
 		 ,wt3      = fv.Wt3 
 		} 
 	);
@@ -175,10 +177,9 @@ catch (any ff) {
 req.sendAsJson( 
 	status = 1, 
 
-	message = ( !vpath ) ? 
-		"SUCCESS @ /api/resistance/* - Inserted into #data.data.resistance# with values #SerializeJSON( fv )#" :
-		"SUCCESS @ /api/resistance/* - Updated #data.data.resistance# with values #SerializeJSON( fv )#"
-
+	message = "SUCCESS @ /api/resistance/* - " &
+		"#iif(!vpath,DE('Inserted'),DE('Updated'))# into " &
+		"#data.data.resistance# with values #SerializeJSON( fv )#" 
 );	
 
 abort;

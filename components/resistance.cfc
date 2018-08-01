@@ -2,47 +2,26 @@
 component name="resistance" {
 	this.srcQuery = 0;
 
-	//
 	resistance function init () {
 		this.srcQuery = queryNew( 
-		 "prefix,urlparam,pname", 
-		 "Varchar,Integer,Varchar", [
-			 { prefix="wrmup"          , urlparam=0, pname="5 Minute Warmup" }
-			,{ prefix="chestpress"     , urlparam=1, pname="Chest Press" }
-			,{ prefix="chest2"         , urlparam=2, pname="Chest ##2" }
-			,{ prefix="abdominalcrunch", urlparam=3, pname="Abdominal Crunch" }
-			,{ prefix="overheadpress"  , urlparam=4, pname="Overhead Press" }
-			,{ prefix="seatedrow"      , urlparam=5, pname="Seated Row" }
-			,{ prefix="shoulder2"      , urlparam=6, pname="Shoulder ##2" }
-			,{ prefix="triceppress"    , urlparam=7, pname="Tricep Press" }
-			,{ prefix="legpress"       , urlparam=8, pname="Leg Press" }
-			,{ prefix="calfpress"      , urlparam=9, pname="Calf Press" }
-			,{ prefix="pulldown"       , urlparam=10, pname="Pulldown" }
-			,{ prefix="legcurl"        , urlparam=11, pname="Leg Curl" }
-			,{ prefix="dumbbellsquat"  , urlparam=12, pname="Dumbbell Squat" }
-			,{ prefix="kneeextension"  , urlparam=13, pname="Knee Extension" }
-			,{ prefix="bicepcurl"      , urlparam=14, pname="Bicep Curl" }
+		 "prefix,urlparam,pname,class", 
+		 "Varchar,Integer,Varchar,Integer", [
+			 { prefix="wrmup"          , urlparam=0, pname="5 Minute Warmup", class=0 }
+			,{ prefix="chestpress"     , urlparam=1, pname="Chest Press", class=4 }
+			,{ prefix="chest2"         , urlparam=2, pname="Chest ##2", class=4 }
+			,{ prefix="abdominalcrunch", urlparam=3, pname="Abdominal Crunch", class=4 }
+			,{ prefix="overheadpress"  , urlparam=4, pname="Overhead Press", class=4 }
+			,{ prefix="seatedrow"      , urlparam=5, pname="Seated Row", class=4 }
+			,{ prefix="shoulder2"      , urlparam=6, pname="Shoulder ##2", class=4 }
+			,{ prefix="triceppress"    , urlparam=7, pname="Tricep Press", class=4 }
+			,{ prefix="legpress"       , urlparam=8, pname="Leg Press", class=5 }
+			,{ prefix="calfpress"      , urlparam=9, pname="Calf Press", class=5 }
+			,{ prefix="pulldown"       , urlparam=10, pname="Pulldown", class=5 }
+			,{ prefix="legcurl"        , urlparam=11, pname="Leg Curl", class=5 }
+			,{ prefix="dumbbellsquat"  , urlparam=12, pname="Dumbbell Squat", class=5 }
+			,{ prefix="kneeextension"  , urlparam=13, pname="Knee Extension", class=5 }
+			,{ prefix="bicepcurl"      , urlparam=14, pname="Bicep Curl", class=5 }
 		 ]);
-
-		this.qqq = queryNew( 
-			"type,index,label", 
-			"Integer,Integer,Varchar", [
-			 { type = 0, index=1, label = "abdominalcrunch" }
-			,{ type = 1, index=10, label = "abdominalcrunch" }
-			,{ type = 2, index=7, label = "bicepcurl" }
-			,{ type = 3, index=1, label = "calfpress" }
-			,{ type = 4, index=9, label = "chest2" }
-			,{ type = 5, index=8, label = "chestpress" }
-			,{ type = 6, index=1, label = "dumbbellsquat" }
-			,{ type = 7, index=6, label = "kneeextension" }
-			,{ type = 8, index=4, label = "legcurl" }
-			,{ type = 9, index=1, label = "legpress" }
-			,{ type = 10, index=11, label = "overheadpress" }
-			,{ type = 11, index=3, label = "pulldown" }
-			,{ type = 12, index=5, label = "seatedrow" }
-			,{ type = 13, index=13, label = "shoulder2" }
-			,{ type = 14, index=14, label = "triceppress" }
-		]);
 
 		//Form label defaults for resistance exericses.
 		this.labelDefaults = [
@@ -86,15 +65,6 @@ component name="resistance" {
 		return this;
 	}
 
-	public function getExercises() {
-		qs = new query();	
-		qs.setName( "juice" );
-		qs.setDBType( "query" );
-		qs.setAttributes( sourceQuery = this.exercises ); 
-		qr = qs.execute( sql = "SELECT * FROM sourceQuery" );
-		return qr.getResult();	
-	}
-
 	public function getLabels() {
 		return this.labelDefaults;
 	}
@@ -109,13 +79,22 @@ component name="resistance" {
 		return ld; //this.labelDefaults;
 	}
 
+	public Query function getAllModifiers ( ) {
+		qs = new query();	
+		qs.setName( "juice" );
+		qs.setDBType( "query" );
+		qs.setAttributes( sourceQuery = this.srcQuery ); 
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery" );
+		return qr.getResult();	
+	}
+
 	public Query function getSpecificModifiers ( Required Numeric id ) {
 		qs = new query();	
 		qs.setName( "juice" );
 		qs.setDBType( "query" );
-		qs.setAttributes( sourceQuery = this.exercises ); 
+		qs.setAttributes( sourceQuery = this.srcQuery ); 
 		qs.addParam( name="id", value=arguments.id, cfsqltype="cf_sql_numeric" );
-		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE etype = :id" );
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE class = :id OR class = 0" );
 		return qr.getResult();	
 	}
 
@@ -131,9 +110,9 @@ component name="resistance" {
 	public Query function getExerciseName( Required Numeric id ) {
 		qs = new query();	
 		qs.setDBType( "query" );
-		qs.setAttributes( sourceQuery = this.exercises ); 
+		qs.setAttributes( sourceQuery = this.srcQuery ); 
 		qs.addParam( name="id", value=arguments.id, cfsqltype="cf_sql_numeric" );
-		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE type = :id" );
+		qr = qs.execute( sql = "SELECT * FROM sourceQuery WHERE urlparam = :id" );
 		return qr.getResult();	
 	}
 }

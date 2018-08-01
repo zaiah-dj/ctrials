@@ -34,7 +34,7 @@
 	<cfset NameList=[]>
 
 	<Cfloop query=reExList>
-		<cfset ArrayAppend( NameList, "#formName#" )>
+		<cfset ArrayAppend( NameList, "#prefix#" )>
 	</cfloop>
 
 	<!--- Create the column header --->
@@ -45,6 +45,7 @@
 	</cfloop>
 	</thead>
 
+<!---
 	<!--- Now loop through and generate the table's values --->
 	<cfloop query = rr.results >
 		<cfloop list="Wt1,Rep1,Wt2,Rep2,Wt3,Rep3" index="ind">
@@ -65,6 +66,7 @@
 		</tr>
 		</cfloop>
 	</cfloop>
+--->
 </cfif>
 </table>
 </cfoutput>

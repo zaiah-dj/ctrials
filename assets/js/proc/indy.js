@@ -504,6 +504,67 @@ function redirectEngine() {
 }
 
 
+
+/*	
+function ajax_input_submit ( ) {	
+	//I can just apply these later...
+	aa = [].slice.call( document.querySelectorAll( '#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals' ) );
+
+	//Loop through all of the above and add the listener	
+	for ( i=0; i < aa.length; i++ ) {
+		aa[i].addEventListener( 'click', function (ev) {
+
+		}	);
+	} }	);
+}
+*/
+
+/*
+function ajax_input_submit__ ( ev ) {	
+			ev.preventDefault(); 
+			arrVal = []; 
+			( 1 ) ? console.log( 'Event ' + ev + ' was registered.' ) : 0;
+			mv = document.querySelectorAll( '.slider, .toggler-input' );
+			( 1 ) ? console.log( mv ) : 0;
+
+			//What do all these values look like?
+			for (i=0;i<mv.length;i++) { 	
+				arrVal.push( mv[i].name + '=' + mv[i].value ); 
+			}
+
+			//Extra values that should be submitted along with the request, for
+			//purposes of this code, these are all in a class called hidden
+			av = [
+				{ name: "this", value: "resistance" },
+				{ name: "sess_id", value: "NEV1d8562684862UvHTa" },
+				{ name: "exparam", value: "4" },
+				{ name: "recordThread", value: "986C27B5-8C8B-4BE9-8D00-43F27D637BE3" },
+				{ name: "pid", value: "6516AB4C-E270-419F-B35F-136D342A8532" },
+				{ name: "dayofwk", value: "2" },
+				{ name: "stdywk", value: "1" },
+				{ name: "extype", value: "3" },
+				{ name: "insBy", value: "CDDAC161-2B5E-44CF-ABC8-D15623942239" }
+			];
+
+			//Checkboxes cannot use value...
+			for (i=0;i<av.length;i++) { arrVal.push( av[i].name + '=' + av[i].value ); };
+			( 1 ) ? console.log( av ) : 0;
+
+			Vals = arrVal.join( '&' );
+			( 1 ) ? console.log( Vals ) : 0;
+			( 1 ) ? console.log( 'Sending values ' + arrVal.join(' & ') + ' to /motrpac/web/secure/dataentry/iv/update.cfm\n' ) : 0;
+
+			//Do an XMLHttp
+			x = new XMLHttpRequest();
+			//x.onreadystatechange = function () { if ( this.readyState == 4 ) { if ( this.status == 200 ) { console.log(this.responseText);}  } else { 0; } };
+			//x.open( 'POST', '/motrpac/web/secure/dataentry/iv/update.cfm', true );
+			x.open( 'POST', '/motrpac/web/secure/dataentry/iv/update.cfm', false );
+			x.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+			x.send(Vals);
+			( 1 ) ? console.log( x.responseText ) : 0;
+			return false;
+}
+*/
 /*
 //The Router structure is key to make interfaces work.
 //Can't wait for WASM

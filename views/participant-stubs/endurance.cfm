@@ -9,11 +9,11 @@
 
 	<!--- TODO: This shouldn't take two loops.  Think about it more. --->
 	<ul class="inner-selection">
-	<cfloop query=#public.timeList#> 
+	<cfloop query=#private.modNames#> 
 		<cfset timelink = link( "input.cfm?id=#url.id#&time=#index#" )> 
-	<cfif index eq public.selectedTime>
+	<cfif index eq private.magic>
 		<a href="#timelink#"><li class="selected">#text#</li></a>
-	<cfelseif index lt public.selectedTime>
+	<cfelseif index lt private.magic>
 		<a href="#timelink#"><li class="completed">#text#</li></a>
 	<cfelse>
 		<a href="#timelink#"><li>#text#</li></a>
@@ -28,24 +28,30 @@
 			<thead>
 				<tr>
 					<td class="title">Exercise Type</td>
-					<td>#public.eTypeLabel#</td>
+					<td>#private.exSetTypeLabel#</td>
 				</tr>
 			</thead>
 		</table>
-<cfloop array=#private.formValues# index="v"> 
-	<!--- Reference the SQL value up here --->
-	<cfset svMostRecent = private.combinedResults[ "p_#private.dbPrefix##v.formName#" ]>
-	<cfset svCurrent = private.combinedResults[ "c_#private.dbPrefix##v.formName#" ]>
-
-	<!--- Now start templating --->
 	<table class="table table-striped endurance">
+		<thead>
+			<tr>
+				<td class="title">Last Visit Results</td>
+				<td>Exercise Parameter</td>
+			</tr>
+		</thead>
 		<tbody>
-			<tr class="heading">
-				<td class="chopt">Last Visit Results</td>
-				<td><center><b>#v.label#</b></center></td>
+		<cfloop array=#private.formValues# index="v"> 
+
+			<!--- Reference the SQL value up here --->
+			<cfset svMostRecent = private.combinedResults[ "p_#private.dbPrefix##v.formName#" ]>
+			<cfset svCurrent = private.combinedResults[ "c_#private.dbPrefix##v.formName#" ]>
+
+			<tr> 
+				<td></td>
+				<td><b>#v.label#</b></td>
 			</tr>
 			<tr>
-				<td class="title">
+				<td> 
 					<!--- An asterisk should show if nothing is there --->
 					#iif(svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & v.uom))#
 				</td>
@@ -63,9 +69,9 @@
 					</div>
 				</td>
 			</tr>
+		</cfloop>
 		</tbody>
 	</table>
-</cfloop>
 	<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 		</div>
 
