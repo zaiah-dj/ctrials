@@ -32,8 +32,8 @@ component name="endurance" {
 		 ,{ uom=""   , label="othMchn1", min=20, max=120, step=1, formName="oth1", type=3, frequency="0" }
 		 ,{ uom=""   , label="othMchn2", min=20, max=120, step=1, formName="oth2", type=3, frequency="0" }
 		 ,{ uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", type=0, frequency="0" }
-		 ,{ uom="rpe", label="RPE", min=20, max=120, step=1, formName="rpe", type=0, frequency="0,20,45" }
-		 ,{ uom="%"  , label="Affect", min=20, max=120, step=1, formName="Othafct", type=0, frequency="0,20,45" }
+		 ,{ uom="rpe", label="RPE", min=6, max=20, step=1, formName="rpe", type=0, frequency="0,20,45" }
+		 ,{ uom="%"  , label="Affect", min=-5, max=5, step=1, formName="Othafct", type=0, frequency="0,20,45" }
 		];
 		return this;
 	}

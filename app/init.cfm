@@ -26,6 +26,8 @@ R = 2;
 C = 3;
 
 
+//writedump( session ); abort;
+
 //On production, the date will always be the current date... I think...
 if ( data.debug eq 0 )
 	userDateObject = Now(); 
@@ -58,10 +60,10 @@ userDate = DateTimeFormat( userDateObject, "YYYY-MM-DD HH:nn:ss" );
 if ( !StructKeyExists( session, "userguid" ) ) {
 	//Redirect if I am not on an approved server
 	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) ) {
-		writeoutput( "this is redirecting? " );
+		/*writeoutput( "this is redirecting? " );
 		writeoutput( data.localdev );
 		writeoutput( cgi.http_host );
-		abort;
+		abort;*/
 		location( addtoken = "no", url = data.redirectForLogin );
 	}
 	else {
@@ -250,9 +252,11 @@ else {
 
 	//We really SHOULDN'T move forward if I can't identify who is supposed to be here...
 	if ( !csQuery.status ) {
-		throw "Fatal Exception at app/init.cfm. " & 
+		writeoutput( "Fatal Exception at app/init.cfm. " & 
 			"Database failed to generate new day ID." &
-			"#csQuery.message#";
+			"#csQuery.message#" );
+
+		abort;
 	}
 
 	//re-run query and get the data I want
@@ -705,19 +709,19 @@ else if ( data.loaded eq "check-in" ) {
 	pNotes = ezdb.exec(
 		string = "
 			SELECT
-				note_datetime_added	
-			 ,note_text	
+				noteDate
+			 ,noteText	
+			 ,insertedby
 			FROM 
 				#data.data.notes#	
-			WHERE 
-				note_participant_match_id = :pid
-			ORDER BY note_datetime_added DESC
+			WHERE participantGUID = :pid
+				AND	noteCategory = 3
+			ORDER BY noteDate DESC
 			"
 	 ,datasource = "#data.source#" 
-	 ,bindArgs = {
-			pid = sess.current.participantId 
-		});
-
+	 ,bindArgs = {pid = sess.current.participantId}
+	);
+	
 	if ( !pNotes.status ) {
 		writedump( pNotes.message );
 		abort;	

@@ -215,7 +215,7 @@
 						<!---<textarea class="modal-activate" name="ps_notes"></textarea>--->
 						<ul class="participant-notes">
 						<cfloop query=pNotes.results>
-							<li>#DateTimeFormat(note_datetime_added,"mm/dd/yy")# - #note_text#</li>
+							<li>#DateTimeFormat(noteDate, "mm/dd/yy")# - #noteText#</li>
 						</cfloop>
 						</ul>
 					</td>
@@ -225,6 +225,7 @@
 		</table>
 
 		<input type="hidden" name="ps_pid" value="#sess.current.participantId#">
+		<input type="hidden" name="ps_sid" value="#session.userguid#">
 		<input type="submit" value="Next!"></input>
 	</form>
 </div> <!--- container-body --->

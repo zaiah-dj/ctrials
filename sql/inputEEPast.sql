@@ -13,80 +13,80 @@ SELECT TOP (1)
 	,stdywk as p_stdywk
 	,weight as p_weight
 	,Hrworking as p_Hrworking
-	,m10_exhr as p_m10_exhr
-	,m10_exoth1 as p_m10_exoth1
-	,m10_exoth2 as p_m10_exoth2
-	,m10_exprctgrade as p_m10_exprctgrade
-	,m10_exrpm as p_m10_exrpm
-	,m10_exspeed as p_m10_exspeed
-	,m10_exwatres as p_m10_exwatres
-	,m15_exhr as p_m15_exhr
-	,m15_exoth1 as p_m15_exoth1
-	,m15_exoth2 as p_m15_exoth2
-	,m15_exprctgrade as p_m15_exprctgrade
-	,m15_exrpm as p_m15_exrpm
-	,m15_exspeed as p_m15_exspeed
-	,m15_exwatres as p_m15_exwatres
-	,m20_exhr as p_m20_exhr
-	,m20_exoth1 as p_m20_exoth1
-	,m20_exoth2 as p_m20_exoth2
-	,m20_exothafct as p_m20_exothafct
-	,m20_exprctgrade as p_m20_exprctgrade
-	,m20_exrpe as p_m20_exrpe
-	,m20_exrpm as p_m20_exrpm
-	,m20_exspeed as p_m20_exspeed
-	,m20_exwatres as p_m20_exwatres
-	,m25_exhr as p_m25_exhr
-	,m25_exoth1 as p_m25_exoth1
-	,m25_exoth2 as p_m25_exoth2
-	,m25_exprctgrade as p_m25_exprctgrade
-	,m25_exrpm as p_m25_exrpm
-	,m25_exspeed as p_m25_exspeed
-	,m25_exwatres as p_m25_exwatres
-	,m30_exhr as p_m30_exhr
-	,m30_exoth1 as p_m30_exoth1
-	,m30_exoth2 as p_m30_exoth2
-	,m30_exprctgrade as p_m30_exprctgrade
-	,m30_exrpm as p_m30_exrpm
-	,m30_exspeed as p_m30_exspeed
-	,m30_exwatres as p_m30_exwatres
-	,m35_exhr as p_m35_exhr
-	,m35_exoth1 as p_m35_exoth1
-	,m35_exoth2 as p_m35_exoth2
-	,m35_exprctgrade as p_m35_exprctgrade
-	,m35_exrpm as p_m35_exrpm
-	,m35_exspeed as p_m35_exspeed
-	,m35_exwatres as p_m35_exwatres
-	,m40_exhr as p_m40_exhr
-	,m40_exoth1 as p_m40_exoth1
-	,m40_exoth2 as p_m40_exoth2
-	,m40_exprctgrade as p_m40_exprctgrade
-	,m40_exspeed as p_m40_exspeed
-	,m40_exwatres as p_m40_exwatres
-	,m40_exrpm as p_m40_exrpm
-	,m45_exhr as p_m45_exhr
-	,m45_exoth1 as p_m45_exoth1
-	,m45_exoth2 as p_m45_exoth2
-	,m45_exOthafct as p_m45_exOthafct
-	,m45_exprctgrade as p_m45_exprctgrade
-	,m45_exrpe as p_m45_exrpe
-	,m45_exrpm as p_m45_exrpm
-	,m45_exspeed as p_m45_exspeed
-	,m45_exwatres as p_m45_exwatres
-	,m5_exhr as p_m5_exhr
-	,m5_exoth1 as p_m5_exoth1
-	,m5_exoth2 as p_m5_exoth2
-	,m5_exprctgrade as p_m5_exprctgrade
-	,m5_exrpm as p_m5_exrpm
-	,m5_exspeed as p_m5_exspeed
-	,m5_exwatres as p_m5_exwatres
-	,m3_rechr as p_m5_rechr
-	,m3_recoth1 as p_m5_recoth1
-	,m3_recoth2 as p_m5_recoth2
-	,m3_recprctgrade as p_m5_recprctgrade
-	,m3_recrpm as p_m5_recrpm
-	,m3_recspeed as p_m5_recspeed
-	,m3_recwatres as p_m5_recwatres
+	,( CASE m10_exhr WHEN '' THEN 0 ELSE m10_exhr END ) as p_m10_exhr
+	,( CASE m10_exoth1 WHEN '' THEN 0 ELSE m10_exoth1 END ) as p_m10_exoth1
+	,( CASE m10_exoth2 WHEN '' THEN 0 ELSE m10_exoth2 END ) as p_m10_exoth2
+	,( CASE m10_exprctgrade WHEN '' THEN 0 ELSE m10_exprctgrade END ) as p_m10_exprctgrade
+	,( CASE m10_exrpm WHEN '' THEN 0 ELSE m10_exrpm END ) as p_m10_exrpm
+	,( CASE m10_exspeed WHEN '' THEN 0 ELSE m10_exspeed END ) as p_m10_exspeed
+	,( CASE m10_exwatres WHEN '' THEN 0 ELSE m10_exwatres END ) as p_m10_exwatres
+	,( CASE m15_exhr WHEN '' THEN 0 ELSE m15_exhr END ) as p_m15_exhr
+	,( CASE m15_exoth1 WHEN '' THEN 0 ELSE m15_exoth1 END ) as p_m15_exoth1
+	,( CASE m15_exoth2 WHEN '' THEN 0 ELSE m15_exoth2 END ) as p_m15_exoth2
+	,( CASE m15_exprctgrade WHEN '' THEN 0 ELSE m15_exprctgrade END ) as p_m15_exprctgrade
+	,( CASE m15_exrpm WHEN '' THEN 0 ELSE m15_exrpm END ) as p_m15_exrpm
+	,( CASE m15_exspeed WHEN '' THEN 0 ELSE m15_exspeed END ) as p_m15_exspeed
+	,( CASE m15_exwatres WHEN '' THEN 0 ELSE m15_exwatres END ) as p_m15_exwatres
+	,( CASE m20_exhr WHEN '' THEN 0 ELSE m20_exhr END ) as p_m20_exhr
+	,( CASE m20_exoth1 WHEN '' THEN 0 ELSE m20_exoth1 END ) as p_m20_exoth1
+	,( CASE m20_exoth2 WHEN '' THEN 0 ELSE m20_exoth2 END ) as p_m20_exoth2
+	,( CASE m20_exothafct WHEN '' THEN 0 ELSE m20_exothafct END ) as p_m20_exothafct
+	,( CASE m20_exprctgrade WHEN '' THEN 0 ELSE m20_exprctgrade END ) as p_m20_exprctgrade
+	,( CASE m20_exrpe WHEN '' THEN 0 ELSE m20_exrpe END ) as p_m20_exrpe
+	,( CASE m20_exrpm WHEN '' THEN 0 ELSE m20_exrpm END ) as p_m20_exrpm
+	,( CASE m20_exspeed WHEN '' THEN 0 ELSE m20_exspeed END ) as p_m20_exspeed
+	,( CASE m20_exwatres WHEN '' THEN 0 ELSE m20_exwatres END ) as p_m20_exwatres
+	,( CASE m25_exhr WHEN '' THEN 0 ELSE m25_exhr END ) as p_m25_exhr
+	,( CASE m25_exoth1 WHEN '' THEN 0 ELSE m25_exoth1 END ) as p_m25_exoth1
+	,( CASE m25_exoth2 WHEN '' THEN 0 ELSE m25_exoth2 END ) as p_m25_exoth2
+	,( CASE m25_exprctgrade WHEN '' THEN 0 ELSE m25_exprctgrade END ) as p_m25_exprctgrade
+	,( CASE m25_exrpm WHEN '' THEN 0 ELSE m25_exrpm END ) as p_m25_exrpm
+	,( CASE m25_exspeed WHEN '' THEN 0 ELSE m25_exspeed END ) as p_m25_exspeed
+	,( CASE m25_exwatres WHEN '' THEN 0 ELSE m25_exwatres END ) as p_m25_exwatres
+	,( CASE m30_exhr WHEN '' THEN 0 ELSE m30_exhr END ) as p_m30_exhr
+	,( CASE m30_exoth1 WHEN '' THEN 0 ELSE m30_exoth1 END ) as p_m30_exoth1
+	,( CASE m30_exoth2 WHEN '' THEN 0 ELSE m30_exoth2 END ) as p_m30_exoth2
+	,( CASE m30_exprctgrade WHEN '' THEN 0 ELSE m30_exprctgrade END ) as p_m30_exprctgrade
+	,( CASE m30_exrpm WHEN '' THEN 0 ELSE m30_exrpm END ) as p_m30_exrpm
+	,( CASE m30_exspeed WHEN '' THEN 0 ELSE m30_exspeed END ) as p_m30_exspeed
+	,( CASE m30_exwatres WHEN '' THEN 0 ELSE m30_exwatres END ) as p_m30_exwatres
+	,( CASE m35_exhr WHEN '' THEN 0 ELSE m35_exhr END ) as p_m35_exhr
+	,( CASE m35_exoth1 WHEN '' THEN 0 ELSE m35_exoth1 END ) as p_m35_exoth1
+	,( CASE m35_exoth2 WHEN '' THEN 0 ELSE m35_exoth2 END ) as p_m35_exoth2
+	,( CASE m35_exprctgrade WHEN '' THEN 0 ELSE m35_exprctgrade END ) as p_m35_exprctgrade
+	,( CASE m35_exrpm WHEN '' THEN 0 ELSE m35_exrpm END ) as p_m35_exrpm
+	,( CASE m35_exspeed WHEN '' THEN 0 ELSE m35_exspeed END ) as p_m35_exspeed
+	,( CASE m35_exwatres WHEN '' THEN 0 ELSE m35_exwatres END ) as p_m35_exwatres
+	,( CASE m40_exhr WHEN '' THEN 0 ELSE m40_exhr END ) as p_m40_exhr
+	,( CASE m40_exoth1 WHEN '' THEN 0 ELSE m40_exoth1 END ) as p_m40_exoth1
+	,( CASE m40_exoth2 WHEN '' THEN 0 ELSE m40_exoth2 END ) as p_m40_exoth2
+	,( CASE m40_exprctgrade WHEN '' THEN 0 ELSE m40_exprctgrade END ) as p_m40_exprctgrade
+	,( CASE m40_exspeed WHEN '' THEN 0 ELSE m40_exspeed END ) as p_m40_exspeed
+	,( CASE m40_exwatres WHEN '' THEN 0 ELSE m40_exwatres END ) as p_m40_exwatres
+	,( CASE m40_exrpm WHEN '' THEN 0 ELSE m40_exrpm END ) as p_m40_exrpm
+	,( CASE m45_exhr WHEN '' THEN 0 ELSE m45_exhr END ) as p_m45_exhr
+	,( CASE m45_exoth1 WHEN '' THEN 0 ELSE m45_exoth1 END ) as p_m45_exoth1
+	,( CASE m45_exoth2 WHEN '' THEN 0 ELSE m45_exoth2 END ) as p_m45_exoth2
+	,( CASE m45_exOthafct WHEN '' THEN 0 ELSE m45_exOthafct END ) as p_m45_exOthafct
+	,( CASE m45_exprctgrade WHEN '' THEN 0 ELSE m45_exprctgrade END ) as p_m45_exprctgrade
+	,( CASE m45_exrpe WHEN '' THEN 0 ELSE m45_exrpe END ) as p_m45_exrpe
+	,( CASE m45_exrpm WHEN '' THEN 0 ELSE m45_exrpm END ) as p_m45_exrpm
+	,( CASE m45_exspeed WHEN '' THEN 0 ELSE m45_exspeed END ) as p_m45_exspeed
+	,( CASE m45_exwatres WHEN '' THEN 0 ELSE m45_exwatres END ) as p_m45_exwatres
+	,( CASE m5_exhr WHEN '' THEN 0 ELSE m5_exhr END ) as p_m5_exhr
+	,( CASE m5_exoth1 WHEN '' THEN 0 ELSE m5_exoth1 END ) as p_m5_exoth1
+	,( CASE m5_exoth2 WHEN '' THEN 0 ELSE m5_exoth2 END ) as p_m5_exoth2
+	,( CASE m5_exprctgrade WHEN '' THEN 0 ELSE m5_exprctgrade END ) as p_m5_exprctgrade
+	,( CASE m5_exrpm WHEN '' THEN 0 ELSE m5_exrpm END ) as p_m5_exrpm
+	,( CASE m5_exspeed WHEN '' THEN 0 ELSE m5_exspeed END ) as p_m5_exspeed
+	,( CASE m5_exwatres WHEN '' THEN 0 ELSE m5_exwatres END ) as p_m5_exwatres
+	,( CASE m3_rechr WHEN '' THEN 0 ELSE m3_rechr END ) as p_m5_rechr
+	,( CASE m3_recoth1 WHEN '' THEN 0 ELSE m3_recoth1 END ) as p_m5_recoth1
+	,( CASE m3_recoth2 WHEN '' THEN 0 ELSE m3_recoth2 END ) as p_m5_recoth2
+	,( CASE m3_recprctgrade WHEN '' THEN 0 ELSE m3_recprctgrade END ) as p_m5_recprctgrade
+	,( CASE m3_recrpm WHEN '' THEN 0 ELSE m3_recrpm END ) as p_m5_recrpm
+	,( CASE m3_recspeed WHEN '' THEN 0 ELSE m3_recspeed END ) as p_m5_recspeed
+	,( CASE m3_recwatres WHEN '' THEN 0 ELSE m3_recwatres END ) as p_m5_recwatres
 	,mchntype as p_mchntype
 	,MthlyBPDia as p_MthlyBPDia
 	,MthlyBPSys as p_MthlyBPSys

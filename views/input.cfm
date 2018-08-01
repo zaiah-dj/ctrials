@@ -5,6 +5,36 @@
 		<p style="text-align: left; color: black;">
 			Please choose a participant from the top to get started.
 		</p>
+
+		<cfscript>
+		ContainsRe=0; for ( n in selectedParticipants.results )
+			if ( ListContains(RESISTANCE,n.randomGroupCode )) { ContainsRe=1; break; }
+		</cfscript>
+
+		
+		<div class="zeitgeist">
+			<h6>Legend</h6>
+			<div style="text-align: left; position: relative; left: 10px; color: black;">
+				<!--- Legend --->
+				<ul>
+					<li><div class="box endurance-class"></div> Endurance</li>
+					<li><div class="box resistance-class"></div> Resistance	</li>
+					<li><div class="box control-class"></div> Control</li> 
+				</ul>
+			</div>
+		</div>
+
+		<div class="zeitgeist"> 
+			<h6>For Resistance participants</h6>
+			<ul class="re"> 
+				<li>Reps: Repetitions</li>
+				<li>W: Resistance weight in lbs.</li>
+				<li>3 sets x 10RM with continuous load progression</li>
+				<li>*90 sec between sets</li>
+				<li>**60 sec between supersets( ~90 sec rest per muscle group)	</li>
+			</ul>
+		</div>
+
 	<cfelse>
 		<p style="text-align: left; color: black;">
 			Uh oh!  It looks like you haven't selected any participants yet. 
@@ -131,7 +161,7 @@
 				</cfif>
 				<tr>
 					<!--- An asterisk should show if nothing is there --->
-					<td>#iif(svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & v.uom))#</td>
+					<td>#iif(svMostRecent eq 0 || svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & v.uom))#</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">

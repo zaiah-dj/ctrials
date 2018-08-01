@@ -21,3 +21,11 @@ change:
 # Package
 pkg:
 	tar chzf ../iv.`date +%F-%H-%m-%s`.tgz --exclude=./Application.cfc ./*
+
+
+#rsync -arvz --delete /cygdrive/c/lucee/tomcat/webapps/motrpac/web/secure/dataentry/--exclude=./Application.cfc ./*
+# Test on Lucee
+lucee:
+	rsync -arvz --delete --exclude=Application.cfc --exclude=.git --exclude=.gitignore --exclude=.*.swp --exclude=*.tgz /cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv/ /cygdrive/c/lucee/tomcat/webapps/motrpac/web/secure/dataentry/iv/
+	
+	

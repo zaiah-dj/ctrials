@@ -9,7 +9,13 @@ Application routes, datasources and more
 are all updated here.
 * ------------------------------------------- */
 useDebug = 1;
-useProd = 0;
+
+/*Passwords if ever needed
+Server:    sqldev.phs.wfubmc.edu
+Account:   motrpacDevUser
+Database:  motrpac
+Pwd:       9F25a26V7j42
+*/
 
 /*This variable is used by ColdMVC to load all configuration data*/
 manifest={
@@ -21,7 +27,7 @@ manifest={
 ,"debug"  = useDebug 
 
 /*Add some locations for local development*/
-,"localdev"  = [ "localhost:8888" ]
+,"localdev"  = [ "localhost:8888", "127.0.0.1:8888" ]
 
 /*Add some places where this app should be running*/
 /* ... */
@@ -68,11 +74,11 @@ production and development table names so that you don't hose
 real data*/
 ,"data"   = {
 
-	"endurance"     = ( useProd ) ? "frm_EETL" : "ac_mtr_endurance_new"
- ,"resistance"    = ( useProd ) ? "frm_RETL" : "ac_mtr_resistance_new"
- ,"participants"  = ( useProd ) ? "v_ADUSessionTickler" : "ac_mtr_participants_v2"
+	"endurance"     = ( !useDebug ) ? "frm_EETL" : "ac_mtr_endurance_new"
+ ,"resistance"    = ( !useDebug ) ? "frm_RETL" : "ac_mtr_resistance_new"
+ ,"participants"  = ( !useDebug ) ? "v_ADUSessionTickler" : "ac_mtr_participants_v2"
 
- ,"notes"         = ( useProd ) ? "ac_mtr_participant_notes" : "ac_mtr_participant_notes"
+ ,"notes"         = ( !useDebug ) ? "ParticipantNotes" : "ParticipantNotes"
  ,"checkin"       = "ac_mtr_checkinstatus_v2"
  ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
 

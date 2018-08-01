@@ -93,17 +93,21 @@ else {
 			//writedump( iicd ); abort;
 			private.previous = { day=iicd.dayofwk, week=iicd.stdywk };
 		}
+		else {
+			private.previous = { day=pl.results.dayofwk, week=pl.results.stdywk };
+		}
 	}
-	
+
+
 	//Define the query string ahead of time, since I'm just recycling it
 	private.queryString = "
 		SELECT * FROM #private.dbName# WHERE participantGUID = :pid 
-			AND stdywk = :stdywk AND dayofwk = :dayofwk";
+			AND stdywk = :stdywk AND dayofwk = :dayofwk AND insertedby != '0'";
 	
 	//Select the most recent set of results
 	private.previousResult = dbExec(
-		//string = private.queryString, bindArgs = {
-		filename = "input#iif( isEnd, DE('EE'), DE('RE'))#Past", bindArgs = {
+		string = private.queryString, bindArgs = {
+		//filename = "input#iif(isEnd,DE('EE'),DE('RE'))#Past.sql", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = private.previous.week
 		 ,dayofwk = private.previous.day
@@ -112,13 +116,20 @@ else {
 
 	//Now, select the most recent result
 	private.currentResult = dbExec(
-		//string = private.queryString, bindArgs = {
-		filename = "input#iif( isEnd, DE('EE'), DE('RE'))#Current", bindArgs = {
+		string = private.queryString, bindArgs = {
+		//filename = "input#iif(isEnd,DE('EE'),DE('RE'))#Current.sql", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = sess.csp.week
 		 ,dayofwk = session.currentDayOfWeek 
 		}
-	); 
+	);
+
+	//Get dbinfo
+	cfdbinfo( name="tcnt", type="columns", datasource="#data.source#", table="#private.dbName#" );
+ 
+//writedump( test );
+writedump( private.currentResult );
+writedump( private.previousResult );abort;
 
 	//The current result will tell me a lot
 	private.exdone = (isEnd) ? 0 : private.currentResult.results[ private.dbPrefix ];
@@ -128,14 +139,32 @@ else {
 	//super-wide columns, but this is far better than other stuff
 
 	//Loop through each query
-	private.queryCreator = { names = [], types = [], values = {} }; 
-	for ( n in ListToArray( private.previousResult.prefix.columnList )) {
-		ArrayAppend( private.queryCreator.names, "p_#n#");
-		ArrayAppend( private.queryCreator.types, "Varchar");
-		private.queryCreator.values[ "p_#n#" ] = private.previousResult.results[ n ]; 
-		ArrayAppend( private.queryCreator.names, "c_#n#");
-		ArrayAppend( private.queryCreator.types, "Varchar");
-		private.queryCreator.values[ "c_#n#" ] = private.currentResult.results[ n ]; 
+	pc = private.queryCreator = { names = [], types = [], values = {} }; 
+
+	//The supported column types are: [ Integer | BigInt | Double | Decimal | VarChar | Binary | Bit | Time | Date | Timestamp | Object]
+	types = { 
+		"int identity" = "Varchar", 
+		"int" = "Integer", 
+		"numeric" = "Decimal", 
+		"nvarchar" = "Varchar", 
+		"varchar(max)" = "Varchar", 
+		"datetime" = "Timestamp" 
+	};
+
+	//TODO: Generate these columns as a CFC when the application restarts, will be very slow to do each time.
+	for ( v in tcnt ) {
+		//writeoutput( "#v.column_name# #v.type_name#" );
+		prefixes=[ "p_", "c_" ];
+		for ( nn in prefixes ) {
+			ArrayAppend( pc.names, "#nn##v.column_name#");
+			ArrayAppend( pc.types, (StructKeyExists( types, v.type_name )) ? types[v.type_name] : v.type_name );
+			val = ( nn eq "p_" ) ? private.previousResult.results[ v.column_name ] : private.currentResult.results[ v.column_name ]; 
+			if ( val eq "" && ( v.type_name eq "int" || v.type_name eq "int identity") ) 
+				pc.values[ "#nn##v.column_name#" ] = 0;
+			else {
+				pc.values[ "#nn##v.column_name#" ] = val;
+			}
+		}
 	}
 
 	//Create a query object
@@ -157,6 +186,10 @@ else {
 	private.getCombinedResults.setAttributes( srcQuery = private.combinerQuery ); 
 	private.combinedResults = private.getCombinedResults.execute(	sql="SELECT #ArrayToList( private.gcValues)# FROM srcQuery" );
 	private.combinedResults = private.combinedResults.getResult();
+
+
+
+
 
 	//If this is an RE participant, pull equipment log 
 	//and get the exercise name that has been selected.

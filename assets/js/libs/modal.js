@@ -15,11 +15,13 @@ function makeModal( ev ) {
 	//The thing to close
 	var c = ev.target.nextElementSibling.querySelector( ".close" );
 	//console.log( b, m, c );
+
 	//Select an onclick
 	//Find an element that will allow me to hot load things
 	b.onclick = function() {
 		m.style.display = "block";
 	}
+
 	c.onclick = function() {
 		m.style.display = "none";
 	}

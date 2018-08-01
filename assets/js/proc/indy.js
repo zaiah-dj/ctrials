@@ -208,11 +208,23 @@ function checkInSaveNote ( ev ) {
 	var pidDom = [].slice.call( 
 		document.querySelectorAll("input[name=ps_pid]") );
 		
+	var sidDom = [].slice.call( 
+		document.querySelectorAll("input[name=ps_sid]") );
+
 	var note = [].slice.call( 
 		document.querySelectorAll("textarea[name=ps_notes]") );
 
 	var pidValue = pidDom[0]["value"];
+	var sidValue = sidDom[0]["value"];
 	var noteValue = note[0]["value"];
+	var windowRef = ev.target.parentElement.parentElement;
+
+	//Only save if content is there
+	if ( noteValue == "" ) {
+		console.log( "nothing is here, guy" );
+		console.log( ev.target.parentElement.parentElement );
+		return;
+	}
 
 	var xhr = new XMLHttpRequest();	
 	xhr.onreadystatechange = function (ev) { 
@@ -225,6 +237,7 @@ function checkInSaveNote ( ev ) {
 				var li = document.createElement( "li" );
 				li.innerHTML = noteValue;
 				par[0].appendChild( li ); 
+				windowRef.style.display = "none";
 			}
 			catch (err) {
 				console.log( err.message );console.log( this.responseText );
@@ -236,8 +249,10 @@ function checkInSaveNote ( ev ) {
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( 
 		"note=" + noteValue + 
-		"&pid=" + pidValue 
+		"&pid=" + pidValue +
+		"&sid=" + sidValue 
 	);
+
 }
 
 
