@@ -102,7 +102,8 @@ else {
 	
 	//Select the most recent set of results
 	private.previousResult = dbExec(
-		string = private.queryString, bindArgs = {
+		//string = private.queryString, bindArgs = {
+		filename = "input#iif( isEnd, DE('EE'), DE('RE'))#Past", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = private.previous.week
 		 ,dayofwk = private.previous.day
@@ -111,7 +112,8 @@ else {
 
 	//Now, select the most recent result
 	private.currentResult = dbExec(
-		string = private.queryString, bindArgs = {
+		//string = private.queryString, bindArgs = {
+		filename = "input#iif( isEnd, DE('EE'), DE('RE'))#Current", bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = sess.csp.week
 		 ,dayofwk = session.currentDayOfWeek 
