@@ -2,18 +2,27 @@
 errstr = "Error at /api/resistance/* - ";
 vpath = 1;
 try {
-	//Auto select exercise type if it's nowhere to be found
-	if ( !StructKeyExists( form, "extype" ) )
-		form.extype = 1;
+	//Check that some type of exercise has been specified in the request.
+	if ( !StructKeyExists( form, "extype" ) ) {
+		req.sendAsJson( status = 0, message = "#errstr# - No exercise type specified." );
+	}
 
 	//Figure out the form type.
-	if ( form.extype lt 1 || form.extype gt 14 ) {
+	if ( form.extype lt 0 || form.extype gt 14 ) {
 		req.sendAsJson( status = 0, message = "#errstr# - Invalid exercise type #form.extype# specified." );
 	}
 
+	//Fill warmup
+	isWarmup = ( form.extype eq 0 ); 
+
 	//Get the formname
-	obj=createObject("component","components.resistance").init();
-	desig = obj.getExerciseName( form.extype ).prefix;
+	desig = dbExec(
+		filename = "elExerciseName.sql", 
+		bindArgs = { id = form.extype }
+	).results.prefix;
+
+//req.sendAsJson( status=0, message='#SerializeJSON(desig)#' ); 
+req.sendAsJson( status=0, message='{ "weighttype": "#desig#" }' );
 
 	//...
 	stat = val.validate( form, {
@@ -31,6 +40,9 @@ try {
 		,Wt1  = { req = false, ifNone = 0 }
 		,Wt2  = { req = false, ifNone = 0 }
 		,Wt3  = { req = false, ifNone = 0 }
+		,hr = { req = (isWarmup), ifNone = 0 }
+		,rpe = { req = (isWarmup), ifNone = 0 }
+		,othafct = { req = (isWarmup), ifNone = 0 }
 	});
 
 	if ( !stat.status ) {
@@ -85,13 +97,16 @@ if ( !upd.prefix.recordCount ) {
 			,insertedBy
 			,dayofwk
 			,stdywk
-			,#desig#
-			,#desig#Rep1
-			,#desig#Rep2
-			,#desig#Rep3
-			,#desig#Wt1
-			,#desig#Wt2
-			,#desig#Wt3
+			#iif(isWarmup,DE(''),DE(',#desig#'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Rep1'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Rep2'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Rep3'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Wt1'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Wt2'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Wt3'))#
+			#iif(isWarmup,DE(',#desig#hr'),DE(''))#	
+			#iif(isWarmup,DE(',#desig#rpe'),DE(''))#	
+			#iif(isWarmup,DE(',#desig#othafct'),DE(''))#	
 		)
 		VALUES
 		(  
@@ -101,13 +116,16 @@ if ( !upd.prefix.recordCount ) {
 			,:insBy
 			,:dwk
 			,:swk
-			,:exIsDone
-			,:rep1
-			,:rep2
-			,:rep3
-			,:wt1
-			,:wt2
-			,:wt3
+			#iif(isWarmup,DE(''),DE(',:exIsDone'))#
+			#iif(isWarmup,DE(''),DE(',:rep1'))#
+			#iif(isWarmup,DE(''),DE(',:rep2'))#
+			#iif(isWarmup,DE(''),DE(',:rep3'))#
+			#iif(isWarmup,DE(''),DE(',:wt1'))#
+			#iif(isWarmup,DE(''),DE(',:wt2'))#
+			#iif(isWarmup,DE(''),DE(',:wt3'))#
+			#iif(isWarmup,DE(',:hr'),DE(''))#	
+			#iif(isWarmup,DE(',:rpe'),DE(''))#	
+			#iif(isWarmup,DE(',:othafct'),DE(''))#	
 		);";
 	}
 else {
@@ -116,13 +134,16 @@ else {
 		UPDATE
 			#data.data.resistance#	
 		SET 
-			 #desig# = :exIsDone
-			,#desig#Rep1 = :rep1
-			,#desig#Wt1  = :wt1
-			,#desig#Rep2 = :rep2
-			,#desig#Wt2  = :wt2
-			,#desig#Rep3 = :rep3
-			,#desig#Wt3  = :wt3
+			#iif(isWarmup,DE(''),DE('#desig# = :exIsDone'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Rep1 = :rep1'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Wt1  = :wt1'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Rep2 = :rep2'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Wt2  = :wt2'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Rep3 = :rep3'))#
+			#iif(isWarmup,DE(''),DE(',#desig#Wt3  = :wt3'))#
+			#iif(isWarmup,DE(' #desig#hr = :hr'),DE(''))#	
+			#iif(isWarmup,DE(',#desig#rpe = :rpe'),DE(''))#	
+			#iif(isWarmup,DE(',#desig#othafct :othafct'),DE(''))#	
 			,d_inserted  = :dtstamp
 			,insertedBy  = :insBy
 		WHERE
@@ -152,7 +173,6 @@ try {
 			pid      = fv.pid 
 		 ,sid      = fv.sess_id
 		 ,rthrd    = fv.recordThread
-		 //,dtstamp  = { value = DateTimeFormat( dstmp,"YYYY-MM-DD HH:nn:ss" ), type="cf_sql_date" }
 		 ,dtstamp  = { value = dstmp, type="cf_sql_date" }
 		 ,exIsDone = fv.exIsDone 
 		 ,insBy    = fv.insBy
@@ -164,6 +184,9 @@ try {
 		 ,wt1      = fv.Wt1 
 		 ,wt2      = fv.Wt2
 		 ,wt3      = fv.Wt3 
+		 ,hr = fv.hr
+		 ,rpe = fv.rpe
+		 ,othafct = fv.othafct
 		} 
 	);
 

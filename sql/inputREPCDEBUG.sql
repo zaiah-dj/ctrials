@@ -149,7 +149,7 @@ SELECT * FROM
 	AND
 		dayofwk = :dayofwk ) as a
 
-INNER JOIN
+RIGHT JOIN
 
 	( SELECT TOP (1) 
 		 rec_id as c_rec_id
@@ -293,7 +293,7 @@ INNER JOIN
 		,wrmup_speed as c_wrmup_speed
 		,wrmup_watres as c_wrmup_watres
 	FROM
-		frm_RETL	
+		ac_mtr_resistance_new	
 	WHERE
 		participantGUID = :pid
 	AND

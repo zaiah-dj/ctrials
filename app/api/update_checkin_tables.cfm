@@ -1,34 +1,6 @@
 <cfscript>
-//Display a message upon redirection
-function errAndRedirect( Required String goto, Required String msg, parameters ) {
-	//clearly, this is not a good way to handle this...
-	if ( StructKeyExists( arguments, "parameters" ) && !IsStruct( StructFind( arguments, "parameters" ) ) ) {
-		throw "Parameters argument is not a struct!";
-	} 
-
-	//Create an array for the link
-	theLink = link( goto & ".cfm" ) & "?";
-	theLink &= "err=" & EncodeForURL( msg ) & "";
-
-	//Add the params
-	if ( StructKeyExists( arguments, "parameters" ) ) {
-		//Loop through?
-		for ( Par in arguments.parameters ) {
-			theLink &= "&#Par#=#arguments.parameters[ Par ]#";
-		}
-	}
-
-
-	//Redirect
-	location( 
-		addtoken="no" 
-	 ,url = theLink
-	);
-}
-
+errstr = "Error at /api/checkin/* - ";
 if ( !StructIsEmpty( form ) ) {
-
-
 	try {
 		//A lot of this can be cleaned up using the validate() function
 		stat = val.validate( form, {
@@ -44,15 +16,10 @@ if ( !StructIsEmpty( form ) ) {
 		 ,bp_diastolic = { req = false, ifNone = 0 }
 		 ,opt1 = { req = false , ifNone = "" }
 		 ,opt2 = { req = false , ifNone = "" }
-//		 ,ashkah = { req =true }
 		} );
 
 		if ( !stat.status ) {
-			errAndRedirect( 
-				goto="check-in"
-			 ,msg="Form values were expected and not there: #SerializeJSON(stat)#" 
-			 ,parameters = { id = url.id }
-			);
+			req.sendAsJson( status = 0, message ="Form values were expected and not there: #SerializeJSON(stat)#" ); 
 		}
 
 		fv = stat.results;
@@ -176,8 +143,5 @@ if ( !StructIsEmpty( form ) ) {
 	}
 
 	//At this point the check-in form was successfully completed, so mark it
-
-	//Get the form part id, and redirect to end or res based on that	
-	location( url="input.cfm?id=#form.ps_pid#", addtoken="no" ); 
 }
 </cfscript>

@@ -1,13 +1,22 @@
 <cfscript>
 /* input.cfm - Controls the appearance of pages that need data. */
+if ( cgi.query_string neq "" ) {
+	//What type of exercise has been requested
+	if ( StructKeyExists( url, "param" ) ) {
+		sess.csp.exerciseParameter = url.param;
+	}
 
-//If no one is selected, do nothing
-if ( currentParticipant.prefix.recordCount eq 0 ) 
-	0;
+	//Select a week
+	if ( StructKeyExists( url, "week" ) ) {
+		sess.csp.week = url.week;
+	}
+}
+
 
 //Get the participant types first to figure out if there is any reason to move further.
 isEnd = ListContains(ENDURANCE, currentParticipant.results.randomGroupCode );
 isRes = ListContains(RESISTANCE, currentParticipant.results.randomGroupCode );
+
 
 //If moving forward, then start calculations
 if ( isEnd || isRes ) {
@@ -16,28 +25,27 @@ if ( isEnd || isRes ) {
 	public = {};
 
 	//Define static data here for easy editing
-	private.labels = [ "Cycle", "Treadmill", "Other", "Chest, Shoulders...", "Hips/Thighs" ];
+	private.labels = {
+		endurance = [ "Cycle", "Treadmill", "Other" ] 
+	,	resistance = [ "Hips/Thighs", "Chest/Shoulders..." ]
+	};
 
 	//Figure out The text name will do a lot
 	partClass = ( isEnd ) ? "endurance" : "resistance";	
 
 	//Set variables based on selection type
 	obj = CreateObject( "component", "components.#partClass#" ).init();	
-	private.dbName = ( isEnd ) ? "#data.data.endurance#" : "#data.data.resistance#";
+	private.dbName = (isEnd) ? "#data.data.endurance#" : "#data.data.resistance#";
 	private.mpName = (isEnd) ? "time" : "extype";
 	private.hiddenVarName= (isEnd) ? "timeblock" : "extype";
-	private.rp = (isRes) ? ((sess.csp.exerciseParameter eq 4) ? 1 : 3 ) : 0;
-	private.magic = (StructKeyExists(url, private.mpName )) ? url[ private.mpName ] : private.rp;
+	private.magic = (StructKeyExists(url, private.mpName )) ? url[ private.mpName ] : 0;
 	private.magicName = (isEnd) ? "" : obj.getExerciseName( private.magic ).pname;
 	private.exSetType = sess.csp.exerciseParameter;
-	private.exSetTypeLabel = private.labels[ sess.csp.exerciseParameter ];
-	private.modNames = (isEnd) ? obj.getModifiers() : obj.getSpecificModifiers( private.exSetType );
+	private.exSetTypeLabel = private.labels[ partClass ][ sess.csp.exerciseParameter ];
+	private.modNames = (isEnd) ? obj.getModifiers() : dbExec(filename="elExercises.sql", bindArgs={ord=(sess.csp.exerciseParameter==1) ? 0 : 7}).results;
 	private.dbPrefix = (isEnd) ? obj.getTimeInfo( private.magic ).prefix : obj.getExerciseName( private.magic ).prefix ;
 	private.cssPrefix = partClass;
 	private.formValues = obj.getLabelsFor( sess.csp.exerciseParameter, private.magic ); 
-
-	//Check check-in completed first (the tab should have at least been visited)
-	//sess.csp.checkInCompleted = 1;
 
 	//Select the last two days for this user.
 	private.lastdays = dbExec(
@@ -98,8 +106,10 @@ if ( isEnd || isRes ) {
 	
 	//Select the most recent and current set of results
 	private.etc = dbExec(
-		//string = private.queryString, bindArgs = {
-		filename = "input#iif(isEnd,DE('EE'),DE('RE'))#PastCurrent.sql", bindArgs = {
+		filename = 
+			(data.debug) ? "input#iif(isEnd,DE('EE'),DE('RE'))#PCDEBUG.sql"
+			: "input#iif(isEnd,DE('EE'),DE('RE'))#PastCurrent.sql", 
+		bindArgs = {
 			pid = sess.current.participantId 
 		 ,stdywk = sess.csp.week
 		 ,dayofwk = session.currentDayOfWeek
@@ -108,6 +118,7 @@ if ( isEnd || isRes ) {
 		}
 	);
 
+//writedump( private.etc ); abort;
 	//Then create the SQL needed to get the data I want for easy looping
 	private.gcValues = [];
 	for ( n in private.formValues ) {
@@ -122,26 +133,10 @@ if ( isEnd || isRes ) {
 	private.combinedResults = private.getCombinedResults.execute(	sql="SELECT #ArrayToList(private.gcValues)# FROM srcQuery" );
 	private.combinedResults = private.combinedResults.getResult();
 
-	//If this is an RE participant, pull equipment log 
-	//and get the exercise name that has been selected.
-	//private.allSettingsPerExercise = {}; 
-	if (ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)) {
-		/*
-		private.eqLogX = dbExec(
-			string = "SELECT * FROM #data.data.etex#"
-		);
-		writedump(private.eqLogX );
-		abort;
-		*/
-		0;
-	}
-
-	//More Debugging Items 
-	//writedump( session );	
 	/*
+	writedump( session );	
 	writeoutput( "<h2>LAST DAYS</h2>" ); writedump( private.lastDays );		
-	writeoutput( "<h2>PREVIOUS</h2>" ); writedump( private.previousResult );		
-	writeoutput( "<h2>CURRENT</h2>" ); writedump( private.currentResult );		
+	writeoutput( "<h2>PREVIOUS</h2>" ); writedump( private.etc );		
 	abort;
 	*/
 

@@ -120,8 +120,8 @@ real data*/
 	 view = [ "master/head", "participant/list", "participant/nav", "input", "master/tail" ] }
 
 	/*Page to collect notes*/
- ,"check-in" = { model = [ "init","process_checkin_form" ],
-	 view = [ "master/head", "participant/list", "participant/nav", "check-in", "master/tail" ] }
+ ,"check-in" = { model = [ "init" ],
+	 view = [ "master/head", "participant/list", "participant/nav", "checkIn", "master/tail" ] }
 
 	/*Logout an interventionist, releasing all of their associated participants and stopping the session.*/
 	,"logout" = { model="logout", view="logout" , hint="Logs out a user." }

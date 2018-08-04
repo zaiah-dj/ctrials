@@ -7,6 +7,8 @@ Still ugly though, because it's CF ;)
 <cfscript>
 if ( StructKeyExists( form, "this" ) && form.this eq "startSession" )
 	include "api/start_session.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "checkin" )
+	include "api/update_checkin_tables.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "control" )
 	include "api/update_control_table.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "endurance" ) 

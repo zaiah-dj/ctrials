@@ -1,13 +1,13 @@
-/* ---------------------------
+/* -------------------------------
 INTERVENTION TRACKING TABLES
 
-Approaching final draft of SQL
-tables.
+SQL tables to run a local instance of
+the intervention tracking application.
 
-Still only works with SQL server.
- ---------------------------- */
+NOTE: Only works with SQL server.
+ ------------------------------- */
 /* -------------------------------
- PRODUCTION SCHEMA
+ PRODUCTION SCHEMA for DEVELOPMENT ONLY
  ------------------------------- */
 CREATE DATABASE localmotrpac;
 GO
@@ -59,19 +59,6 @@ ac_mtr_checkinstatus_v3
 
 What condition is the patient
 in during the visit?
-
-ps_id                 Unique ID
-ps_session_id         The session ID that this participant was tested during.
-ps_before             Was this done before or after the exercises?
-ps_weight             How heavy is patient at start?
-
-ps_day                What day of the week were they looked at?
-ps_date_time_assessed When was the person assessed
-ps_droppedout         Did the participant opt out this time?
-ps_dropout_reason     Why?
-ps_session_ex_type	  0 = n/a, 1 = legs, 2 = biceps
-ps_notes              Other notes concerning the patient's condition.
-
 
  ps_id INT IDENTITY(1,1) NOT NULL - Unique ID
 ,ps_pid VARCHAR(64)               - Partiicipant GUID
@@ -130,33 +117,9 @@ CREATE TABLE ac_mtr_bloodpressure_v2 (
 );
 
 
-/* ---------------------------
-ac_mtr_participant_notes
-
-Participant note data taken
-at the start of the session.
-
- note_id INT IDENTITY(1,1) NOT NULL    -
-,note_participant_match_id varchar(64) -
-,note_datetime_added DATETIME          -
-,note_text varchar(max)                -
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_participant_notes', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_participant_notes;
-END
-CREATE TABLE ac_mtr_participant_notes 
-(
-	 note_id INT IDENTITY(1,1) NOT NULL
-	,note_participant_match_id varchar(64)
-	,note_datetime_added DATETIME
-	,note_text varchar(max)
-);
-
-
 
 /* ---------------------------
-ac_mtr_participant_v3
+v_ADUSessionTickler
 
 Participant data table in lieu
 of a session tickler or some 
@@ -177,11 +140,11 @@ other data source.
 ,siteGUID varchar(256) NULL              - 
 ,d_session datetime NULL                 - ?
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_participants_v2', N'U') IS NOT NULL
+IF OBJECT_ID( N'v_ADUSessionTickler', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_participants_v2;
+	DROP TABLE v_ADUSessionTickler;
 END
-CREATE TABLE ac_mtr_participants_v2 (
+CREATE TABLE v_ADUSessionTickler (
 	[p_id] [int] IDENTITY(1,1) NOT NULL,
 	[participantGUID] [varchar](50) NOT NULL,
 	[pid] [int] NOT NULL,
@@ -200,7 +163,7 @@ CREATE TABLE ac_mtr_participants_v2 (
 
 
 /* ---------------------------
-ac_mtr_endurance_new
+frm_EETL
 
 A table for endurance data
 that can be shared by other apps.
@@ -298,13 +261,13 @@ CREATE TABLE ac_mtr_endurance_new (
 	[m5_exwatres]      int NULL,
 	
 	/*Recovery column*/
-	[m5_rechr]         int NULL,
-	[m5_recoth1]       int NULL,
-	[m5_recoth2]       int NULL,
-	[m5_recprctgrade]  numeric(18,0) NULL,
-	[m5_recrpm]        int NULL,
-	[m5_recspeed]      numeric(18,0) NULL,
-	[m5_recwatres]     int NULL,
+	[m3_rechr]         int NULL,
+	[m3_recoth1]       int NULL,
+	[m3_recoth2]       int NULL,
+	[m3_recprctgrade]  numeric(18,0) NULL,
+	[m3_recrpm]        int NULL,
+	[m3_recspeed]      numeric(18,0) NULL,
+	[m3_recwatres]     int NULL,
 	
 	[mchntype]         int NULL,
 	[MthlyBPDia]       int NULL,
@@ -335,16 +298,16 @@ CREATE TABLE ac_mtr_endurance_new (
 
 
 /* ---------------------------
-ac_mtr_resistance_new
+frm_RETL
 
 A table for resistance data
 that can be shared by other apps.
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_resistance_new', N'U') IS NOT NULL
+IF OBJECT_ID( N'frm_RETL', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_resistance_new ;
+	DROP TABLE frm_RETL ;
 END
-CREATE TABLE ac_mtr_resistance_new (
+CREATE TABLE frm_RETL (
 	[rec_id]          int IDENTITY(1,1) NOT NULL,
 	[recordthread]    varchar(50) NOT NULL DEFAULT (newid()),
 	[d_inserted]      datetime NOT NULL DEFAULT (getdate()),
@@ -482,7 +445,9 @@ CREATE TABLE ac_mtr_resistance_new (
 	[wrmup_prctgrade] [numeric](18, 0) NULL,
 	[wrmup_rpm] [int] NULL,
 	[wrmup_speed] [numeric](18, 0) NULL,
-	[wrmup_watres] [int] NULL
+	[wrmup_watres] [int] NULL,
+	[wrmup_rpe] [int] NULL,
+	[wrmup_othafct] [int] NULL
 );
 
 
@@ -658,7 +623,7 @@ CREATE TABLE ac_mtr_session_participant_data_tracker
 ); 
  
  
-/* DEVELOPMENT ONLY */
+
 /* ---------------------------
 ac_mtr_test_staff
 
@@ -686,7 +651,7 @@ CREATE TABLE ac_mtr_test_staff (
 );
 
 /* ---------------------------
-ac_participant_notes_v2
+ParticipantNotes
 
 New participant notes table to
 more accurately match what is 

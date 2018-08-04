@@ -19,7 +19,11 @@ try {
 	}
 
 	//Also stop if the timeblock is not there.
-	if ( !StructKeyExists( form, "timeblock" ) ) {
+	if ( StructKeyExists( form, "timeblock" ) ) {
+		ft = form.timeblock;
+		ftstat = (ft == 0 || ft == 20 || ft == 45);
+	}
+	else {
 		req.sendAsJson( 
 			status = 0, 
 			message = "#errstr# Parameter 'timeblock' " &
@@ -52,9 +56,9 @@ try {
 		,oth2 = { req = (form.exparam eq OTHER), ifNone = 0 }
 
 		//These are only required at times 0 (warm-up), 20m and 45m
-		,othafct = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
-		,hr = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
-		,rpe = { req = (ListContains( form.timeblock, "0,20,45") ), ifNone = 0 }
+		,othafct = { req = (ftstat), ifNone = 0 }
+		,hr = { req = (ftstat), ifNone = 0 }
+		,rpe = { req = (ftstat), ifNone = 0 }
 	});
 
 	if ( !stat.status ) {
@@ -128,8 +132,8 @@ if ( !upd.prefix.recordCount ) {
 	 ,#desig#speed
 	 ,#desig#watres  
 	 ,#desig#hr
-	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#Othafct'),DE(''))#
-	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#rpe'),DE(''))#
+	 #iif(ftstat,DE(',#desig#Othafct'),DE(''))#
+	 #iif(ftstat,DE(',#desig#rpe'),DE(''))#
 	 ,dayofwk
 	 ,stdywk
 	)
@@ -146,8 +150,8 @@ if ( !upd.prefix.recordCount ) {
 		,:speed
 		,:watres
 		,:hr
-		#iif(ListContains(fv.timeblock,'0,20,45') ,DE(',:afct'),DE(''))#
-		#iif(ListContains(fv.timeblock,'0,20,45') ,DE(',:rpe'),DE(''))#
+		#iif(ftstat,DE(',:afct'),DE(''))#
+		#iif(ftstat,DE(',:rpe'),DE(''))#
 		,:dwk
 		,:swk
 	)";
@@ -168,8 +172,8 @@ else {
 		,#desig#speed = :speed
 		,#desig#watres = :watres
 		,#desig#hr = :hr
-	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#Othafct = :afct'),DE(''))#
-	 #iif(ListContains(fv.timeblock,'0,20,45') ,DE(',#desig#rpe = :rpe'),DE(''))#
+	 #iif(ftstat,DE(',#desig#Othafct = :afct'),DE(''))#
+	 #iif(ftstat,DE(',#desig#rpe = :rpe'),DE(''))#
 	 WHERE
 		participantGUID = :pid
 	 AND
@@ -180,15 +184,6 @@ else {
 		stdywk = :swk
 	";
 }
-
-/*
-		if ( 1 ) {
-			req.sendAsJson( 
-				status = 0
-			 ,message = "Form values received were: #SerializeJSON(stat)#" 
-			);
-		}
-*/
 
 try {
 	//This is in case I find myself modifying dates from other times

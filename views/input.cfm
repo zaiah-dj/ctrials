@@ -53,10 +53,16 @@
 
 	<!--- Generate the modifier list per each participant type --->
 	<ul class="inner-selection">
+		<a href="#link( 'input.cfm?id=#url.id#&#private.mpName#=0' )#">
+			<li class="#iif(private.magic eq 0, DE('selected'),DE(''))#">5 Minute Warmup</li>
+		</a>
 	<cfloop query = "#private.modNames#">
+		<cfif (urlparam eq 0) && isEnd>
+		<cfelse>
 		<a href="#link( 'input.cfm?id=#url.id#&#private.mpName#=#urlparam#' )#">
 			<li class="#iif(private.magic eq urlparam, DE('selected'),DE(''))#">#pname#</li>
 		</a>
+		</cfif>
 	</cfloop>
 		<a href="#link( 'recovery.cfm?id=#url.id#' )#">
 			<li class="bg-red stop-sess">Stop Session</li>

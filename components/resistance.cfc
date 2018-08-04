@@ -34,8 +34,8 @@ component name="resistance" {
 			,{uom="lb"  ,label="Set 3",min=5,max=100, step=5, formName = "Wt3" ,index=3, paramMatch=1}
 			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep3",index=3, paramMatch=1}
 		  ,{uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", index=0, paramMatch=0}
-		//,{uom="rpe", label="RPE",        min=20, max=120, step=1, formName="rpe", index=0, paramMatch=0}
-		//,{uom="%"  , label="Affect",     min=20, max=120, step=1, formName="Othafct", index=0, paramMatch=0}
+		  ,{uom="rpe", label="RPE",        min=20, max=120, step=1, formName="rpe", index=0, paramMatch=0}
+		  ,{uom="%"  , label="Affect",     min=20, max=120, step=1, formName="Othafct", index=0, paramMatch=0}
 		]);
 
 		this.exercises = queryNew( 

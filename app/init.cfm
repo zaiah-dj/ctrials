@@ -7,6 +7,45 @@ rl    = CreateObject( "component", "components.requestLogger" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 val   = CreateObject( "component", "components.validate" );
 
+//Display a message upon redirection
+function errAndRedirect( Required String goto, Required String msg, parameters ) {
+	//clearly, this is not a good way to handle this...
+	if ( StructKeyExists( arguments, "parameters" ) && !IsStruct( StructFind( arguments, "parameters" ) ) ) {
+		throw "Parameters argument is not a struct!";
+	} 
+
+	//Create an array for the link
+	theLink = link( goto & ".cfm" ) & "?";
+	theLink &= "err=" & EncodeForURL( msg ) & "";
+
+	//Add the params
+	if ( StructKeyExists( arguments, "parameters" ) ) {
+		//Loop through?
+		for ( Par in arguments.parameters ) {
+			theLink &= "&#Par#=#arguments.parameters[ Par ]#";
+		}
+	}
+
+
+	//Redirect
+	location( 
+		addtoken="no" 
+	 ,url = theLink
+	);
+}
+
+//TODO: move this and other static data to a component
+CONSTANTS = {
+	 bpDaysLimit = 30
+	,bpMinSystolic = 40 
+	,bpMaxSystolic = 160
+	,bpMinDiastolic = 40
+	,bpMaxDiastolic = 90
+
+	,ENDURANCE = 1
+	,RESISTANCE = 2
+};  
+
 
 //Set a datasource for all things
 ezdb.setDs( datasource = "#data.source#" );
@@ -540,7 +579,7 @@ else {
 	cs = session[ session.ivId ]; 
 }
 
-//Build a session
+//Record specific session data for this app only
 cs.id = session.ivId ;
 cs.date = session.userDate;
 cs.day = session.currentDayOfWeek;
@@ -588,143 +627,117 @@ if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
 	buildRecordThreads( session[ session.ivId ] );
 }
 
-//Short name again
+
+//???
+if ( 0 ) {
+	if ( StructKeyExists( url, "staffid" ) )
+		sess.current.staff.userid = url.staffid;
+	if ( StructKeyExists( url, "staffguid" ) )
+		sess.current.staff.guid = url.staffguid;
+	if ( StructKeyExists( url, "siteid" ) )
+		sess.current.staff.guid = url.siteid;
+	if ( StructKeyExists( url, "day" ) )
+		sess.current.day = currentDayOfWeek; //url.day;
+		//sess.current.day = url.day; 
+	if ( StructKeyExists( url, "week" ) ) {
+		sess.csp.week = currentWeek; //url.week;
+		//sess.csp.week = url.week;
+	}
+}
+
+
+//Now build session data for the "active" participant
 if ( StructKeyExists( sess.current, "participants" ) ) {
 	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
-		sess.csp = sess.current.participants[ sess.current.participantId ];
-
-		if ( StructKeyExists( url, "staffid" ) )
-			sess.current.staff.userid = url.staffid;
-		if ( StructKeyExists( url, "staffguid" ) )
-			sess.current.staff.guid = url.staffguid;
-		if ( StructKeyExists( url, "siteid" ) )
-			sess.current.staff.guid = url.siteid;
-		if ( StructKeyExists( url, "day" ) )
-			sess.current.day = currentDayOfWeek; //url.day;
-			//sess.current.day = url.day; 
-		if ( StructKeyExists( url, "week" ) ) {
-			sess.csp.week = currentWeek; //url.week;
-			//sess.csp.week = url.week;
-		}
-		/*
-		if ( StructKeyExists( url, "timeblock" ) )
-			sess.current.staff.guid = url.time;
-		if ( StructKeyExists( url, "param" ) )
-			sess.csp.exerciseParameter = url.param;
-		*/
-	}
-}
 
 
-//Now, get specific and initialize other things
-if ( data.loaded eq "input" && cgi.query_string neq "" ) {
-	if ( StructKeyExists( url, "param" ) )
-		sess.csp.exerciseParameter = url.param;
+		isEnd = (ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
+		isRes = (ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
 
-	//Select a week
-	if ( StructKeyExists( url, "week" ) )
-		sess.csp.week = url.week;
-}
-else if ( data.loaded eq "check-in" ) {
-	//Select days from this week with results (including today?)
-	tbName = ( ListContains( ENDURANCE, currentParticipant.results.randomGroupCode ) ) 
-		? "#data.data.endurance#" : "#data.data.resistance#";
+		//Short name for reference throughout the app
+		sc = sess.csp = sess.current.participants[ sess.current.participantId ];
 
-	//Get the last blood pressure
-	privateBPQ = ezdb.exec( 
-		string="SELECT * FROM #data.data.bloodpressure# WHERE bp_pid = :pid", 
-		bindArgs = { pid = "#sess.current.participantId#" } 
-	).results;
-
-	//Blood pressure calculations
-	privateBPDaysLimit = 30;
-	privateBPDaysElapsed = ( privateBPQ.bp_daterecorded eq "" ) ? 0 : DateDiff( "d", privateBPQ.bp_daterecorded, Now() ); 
-	privateReBP = ( privateBPQ.bp_daterecorded eq "" || privateBPDaysElapsed gt privateBPDaysLimit ); 
-
-	//Get the last recorded weight
-	weight = ezdb.exec( 
-	  string="
-			SELECT weight FROM #tbName# 
+		//get blood pressure and weight
+		cp = {
+			details = dbExec( 
+				string="
+			SELECT * FROM
+				( SELECT * FROM 
+					#data.data.bloodpressure# 
 				WHERE 
-					recordthread = :thr
-				AND
-					participantGUID = :pid 
-			"
-		 ,bindArgs = { 
-				pid = { type = "varchar", value = sess.current.participantId },
-				thr = { type = "varchar", value = sess.csp.recordthread  }
+					bp_pid = :pid ) as bpp 
+				RIGHT JOIN
+				( SELECT 
+						participantGUID as _pid	
+					 ,weight
+					 ,#iif(isEnd,DE('trgthr1'),DE('0'))# as targetHR
+					 ,#iif(isEnd,DE('mchntype'),DE('bodypart'))# as exerciseType 
+				FROM 
+					#iif(isEnd,DE('#data.data.endurance#'),DE('#data.data.resistance#'))# 
+				WHERE 
+					participantGUID = :pid ) as frmVal
+			ON bpp.bp_pid = frmVal._pid
+				"
+			 ,bindArgs = { 
+					pid = { type = "varchar", value = sess.current.participantId }
+				}
+			).results
+
+			//Get all the completed days for the week
+		 ,completedDays = ezdb.exec(
+				string="SELECT dayofwk FROM
+					#iif(isEnd,DE('#data.data.endurance#'),DE('#data.data.resistance#'))# 
+					WHERE participantGUID = :pid AND stdywk = :wk"
+			 ,bindArgs={ 
+					pid = sess.current.participantId 
+			 ,wk  = sess.csp.week
 			}
-		).results.weight;
+			).results
 
-	//...
-	if ( !ListContains(ENDURANCE, currentParticipant.results.randomGroupCode) )
-		targetHR = 0;
-	else {
-		//Get the last recorded weight
-		targetHR = ezdb.exec( 
-			string="SELECT trgthr1 FROM #tbName# 
-				WHERE recordthread = :thr AND participantGUID = :pid "
-		 ,bindArgs = { 
-				pid = { type = "varchar", value = sess.current.participantId },
-				thr = { type = "varchar", value = sess.csp.recordthread  }
-			}
-		).results.trgthr1;
-	}
+			//Get all the notes
+		 ,notes = ezdb.exec(
+				string = "
+					SELECT
+						noteDate
+					 ,noteText	
+					 ,insertedby
+					FROM 
+						#data.data.notes#	
+					WHERE participantGUID = :pid
+					ORDER BY noteDate DESC
+					"
+			 ,datasource = "#data.source#" 
+			 ,bindArgs = {pid = sess.current.participantId}
+			).results
+		};
 
-	//Blood pressure
-	sess.csp.getNewBP = privateReBP;
-	sess.csp.BPDaysLeft = privateBPDaysLimit - privateBPDaysElapsed;
-	sess.csp.BPSystolic = (privateReBP) ? 40 : privateBPQ.bp_systolic;
-	sess.csp.BPDiastolic = (privateReBP) ? 40 : privateBPQ.bp_diastolic;
-	BPMinSystolic = 40 ;
-	BPMaxSystolic = 160;
-	BPMinDiastolic = 40;
-	BPMaxDiastolic = 90;
+		//Get 
+		sc.exerciseParameter = cp.details.exerciseType;
 
-	//Target Heart Rate
-	sess.csp.targetHR = ( targetHR eq "" || targetHR eq 0 ) ? 0 : targetHR;
+		//Calculate remaining blood pressure calculation days
+		sc.bpDaysElapsed = (cp.details.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.bp_daterecorded,Now());
 
-	//Weight
-	sess.csp.weight = ( weight eq "" || weight eq 0 ) ? 0 : weight;
+		//Boolean to tell if we need a new blood pressure or not
+		sc.getNewBP = (cp.details.bp_daterecorded eq "" || sc.BPDaysElapsed gt CONSTANTS.bpDaysLimit); 
 
-	//Completed days array
-	sess.csp.cdays = [0,0,0,0,0,0];
+		//Calculate time until we need to take a new blood pressure
+		sc.bpDaysLeft = CONSTANTS.bpDaysLimit - sc.bpDaysElapsed;
+		
+		sc.bpSystolic = (sc.getNewBP) ? CONSTANTS.bpMinSystolic : cp.details.bp_systolic;
 
-	//Query completed days
-	qCompletedDays = ezdb.exec(
-		string="SELECT dayofwk FROM #tbName# 
-			WHERE participantGUID = :pid AND stdywk = :wk"
-	 ,bindArgs={ 
-			pid = sess.current.participantId 
-		 ,wk  = sess.csp.week
+		sc.bpDiastolic = (sc.getNewBP) ? CONSTANTS.bpMinDiastolic : cp.details.bp_diastolic;
+
+		sc.targetHR = (cp.details.targetHR eq "" || cp.details.targetHR eq 0 ) ? 0 : cp.details.targetHR;
+		
+		sc.weight = (cp.details.weight eq "" || cp.details.weight eq 0 ) ? 0 : cp.details.weight;
+
+		//Populate the finished days
+		sc.cdays = [0,0,0,0,0,0];
+		for ( n in ListToArray( ValueList( cp.completedDays.dayofwk, "," ) ) ) {
+			sess.csp.cdays[ n ] = n; 
 		}
-	);
-
-	//...
-	for ( n in ListToArray( ValueList( qCompletedDays.results.dayofwk, "," ) ) ) {
-		sess.csp.cdays[ n ] = n; 
 	}
-
-	//...
-	pNotes = ezdb.exec(
-		string = "
-			SELECT
-				noteDate
-			 ,noteText	
-			 ,insertedby
-			FROM 
-				#data.data.notes#	
-			WHERE participantGUID = :pid
-				AND	noteCategory = 3
-			ORDER BY noteDate DESC
-			"
-	 ,datasource = "#data.source#" 
-	 ,bindArgs = {pid = sess.current.participantId}
-	);
-	
-	if ( !pNotes.status ) {
-		writedump( pNotes.message );
-		abort;	
-	}	
 }
+
+
 </cfscript>
