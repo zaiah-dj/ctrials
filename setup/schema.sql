@@ -4,12 +4,16 @@ INTERVENTION TRACKING TABLES
 SQL tables to run a local instance of
 the intervention tracking application.
 
+Running this file will allow one to
+run the motrpac intervention interface
+from a local setup.
+
 NOTE: Only works with SQL server.
  ------------------------------- */
-/* -------------------------------
- PRODUCTION SCHEMA for DEVELOPMENT ONLY
- ------------------------------- */
-CREATE DATABASE localmotrpac;
+IF db_id( 'localmotrpac' ) IS NULL
+BEGIN
+	CREATE DATABASE localmotrpac;
+END
 GO
 
 USE localmotrpac;
@@ -168,11 +172,11 @@ frm_EETL
 A table for endurance data
 that can be shared by other apps.
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_endurance_new', N'U') IS NOT NULL
+IF OBJECT_ID( N'frm_EETL', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_endurance_new;
+	DROP TABLE frm_EETL;
 END
-CREATE TABLE ac_mtr_endurance_new (
+CREATE TABLE frm_EETL (
 	[rec_id]           int IDENTITY(1,1) NOT NULL,
 	[recordthread]     varchar(50) NOT NULL DEFAULT (newid()),
 	[d_inserted]       datetime NOT NULL DEFAULT (getdate()),
@@ -305,7 +309,7 @@ that can be shared by other apps.
  ---------------------------- */
 IF OBJECT_ID( N'frm_RETL', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE frm_RETL ;
+	DROP TABLE frm_RETL;
 END
 CREATE TABLE frm_RETL (
 	[rec_id]          int IDENTITY(1,1) NOT NULL,
@@ -669,11 +673,11 @@ going on.
 ,[deletedby]        varchar(50) NULL
 ,[d_deleted]        datetime NULL
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_participant_notes_v2', N'U') IS NOT NULL
+IF OBJECT_ID( N'ParticipantNotes', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_participant_notes_v2;
+	DROP TABLE ParticipantNotes;
 END
-CREATE TABLE ac_mtr_participant_notes_v2 (
+CREATE TABLE ParticipantNotes (
 	 [recID]            int IDENTITY(1,1) NOT NULL
 	,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
 	,[participantGUID]  varchar(50) NULL
