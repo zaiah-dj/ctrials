@@ -11,7 +11,6 @@
 			if ( ListContains(RESISTANCE,n.randomGroupCode )) { ContainsRe=1; break; }
 		</cfscript>
 
-		
 		<div class="zeitgeist">
 			<h6>Legend</h6>
 			<div style="text-align: left; position: relative; left: 10px; color: black;">
@@ -46,8 +45,13 @@
 		</p>
 	</cfif>
 
-<cfelse>
+<cfelseif private.proceed eq false>
+	<!--- No participant checked-in --->
+	<p style="color: black;">
+	#private.message#
+	</p>
 
+<cfelse>
 	<!--- Place the time or exercise type on the page so that JS can query it. --->
 	<input type="hidden" value="#private.magic#" name="#private.hiddenVarName#">
 
@@ -57,7 +61,7 @@
 			<li class="#iif(private.magic eq 0, DE('selected'),DE(''))#">5 Minute Warmup</li>
 		</a>
 	<cfloop query = "#private.modNames#">
-		<cfif (urlparam eq 0) && isEnd>
+		<cfif ((urlparam eq 0) && isEnd) || ((urlparam eq 0) && isRes)>
 		<cfelse>
 		<a href="#link( 'input.cfm?id=#url.id#&#private.mpName#=#urlparam#' )#">
 			<li class="#iif(private.magic eq urlparam, DE('selected'),DE(''))#">#pname#</li>
@@ -122,11 +126,20 @@
 				</tr>
 				<tr>
 					<td class="title">Machine</td>
-					<td>##</td>
+					<td>
+						#private.eqlog.results.manufacturerdescription#
+						#private.eqlog.results.modeldescription#
+					</td>
 				</tr>
 				<tr>
 					<td class="title">Machine Settings</td>
-					<td>## <a href="">Settings</a></td>
+					<td>
+					<ul>
+					<cfloop query=#private.eqlog.results#>	
+						<li>#settingDescription#</li>
+					</cfloop>
+					</ul>
+					</td>
 				</tr>
 				<tr>
 					<td class="title">Was exercise done?</td>
@@ -162,13 +175,19 @@
 				</tr>
 			</thead>
 		</table>
+			<!---
+			<cfdump var=#private.formValues#>
+			<cfdump var=#private.combinedResults["p_legpressWt1"]#>
+			<cfabort>
+			--->
+			<cfloop query=#private.formValues#> <!---index="v" --->
+			</cfloop>
 
 			<cfloop query=#private.formValues#> <!---index="v" --->
 				<!--- Reference the SQL value up here --->
 				<cfset svMostRecent=private.combinedResults[ "p_#private.dbPrefix##formName#" ]>
 				<cfset svCurrent=private.combinedResults[ "c_#private.dbPrefix##formName#" ]>
 				<cfset def=iif( svCurrent eq "", 0, svCurrent )>
-
 
 		<table class="table table-results">
 			<tbody>
@@ -180,7 +199,8 @@
 				</cfif>
 				<tr>
 					<!--- An asterisk should show if nothing is there --->
-					<td>#iif(svMostRecent eq 0 || svMostRecent eq "",DE('*'),DE(svMostRecent & ' ' & uom))#</td>
+<!--- || --->
+					<td>#iif(svMostRecent eq "" || svMostRecent eq 0,DE('*'),DE(svMostRecent & ' ' & uom))#</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
@@ -196,6 +216,7 @@
 				</tr>
 			</tbody>
 		</table>
+
 			</cfloop>
 		<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
 	#AjaxClientInitCode#

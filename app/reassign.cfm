@@ -1,7 +1,7 @@
 <!--- reassign.cfm --->
 <cfscript>
 public = {
-	staff = ezdb.exec(
+	staff = dbExec(
 		string = "select * from #data.data.staff# where ts_siteid = :site"
 	 ,bindArgs = { site = siteId }
 	)

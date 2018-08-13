@@ -9,10 +9,13 @@ NOTE: Only works with SQL server.
 /* -------------------------------
  PRODUCTION SCHEMA for DEVELOPMENT ONLY
  ------------------------------- */
-CREATE DATABASE localmotrpac;
+/*CREATE DATABASE localmotrpac;
 GO
 
 USE localmotrpac;
+GO*/
+
+USE zProgrammer_AntonioCollins;
 GO
 
 DECLARE @BUILD_EQUIPMENT_LOG integer;
@@ -168,11 +171,11 @@ frm_EETL
 A table for endurance data
 that can be shared by other apps.
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_endurance_new', N'U') IS NOT NULL
+IF OBJECT_ID( N'frm_EETL', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_endurance_new;
+	DROP TABLE frm_EETL;
 END
-CREATE TABLE ac_mtr_endurance_new (
+CREATE TABLE frm_EETL (
 	[rec_id]           int IDENTITY(1,1) NOT NULL,
 	[recordthread]     varchar(50) NOT NULL DEFAULT (newid()),
 	[d_inserted]       datetime NOT NULL DEFAULT (getdate()),
@@ -447,7 +450,14 @@ CREATE TABLE frm_RETL (
 	[wrmup_speed] [numeric](18, 0) NULL,
 	[wrmup_watres] [int] NULL,
 	[wrmup_rpe] [int] NULL,
-	[wrmup_othafct] [int] NULL
+	[wrmup_othafct] [int] NULL,
+	[modleg] [int] NULL,
+	[modlegRep1] [int] NULL,
+	[modlegRep2] [int] NULL,
+	[modlegRep3] [int] NULL,
+	[modlegWt1] [int] NULL,
+	[modlegWt2] [int] NULL,
+	[modlegWt3] [int] NULL
 );
 
 
@@ -669,11 +679,11 @@ going on.
 ,[deletedby]        varchar(50) NULL
 ,[d_deleted]        datetime NULL
  ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_participant_notes_v2', N'U') IS NOT NULL
+IF OBJECT_ID( N'ParticipantNotes', N'U') IS NOT NULL
 BEGIN
-	DROP TABLE ac_mtr_participant_notes_v2;
+	DROP TABLE ParticipantNotes;
 END
-CREATE TABLE ac_mtr_participant_notes_v2 (
+CREATE TABLE ParticipantNotes (
 	 [recID]            int IDENTITY(1,1) NOT NULL
 	,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
 	,[participantGUID]  varchar(50) NULL
@@ -686,6 +696,30 @@ CREATE TABLE ac_mtr_participant_notes_v2 (
 	,[deletedby]        varchar(50) NULL
 	,[d_deleted]        datetime NULL
 );
+
+
+/* ---------------------------
+ac_mtr_session_interventionist_assignment 
+
+-
+
+ [csd_id] int IDENTITY(1,1) NOT NULL
+,[csd_daily_session_id] VARCHAR(64)
+,[csd_interventionist_guid] VARCHAR(64)
+,[csd_participant_guid] VARCHAR(64)
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_session_interventionist_assignment', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_session_interventionist_assignment ;
+END
+CREATE TABLE ac_mtr_session_interventionist_assignment (
+	 [csd_id] int IDENTITY(1,1) NOT NULL
+	,[csd_daily_session_id] VARCHAR(64)
+	,[csd_interventionist_guid] VARCHAR(64)
+	,[csd_participant_guid] VARCHAR(64)
+);
+
+
 
 IF @BUILD_EQUIPMENT_LOG = 1
 BEGIN

@@ -7,20 +7,24 @@ component name="resistance" {
 		 "prefix,urlparam,pname,class", 
 		 "Varchar,Integer,Varchar,Integer", [
 			 { prefix="wrmup_"         , urlparam=0, pname="5 Minute Warmup", class=0 }
-			,{ prefix="chestpress"     , urlparam=1, pname="Chest Press", class=4 }
-			,{ prefix="chest2"         , urlparam=2, pname="Chest ##2", class=4 }
-			,{ prefix="abdominalcrunch", urlparam=3, pname="Abdominal Crunch", class=4 }
-			,{ prefix="overheadpress"  , urlparam=4, pname="Overhead Press", class=4 }
-			,{ prefix="seatedrow"      , urlparam=5, pname="Seated Row", class=4 }
-			,{ prefix="shoulder2"      , urlparam=6, pname="Shoulder ##2", class=4 }
-			,{ prefix="triceppress"    , urlparam=7, pname="Tricep Press", class=4 }
-			,{ prefix="legpress"       , urlparam=8, pname="Leg Press", class=5 }
-			,{ prefix="calfpress"      , urlparam=9, pname="Calf Press", class=5 }
-			,{ prefix="pulldown"       , urlparam=10, pname="Pulldown", class=5 }
-			,{ prefix="legcurl"        , urlparam=11, pname="Leg Curl", class=5 }
-			,{ prefix="dumbbellsquat"  , urlparam=12, pname="Dumbbell Squat", class=5 }
-			,{ prefix="kneeextension"  , urlparam=13, pname="Knee Extension", class=5 }
-			,{ prefix="bicepcurl"      , urlparam=14, pname="Bicep Curl", class=5 }
+
+			,{ prefix="legpress"       , urlparam=1, pname="Leg Press", class=1 }
+			,{ prefix="modleg"         , urlparam=2, pname="Modified Leg Press", class=1 }
+			,{ prefix="pulldown"       , urlparam=3, pname="Pulldown", class=1 }
+			,{ prefix="legcurl"        , urlparam=4, pname="Leg Curl", class=1 }
+			,{ prefix="seatedrow"      , urlparam=5, pname="Seated Row", class=1 }
+			,{ prefix="kneeextension"  , urlparam=6, pname="Knee Extension", class=1 }
+			,{ prefix="bicepcurl"      , urlparam=7, pname="Biceps Curl", class=1 }
+
+			,{ prefix="chestpress"     , urlparam=8, pname="Chest Press", class=2 }
+			,{ prefix="chest2"         , urlparam=9, pname="Chest ##2", class=2 }
+			,{ prefix="abdominalcrunch", urlparam=10, pname="Abdominal Crunch", class=2 }
+			,{ prefix="overheadpress"  , urlparam=11, pname="Overhead Press", class=2 }
+			,{ prefix="calfpress"      , urlparam=12, pname="Calf Press", class=2 }
+			,{ prefix="shoulder2"      , urlparam=13, pname="Non-Press Shoulder Exercise", class=2 }
+			,{ prefix="triceppress"    , urlparam=14, pname="Tricep Push-Down", class=2 }
+
+			//,{ prefix="dumbbellsquat"  , urlparam=5, pname="Dumbbell Squat", class=1 }
 		 ]);
 
 		//Form label defaults for resistance exericses.

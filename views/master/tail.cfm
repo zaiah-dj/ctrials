@@ -75,7 +75,7 @@
 	<tr><td>session->currentDayOfMonth:</td><td>#session.currentDayOfMonth#</td></tr>
 	<tr><td>session->currentMonth:</td><td>#session.currentMonth#</td></tr>
 	<tr><td>session->currentYear:</td><td>#session.currentYear#</td></tr>
-	<tr><td>session->currentWeek:</td><td>#session.currentWeek#</td></tr>
+	<tr><td>session->currentWeek:</td><td>#session.currentWeekOfYear#</td></tr>
 	<tr><td>session->userDate:</td><td>#session.userDate#</td></tr>
 	<!---|--->
 	<cfif isDefined("csQuery")><tr><cfdump var = #csQuery#></tr></cfif>

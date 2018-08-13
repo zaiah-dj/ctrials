@@ -26,7 +26,6 @@ function errAndRedirect( Required String goto, Required String msg, parameters )
 		}
 	}
 
-
 	//Redirect
 	location( 
 		addtoken="no" 
@@ -75,40 +74,44 @@ else {
 	if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 		try {
 			userDateObject = LSParseDateTime( url.date );
+			session.userdate = userDateObject;
 		}
 		catch (any e) {
-			userDateObject = Now();
+			userDateObject = session.userdate = Now();
 		}
+	}
+	else if ( isDefined("url.resetdate" ) && StructKeyExists( url, "resetdate" ) ) {
+		StructDelete( session, "userdate" );	
+		userDateObject = session.userdate = Now();
+	}
+	else if ( StructKeyExists( session, "userdate" ) ) {
+		userDateObject = session.userdate;	
 	}
 	else {
 		//usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-		userDateObject = Now(); 
+		userDateObject = session.userdate = Now(); 
 	}
 }
 
 //Calculate all of these date variables
-currentDayOfWeek = DayOfWeek( userDateObject );
+//Monday was arbitrarily day 1, but CF uses Sun as day 1, Sun is 7 in the rest of motrpac.
+currentDayOfWeek = ((DayOfWeek(userDateObject) - 1) == 0) ? 7 : DayOfWeek(userDateObject) - 1;
 currentDayOfWeekName = DateTimeFormat( userDateObject, "EEE" );
 currentDayOfMonth = DateTimeFormat( userDateObject, "d" );
 currentMonth = DateTimeFormat( userDateObject, "m" );
 currentYear = DateTimeFormat( userDateObject, "YYYY" );
-currentWeek = DateTimeFormat( userDateObject, "w" );
+currentWeekOfYear = DateTimeFormat( userDateObject, "w" );
 userDate = DateTimeFormat( userDateObject, "YYYY-MM-DD HH:nn:ss" );
+
 
 //Check for session.userguid
 if ( !StructKeyExists( session, "userguid" ) ) {
 	//Redirect if I am not on an approved server
 	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) ) {
-		/*writeoutput( "this is redirecting? " );
-		writeoutput( data.localdev );
-		writeoutput( cgi.http_host );
-		abort;*/
+		//writeoutput( "this is redirecting? #data.localdev# - #cgi.http_host#" );abort;
 		location( addtoken = "no", url = data.redirectForLogin );
 	}
 	else {
-		//Generate at least a cfid, so that this works
-		//session.cfid = ezdb.exec( "SELECT newid() as id" ).results.id;
-
 		//Also requires a userGUID
 		session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
 	}	
@@ -123,7 +126,7 @@ if ( !StructKeyExists( session, "isAppDateSet" ) ) {
 	session.currentDayOfMonth = currentDayOfMonth;
 	session.currentMonth = currentMonth;
 	session.currentYear = currentYear;
-	session.currentWeek = currentWeek;
+	session.currentWeekOfYear = currentWeekOfYear;
 	session.userDate = userDate;
 }
 //If it is there, then I've already set something, however, I only need to do this on the default page, and if we're in debug mode
@@ -136,7 +139,7 @@ else {
 		session.currentDayOfMonth = currentDayOfMonth;
 		session.currentMonth = currentMonth;
 		session.currentYear = currentYear;
-		session.currentWeek = currentWeek;
+		session.currentWeekOfYear = currentWeekOfYear;
 		session.userDate = userDate;
 	}
 }
@@ -242,7 +245,7 @@ sess.userDate = userDate;
 */
 
 //Look for a matching key of some sort.
-csQuery = ezdb.exec(
+csQuery = dbExec(
 	datasource = "#data.source#"
  ,string = "
 		SELECT 
@@ -327,89 +330,8 @@ else {
 }
 
 
-
-//Check if the staff member has been logged in as well
-stf = ezdb.exec( 
-	string = "
-		SELECT 
-			ss_id,
-			ss_sessdayid,
-			ss_staffguid,
-			ss_staffsessionid,
-			ss_participantrecordkey,
-			ss_datelastaccessed
-		FROM 
-			#data.data.sessiondstaff# 
-		WHERE
-			ss_sessdayid = :sid
-		AND
-			ss_staffsessionid = :staff_ssid
-		AND
-			ss_staffguid = :staff_id
-	"
- ,bindArgs = { 
-		sid = csSid 
-	 ,staff_id = staffId
-	 ,staff_ssid = session.ivId
-	}
-);
-
-
-stfPrk = stf.results.ss_participantrecordkey;
-
-
-//Make a record
-if ( stf.results.ss_staffguid eq "" ) {
-	stf = ezdb.exec( 
-		string = "
-			INSERT INTO #data.data.sessiondstaff# 
-				( ss_sessdayid
-				 ,ss_staffguid
-				 ,ss_staffsessionid )
-			VALUES 
-				( :sessdayid
-				 ,:staff_id
-				 ,:staff_ssid )
-		"
-	 ,bindArgs = { 
-		  sessdayid = csSid 
-		 ,staff_id = staffId
-		 ,staff_ssid = session.ivId
-		}
-	);
-
-	stf = ezdb.exec( 
-		string = "
-			SELECT 
-				ss_id,
-				ss_sessdayid,
-				ss_staffguid,
-				ss_staffsessionid,
-				ss_participantrecordkey,
-				ss_datelastaccessed
-			FROM 
-				#data.data.sessiondstaff# 
-		WHERE
-				ss_sessdayid = :sid
-			AND
-				ss_staffsessionid = :staff_ssid
-			AND
-				ss_staffguid = :staff_id
-		"
-	 ,bindArgs = { 
-			sid = csSid 
-		 ,staff_id = staffId
-		 ,staff_ssid = session.ivId
-		}
-	);
-
-	stfPrk = stf.results.ss_participantrecordkey;
-}
-
-
-
 //Get participant data 
-currentParticipant = ezdb.exec( 
+currentParticipant = dbExec( 
 	string = "SELECT * FROM #data.data.participants# WHERE participantGUID = :pid"
  ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }}
 );
@@ -421,41 +343,35 @@ randomCode = currentParticipant.results.randomGroupCode;
 
 //If nothing is selected, these queries ought to be empty queries
 if ( sess.status gt 1 ) {
-	selectedParticipants = ezdb.exec( 
+	selectedParticipants = dbExec( 
 		string = "
-		SELECT
-			*
-		FROM
-		( SELECT * FROM
-				#data.data.sessiondpart#	
-			WHERE 
-				sp_participantrecordkey = :prk
-			AND
-				sp_sessdayid = :sid
-		) AS AssociatedParts 
+		SELECT * FROM
+			( SELECT * FROM
+					#data.data.sia#	
+				WHERE 
+					csd_interventionist_guid = :guid
+				AND
+					csd_daily_session_id = :sid
+			) AS AssociatedParts 
 		LEFT JOIN
-		( SELECT
-				* 
-			FROM 
-				#data.data.participants#	
-		) AS amp
-		ON AssociatedParts.sp_participantGUID = amp.participantGUID;
+			( SELECT * FROM  #data.data.participants#	) AS amp
+		ON AssociatedParts.csd_participant_guid = amp.participantGUID;
 		"
 		,bindArgs = {
-			prk = stfPrk 
+			guid = session.userguid 
 		 ,sid = csSid 
 		}	
 	);
 
-	unselectedParticipants = ezdb.exec( 
+	unselectedParticipants = dbExec( 
 		string = "
 		SELECT * FROM 
 			#data.data.participants# 
 		WHERE participantGUID NOT IN (
-		  SELECT DISTINCT sp_participantGUID FROM 
-				#data.data.sessiondpart#	
+		  SELECT DISTINCT csd_participant_guid FROM 
+				#data.data.sia#	
 			WHERE 
-				sp_sessdayid = :sid
+				csd_daily_session_id = :sid
 		) ORDER BY lastname ASC"
 	 ,bindArgs = {
 			sid = csSid 
@@ -523,7 +439,7 @@ function buildRecordThreads( t ) {
 			for ( p in selectedParticipants.results ) {
 				//Create a key that can be referenced by the participant GUID
 				cp = t.participants[ Trim( p.participantGUID ) ] = {};
-				cp.recordThread = Trim( ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID );
+				cp.recordThread = Trim( dbExec( string = "SELECT newID() as newGUID" ).results.newGUID );
 				cp.checkInCompleted = 0 ;
 				cp.exerciseParameter = 0 ;
 				cp.recoveryCompleted = 0;
@@ -550,7 +466,7 @@ function buildRecordThreads( t ) {
 			if ( !StructKeyExists( t.participants, p.participantGUID ) ) {
 				//Create a key that can be referenced by the participant GUID
 				cp = t.participants[ Trim( p.participantGUID ) ] = {};
-				cp.recordThread = Trim( ezdb.exec( string = "SELECT newID() as newGUID" ).results.newGUID );
+				cp.recordThread = Trim( dbExec( string = "SELECT newID() as newGUID" ).results.newGUID );
 				cp.checkInCompleted = 0 ;
 				cp.exerciseParameter = 0 ;
 				cp.recoveryCompleted = 0;
@@ -628,29 +544,10 @@ if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
 }
 
 
-//???
-if ( 0 ) {
-	if ( StructKeyExists( url, "staffid" ) )
-		sess.current.staff.userid = url.staffid;
-	if ( StructKeyExists( url, "staffguid" ) )
-		sess.current.staff.guid = url.staffguid;
-	if ( StructKeyExists( url, "siteid" ) )
-		sess.current.staff.guid = url.siteid;
-	if ( StructKeyExists( url, "day" ) )
-		sess.current.day = currentDayOfWeek; //url.day;
-		//sess.current.day = url.day; 
-	if ( StructKeyExists( url, "week" ) ) {
-		sess.csp.week = currentWeek; //url.week;
-		//sess.csp.week = url.week;
-	}
-}
-
-
 //Now build session data for the "active" participant
 if ( StructKeyExists( sess.current, "participants" ) ) {
 	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
-
-
+		//???
 		isEnd = (ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
 		isRes = (ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
 
@@ -669,33 +566,42 @@ if ( StructKeyExists( sess.current, "participants" ) ) {
 				RIGHT JOIN
 				( SELECT 
 						participantGUID as _pid	
+					 ,MthlyBPDia
+					 ,mthlybpsys
+					 ,d_visit
+					 ,dayofwk
+					 ,stdywk
 					 ,weight
 					 ,#iif(isEnd,DE('trgthr1'),DE('0'))# as targetHR
 					 ,#iif(isEnd,DE('mchntype'),DE('bodypart'))# as exerciseType 
 				FROM 
 					#iif(isEnd,DE('#data.data.endurance#'),DE('#data.data.resistance#'))# 
 				WHERE 
-					participantGUID = :pid ) as frmVal
+					participantGUID = :pid
+				AND 
+					d_visit = :visit
+				) as frmVal
 			ON bpp.bp_pid = frmVal._pid
 				"
 			 ,bindArgs = { 
 					pid = { type = "varchar", value = sess.current.participantId }
+				 ,visit = { type = "date", value = userDateObject }
 				}
 			).results
 
 			//Get all the completed days for the week
-		 ,completedDays = ezdb.exec(
+		 ,completedDays = dbExec(
 				string="SELECT dayofwk FROM
 					#iif(isEnd,DE('#data.data.endurance#'),DE('#data.data.resistance#'))# 
 					WHERE participantGUID = :pid AND stdywk = :wk"
 			 ,bindArgs={ 
 					pid = sess.current.participantId 
-			 ,wk  = sess.csp.week
-			}
+				 ,wk  = sess.csp.week
+				}
 			).results
 
 			//Get all the notes
-		 ,notes = ezdb.exec(
+		 ,notes = dbExec(
 				string = "
 					SELECT
 						noteDate
@@ -706,10 +612,11 @@ if ( StructKeyExists( sess.current, "participants" ) ) {
 					WHERE participantGUID = :pid
 					ORDER BY noteDate DESC
 					"
-			 ,datasource = "#data.source#" 
 			 ,bindArgs = {pid = sess.current.participantId}
 			).results
 		};
+
+		//writedump( cp ); abort;
 
 		//Get 
 		sc.exerciseParameter = cp.details.exerciseType;
@@ -723,19 +630,26 @@ if ( StructKeyExists( sess.current, "participants" ) ) {
 		//Calculate time until we need to take a new blood pressure
 		sc.bpDaysLeft = CONSTANTS.bpDaysLimit - sc.bpDaysElapsed;
 		
-		sc.bpSystolic = (sc.getNewBP) ? CONSTANTS.bpMinSystolic : cp.details.bp_systolic;
+		//sc.bpSystolic = (sc.getNewBP) ? CONSTANTS.bpMinSystolic : cp.details.bp_systolic;
+		sc.bpSystolic = (sc.getNewBP) ? CONSTANTS.bpMinSystolic : cp.details.mthlybpsys;
 
-		sc.bpDiastolic = (sc.getNewBP) ? CONSTANTS.bpMinDiastolic : cp.details.bp_diastolic;
+		//sc.bpDiastolic = (sc.getNewBP) ? CONSTANTS.bpMinDiastolic : cp.details.bp_diastolic;
+		sc.bpDiastolic = (sc.getNewBP) ? CONSTANTS.bpMinDiastolic : cp.details.MthlyBPDia;
 
 		sc.targetHR = (cp.details.targetHR eq "" || cp.details.targetHR eq 0 ) ? 0 : cp.details.targetHR;
 		
 		sc.weight = (cp.details.weight eq "" || cp.details.weight eq 0 ) ? 0 : cp.details.weight;
+
+		sc.week = cp.details.stdywk;
+
+		sc.day = cp.details.dayofwk;
 
 		//Populate the finished days
 		sc.cdays = [0,0,0,0,0,0];
 		for ( n in ListToArray( ValueList( cp.completedDays.dayofwk, "," ) ) ) {
 			sess.csp.cdays[ n ] = n; 
 		}
+		//writedump( sc ); abort;
 	}
 }
 
