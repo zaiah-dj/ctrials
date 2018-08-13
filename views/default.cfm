@@ -74,10 +74,9 @@ to reorganize participants.
 
 		<!--- On submit, or next, do it. --->
 		<form id="wash-id" method="POST" action="#link('input.cfm')#" class="wash">
-			<input type="text" name="staffer_id" value="#staffId#">
+			<input type="text" name="interventionist_id" value="#session.userguid#">
 			<input type="text" name="transact_id" value="#sess.key#">
 			<input type="text" name="sessday_id" value="#csSid#">
-			<input type="text" name="prk_id" value="#stfPrk#">
 			<input type="text" name="list"> <!--- make a list here --->
 			<input type="submit" id="done" value="Done!">
 		</form>

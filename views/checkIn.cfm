@@ -28,6 +28,7 @@
 							  --->
 						</div>	
 
+						<!---
 						<div style="width:50%; float:right;">
 							<label class="title">Exercise Session</label>
 							<input type="hidden" name="ps_day" value="#sess.current.day#"></input>
@@ -73,7 +74,8 @@
 									</cfloop>
 									</tr>
 								</table>
-							</div>	
+							</div><!--- results --->	
+							--->	
 						</div>
 					</td>
 				</tr>
@@ -229,7 +231,7 @@
 		<input type="hidden" name="ps_pid" value="#sess.current.participantId#">
 		<input type="hidden" name="ps_sid" value="#session.userguid#">
 		<!---<input type="submit" value="Next!"></input>--->
-		<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
+		<input type="submit" value="Next" style="width:200px; color:white;"></input>
 	</form>
 </div> <!--- container-body --->
 </cfoutput>

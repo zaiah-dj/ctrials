@@ -28,7 +28,7 @@ INNER JOIN
 			( SELECT 
 					machineGUID as b_maguid
 				 ,modelGUID as b_moguid
-				FROM equipmentTrackingManufacturers ) As Ma
+				FROM equipmentTrackingMachines ) As Ma
 
 			INNER JOIN
 
@@ -51,7 +51,7 @@ INNER JOIN
 			INNER JOIN
 			( SELECT * FROM
 				( SELECT * FROM 
-						frm_EETL	
+						v_ADUSessionTickler	
 					WHERE participantGUID = :pid ) AS PT
 				INNER JOIN
 				(

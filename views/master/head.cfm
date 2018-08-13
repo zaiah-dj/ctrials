@@ -11,11 +11,11 @@
 	<link rel="stylesheet" href="#link( 'assets/css/bootstrap.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/c3.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/chart.css' )#">
-	<link rel="stylesheet" href="#link( 'assets/css/default.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/modals.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/sliders.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/toggler.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/checkbox-radio.css' )#">
+	<link rel="stylesheet" href="#link( 'assets/css/default.css' )#">
 
 	<!--- All the Javascript files --->
 	<!---

@@ -26,6 +26,7 @@ INSERT INTO v_ADUSessionTickler VALUES ( '67BBDC07-D6BB-4C6C-A5F0-19CDBD65D503',
 
 
 /*Insert test staff for testing*/
+/*
 INSERT INTO ac_mtr_test_staff VALUES ( 'CDDAC161-2B5E-44CF-ABC8-D15623942239', 'Antonio', 'Ramar', 'Collins', 999 );
 INSERT INTO ac_mtr_test_staff VALUES ( newid(),'Joseph', 'J', 'Collins', 999 );
 INSERT INTO ac_mtr_test_staff VALUES ( newid(),'Kristy', 'Julia', 'Gordon', 999 );
@@ -33,7 +34,7 @@ INSERT INTO ac_mtr_test_staff VALUES ( newid(),'Alba', 'Willis', 'McIntyre', 999
 INSERT INTO ac_mtr_test_staff VALUES ( newid(),'Aldous', 'Graham', 'Huxley', 777 );
 INSERT INTO ac_mtr_test_staff VALUES ( newid(),'Cameron', 'Joseph', 'Fontana', 777 );
 INSERT INTO ac_mtr_test_staff VALUES ( newid(),'Majel', 'Lucille', 'Barrett', 777 );
-
+*/
 
 /*Populate the equipment log*/
 IF @BUILD_EQUIPMENT_LOG = 1

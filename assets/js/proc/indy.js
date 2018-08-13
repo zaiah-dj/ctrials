@@ -293,16 +293,15 @@ function saveSessionUsers (ev) {
 				( isDebugPresent ) ? console.log( this.responseText ) : 0;
 				return;
 			}
-			( parsed.status ) ? frm.submit() : onError( this.responseText );
+			( parsed.status ) ? frm.submit() : console.log("Error occurred: " +  this.responseText );
 		}
 	};
 
 	//What does the pbody look like
 	payload = [
-		 "staffer_id=" + this.staffer_id.value  
+		 "interventionist_id=" + this.interventionist_id.value  
 		,"transact_id=" + this.transact_id.value 
 		,"sessday_id=" + this.sessday_id.value 
-		,"prk_id=" + this.prk_id.value 
 		,"list=" + this.list.value 
 		,"this=startSession"
 	].join( '&' );
@@ -433,10 +432,9 @@ function releaseParticipant ( ev ) {
 
 	//....
 	payload = [
-		 "staffer_id=" + f.staffer_id.value  
+		 "interventionist_id=" + f.interventionist_id.value  
 		,"transact_id=" + f.transact_id.value 
 		,"sessday_id=" + f.sessday_id.value 
-		,"prk_id=" + f.prk_id.value 
 		,"pid=" + thisGuy.id
 		,"this=releaseParticipant"
 	].join( '&' );

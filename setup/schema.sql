@@ -14,9 +14,17 @@ IF db_id( 'localmotrpac' ) IS NULL
 BEGIN
 	CREATE DATABASE localmotrpac;
 END
+/* -------------------------------
+ PRODUCTION SCHEMA for DEVELOPMENT ONLY
+ ------------------------------- */
+/*CREATE DATABASE localmotrpac;
+>>>>>>> 56767cac180fc28edaaa47e78e7b8085ac9ac3d6
 GO
 
 USE localmotrpac;
+GO*/
+
+USE zProgrammer_AntonioCollins;
 GO
 
 DECLARE @BUILD_EQUIPMENT_LOG integer;
@@ -451,7 +459,14 @@ CREATE TABLE frm_RETL (
 	[wrmup_speed] [numeric](18, 0) NULL,
 	[wrmup_watres] [int] NULL,
 	[wrmup_rpe] [int] NULL,
-	[wrmup_othafct] [int] NULL
+	[wrmup_othafct] [int] NULL,
+	[modleg] [int] NULL,
+	[modlegRep1] [int] NULL,
+	[modlegRep2] [int] NULL,
+	[modlegRep3] [int] NULL,
+	[modlegWt1] [int] NULL,
+	[modlegWt2] [int] NULL,
+	[modlegWt3] [int] NULL
 );
 
 
@@ -690,6 +705,30 @@ CREATE TABLE ParticipantNotes (
 	,[deletedby]        varchar(50) NULL
 	,[d_deleted]        datetime NULL
 );
+
+
+/* ---------------------------
+ac_mtr_session_interventionist_assignment 
+
+-
+
+ [csd_id] int IDENTITY(1,1) NOT NULL
+,[csd_daily_session_id] VARCHAR(64)
+,[csd_interventionist_guid] VARCHAR(64)
+,[csd_participant_guid] VARCHAR(64)
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_session_interventionist_assignment', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_session_interventionist_assignment ;
+END
+CREATE TABLE ac_mtr_session_interventionist_assignment (
+	 [csd_id] int IDENTITY(1,1) NOT NULL
+	,[csd_daily_session_id] VARCHAR(64)
+	,[csd_interventionist_guid] VARCHAR(64)
+	,[csd_participant_guid] VARCHAR(64)
+);
+
+
 
 IF @BUILD_EQUIPMENT_LOG = 1
 BEGIN

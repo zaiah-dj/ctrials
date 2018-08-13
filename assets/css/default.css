@@ -329,7 +329,6 @@ ul.inner-selection {
 }
 
 .container-body .inner-selection li.selected {
-	background-color: #728ab2;
 	height: 70px;
 	color: black; 
 }
@@ -1442,3 +1441,28 @@ table.table-results {
 	position: relative;
 	left: 20px;
 }
+
+
+/*change color schemes depending on what's around */
+.endurance-class-container .container-body .inner-selection li.selected,
+.endurance-class-container input:checked + .toggler {
+  /*background-color: #2196F3; - original */
+	/*background-color: #e6f2ff; - too light */
+	background-color: #17365D;
+	color: white;
+}
+
+
+.resistance-class-container .container-body .inner-selection li.selected,
+.resistance-class-container input:checked + .toggler {
+  /*background-color: #2196F3; - original */
+	/*background-color: #e6f2ff; - too light */
+  background-color: #76923c;
+	color: white;
+}
+
+.resistance-class-container .slider::-webkit-slider-thumb {
+	background-color: #daf7a6;
+	border-color: #b2c986;
+}
+

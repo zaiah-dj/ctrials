@@ -33,7 +33,7 @@ manifest={
 /* ... */
 
 /*Select a datasource*/
-,"source" = "motrpac"
+,"source" = ( useDebug ) ? "zProgrammer_AntonioCollins" : "motrpac"
 
 /*All requests will use this as the base directory*/
 ,"base"   = "/motrpac/web/secure/dataentry/iv/"
@@ -74,15 +74,18 @@ production and development table names so that you don't hose
 real data*/
 ,"data"   = {
 
-	"endurance"     = ( !useDebug ) ? "frm_EETL" : "ac_mtr_endurance_new"
- ,"resistance"    = ( !useDebug ) ? "frm_RETL" : "ac_mtr_resistance_new"
- ,"participants"  = ( !useDebug ) ? "v_ADUSessionTickler" : "ac_mtr_participants_v2"
+	"endurance"     = "frm_EETL"
+ ,"resistance"    = "frm_RETL"
+ ,"participants"  = "v_ADUSessionTickler"
 
- ,"notes"         = ( !useDebug ) ? "ParticipantNotes" : "ParticipantNotes"
+ ,"notes"         = "ParticipantNotes"
  ,"checkin"       = "ac_mtr_checkinstatus_v2"
  ,"bloodpressure" = "ac_mtr_bloodpressure_v2"
 
  ,"serverlog"     = "ac_mtr_serverlog"
+
+
+ ,"sia"           = "ac_mtr_session_interventionist_assignment"
 
  ,"sessiondappl"  = "ac_mtr_session_metadata"
  ,"sessiondpart"  = "ac_mtr_session_participants_selected"
@@ -110,7 +113,7 @@ real data*/
 	"default"= { model="init", view = [ "master/head", "default", "master/tail" ] }
 
 	/*Marks the end of a session for a particular participant*/
- ,"recovery-done" = {model = [ "init", "recovery-done" ], view = "recovery-done" }
+ ,"recovery-done" = {model = [ "init", "recoveryDone" ], view = "recovery-done" }
 
 	/*See how participants are currently assigned among staff members*/ 
  ,"staff" = { model= [ "init", "staff" ], view= [ "master/head", "staff", "master/tail" ] }
@@ -124,7 +127,7 @@ real data*/
 	 view = [ "master/head", "participant/list", "participant/nav", "checkIn", "master/tail" ] }
 
 	/*Logout an interventionist, releasing all of their associated participants and stopping the session.*/
-	,"logout" = { model="logout", view="logout" , hint="Logs out a user." }
+	,"logout" = { model="logoutUser", view="logout" , hint="Logs out a user." }
 
 	/*Either stop a session early, or input participant recovery data*/
 	,"recovery" = { model= "init",
@@ -133,18 +136,14 @@ real data*/
 	/*View the access log*/
 	,"log"   = { model=  "dev/log", view=  "log" }
 
-	/*See equipment log?*/	
-	,"eqlog"= { "model" =  [ "init", "eqlog" ], "view" = "eqlog" }
-
-
-	  
+	 
+ 
 	/* --- DEBUGGING ENDPOINTS ----------------------------------- */
 	/*Logs out ALL users and releases participants into available pool. (Debug only)*/
-	,"logout-all" = { model="logout-all", view="logout"  }
+	,"logout-all" = { model="logoutAll", view="logoutAll"  }
 
 	/*Logs XMLHttpRequests and writes them to a database table.*/
-	,"robocop"   = {hint= "Log XHR requests.", model= "dev/robocop" , view= "robocop" }
-
+	,"robocop"   = { hint= "Log XHR requests.", model= "dev/robocop" , view= "robocop" }
 
 
 

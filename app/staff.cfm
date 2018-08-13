@@ -1,18 +1,18 @@
 <!--- staff.cfm --->
 <cfscript>
 public = {
-	staff = ezdb.exec(
+	staff = dbExec(
 		string = "select * from #data.data.staff# where ts_siteid = :site"
 	 ,bindArgs = { site = siteId }
 	)
 
- ,staff=ezdb.exec( string = "SELECT * FROM #data.data.staff#" )
+ ,staff=dbExec( string = "SELECT * FROM #data.data.staff#" )
 
- ,selStaff=ezdb.exec( string = "SELECT * FROM #data.data.sessiondstaff#" )
+ ,selStaff=dbExec( string = "SELECT * FROM #data.data.sessiondstaff#" )
 
- ,selParts=ezdb.exec( string = "SELECT * FROM #data.data.sessiondpart#" )
+ ,selParts=dbExec( string = "SELECT * FROM #data.data.sessiondpart#" )
 
- ,sel = ezdb.exec( 
+ ,sel = dbExec( 
 		string = "
 		SELECT * FROM
 			( SELECT * FROM #data.data.participants# ) as Parts
@@ -40,7 +40,7 @@ public = {
 		}
 	)
 
- ,allSel = ezdb.exec( 
+ ,allSel = dbExec( 
 		string = "
 		SELECT * FROM
 			( SELECT * FROM #data.data.participants# ) as Parts
@@ -67,7 +67,7 @@ public = {
 		}
 	)
 
-	,junior = ezdb.exec(
+	,junior = dbExec(
 		string = " 
 			SELECT * FROM 
 				#data.data.sessiondstaff# 
