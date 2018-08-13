@@ -554,13 +554,24 @@ Refactor this to work without CF:
 - Need to be able to control what happens if something fails (during XHR)
 
 */
-function subscribe ( args ) {
+function postalService ( args ) {
 	ev.preventDefault(); 
 	local = {
 		arrVal = []
+ 	 ,debug = 1
 	 ,listenForChangesOn = 0
 	};
+
+	return {
+
+		init = function (ev) {
+	( local.debug ) ? console.log( 'Event ' + ev + ' was registered.' ) : 0;
+	mv = document.querySelectorAll( '.slider, .toggler-input' );
+	( local.debug ) ? console.log( mv ) : 0;
 	local.arrVal = []; 
+		}
+
+	}
 }
 
 
@@ -681,4 +692,9 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 	rx = new Routex( {routes:Router, verbose:1} );
 	rx.init();
 //	redirectEngine();
+
+	//Do all the AJAX postback stuff in pure JS
+	ps = new postalService({
+
+	});	
 });

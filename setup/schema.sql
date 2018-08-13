@@ -729,6 +729,17 @@ CREATE TABLE ac_mtr_session_interventionist_assignment (
 	,[csd_participant_guid] VARCHAR(64)
 );
 
+/* --------------------------- *
+/* --------------------------- */
+IF OBJECT_ID( N'ac_mtr_session_interventionist_logged_in', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_session_interventionist_logged_in ;
+END
+CREATE TABLE ac_mtr_session_interventionist_logged_in (
+	 [iln_id] int IDENTITY(1,1) NOT NULL
+	,[iln_login_time] DATETIME 
+	,[iln_interventionist_guid] VARCHAR(64)
+);
 
 
 IF @BUILD_EQUIPMENT_LOG = 1
