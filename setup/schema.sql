@@ -10,10 +10,11 @@ from a local setup.
 
 NOTE: Only works with SQL server.
  ------------------------------- */
-IF db_id( 'localmotrpac' ) IS NULL
+IF db_id( 'zProgrammer_AntonioCollins' ) IS NULL
 BEGIN
-	CREATE DATABASE localmotrpac;
+	CREATE DATABASE zProgrammer_AntonioCollins;
 END
+GO
 /* -------------------------------
  PRODUCTION SCHEMA for DEVELOPMENT ONLY
  ------------------------------- */

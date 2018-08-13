@@ -73,7 +73,7 @@ else {
 	//Current date
 	if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
 		try {
-			userDateObject = LSParseDateTime( url.date );
+			userDateObject = LSParseDate( url.date );
 			session.userdate = userDateObject;
 		}
 		catch (any e) {
@@ -127,7 +127,6 @@ if ( !StructKeyExists( session, "isAppDateSet" ) ) {
 	session.currentMonth = currentMonth;
 	session.currentYear = currentYear;
 	session.currentWeekOfYear = currentWeekOfYear;
-	session.userDate = userDate;
 }
 //If it is there, then I've already set something, however, I only need to do this on the default page, and if we're in debug mode
 else { 
@@ -140,7 +139,6 @@ else {
 		session.currentMonth = currentMonth;
 		session.currentYear = currentYear;
 		session.currentWeekOfYear = currentWeekOfYear;
-		session.userDate = userDate;
 	}
 }
 
@@ -268,6 +266,7 @@ csQuery = dbExec(
 	}
 );
 
+writedump( csQuery ); abort;
 
 //if there is no record of a current session, time to write it in
 if ( csQuery.prefix.recordCount gt 0 ) {

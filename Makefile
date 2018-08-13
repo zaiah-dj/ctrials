@@ -1,3 +1,8 @@
+# Vars
+PREFIX=
+DBUSER="SA"
+DBPASSWORD="GKbAt68!"
+
 # Create a changelog
 changelog:
 	@echo "Creating / updating CHANGELOG document..."
@@ -28,4 +33,8 @@ pkg:
 lucee:
 	rsync -arvz --delete --exclude=Application.cfc --exclude=.git --exclude=.gitignore --exclude=.*.swp --exclude=*.tgz /cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv/ /cygdrive/c/lucee/tomcat/webapps/motrpac/web/secure/dataentry/iv/
 	
-	
+
+# Load up the database
+dbload:	
+	sqlcmd -i setup/schema.sql -U $(DBUSER) -P $(DBPASSWORD)
+	sqlcmd -i setup/populate.sql -U $(DBUSER) -P $(DBPASSWORD)
