@@ -15,7 +15,7 @@ function sqwrp() {
 
 # Get all participant data
 sqlSelectAll=$(cat << 'GET_SQL'
-USE localmotrpac;
+USE zProgrammer_AntonioCollins;
 SELECT * FROM v_ADUSessionTickler;
 GO
 GET_SQL
@@ -23,7 +23,7 @@ GET_SQL
 
 # Get participant data for one person
 sqlGetOneParticipant=$(cat << 'GET_SQL'
-USE localmotrpac;
+USE zProgrammer_AntonioCollins;
 SELECT * FROM v_ADUSessionTickler WHERE p_id = :pid;
 GO
 GET_SQL
@@ -31,7 +31,7 @@ GET_SQL
 
 # Get participant GUID for one person
 sqlGetOneParticipantGUID=$(cat << 'GET_SQL'
-USE localmotrpac;
+USE zProgrammer_AntonioCollins;
 SELECT participantGUID FROM v_ADUSessionTickler WHERE p_id = :pid;
 GO
 GET_SQL
@@ -39,11 +39,27 @@ GET_SQL
 
 # Update participant data for one person
 sqlUpdateParticipantDOV=$(cat << 'GET_SQL'
-USE localmotrpac;
-UPDATE frm_RETL SET dateOfVisit = :dtOfvisit WHERE participantGUID = :pid
+USE zProgrammer_AntonioCollins;
+UPDATE frm_EETL SET d_visit = ':dtOfvisit', mchntype = 2 WHERE participantGUID = ':pid';
 GO
 GET_SQL
 )
+
+sqlInsertParticipantDOV=$(cat << 'GET_SQL'
+USE zProgrammer_AntonioCollins;
+INSERT INTO frm_EETL ( insertedBy, dayofwk, stdywk, typedata, staffID, d_visit, mchntype, participantGUID ) VALUES ( 1049, 1, 2, 1, 1049, ':dtOfvisit', 1, ':pid' ); 
+GO
+GET_SQL
+)
+
+# Update participant data for one person
+sqlUpdateParticipantDOVR=$(cat << 'GET_SQL'
+USE zProgrammer_AntonioCollins;
+UPDATE frm_RETL SET d_visit = ':dtOfvisit', bodypart = 1 WHERE participantGUID = ':pid';
+GO
+GET_SQL
+)
+
 # A usage function
 usage()
 {
@@ -125,12 +141,14 @@ fi
 if [ $ENABLE -eq 1 ]
 then
 	# Get GUID
-	sqcmd "$(sqwrp "$sqlGetOneParticipantGUID" pid 2)"
-exit
+	PGUID=$(sqcmd "$(sqwrp "$sqlGetOneParticipantGUID" pid 2)" | sed -n 4p)
 	# Then enable the guy
-	CMD="$(sqwrp "$sqlGetOneParticipant" dtOfVisit $(date +%F) )"
-	CMD="$(sqwrp "$CMD" pid 2)"
-	echo $CMD 
+	INTCMD="$(sqwrp "$sqlInsertParticipantDOV" dtOfvisit $(date +%F) )"
+	#echo $INTCMD 
+	#CMD="$(sqwrp "$INTCMD" pid $PGUID )"
+	#echo $CMD 
+	#CMD="$(sqwrp "$CMD" pid 2)"
+	sqcmd "$(sqwrp "$INTCMD" pid $PGUID )"
 fi
 
 

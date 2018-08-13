@@ -18,7 +18,7 @@ container_nav = [
 	{ title = "<span style='font-size:0.9em'>View Check-In Data</span>", href = "check-in.cfm", show = true }
  ,{ title = "#exName# Data", href = "input.cfm", show = ( listClassPrefix neq "control" ) } 
  ,{ title = "Recovery", href = "recovery.cfm", show = ( listClassPrefix neq "control" ) } 
- ,{ title = "dow", href = "dow.cfm", show = ( listClassPrefix neq "control" ) } 
+/*,{ title = "dow", href = "dow.cfm", show = ( listClassPrefix neq "control" ) } */
 /*,{ title = "Compare Data", href = "compare.cfm" }*/
 /* ,{ title = "Information", href = "info.cfm" }*/
 ];

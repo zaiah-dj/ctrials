@@ -266,7 +266,6 @@ csQuery = dbExec(
 	}
 );
 
-writedump( csQuery ); abort;
 
 //if there is no record of a current session, time to write it in
 if ( csQuery.prefix.recordCount gt 0 ) {
@@ -341,42 +340,41 @@ randomCode = currentParticipant.results.randomGroupCode;
 
 
 //If nothing is selected, these queries ought to be empty queries
-if ( sess.status gt 1 ) {
-	selectedParticipants = dbExec( 
-		string = "
-		SELECT * FROM
-			( SELECT * FROM
-					#data.data.sia#	
-				WHERE 
-					csd_interventionist_guid = :guid
-				AND
-					csd_daily_session_id = :sid
-			) AS AssociatedParts 
-		LEFT JOIN
-			( SELECT * FROM  #data.data.participants#	) AS amp
-		ON AssociatedParts.csd_participant_guid = amp.participantGUID;
-		"
-		,bindArgs = {
-			guid = session.userguid 
-		 ,sid = csSid 
-		}	
-	);
-
-	unselectedParticipants = dbExec( 
-		string = "
-		SELECT * FROM 
-			#data.data.participants# 
-		WHERE participantGUID NOT IN (
-		  SELECT DISTINCT csd_participant_guid FROM 
+selectedParticipants = dbExec( 
+	string = "
+	SELECT * FROM
+		( SELECT * FROM
 				#data.data.sia#	
 			WHERE 
+				csd_interventionist_guid = :guid
+			AND
 				csd_daily_session_id = :sid
-		) ORDER BY lastname ASC"
-	 ,bindArgs = {
-			sid = csSid 
-		}
-	);
-}
+		) AS AssociatedParts 
+	LEFT JOIN
+		( SELECT * FROM  #data.data.participants#	) AS amp
+	ON AssociatedParts.csd_participant_guid = amp.participantGUID;
+	"
+	,bindArgs = {
+		guid = session.userguid 
+	 ,sid = csSid 
+	}	
+);
+
+unselectedParticipants = dbExec( 
+	string = "
+	SELECT * FROM 
+		#data.data.participants# 
+	WHERE participantGUID NOT IN (
+		SELECT DISTINCT csd_participant_guid FROM 
+			#data.data.sia#	
+		WHERE 
+			csd_daily_session_id = :sid
+	) ORDER BY lastname ASC"
+ ,bindArgs = {
+		sid = csSid 
+	}
+);
+
 
 /*
 A full session ought to look like:
