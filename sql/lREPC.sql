@@ -1,6 +1,8 @@
 SELECT 
 	 pDayofwk
 	,pStdywk
+	,pVisit
+	,topVisit
 	,topDayofwk
 	,topStdywk
 	,(CASE
@@ -22,26 +24,26 @@ FROM
 		dayofwk as pDayofwk
 	 ,pGUID
 	 ,stdywk as pStdywk
-	 ,d_visit
+	 ,d_visit as pVisit
 	FROM
 	( SELECT 
-		TOP(2)
-		 dayofwk
-		,participantGUID as pGUID
-		,stdywk
-		,d_visit
-	FROM
-		frm_RETL
-	WHERE
-		participantGUID = :pid 
-	AND
-		d_visit <= :cdate
-	AND
-		stdywk <= :stdywk
-	ORDER BY
-		stdywk DESC, dayofwk DESC ) chimney
-	ORDER BY
-		stdywk ASC, dayofwk ASC
+			TOP(2)
+			 dayofwk
+			,participantGUID as pGUID
+			,stdywk
+			,d_visit
+		FROM
+			frm_RETL
+		WHERE
+			participantGUID = :pid 
+		AND
+			d_visit < :cdate
+		AND
+			stdywk <= :stdywk
+		ORDER BY
+			stdywk ASC, dayofwk ASC ) chimney
+		ORDER BY
+			stdywk DESC, dayofwk DESC
 ) As Prev
 
 INNER JOIN
@@ -52,7 +54,7 @@ INNER JOIN
 		dayofwk as topDayofwk
 	 ,tGUID
 	 ,stdywk as topStdywk
-	 ,d_visit
+	 ,d_visit as topVisit
 	FROM
 	( SELECT 
 		TOP(2)

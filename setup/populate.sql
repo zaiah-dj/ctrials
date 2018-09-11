@@ -28,6 +28,9 @@ INSERT INTO v_ADUSessionTickler VALUES ( '46D412E1-0245-4040-896D-2DB8253A7CD8',
 INSERT INTO v_ADUSessionTickler VALUES ( '67BBDC07-D6BB-4C6C-A5F0-19CDBD65D503',1099064, 'Richard', 'Skeykunk', '',1022,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
 
 
+
+
+
 /*Insert test staff for testing*/
 /*
 INSERT INTO ac_mtr_test_staff VALUES ( 'CDDAC161-2B5E-44CF-ABC8-D15623942239', 'Antonio', 'Ramar', 'Collins', 999 );

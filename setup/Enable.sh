@@ -1,10 +1,41 @@
 #!/bin/bash -
 # A shell script to enable (or disable) participants on the command line
+
+# New passwords 
+US_1="SA"
+PW_1="GKbAt68!"
+US_2="arcollinUser"
+PW_2="9mKZpaL9B3"
+USERNAME="$US_2"
+PASSWORD="$PW_2"
+
 # Run SQL Server commands from here 
 function sqcmd() {
 	#echo sqlcmd -Q "$1" -U SA -P 'GKbAt68!'
-	sqlcmd -Q "$1" -U SA -P 'GKbAt68!'
+	#sqlcmd -Q "$1" -U SA -P 'GKbAt68!'
+	sqlcmd -d "zProgrammer_AntonioCollins" -S "SQLDEV.PHS.WFUBMC.EDU" -Q "$1" -U "$USERNAME" -P "$PASSWORD"
 }
+
+
+# Do some crude binding to allow for dynamic queries
+function sqwrp() {
+	echo "$1" | sed "s/:$2/$3/g"
+}
+
+# SQL code can go here in heredocs
+
+# Get all participant data
+sqlSelectAll=$(cat << 'GET_SQL'
+USE zProgrammer_AntonioCollins;
+SELECT * FROM v_ADUSessionTickler;
+GO
+
+# Run SQL Server commands from here 
+#function sqcmd() {
+	#echo sqlcmd -Q "$1" -U SA -P 'GKbAt68!'
+#	sqlcmd -Q "$1" -U "$USERNAME" -P "$PASSWORD"
+#}
+
 
 # Do some crude binding to allow for dynamic queries
 function sqwrp() {
@@ -47,7 +78,7 @@ GET_SQL
 
 sqlInsertParticipantDOV=$(cat << 'GET_SQL'
 USE zProgrammer_AntonioCollins;
-INSERT INTO frm_EETL ( insertedBy, dayofwk, stdywk, typedata, staffID, d_visit, mchntype, participantGUID ) VALUES ( 1049, 1, 2, 1, 1049, ':dtOfvisit', 1, ':pid' ); 
+INSERT INTO frm_EETL ( insertedBy, dayofwk, stdywk, typedata, staffID, d_visit, mchntype, participantGUID ) VALUES ( 1049, :dayNum, 2, 1, 1049, ':dtOfvisit', 1, ':pid' ); 
 GO
 GET_SQL
 )
@@ -69,15 +100,14 @@ usage()
 #  --maintenance       Put a site in maintenance mode.
 	cat <<USAGES
 $0:
--i \$1	  - Get info about a partiicpnat by numeric ID (or name)
--e \$1  	- Enable a participant for today
--d \$1  	- Disable a participant for today
--t \$1    - Are they RE or EE?
+-i \$1     - Get info about a participant by numeric ID (or name)
+-e \$1     - Enable a participant for today
+-d \$1     - Disable a participant for today
+-t \$1     - Are they RE or EE?
 USAGES
 
 	exit $STATUS
 }
-
 
 
 # Catch blank arguments
@@ -128,7 +158,6 @@ shift
 done
 
 
-
 # Initialize Participant
 # ...
 if [ $GET_INFO -eq 1 ]
@@ -144,7 +173,15 @@ then
 	PGUID=$(sqcmd "$(sqwrp "$sqlGetOneParticipantGUID" pid 2)" | sed -n 4p)
 	# Then enable the guy
 	INTCMD="$(sqwrp "$sqlInsertParticipantDOV" dtOfvisit $(date +%F) )"
-	#echo $INTCMD 
+	INTCMD="$(sqwrp "$INTCMD" dayNum 1 )"
+
+	echo $(date +%d)
+	echo $INTCMD
+exit
+	#	
+	#INTCMD="$(sqwrp "$INTCMD" dtOfvisit $(date +%F) )"
+	#INTCMD="$(sqwrp "$INTCMD" dtOfvisit $(date +%F) )"
+
 	#CMD="$(sqwrp "$INTCMD" pid $PGUID )"
 	#echo $CMD 
 	#CMD="$(sqwrp "$CMD" pid 2)"

@@ -176,6 +176,23 @@ CREATE TABLE v_ADUSessionTickler (
 
 
 /* ---------------------------
+ac_mtr_frm_progress
+
+A table for endurance data
+that can be shared by other apps.
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_frm_progress', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_frm_progress;
+END
+CREATE TABLE ac_mtr_frm_progress (
+	 fp_step int NULL
+	,fp_participantGUID varchar(50) NOT NULL
+	,fp_sessdayid DATETIME NOT NULL
+);
+
+
+/* ---------------------------
 frm_EETL
 
 A table for endurance data
@@ -306,7 +323,12 @@ CREATE TABLE frm_EETL (
 	[wrmup_rpm]        int NULL,
 	[wrmup_speed]      numeric(18,0) NULL,
 	[wrmup_watres]     int NULL,
-	[breaks]           int NULL 
+	[breaks]           int NULL
+	,[stopped] int NULL
+	,[stoppedsp] varchar(max) NULL,
+	,[stoppedhr] int NULL
+	,[stoppedrpe] int NULL
+	,[stoppedOthafct] int NULL
 );
 
 
@@ -468,6 +490,11 @@ CREATE TABLE frm_RETL (
 	[modlegWt1] [int] NULL,
 	[modlegWt2] [int] NULL,
 	[modlegWt3] [int] NULL
+	,[stopped] int NULL
+	,[stoppedsp] varchar(max) NULL
+	,[stoppedhr] int NULL
+	,[stoppedrpe] int NULL
+	,[stoppedOthafct] int NULL
 );
 
 
@@ -729,6 +756,52 @@ CREATE TABLE ac_mtr_session_interventionist_assignment (
 	,[csd_participant_guid] VARCHAR(64)
 );
 
+/* ---------------------------
+ac_mtr_frm_labels 
+
+-
+
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_frm_labels', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_frm_labels;
+END
+CREATE TABLE ac_mtr_frm_labels (
+	 parttype INT NOT NULL
+	,prefix VARCHAR(64) NOT NULL
+	,pname VARCHAR(512) NOT NULL
+	,urlparam INT NOT NULL
+	,class INT NULL
+);
+
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'wrmup_', 0,  'Warm-Up' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm5_ex' , 5,  '<5m'  , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm10_ex', 10, '<10m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm15_ex', 15, '<15m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm20_ex', 20, '<20m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm25_ex', 25, '<25m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm30_ex', 30, '<30m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm35_ex', 35, '<35m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm40_ex', 40, '<40m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm45_ex', 45, '<45m' , 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'm3_rec', 50, '3<super>rd</super> Minute Recovery' , 0 );
+
+
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'wrmup_'         , 0, '5 Minute Warmup', 0 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'legpress'       , 1, 'Leg Press', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'modleg'         , 2, 'Modified Leg Press', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'pulldown'       , 3, 'Pulldown', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'legcurl'        , 4, 'Leg Curl', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'seatedrow'      , 5, 'Seated Row', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'kneeextension'  , 6, 'Knee Extension', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'bicepcurl'      , 7, 'Biceps Curl', 1 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'chestpress'     , 8, 'Chest Press', 2 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'chest2'         , 9, 'Chest ##2', 2 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'abdominalcrunch', 10, 'Abdominal Crunch', 2 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'overheadpress'  , 11, 'Overhead Press', 2 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'calfpress'      , 12, 'Calf Press', 2 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'shoulder2'      , 13, 'Non-Press Shoulder Exercise', 2 );
+INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'triceppress'    , 14, 'Tricep Push-Down', 2 );
 
 
 IF @BUILD_EQUIPMENT_LOG = 1

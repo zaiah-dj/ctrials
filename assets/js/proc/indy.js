@@ -36,33 +36,100 @@ function allowDrop(ev) {
 }
 
 
+function addWin( str ) {
+	node = document.createElement( "div" );
+	innerNode = document.createElement( "div" );
+	node.style.width = "200px";
+	node.style.height = "50%";
+	node.style.padding = "5px";
+	node.style.position = "fixed";
+	node.style.top = "25%";
+	node.style.marginLeft = "-100px";
+	node.style.left = "50%";
+	node.style.zIndex = "99";
+	node.style.backgroundColor = "#aaa";
+	node.id = "addedwindow";
+
+	butt = document.createElement( "button" );
+	butt.innerHTML = "Click Me!";
+	butt.style.width = "100%";
+	butt.style.height = "30px";
+	butt.addEventListener( "click", function (ev) {
+		ev.preventDefault();
+		node.parentElement.removeChild( node );
+	});
+	
+	innerNode.innerHTML = str;
+	node.appendChild( butt );
+	node.appendChild( innerNode );
+	document.body.appendChild( node );
+}
+
+
 function drag(ev, optArg) {
-	var isDebugPresent = document.getElementById( "cfdebug" );
 	if ( optArg ) {
-		( isDebugPresent ) ? console.log( "swipe complete..." ) : 0;
+		//( isDebugPresent ) ? console.log( "swipe complete..." ) : 0;
 		return;
 	}
 	else {
-		( isDebugPresent ) ? console.log( "drag complete..." ) : 0;
+		//( isDebugPresent ) ? console.log( "drag complete..." ) : 0;
 		//ev.dataTransfer.setData("text", ev.target.id);
-		//console.log( ev.target.innerHTML );
-		fw[fw.index] = { 
-			id: ev.target.children[1].innerHTML
-		, string: ev.target.children[0].innerHTML 
-		, ref: ev.target
-		, className: ev.target.className
-		};
-		//console.log( fw[ fw.index ] );
-		console.log( ev.target.parentElement );
-		console.log( ev.target );
-		//ev.target.parentElement.removeChild( ev.target );
+		fw[fw.index] = prepareParticipantNode( ev.target );
 	}
+}
+
+
+//
+function prepareParticipantNode ( el ) {
+	return { 
+		id: el.children[1].innerHTML
+	 ,name: el.children[0].innerHTML.split( " (" )[0]
+	 ,pid: el.children[0].innerHTML.match(/([0-9].*)/)[1].replace(")","")
+	 ,ref: el
+	 ,className: el.className
+	};
+}
+
+
+//
+function createParticipantNode( el ) {
+	//Add a new node otherwise
+	node = document.createElement( "li" );
+	node.className =  el.className + "-dropped";//"endurance-class-dropped"; 
+	divL = document.createElement( "div" );
+	divL.className = "left";
+	divR = document.createElement( "div" );
+	divR.className = "right";
+
+	//console.log( el.string.replace(/([0-9].*)/,"").replace(" (","") );
+	//console.log( el.id);
+	//console.log( el.string.match(/([0-9].*)/)[1].replace(")","") );
+
+	span1 = document.createElement( "span" );
+	span1.innerHTML = el.name; //el.string.replace(/([0-9].*)/,"").replace(" (","");
+	span2 = document.createElement( "span" );
+	span2.innerHTML = el.id;
+	span3 = document.createElement( "span" );
+
+	//span3.innerHTML = " (" + el.string.match(/([0-9].*)/)[1].replace(")","")  + ")";
+	span3.innerHTML = " (" + el.pid + ")";
+	divL.appendChild( span1 ); 
+	divL.appendChild( span2 ); 
+	divL.appendChild( span3 ); 
+	ahref = document.createElement( "a" );
+	ahref.className = "release"; 
+	ahref.innerHTML = "Release"; 
+	ahref.addEventListener( "click", releaseParticipant );
+	divR.appendChild( ahref );
+	node.appendChild( divL );
+	node.appendChild( divR );
+	return node;
 }
 
 
 //...
 function drop(ev) {
-	var isDebugPresent = document.getElementById( "cfdebug" );
+	//var isDebugPresent = document.getElementById( "cfdebug" );
 	//No default
 	ev.preventDefault();
 
@@ -79,38 +146,9 @@ function drop(ev) {
 		}
 	}
 
-	//Add a new node otherwise
-	node = document.createElement( "li" );
-	node.className =  fw[fw.index].className + "-dropped";//"endurance-class-dropped"; 
-	divL = document.createElement( "div" );
-	divL.className = "left";
-	divR = document.createElement( "div" );
-	divR.className = "right";
-
-	console.log( fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","") );
-	console.log( fw[fw.index].id);
-	console.log( fw[fw.index].string.match(/([0-9].*)/)[1].replace(")","") );
-
-	span1 = document.createElement( "span" );
-	span1.innerHTML = fw[fw.index].string.replace(/([0-9].*)/,"").replace(" (","");
-	span2 = document.createElement( "span" );
-	span2.innerHTML = fw[fw.index].id;
-	span3 = document.createElement( "span" );
-
-	span3.innerHTML = " (" + fw[fw.index].string.match(/([0-9].*)/)[1].replace(")","")  + ")";
-	divL.appendChild( span1 ); 
-	divL.appendChild( span2 ); 
-	divL.appendChild( span3 ); 
-	ahref = document.createElement( "a" );
-	ahref.className = "release"; 
-	ahref.innerHTML = "Release"; 
-	ahref.addEventListener( "click", releaseParticipant );
-	divR.appendChild( ahref );
-	node.appendChild( divL );
-	node.appendChild( divR );
+	//Create a new node
+	node = createParticipantNode( fw[fw.index] );
 	ev.target.children[0].appendChild( node ); 
-	( isDebugPresent ) ? console.log( "drop complete..." ) : 0;
-	( isDebugPresent ) ? console.log( fw[ fw.index ].ref ) : 0;
 	
 	//Remove the original element
 	ce = fw[ fw.index ].ref;
@@ -267,9 +305,6 @@ function saveSessionUsers (ev) {
 	//Cancel default
 	ev.preventDefault();
 
-	//Find the default div, and log stuff if it's there
-	isDebugPresent = document.getElementById( "cfdebug" );
-
 	//Serialize all the data
 	vv=[];
 	vals = [].slice.call(document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" )); 
@@ -285,12 +320,9 @@ function saveSessionUsers (ev) {
 	xhr.onreadystatechange = function () {
 		if ( this.readyState == 4 && this.status == 200 ) {
 			try {
-				( isDebugPresent ) ? console.log( this.responseText ) : 0;
 				parsed = JSON.parse( this.responseText );
 			}
 			catch (err) {
-				( isDebugPresent ) ? console.log( err.message ) : 0;
-				( isDebugPresent ) ? console.log( this.responseText ) : 0;
 				return;
 			}
 			( parsed.status ) ? frm.submit() : console.log("Error occurred: " +  this.responseText );
@@ -554,59 +586,145 @@ Refactor this to work without CF:
 - Need to be able to control what happens if something fails (during XHR)
 
 */
-function subscribe ( args ) {
-	ev.preventDefault(); 
-	local = {
-		arrVal = []
-	 ,listenForChangesOn = 0
-	};
-	local.arrVal = []; 
-}
 
 
-function subscribe_v1 ( ev ) {
-	ev.preventDefault(); 
-	arrVal = []; 
-	( 1 ) ? console.log( 'Event ' + ev + ' was registered.' ) : 0;
-	mv = document.querySelectorAll( '.slider, .toggler-input' );
-	( 1 ) ? console.log( mv ) : 0;
+function sendPageValCallback ( ev ) {
+	//Get all the values
+	av=[], mv=[].slice.call( document.querySelectorAll( '.slider, .toggler-input' ) );
 
-	//What do all these values look like?
-	for (i=0;i<mv.length;i++) { 	
-		arrVal.push( mv[i].name + '=' + mv[i].value ); 
+	//Get all the additional values
+	for ( n in (tmp=[].slice.call( document.querySelectorAll('.addl input') )) ) {
+		mv.push( tmp[ n ] );
 	}
 
-	//Extra values that should be submitted along with the request, for
-	//purposes of this code, these are all in a class called hidden
-	av = [
-		{ name: "this", value: "resistance" },
-		{ name: "sess_id", value: "NEV1d8562684862UvHTa" },
-		{ name: "exparam", value: "4" },
-		{ name: "recordThread", value: "986C27B5-8C8B-4BE9-8D00-43F27D637BE3" },
-		{ name: "pid", value: "6516AB4C-E270-419F-B35F-136D342A8532" },
-		{ name: "dayofwk", value: "2" },
-		{ name: "stdywk", value: "1" },
-		{ name: "extype", value: "3" },
-		{ name: "insBy", value: "CDDAC161-2B5E-44CF-ABC8-D15623942239" }
-	];
+	//This simple loop is used to ensure I catch ALL form values, be they checkboxes or radios or not
+	for (i=0; i < mv.length; i++) { 
+		//Make sure to track the value of ALL form input types
+		if ( !(( mtype = mv[ i ].type.toLowerCase()) == "radio" ) && !( mtype == "checkbox" ) ) 
+			vv = mv[i].value;
+		else { 
+			//Checkboxes and radio fields need to be made from filtered values
+			authSet = 0, vv = [];
 
-	//Checkboxes cannot use value...
-	for (i=0;i<av.length;i++) { arrVal.push( av[i].name + '=' + av[i].value ); };
-	( 1 ) ? console.log( av ) : 0;
+			//Get only the values that are checked
+			abc = [].slice.call( document.querySelectorAll( "input[ name=" + mv[i].name + "]:checked" ) );
+			//console.log( abc );
+			abc = abc.filter( function ( w ) { return w.value; } );
 
-	Vals = arrVal.join( '&' );
-	( 1 ) ? console.log( Vals ) : 0;
-	( 1 ) ? console.log( 'Sending values ' + arrVal.join(' & ') + ' to /motrpac/web/secure/dataentry/iv/update.cfm\n' ) : 0;
+			//If abc is not empty, then add the value to the array
+			if ( abc == "" )
+				mv.splice( i, 1 );
+			else {
+				console.log( "abc: " + abc );
+				//Loop through all checked values and add them to an array
+				for ( var nx=0; nx < abc.length; nx++ ) vv[ nx ] = abc[ nx ].value; 
+			}
+		}
+	}
 
-	//Do an XMLHttp
+	//Recycle through the list and only push values that stayed...
+	for ( ii=0; ii<mv.length; ii++ ) av.push( mv[ii].name + '=' + mv[ii].value );
+
+	//Join and make a payload
+	Vals = av.join( '&' ); 
+	console.log( av );
+
+	//Make XHR to server and you're done
 	x = new XMLHttpRequest();
-	//x.onreadystatechange = function () { if ( this.readyState == 4 ) { if ( this.status == 200 ) { console.log(this.responseText);}  } else { 0; } };
-	//x.open( 'POST', '/motrpac/web/secure/dataentry/iv/update.cfm', true );
+	x.onreadystatechange = function (ev) {
+		if ( this.readyState == 4 && this.status == 200 ) {
+			try
+				{ console.log( this.responseText );parsed = JSON.parse( this.responseText ); }
+			catch (err) {
+				console.log( this.responseText );
+				return;
+			}
+		}
+	}
 	x.open( 'POST', '/motrpac/web/secure/dataentry/iv/update.cfm', false );
 	x.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
 	x.send(Vals);
-	( 1 ) ? console.log( x.responseText ) : 0;
-	return false;
+}
+
+
+
+
+// a callback handler for errors during XHR
+function tsOnError ( responseText ) {
+	console.log( responseText );
+}
+
+
+//Touch controls
+function touchStart (ev, passedName) {
+	//Disable the standard ability to select the touched object
+	ev.preventDefault();
+
+	try {
+		//Short name for the stuff I'm concerned with
+		pp = prepareParticipantNode( ev.target );
+
+		//Get the total number of fingers touching the screen
+		fingerCount = ev.touches.length;
+
+		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
+		// check that only one finger was used
+		if ( fingerCount > 1 ) 
+			touchCancel(ev);
+		else {
+			//Always check against drop list and make sure the duplicate entries aren't getting in
+			aa = [].slice.call( document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" ) ); 
+			if ( aa.length > 0 ) {
+				for ( i=0; i<aa.length; i++) {
+					if ( aa[i].innerHTML == pp.id ) {
+						console.log( "Looks like this id is already here, stopping request..." );
+						return;
+					}
+				}
+			}
+		  node = createParticipantNode( pp );
+			targ = document.querySelector( ".listing-drop ul" ) 
+			targ.appendChild( node );
+			ev.target.parentElement.removeChild( ev.target );
+		}
+	}
+	catch (err) {
+		addWin( err );
+	}
+}
+
+
+//Touch cancel
+function touchCancel (ev, pn) {
+	// reset the variables back to default values
+	fingerCount = 0;
+	startX = 0;
+	startY = 0;
+	curX = 0;
+	curY = 0;
+	deltaX = 0;
+	deltaY = 0;
+	horzDiff = 0;
+	vertDiff = 0;
+	swipeLength = 0;
+	swipeAngle = null;
+	swipeDirection = null;
+	triggerElementID = null;
+}
+
+function tm (ev, pn) {
+	ev.preventDefault();
+	if ( ev.touches.length == 1 ) {
+		curX = ev.touches[0].pageX;
+		curY = ev.touches[0].pageY;
+		//LOG( "X: " + curX + ", Y: " + curY );
+	} else {
+		touchCancel(ev);
+	}
+}
+
+function touchEnd (ev, pn) {
+	;
 }
 
 
@@ -648,37 +766,41 @@ Router = {
 		{ domSelector: ".slider"            , event: "input"   , f: changeSliderNeighborValue } 
 	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal }
-	 ,{ domSelector: "#sendPageVals"      , event: "click"   , f: sendPageValsChange }
+	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
 	]
 
 	,"/":      [
 		{ domSelector: ".part-drop-list li" , event: "dragstart"   , attr: { draggable: true }, f: drag }
-	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: ts }
-	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: te }
+	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: touchStart }
+	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: touchEnd }
 	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
-	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: tc }
+	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: touchCancel }
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
 	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
 	]
 
 	,"default":      [
-		{ domSelector: ".part-drop-list li" , event: "dragstart"   , attr: { draggable: true }, f: drag }
-	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: ts }
-	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: te }
-	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
-	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: tc }
+		{ domSelector: ".part-drop-list li" , event: "dragstart"   , attr: { draggable: true }, f: [ drag ] }
+	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: [ touchStart ] }
+	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: [ touchEnd ] }
+	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: [ tm ] }
+	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: [ touchCancel ] }
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
 	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
 	]
 };
 
-//Another main() for error handling
+inc = 0;
 
 //main()
 document.addEventListener("DOMContentLoaded", function(ev) {
 	rx = new Routex( {routes:Router, verbose:1} );
 	rx.init();
-//	redirectEngine();
+
+	str = [];
+	for ( n in Router ) str.push( n ); 
+	//addWin( str.join( "<br >" ) );
+	
 });

@@ -6,33 +6,45 @@
 
 	<!--- All the CSS files --->
 	<link rel="stylesheet" href="#link( 'assets/css/zero.css' )#">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-	<!---<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">--->
-	<link rel="stylesheet" href="#link( 'assets/css/bootstrap.min.css' )#">
+	<!--- 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+	<link rel="stylesheet" href="#link( 'assets/css/modals.css' )#">
+	--->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Montserrat|Poppins|Ropa+Sans" rel="stylesheet">
+
+	<!---
 	<link rel="stylesheet" href="#link( 'assets/css/c3.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/chart.css' )#">
-	<link rel="stylesheet" href="#link( 'assets/css/modals.css' )#">
+	--->
+	<link rel="stylesheet" href="#link( 'assets/css/bootstrap.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/sliders.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/toggler.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/checkbox-radio.css' )#">
+	<link rel="stylesheet" href="#link( 'assets/css/mobileselect.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/default.css' )#">
 
 	<!--- All the Javascript files --->
 	<!---
 	<script src="https://d3js.org/d3.v3.js" type="text/javascript"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/c3.min.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/handlebars-v4.0.11.js'  )#" type="text/javascript"></script>
-	--->
 	<script src="#link( 'assets/js/libs/swipesensejs.js'  )#" type="text/javascript"></script>
+	<script src="#link( 'assets/js/libs/bootstrap.min.js'  )#" type="text/javascript"></script>
+	--->
+
+	<script src="#link( 'assets/js/libs/mobileselect.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/sliders.js'  )#" type="text/javascript"></script>
+	<!--- 
 	<script src="#link( 'assets/js/libs/modal.js'  )#" type="text/javascript"></script>
-	<script src="#link( 'assets/js/libs/touch.js'  )#" type="text/javascript"></script>
-	<script src="#link( 'assets/js/libs/unhide.js'  )#" type="text/javascript"></script>
+	<script src="#link( 'assets/js/libs/touch.js'  )#" type="text/javascript"></script> 
 	<script src="#link( 'assets/js/libs/routex.js'  )#" type="text/javascript"></script>
+	--->
 	<script src="#link( 'assets/js/proc/debug.js'  )#" type="text/javascript"></script>
-	<script src="#link( 'assets/js/proc/indy.js'  )#" type="text/javascript"></script>
+	<!--- <script src="#link( 'assets/js/proc/indy.js'  )#" type="text/javascript"></script> --->
+	<script src="#link( 'assets/index.js'  )#" type="text/javascript"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+	<script src="#link( 'assets/bootstrap.js' )#" type="text/javascript"></script>
 
 
 	<!--- iPad Stuff --->
@@ -59,8 +71,8 @@
 		<a href="#link( "default.cfm" )#">Participant List</a>
 	<!---
 		<a href="#link( "save.cfm" )#">Save Session</a>
-	--->
 		<a href="#link( "logout.cfm" )##iif( isDefined( 'staffId' ), DE('?staffid=#staffId#'), "" )#">Logout</a>
+	--->
 		<a href="#link( "staff.cfm" )#">Assigned Participant List</a>
 	<cfif data.debug eq 1>
 		<a style="color:red" href="#link( "logout-all.cfm?siteid=" & siteId )#">Logout All</a>
@@ -88,7 +100,7 @@
 		<!--- This should be debuggable too --->
 		<!--- The links here... --->
 		<cfquery name="ittybitty" datasource="#data.source#">
-			SELECT * FROM #data.data.staff# WHERE ts_siteid = <cfqueryparam value=#sess.current.siteid# cfsqltype="CF_SQL_NUMERIC"> 
+			SELECT * FROM #data.data.staff# WHERE ts_siteid = <cfqueryparam value=#cs.siteid# cfsqltype="CF_SQL_NUMERIC"> 
 		</cfquery>
 		<ul class="persistent-nav-hideme">
 			Login As Another Member

@@ -27,9 +27,9 @@ to reorganize participants.
 				<div class="listing">
 					<ul class="part-drop-list">
 						<cfloop query = unselectedParticipants.results>
-							<cfif ListContains( ENDURANCE, randomGroupCode )>
+							<cfif ListContains( const.ENDURANCE, randomGroupCode )>
 								<cfset listClassPrefix="endurance">
-							<cfelseif ListContains( RESISTANCE, randomGroupCode )>
+							<cfelseif ListContains( const.RESISTANCE, randomGroupCode )>
 								<cfset listClassPrefix="resistance">
 							<cfelse>
 								<cfset listClassPrefix="control">
@@ -46,11 +46,10 @@ to reorganize participants.
 			<div class="bigly bigly-right" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
 				<div class="listing listing-drop">
 					<ul> 
-				<cfif sess.status gte 2>
 					<cfloop query = selectedParticipants.results>
-						<cfif ListContains( ENDURANCE, randomGroupCode )>
+						<cfif ListContains( const.ENDURANCE, randomGroupCode )>
 							<cfset listClassPrefix="endurance">
-						<cfelseif ListContains( RESISTANCE, randomGroupCode )>
+						<cfelseif ListContains( const.RESISTANCE, randomGroupCode )>
 							<cfset listClassPrefix="resistance">
 						<cfelse>
 							<cfset listClassPrefix="control">
@@ -66,7 +65,6 @@ to reorganize participants.
 							</div>
 						</li>	
 					</cfloop>
-				</cfif>
 					</ul>
 				</div>
 			</div>
@@ -75,7 +73,7 @@ to reorganize participants.
 		<!--- On submit, or next, do it. --->
 		<form id="wash-id" method="POST" action="#link('input.cfm')#" class="wash">
 			<input type="text" name="interventionist_id" value="#session.userguid#">
-			<input type="text" name="transact_id" value="#sess.key#">
+			<input type="text" name="transact_id" value="#session.ivId#">
 			<input type="text" name="sessday_id" value="#csSid#">
 			<input type="text" name="list"> <!--- make a list here --->
 			<input type="submit" id="done" value="Done!">

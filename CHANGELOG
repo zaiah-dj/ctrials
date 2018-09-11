@@ -1,3 +1,10 @@
+Tue, Sep 04, 2018  2:52:19 PM
+	 -Questions at the top of the input.cfm questionnaire should all be one line.
+
+Tue, Sep 04, 2018  2:36:09 PM
+	 -Set up 'View More' link to work with modal window.
+	 -Got rid of 'Logout' link because it's useless.
+
 Mon, May 21, 2018  2:24:46 PM
 	 -Weeks track automatically and change as we progress forward in time (oooOOooOOh)
 	 -The week can be changed in development versions by using week=YYYY-MM-DD in the URL.

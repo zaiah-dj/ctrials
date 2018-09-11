@@ -1,13 +1,11 @@
 /*global*/
-html {
-	font-family: 'Montserrat', sans-serif;
+html, p, div {
+	font-family: 'Tahoma', sans-serif;
+	font-size: 1.0em;
+	overflow-X: none;
 }
 
-body {background-color: #eee;}
-
-p, div {
-	font-family: 'Montserrat', sans-serif;
-}
+body { background-color: #eee; }
 
 .stop-sess {
 	width: 100%;
@@ -54,6 +52,10 @@ p {
 	font-size: 1.5em;
 }
 
+
+
+
+
 /*Highlight selected links*/
 a.selected {
 	font-weight: bold;
@@ -74,15 +76,6 @@ a.selected {
 	overflow: hidden;
 }
 
-@keyframes cnbwHeight {
-	from {
-		height: 0px;
-	}
-	to {
-		height: 80%; 
-	}
-}
-
 
 /*By extending Application.cfc, my app is now 
  * wrapped with deaconmenubar let's hide it this way. */
@@ -91,7 +84,6 @@ a.selected {
 }
 
 .container-navAndBodyWrapper {
-/*	background-color: #ced6e4; */
 	padding: 0px;
 	width: 100%;
 	padding-top: 10px;
@@ -120,11 +112,14 @@ a.selected {
 
 /*Intermediate navigation between parts of data entry go here.*/
 .container-nav {
-	height: 6%;
+	height: 8%;
 	min-height: 40px; 
-	padding-bottom: 2.5px;
+	padding-bottom: 5px;
 	width: 98%;
 	margin: 0 auto;
+	padding: 5px;
+	background-color: white;
+	border-radius: 10px 10px 0 0;
 }
 
 /*
@@ -185,14 +180,15 @@ a.selected {
 	margin-bottom: 30px;
 }
 
-.container-header li
-{
+.container-header li {
 	position: relative;
 	z-index: 0;
 	display: inline-block;
 
-	font-size: 0.8em;
+	font-family: 'Ropa Sans', sans-serif;
+	font-size: 1.3em !important;
 	text-align: center;
+	line-height: 18px;
 	left: 10px;
 
 	height: 85%;
@@ -204,14 +200,7 @@ a.selected {
 	border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
 	-gecko-border-radius: 5px 5px 0px 0px;
-/*
-	border-top: 5px solid black;
-	border-left: 5px solid black;
-	border-right: 5px solid black;
-	border-bottom: 5px solid black;
-*/
-	color: white;
-/*	background-color: #728ab2;*/
+	color: black;
 
 	transition: 
 		background-color 0.2s,
@@ -222,6 +211,7 @@ a.selected {
 	margin-right: 10px;
 	top: 10px;
 }
+
 
 .container-header li:hover {
 	font-size: 0.9em;
@@ -234,7 +224,7 @@ a.selected {
 .container-header li.selected {
 	font-size: 1.0em;
 /*	background-color: #ced6e4; */
-/*	border-bottom: 5px solid #ced6e4; */
+	border-bottom: 5px solid #ced6e4; 
 	z-index: 99;
 	/*top: 10px;*/
 }
@@ -243,44 +233,67 @@ a.selected {
 	color: white; 
 }
 
-/*2nd-level navigation (Switch between endurance and resistance data)*/
-.container-nav ul li 
-{
+/*2nd-level navigation*/
+.container-nav ul li {
+	font-family: 'Ropa Sans', /*'Open Sans Condensed', */sans-serif;
+	letter-spacing: -1px;
+	vertical-align: top;
 	position: relative;
 	display: inline-block; 
 	text-align: left;
-	font-weight: bold;
-	border-top: 3px solid hidden;
-	border-left: 3px solid hidden;
-	border-right: 3px solid hidden;
-	border-bottom: 3px solid white;
-	color: white;
+	font-size: 1.3em;
 	margin-right: 10px;
 	height: 100%;
 	width: 150px;
 	padding: 10px;
 	padding-top: 7px;
 	padding-left: 12px;
-	color: #ddd;
+	color: #eee;
 	background-color: #222;
 	transition: 
 		background-color 0.2s,
 		color 0.2s;
 	;
-	top: 6px;
 }
 
 
-.container-nav ul li:hover {
-	background-color: #e6f2ff;
-	color: black;
+.resistance-class-container .container-nav ul li {
+	background-color: #76923c;
+	color: white;
+	z-index: 0;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-moz-border-radius: 5px;
 }
 
+.endurance-class-container .container-nav ul li {
+	background-color: #17365D;
+	color: white;
+	z-index: 0;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
 
-.container-nav ul li.selected {
-	background-color: white;
+.resistance-class-container .container-nav ul li.selected {
+	background-color: #c9e09f;
 	color: black;
 	z-index: 0;
+}
+
+.resistance-class-container .container-nav ul li:hover {
+	background-color: #f0f7e3;
+	color: black;
+}
+.endurance-class-container .container-nav ul li.selected {
+	background-color: #b3c6ef;
+	color: black;
+	z-index: 0;
+}
+
+.endurance-class-container .container-nav ul li:hover {
+  background-color: #d4e3f4;
+	color: black;
 }
 
 .container-header a , 
@@ -295,16 +308,17 @@ div.inner-selection {
 	width : 100%;
 	overflow: hidden;
 	position: relative;
+	border: 1px solid black;
 }
 
 ul.inner-selection {
 	position: fixed;
 	margin-bottom: 10px;
 	width : 20%;
+	border-right: 1px solid black;
 }
 
-.container-body .inner-selection li 
-{
+.container-body .inner-selection li {
 	position: relative;
 	height: 35px;
 	width: 90%;
@@ -320,20 +334,48 @@ ul.inner-selection {
 	color: white;
 	transition: background-color 0.2s, color 0.2s;
 	vertical-align: top;
+/*	top: 30px; */
 /*	transform: rotate(-75deg);*/
 }
 
-.container-body .inner-selection li:hover {
-	background-color: cyan; 
+.resistance-class-container .container-body .inner-selection li {
+	background-color: #76923c; 
+	color: white; 
+}
+
+.resistance-class-container .container-body .inner-selection li:hover {
+	background-color: #f0f7e3;
+	color: black; 
+	font-weight: bold !important;
+}
+
+.resistance-class-container .container-body .inner-selection li.selected {
+	background-color: #c9e09f !important;
+	color: black !important; 
+	height: 100px;
+}
+
+.resistance-class-container .container-body .inner-selection li.completed {
+	background-color: #999;
 	color: black; 
 }
 
-.container-body .inner-selection li.selected {
+.endurance-class-container .container-body .inner-selection li {
+  background-color: #b3c6ef;
+	color: black; 
+}
+
+.endurance-class-container .container-body .inner-selection li:hover {
+  background-color: #d4efff;
+	color: black; 
+}
+
+.endurance-class-container .container-body .inner-selection li.selected {
 	height: 70px;
 	color: black; 
 }
 
-.container-body .inner-selection li.completed {
+.endurance-class-container .container-body .inner-selection li.completed {
 	background-color: #999;
 	color: black; 
 }
@@ -575,18 +617,24 @@ input.collapsible:checked + div > table { display: block; }
 .bigly {
 	position: relative;
 	display: inline-block;
-	padding: 2px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
 	height: 100%;
-	border-right: 2px solid #aaa;
-	width: 48%;
+	border: 1px solid #aaa;
+	width: 49%;
 	transition: width 0.1s, height 0.1s, font-size 0.1s, background-color 0.1s;
+	height: 95%;
+}
+
+.bigly-left {
+	border-radius: 15px 0px 0px 15px;
 }
 
 .bigly-right {
-	border-right: 0px;
-	border-left: 2px solid #aaa;
 	float: right;
-	height: 80%;
+	border-radius: 0px 15px 15px 0px;
 }
 
 @keyframes shake {
@@ -697,8 +745,6 @@ ul.part-drop-list li span:nth-child(3) ,
 .endurance-class-container 
 { text-align: center; }
 
-
-
 .resistance-class, .resistance-class-dropped, .resistance-class-container
 { background-color: #76923c;
   color: white; }
@@ -706,8 +752,18 @@ ul.part-drop-list li span:nth-child(3) ,
 .resistance-class:hover
 { background-color: #c8f767; }
 
-.resistance-class-container
-{ text-align: center; }
+/*.container-navAndBodyWrapper*/ .resistance-class-container
+{ 
+	background: linear-gradient( rgb(231,242,208) 1%, rgb(118, 146, 60) 10%, rgb(118, 146, 60) 70%, rgb(51, 68, 15) 80% );
+	text-align: center; 
+}
+
+/*.container-navAndBodyWrapper*/ .endurance-class-container
+{ 
+	background: linear-gradient( rgb(212,227,244) 1%, rgb(23, 54, 93) 10%, rgb(23, 54, 93) 70%, rgb(4, 20, 40) 80% );
+	text-align: center; 
+}
+
 
 .resistance-class-dropped:hover
 { text-align: center;
@@ -730,6 +786,14 @@ ul.part-drop-list li span:nth-child(3) ,
 {
 	text-align: left;
 }
+
+/*
+.unselected-class-dropped,
+.resistance-class-dropped,
+.endurance-class-dropped {
+	font-family: 'Ropa Sans' !important;
+}
+*/
 
 
 .unselected-class, 
@@ -844,7 +908,7 @@ a.tiny-link {
 	overflow: hidden;
 }
 
-#done ,
+#done,
 .butty {
 	position: absolute;
 	bottom: 10px;
@@ -854,7 +918,8 @@ a.tiny-link {
 input[type=submit] { 
 	margin-top: 10px; 
 	font-size: 1.2em; 
-	background-color: #728ab2;
+	/*background-color: #728ab2;*/
+	background-color: #333333;
 	border-radius: 5px; 
 	-moz-border-radius: 5px; 
 	-gecko-border-radius: 5px; 
@@ -865,11 +930,13 @@ input[type=submit] {
 	border: 0px; 
 	transition: background-color 0.2s; 
 	color 0.2s; 
+	color: white; 
 }
 
 input[type=submit]:hover { 
-	background-color: #e6f2ff;
-	color: white; 
+	/*background-color: #e6f2ff;*/
+	background-color: #bbbbbb;
+	color: black; 
 }
 
 input[type=search] { 
@@ -912,8 +979,6 @@ input[type=search] {
 .persistent-nav a:hover {
 	font-weight: bold;
 }
-
-span.huge { font-weight: bold; font-size: 1.5em; }
 
 .container-body table tr td {
 	/*border: 1px solid black;*/
@@ -975,7 +1040,7 @@ table.participant-entry tr.heading {
 }
 
 .selection {
-	width: 78%;
+	width: 74%;
 	float: right;
 	min-width: 300px;
 	margin: 0 auto;
@@ -1049,7 +1114,7 @@ table.participant-entry tr.heading {
 	min-width: 50px;
 	height: 30px;
 	display: block;
-	font-size: 1.5em;
+	font-size: 1.0em;
 	border: 0px;
 	position: relative;
 	top: -10px;
@@ -1057,6 +1122,9 @@ table.participant-entry tr.heading {
 	padding: 0px;
 	padding-bottom: 5px;
 	font-weight: bold;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-moz-border-radius: 10px;
 }
 
 .incrementor:hover {
@@ -1148,6 +1216,11 @@ table.endurance tr td.chopt {
 	margin: 0 auto;
 	position: relative;
 }
+
+.modal-activate + a {
+	left: 40px;
+	position: relative;
+} 
 
 ul.participant-notes {
 	list-style-type: square;	
@@ -1412,11 +1485,10 @@ table.table-results-header {
 table.table-meta {
 	position: relative;
 	top: 20px;
-/*
-	border-radius: 15px !important;
-	-moz-border-radius: 15px !important;		
-	-gecko-border-radius: 15px !important;
-*/
+}
+
+table.table-meta tbody tr td:nth-child(1) {
+	width: 70%;
 }
 
 table.table-results {
@@ -1442,6 +1514,13 @@ table.table-results {
 	left: 20px;
 }
 
+.endurance-class-container, 
+.resistance-class-container {
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-gecko-border-radius: 10px;
+}
+
 
 /*change color schemes depending on what's around */
 .endurance-class-container .container-body .inner-selection li.selected,
@@ -1453,7 +1532,6 @@ table.table-results {
 }
 
 
-.resistance-class-container .container-body .inner-selection li.selected,
 .resistance-class-container input:checked + .toggler {
   /*background-color: #2196F3; - original */
 	/*background-color: #e6f2ff; - too light */
@@ -1466,3 +1544,195 @@ table.table-results {
 	border-color: #b2c986;
 }
 
+table.checkin tr td:nth-child(2) {
+	font-weight: bold; 
+	font-size: 1.7em;
+}
+
+table.checkin tr td.notes {
+	font-size: 1.0em;
+}
+
+.container-header #participant_list li.resistance-class-container
+{ 
+	background: none;
+	background-color: #76923c; 
+	border-bottom: 0px;
+	box-shadow: 4px 4px 4px #aaa;
+	font-size: 0.8em;
+}
+
+.container-header #participant_list li.resistance-selected {
+	background-color: rgb( 231, 242, 208 );
+}
+ 
+.container-header #participant_list li.endurance-class-container
+{ 
+	background: none;
+	background-color: #b3c6ef; 
+	border-bottom: 0px;
+	box-shadow: 4px 4px 4px #aaa;
+	font-size: 0.8em;
+}
+
+.container-header #participant_list li.endurance-selected {
+	background-color: rgb( 212, 227, 244 ); 
+}
+
+.endurance-class-container button ,
+.endurance-class-container .pop-up button ,
+.resistance-class-container button ,
+.resistance-class-container .pop-up button {
+	border: 0px;
+}
+
+.pop-up button {
+	text-align: center;
+	width: 100px;
+	height: 30px;
+	border: 0px;
+}
+
+.pop-up button:hover {
+	text-align: center;
+	width: 100px;
+	height: 30px;
+	border: 0px;
+	color: white;
+}
+
+.resistance-class-container button.modal-activate ,
+.resistance-class-container .pop-up button {
+	background-color: #76923c;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	color: white;
+	transition: color 0.2s, background-color 0.2s;
+	border: 0px;
+}
+
+.resistance-class-container button.modal-activate:hover ,
+.resistance-class-container .pop-up button:hover {
+	background-color: #c9e09f;
+	color: black;
+	border: 0px;
+}
+
+.resistance-class-container button.modal-activate:active ,
+.resistance-class-container .pop-up button:active ,
+.resistance-class-container button.modal-activate:focus ,
+.resistance-class-container .pop-up button:focus {
+	background-color: #f0f7e3;
+	color: black;
+	border: 0px;
+	outline: 0;
+}
+
+
+.endurance-class-container button.modal-activate ,
+.endurance-class-container .pop-up button {
+	background-color: #b3c6ef;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	color: black;
+	transition: color 0.2s, background-color 0.2s;
+	border: 0px;
+}
+
+.endurance-class-container button.modal-activate:hover ,
+.endurance-class-container .pop-up button:hover {
+  background-color: #d4e3f4;
+	color: black;
+	border: 0px;
+}
+
+.endurance-class-container button.modal-activate:active ,
+.endurance-class-container .pop-up button:active ,
+.endurance-class-container button.modal-activate:focus ,
+.endurance-class-container .pop-up button:focus {
+	background-color: #17365D;
+	color: white;
+	border: 0px;
+	outline: 0;
+}
+
+
+
+.pop-up {
+	width: 60%;
+	background-color: white;
+	padding: 15px;
+	font-size: 1.3em;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	min-width: 300px;
+	margin: 0 auto;
+	position: fixed;
+	display: block;
+	top: 10%;
+	height: 80%;
+	left: 20%;
+	overflow: hidden;
+	border: 1px solid black;
+	z-index: 99;
+}
+
+/* rewrite the scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+	position: relative;
+	margin-right: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #888; 
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	transition: background-color 0.2s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; 
+}
+
+span.huge {
+	position: relative;
+	left: -40px;
+	font-size: 1.7em;
+	font-weight: bold;
+}
+
+span.tiny {
+	display: block;
+	letter-spacing: -1px;
+	position: relative;
+	font-size: 0.7em;
+}
+
+
+table.innard { width: 100%; }
+table.innard tr { height: 70px; }
+table.innard td.thin { width: 10%; }
+/*
+#done ,
+*/
+
+
+.hiddenFromView {
+	display: none;
+}
+
+.hiddenActivate {
+	display: none;
+}

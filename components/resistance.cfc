@@ -1,4 +1,8 @@
-/* List of resistance exercises. */
+/* -------------------------------------------------- * 
+	resistance.cfc
+
+  List of resistance exercises. 
+ * -------------------------------------------------- */
 component name="resistance" {
 	this.srcQuery = 0;
 
@@ -37,9 +41,9 @@ component name="resistance" {
 			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep2",index=2, paramMatch=1}
 			,{uom="lb"  ,label="Set 3",min=5,max=100, step=5, formName = "Wt3" ,index=3, paramMatch=1}
 			,{uom="reps",label=""     ,min=0,max=15 , step=1, formName = "Rep3",index=3, paramMatch=1}
-		  ,{uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", index=0, paramMatch=0}
-		  ,{uom="rpe", label="RPE",        min=20, max=120, step=1, formName="rpe", index=0, paramMatch=0}
-		  ,{uom="%"  , label="Affect",     min=20, max=120, step=1, formName="Othafct", index=0, paramMatch=0}
+		  ,{uom="BPM", label="Heart Rate", min=70, max=140, step=1, formName="hr", index=0, paramMatch=0}
+		  ,{uom="RPE", label="RPE",        min=6, max=20, step=1, formName="rpe", index=0, paramMatch=0}
+		  ,{uom=""   , label="Affect",     min=-5, max=5, step=1, formName="Othafct", index=0, paramMatch=0}
 		]);
 
 		this.exercises = queryNew( 

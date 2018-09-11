@@ -1,3 +1,12 @@
+/* ------------------------------------ *
+	init() 
+	------	
+	Check that a database or file exists and 
+	create it for logging.
+
+	Right now, only supports SQL server...
+ * ------------------------------------ */
+
 component {
 	Property name="table" type="string";
 	Property name="datasource" type="string";

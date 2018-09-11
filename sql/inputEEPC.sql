@@ -81,13 +81,13 @@ SELECT * FROM
 	,( CASE m5_exrpm WHEN NULL THEN 0 ELSE m5_exrpm END ) as p_m5_exrpm
 	,( CASE m5_exspeed WHEN NULL THEN 0 ELSE m5_exspeed END ) as p_m5_exspeed
 	,( CASE m5_exwatres WHEN NULL THEN 0 ELSE m5_exwatres END ) as p_m5_exwatres
-	,( CASE m3_rechr WHEN NULL THEN 0 ELSE m3_rechr END ) as p_m5_rechr
-	,( CASE m3_recoth1 WHEN NULL THEN 0 ELSE m3_recoth1 END ) as p_m5_recoth1
-	,( CASE m3_recoth2 WHEN NULL THEN 0 ELSE m3_recoth2 END ) as p_m5_recoth2
-	,( CASE m3_recprctgrade WHEN NULL THEN 0 ELSE m3_recprctgrade END ) as p_m5_recprctgrade
-	,( CASE m3_recrpm WHEN NULL THEN 0 ELSE m3_recrpm END ) as p_m5_recrpm
-	,( CASE m3_recspeed WHEN NULL THEN 0 ELSE m3_recspeed END ) as p_m5_recspeed
-	,( CASE m3_recwatres WHEN NULL THEN 0 ELSE m3_recwatres END ) as p_m5_recwatres
+	,( CASE m3_rechr WHEN NULL THEN 0 ELSE m3_rechr END ) as p_m3_rechr
+	,( CASE m3_recoth1 WHEN NULL THEN 0 ELSE m3_recoth1 END ) as p_m3_recoth1
+	,( CASE m3_recoth2 WHEN NULL THEN 0 ELSE m3_recoth2 END ) as p_m3_recoth2
+	,( CASE m3_recprctgrade WHEN NULL THEN 0 ELSE m3_recprctgrade END ) as p_m3_recprctgrade
+	,( CASE m3_recrpm WHEN NULL THEN 0 ELSE m3_recrpm END ) as p_m3_recrpm
+	,( CASE m3_recspeed WHEN NULL THEN 0 ELSE m3_recspeed END ) as p_m3_recspeed
+	,( CASE m3_recwatres WHEN NULL THEN 0 ELSE m3_recwatres END ) as p_m3_recwatres
 	,mchntype as p_mchntype
 	,MthlyBPDia as p_MthlyBPDia
 	,MthlyBPSys as p_MthlyBPSys
@@ -204,13 +204,13 @@ RIGHT JOIN
 	,( CASE m5_exrpm WHEN NULL THEN 0 ELSE m5_exrpm END ) AS c_m5_exrpm
 	,( CASE m5_exspeed WHEN NULL THEN 0 ELSE m5_exspeed END ) AS c_m5_exspeed
 	,( CASE m5_exwatres WHEN NULL THEN 0 ELSE m5_exwatres END ) AS c_m5_exwatres
-	,( CASE m3_rechr WHEN NULL THEN 0 ELSE m3_rechr END ) AS c_m5_rechr
-	,( CASE m3_recoth1 WHEN NULL THEN 0 ELSE m3_recoth1 END ) AS c_m5_recoth1
-	,( CASE m3_recoth2 WHEN NULL THEN 0 ELSE m3_recoth2 END ) AS c_m5_recoth2
-	,( CASE m3_recprctgrade WHEN NULL THEN 0 ELSE m3_recprctgrade END ) AS c_m5_recprctgrade
-	,( CASE m3_recrpm WHEN NULL THEN 0 ELSE m3_recrpm END ) AS c_m5_recrpm
-	,( CASE m3_recspeed WHEN NULL THEN 0 ELSE m3_recspeed END ) AS c_m5_recspeed
-	,( CASE m3_recwatres WHEN NULL THEN 0 ELSE m3_recwatres END ) AS c_m5_recwatres
+	,( CASE m3_rechr WHEN NULL THEN 0 ELSE m3_rechr END ) AS c_m3_rechr
+	,( CASE m3_recoth1 WHEN NULL THEN 0 ELSE m3_recoth1 END ) AS c_m3_recoth1
+	,( CASE m3_recoth2 WHEN NULL THEN 0 ELSE m3_recoth2 END ) AS c_m3_recoth2
+	,( CASE m3_recprctgrade WHEN NULL THEN 0 ELSE m3_recprctgrade END ) AS c_m3_recprctgrade
+	,( CASE m3_recrpm WHEN NULL THEN 0 ELSE m3_recrpm END ) AS c_m3_recrpm
+	,( CASE m3_recspeed WHEN NULL THEN 0 ELSE m3_recspeed END ) AS c_m3_recspeed
+	,( CASE m3_recwatres WHEN NULL THEN 0 ELSE m3_recwatres END ) AS c_m3_recwatres
 
 	,mchntype as c_mchntype
 	,MthlyBPDia as c_MthlyBPDia
