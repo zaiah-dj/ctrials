@@ -291,10 +291,10 @@ if ( StructKeyExists( cs, "participants" ) ) {
 		sc.bpDaysLeft = const.bpDaysLimit - sc.bpDaysElapsed;
 		
 		//sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.bp_systolic;
-		sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.mthlybpsys;
+		sc.bpSystolic = cp.details.mthlybpsys;
 
 		//sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.bp_diastolic;
-		sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.MthlyBPDia;
+		sc.bpDiastolic = cp.details.MthlyBPDia;
 
 		sc.HRWorking = (cp.details.HRWorking eq "" || cp.details.HRWorking eq 0 ) ? 0 : cp.details.HRWorking;
 		

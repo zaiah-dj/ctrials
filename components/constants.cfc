@@ -2,6 +2,10 @@
 	constants.cfc
 
   List of all constants.
+
+	Defaults can be here too, but I'm not sure if this is
+	better or worse than putting them in db.  Especially
+	since everybody needs them.
  * -------------------------------------------------- */
 /*
 component name="constants" {

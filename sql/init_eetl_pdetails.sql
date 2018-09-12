@@ -7,7 +7,7 @@ SELECT * FROM
 	( SELECT 
 			participantGUID as _pid	
 		 ,MthlyBPDia
-		 ,mthlybpsys
+		 ,MthlyBPSys
 		 ,d_visit
 		 ,dayofwk
 		 ,stdywk

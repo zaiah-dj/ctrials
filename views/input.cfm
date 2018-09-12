@@ -98,69 +98,14 @@
 							<input class="toggler-input" type="checkbox" name="hrMonitor" 
 								#iif(private.etc.results.c_wrmup_hr gt 0,DE('checked'),DE(''))#>
 							<span class="toggler round"></span>
+							<div>#iif( private.etc.results.c_wrmup_hr gt 0, DE('Yes'),DE('No') )#</div>
 						</label>
 					</td>
 				</tr>
 				<tr>
 					<td>Warm-Up Start Time</td>
 					<td>
-<!---
---->
-<style type="text/css">
-##day {
-	width: 100px;
-	height: 20px;
-	display: block;
-	border: 1px solid black; 
-}
-</style>
-<div id="day">00:00</div>
-<script type="text/javascript">
-document.addEventListener( "DOMContentLoaded", function (ev) {
-var mobileSelect1 = new MobileSelect({
-    trigger: '##day'
-   ,title: 'Select a Time'
-   ,wheels: [
-    {data: [...Array(24).keys()]}
-   ,{data: [...Array(59).keys()]}
-    ]
-   ,position:[2] //Initialize positioning
-	 ,connector: ':'
-	 ,callback: function ( indexArr, data ) {
-			console.log( indexArr, data );	
-	 }
-	 ,ensureBtnText: "OK"
-	 ,cancelBtnText: "Cancel"
-});
-console.log( mobileSelect1 );
-});
-console.log( day );
-</script>
-<!---
-						<label class="switch">
-							<input class="" min=0 max=24 type="numeric" name="exStartTime_hr">
-							<input class="" min=0 max=59 type="numeric" name="exStartTime_min">
-						</label>
-    <div class="row">
-        <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker3'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $(function () {
-                document.getElementById('datetimepicker3').datetimepicker({
-                    format: 'LT'
-                });
-            });
-        </script>
-    </div>
---->
+						<button class="stateChange">Begin Exercise</button>
 					</td>
 				</tr>
 			</tbody>
@@ -171,7 +116,7 @@ console.log( day );
 		<!--- Show all the exercise metadata here --->
 		<br />
 	<cfif private.magic gt 0>
-		<h5>Exercise Metadata</h5>
+		<h5>Exercise Machine Type</h5>
 		<div class="table-border-meta">
 		<table class="table table-striped table-meta">
 			<tbody>
@@ -244,11 +189,11 @@ console.log( day );
 
 		<!--- Finally, show all the exercise results --->
 		<h5>Exercise Results</h5>
-		<div class="table-border-meta">
+		<div><!--- class="table-border-meta" --->
 		<table class="table table-results-header">
 			<thead>
 				<tr style="height: 20px">
-					<td>Last Visit Results</td>
+					<td>Last Session Results</td>
 					<td><b>Exercise Parameter</b></td>
 				</tr>
 			</thead>

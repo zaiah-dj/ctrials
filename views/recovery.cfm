@@ -84,10 +84,10 @@
 					<td>
 						<div class="row">
 							<div class="cc col-sm-7">
-								<input type="range" min="70" max="140" class="slider" value="50" name="recoveryHR">
+								<input type="range" min="70" max="220" class="slider" value="50" name="recoveryHR">
 							</div>
 							<div class="catch cc col-sm-1">0</div>
-							<div class="col-sm-1">(uom)</div>
+							<div class="col-sm-1">BPM</div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
@@ -103,7 +103,7 @@
 								<input type="range" min="6" max="20" class="slider" value="50" name="recoveryRPE">
 							</div>
 							<div class="catch cc col-sm-1">0</div>
-							<div class="col-sm-1">(uom)</div>
+							<div class="col-sm-1">%</div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
@@ -119,7 +119,7 @@
 								<input type="range" min="-5" max="5" class="slider" value="50" name="recoveryAffect">
 							</div>
 							<div class="catch cc col-sm-1">0</div>
-							<div class="col-sm-1">(uom)</div>
+							<div class="col-sm-1"></div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>

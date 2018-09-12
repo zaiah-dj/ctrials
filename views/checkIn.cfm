@@ -71,7 +71,6 @@
 					<button class="modal-activate">Add New Note</button>
 					<a class="view_more" href="/">View More</a>
 					<ul class="participant-notes">
-						<div></div>
 					<cfloop query=cp.notes>
 						<li>#DateTimeFormat(noteDate, "mm/dd/yy")# - #noteText#</li>
 					</cfloop>

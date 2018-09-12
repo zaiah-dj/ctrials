@@ -208,6 +208,7 @@ function submitAPIRequest( obj ) {
 	/*else {;}*/ //This ought to be for multipart requests...
 }
 
+
 /* ------------------------------------ *
 function addFrameworkWin( elChain ) 
 
@@ -275,20 +276,16 @@ function addFrameworkWin( elChain ) {
 
 	//Quick and dirty way to add more DOM elements to this window 
 	for ( x=0; x<elChain.length; x++ ) {
-		//console.log( x );console.log( elChain[x] );
 		for ( y in elChain[x] ) {
-			el = document.createElement( elName = y );
+			el = document.createElement( y );
 			for ( z in elChain[x][y] ) {
 				//do an indexOf, and match the full name
-				//innerHTML,eventListener,id,className,etc
-				if ( z != "innerHTML" && z != "eventListener" && z != "id" ) 
+				if ( ["eventListener","innerHTML","value","id","className"].indexOf( z ) == -1 )
 					el.style[ z ] = elChain[x][y][z];
-				else if ( z == "innerHTML" )
-					el.innerHTML = 	elChain[x][y][z];
-				else if ( z == "id" )
-					el.id = elChain[x][y][z];
-				else if ( z == "eventListener" ) {
+				else if ( z == "eventListener" )
 					el.addEventListener( elChain[x][y][z]["event"], elChain[x][y][z]["callback"] );
+				else {
+					el[ z ] = elChain[x][y][z];
 				}
 			}
 			node.appendChild( el );
@@ -306,19 +303,18 @@ function saveParticipantNote( ev )
 
 Save a participant note to an API endpoint.
 
- * ------------------------------------ */
+ * ------------------------------------ */ cc=0;
 function saveParticipantNote ( ev ) {
 	ev.preventDefault();
 	box = document.getElementById( "ta-inner" );
 
 	//Get the partGUID, Session ID, and user notes
-	pd = [].slice.call( document.querySelectorAll("input[name=ps_pid]") );
-	sd = [].slice.call( document.querySelectorAll("input[name=ps_sid]") );
+	var pd = [].slice.call( document.querySelectorAll("input[name=ps_pid]") );
+	var sd = [].slice.call( document.querySelectorAll("input[name=ps_sid]") );
 	noteValue = box.value ;
 	
 	//Also get the notes section of the text area...
-	par = [].slice.call( document.querySelectorAll( "ul.participant-notes" ) );
-	ref = par[0];
+	ref = [].slice.call( document.querySelectorAll( "ul.participant-notes" ) )[0];
 
 	//If no note, don't save.
 	if ( noteValue == "" ) {
@@ -351,12 +347,9 @@ function saveParticipantNote ( ev ) {
 	xhr.onreadystatechange = function (ev) { 
 		if ( this.readyState == 4 && this.status == 200 ) {
 			try {
-				console.log( this.responseText );
-				parsed = JSON.parse( this.responseText );
-				var par = [].slice.call( document.querySelectorAll( "ul.participant-notes" ) );
-				var li = document.createElement( "li" );
-				li.innerHTML = noteValue;
-				par[0].appendChild( li ); 
+				console.log( this.responseText );parsed = JSON.parse( this.responseText );
+				(li = document.createElement( "li" )).innerHTML = getDatestamp() + " - " + noteValue;
+				ref.insertBefore( li, ref.children[0] );
 				//TODO: This is not the greatest way to remove this box. 
 				shadenode.parentElement.removeChild( shadenode );
 			}
@@ -375,6 +368,22 @@ function saveParticipantNote ( ev ) {
 	);
 }
 
+/* ------------------------------------ *
+function getDatestamp(  ) {
+
+Retrieve a properly formatted datestamp.
+
+ * ------------------------------------ */
+function getDatestamp ( ){
+	var m, y, dd=new Date();
+	return [
+		(((m = dd.getMonth() + 1) < 10) ? "0" + m : m),
+		dd.getDate(),
+		(String( dd.getFullYear() ).slice( 2,4 ))
+	].join( "/" );
+	; 
+}
+
 
 /* ------------------------------------ *
 function saveParticipantEarlyStopReason ( el ) {
@@ -383,14 +392,37 @@ Save a participant stop session early reason
 to an API endpoint.
 
  * ------------------------------------ */
-function saveParticipantEarlyStopReason ( el ) {
-	box = el;	
-	return function (ev) {
-		ev.preventDefault();
-		document.querySelector( "#reasonStoppedEarly" ).value = box.value;  
-		//console.log( document.querySelector( "#reasonStoppedEarly" ).value ); 
-		node.parentElement.removeChild( node );
+function saveParticipantEarlyStopReason ( ev ) {
+	ev.preventDefault();
+	var t = document.getElementById( "ta-inner" );
+	var r = document.getElementById( "reasonStoppedEarly" );
+	var v = t.value;	
+	var d = null;
+
+	//Only add in case of 
+	if ( (r.value = t.value) ) {
+		r.value = t.value;
+		//Show the textarea
+		if ( (d = document.getElementById( "reasonShowUser" )) )
+			d.innerHTML = r.value;
+		else {
+			d = document.createElement( "div" );
+			d.style.width = "100%";
+			d.style.height = "auto";
+			d.style.marginTop = "20px";
+			d.style.marginBottom = "20px";
+			d.id = "reasonShowUser";
+			d.innerHTML = r.value;
+			var p = r.parentElement.appendChild( d );
+
+			console.log( r.parentElement.querySelector( ".modal-activate" ) );
+			r.parentElement.querySelector( ".modal-activate" ).innerHTML = "Edit Reason"; 
+		}	
 	}
+
+	//Change text to 'Edit Reason'
+	//Always get rid of the box
+	shadenode.parentElement.removeChild( shadenode );
 }
 
 
@@ -484,7 +516,11 @@ function drop(ev) {
 }
 
 
-//Filter search when trying to narrow down participants
+/* ------------------------------------ *
+function searchParticipants ( ev )
+
+Filter search when trying to narrow down participants
+ * ------------------------------------ */
 function searchParticipants ( ev ) {
 	vv = [].slice.call( document.querySelectorAll( "ul.part-drop-list li" ) );
 	for ( i=0; i < vv.length; i++ ) {
@@ -496,7 +532,11 @@ function searchParticipants ( ev ) {
 }
 
 
-//
+/* ------------------------------------ *
+function changeSliderNeighborValue ( ev )
+
+Handle the update of values by clicking on + and - boxes
+ * ------------------------------------ */
 function changeSliderNeighborValue ( ev ) {
 	//Change the whole value if the inner value has no nodes...
 	//ev.target.parentElement.parentElement.childNodes[ 3 ].innerHTML = ev.target.value; 
@@ -528,7 +568,11 @@ function updateNeighborBox ( ev ) {
 }
 
 
-//Handle the update of values by clicking on + and - boxes
+/* ------------------------------------ *
+function getNextResults(ev)
+
+Handle the update of values by clicking on + and - boxes
+ * ------------------------------------ */
 function updateNeighborBoxFromSI (ev) {
 	ev.preventDefault();
 	aav = 0;
@@ -557,7 +601,12 @@ function updateNeighborBoxFromSI (ev) {
 }
 
 
-//Handles fetching and serializing participant results from previous weeks 
+/* ------------------------------------ *
+function getNextResults(ev)
+
+Handles fetching and serializing 
+participant results from previous weeks 
+ * ------------------------------------ */
 function getNextResults(ev) {
 	ev.preventDefault();
 	//Get all modal-load links, and set xhr for each.
@@ -582,7 +631,11 @@ function getNextResults(ev) {
 }
 
 
-//Save notes
+/* ------------------------------------ *
+function checkInSaveNote ( ev )
+
+Save notes.
+ * ------------------------------------ */
 function checkInSaveNote ( ev ) {
 	ev.preventDefault();
 
@@ -637,7 +690,11 @@ function checkInSaveNote ( ev ) {
 }
 
 
-//Handle user sessions
+/* ------------------------------------ *
+function saveSessionUsers (ev)
+
+Update exercise session list
+ * ------------------------------------ */
 function saveSessionUsers (ev) {
 	//Cancel default
 	ev.preventDefault();
@@ -718,7 +775,12 @@ function updateExerciseForm ( ev ) {
 }
 
 
-//Update exercise session list
+/* ------------------------------------ *
+function updateExerciseSession ( ev )
+
+Update exercise session list
+
+ * ------------------------------------ */
 function updateExerciseSession ( ev ) {
 	//Get the current PID
 	var pid, ilocarr = location.href.split("?")[1].split("=");
@@ -746,6 +808,12 @@ function updateExerciseSession ( ev ) {
 }
 
 
+/* ------------------------------------ *
+function releaseParticipant ( ev ) {
+
+Release a participant back into the pool.
+
+ * ------------------------------------ */
 function activateOtherParamText ( ev ) {
 	opt = [].slice.call( document.getElementsByClassName( "param-ta" ) );
 
@@ -782,6 +850,12 @@ function activateOtherParamText ( ev ) {
 }
 
 
+/* ------------------------------------ *
+function releaseParticipant ( ev ) {
+
+Release a participant back into the pool.
+
+ * ------------------------------------ */
 function releaseParticipant ( ev ) {
 	ev.preventDefault();
 
@@ -850,6 +924,11 @@ function releaseParticipant ( ev ) {
 }
 
 
+/* ------------------------------------ *
+function redirectEngine ()
+
+-
+ * ------------------------------------ */
 function redirectEngine() {
 	//Define an object and split the URL
 	local = {};
@@ -895,7 +974,11 @@ function redirectEngine() {
 }
 
 
-//
+/* ------------------------------------ *
+function sendPageValCallback ( ev ) {
+
+-
+ * ------------------------------------ */
 function sendPageValCallback ( ev ) {
 	//Define some holding spots.
 	tv={}, av=[]; 
@@ -953,13 +1036,21 @@ function sendPageValCallback ( ev ) {
 }
 
 
-// a callback handler for errors during XHR
+/* ------------------------------------ *
+function tsOnError ( responseText )
+
+-
+ * ------------------------------------ */
 function tsOnError ( responseText ) {
 	console.log( responseText );
 }
 
 
-//Touch controls
+/* ------------------------------------ *
+function touchStart (ev, pn)
+
+Track touches from the beginning.
+ * ------------------------------------ */
 function touchStart (ev, passedName) {
 	//Disable the standard ability to select the touched object
 	ev.preventDefault();
@@ -999,7 +1090,11 @@ function touchStart (ev, passedName) {
 }
 
 
-//Touch cancel
+/* ------------------------------------ *
+function touchCancel (ev, pn)
+
+Cancel touch on a screen.
+ * ------------------------------------ */
 function touchCancel (ev, pn) {
 	// reset the variables back to default values
 	fingerCount = 0;
@@ -1018,6 +1113,11 @@ function touchCancel (ev, pn) {
 }
 
 
+/* ------------------------------------ *
+function tm (ev, pn)
+
+Create a modal for the checkin page.
+ * ------------------------------------ */
 function tm (ev, pn) {
 	ev.preventDefault();
 	if ( ev.touches.length == 1 ) {
@@ -1029,45 +1129,70 @@ function tm (ev, pn) {
 	}
 }
 
+
+/* ------------------------------------ *
+function generateModalCheckIn( ev )
+
+Create a modal for the checkin page.
+ * ------------------------------------ */
 function touchEnd (ev, pn) {
 	;
 }
 
 
+/* ------------------------------------ *
+function generateModalCheckIn( ev )
+
+Create a modal for the checkin page.
+ * ------------------------------------ */
 function generateModalCheckIn( ev ) {
 	ev.preventDefault();
 	//Add a new window with callback and extra elements
 	addFrameworkWin( [
-		{ textarea: { width: "100%", height: "80%", id: "ta-inner" }}
+		{ textarea: { 
+			width: "100%", height: "80%", id: "ta-inner" 
+		}}
 	, { button: {
 			innerHTML: "Save!"
 		, width: "50%"
 		, height: "30px"
 		, left: "10px"
 		, marginTop: "10px"
-		, eventListener: { event:"click", callback:saveParticipantNote2 }
+		, eventListener: { event:"click", callback:saveParticipantNote }
 		}} 		
 	]); 
 }
 
-function odng (ev) { alert( "you still need to rewrite this..." ); }
 
+/* ------------------------------------ *
+function generateModalRecovery( ev ) {
+
+Create a modal for the recovery page.
+ * ------------------------------------ */
 function generateModalRecovery( ev ) {
 	ev.preventDefault();
 	addFrameworkWin( [
-		{ textarea: { width: "100%", height: "80%", id: "ta-inner" }}
+		{ textarea: { width: "100%", height: "80%", id: "ta-inner" 
+		 ,innerHTML: document.getElementById("reasonStoppedEarly").value
+		}}
 	, { button: {
 			innerHTML: "Save!"
 		, width: "50%"
 		, height: "30px"
 		, left: "10px"
 		, marginTop: "10px"
-		, eventListener: { event:"click", callback: odng }
+		, eventListener: { event:"click", callback: saveParticipantEarlyStopReason }
 		}} 		
 	]); 
 }
 
 
+/* ------------------------------------ *
+function viewAdditional( ev )
+
+Create a modal with the previous 
+results.
+ * ------------------------------------ */
 function viewAdditional( ev ) {
 	ev.preventDefault();
 	pd = [].slice.call( document.querySelectorAll("input[name=ps_pid]") );
@@ -1096,6 +1221,74 @@ function viewAdditional( ev ) {
 		"&this=notes"
 	);	
 }
+
+
+/* ------------------------------------ *
+function unhideRecoveryQuestions (ev)
+
+Unhide the recovery questions that only
+show up when a session stops early.
+
+ * ------------------------------------ */
+function unhideRecoveryQuestions (ev) {
+	//go to parent node,
+	//unhide everything and mark the choice
+	SS = [ ["hidden","show"], ["show","hidden"] ];
+	var state = ( !RECOVERY_STATE ) ? SS[0] : SS[1];
+	var divs = [].slice.call( document.querySelectorAll( "."+state[0]+"Activate" ));
+	divs.map( function (ev) { ev.className = state[1]+"Activate"; } );	
+	RECOVERY_STATE = (!RECOVERY_STATE) ? 1 : 0;
+	//when the button is pressed, the exercise type can be saved on the backend
+}
+
+
+/* ------------------------------------ *
+function stateChangeUpdate( ev )
+
+Change the state on adjacent text node
+elements.
+ * ------------------------------------ */
+function stateChangeUpdate( ev ) {
+	//Change the state of binary togglers
+	st = STATE_TRACKER[ ev.target.name ] = ev.target.checked;
+	ev.target.nextElementSibling.nextElementSibling.innerHTML = ( st ) ? "Yes" : "No"; 
+	STATE_TRACKER[ ev.target.name ] = ( st ) ? 0 : 1; 
+}
+
+
+/* ------------------------------------ *
+function updateTime( ev )
+
+Change the state on adjacent text node
+elements.
+ * ------------------------------------ */
+function updateTime( ev ) {
+	//Change the state
+	//Execute a callback
+	ev.preventDefault();
+	var pd = [].slice.call( document.querySelectorAll("input[name=pid]") );
+	var sd = [].slice.call( document.querySelectorAll("input[name=sess_id]") );
+	xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+		if ( this.readyState == 4 ) {
+			console.log( this.responseText );
+			//a = JSON.parse( this.responseText );
+			//str = "<table>";
+			//a.RESULTS.DATA.map( function(aa) { str += "<tr><td>" + aa[3] + "</td><td>" + aa[5] + "</td></tr>"; } );
+			//str += "</table>";
+		}
+	}
+	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/time.cfm", true );
+	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
+	xhr.send(
+		"pid=" + pd[0].value +
+		"sid=" + sd[0].value +
+		"exindex=" + pd[0].value +
+		"&this=time"
+	);	
+}
+
+
 
 function closeWindow( ev ) {
 }
@@ -1134,18 +1327,6 @@ return;
 }
 
 
-//????
-function unhideRecoveryQuestions (ev) {
-	//go to parent node,
-	//unhide everything and mark the choice
-	SS = [ ["hidden","show"], ["show","hidden"] ];
-	var state = ( !RECOVERY_STATE ) ? SS[0] : SS[1];
-	var divs = [].slice.call( document.querySelectorAll( "."+state[0]+"Activate" ));
-	divs.map( function (ev) { ev.className = state[1]+"Activate"; } );	
-	RECOVERY_STATE = (!RECOVERY_STATE) ? 1 : 0;
-	//when the button is pressed, the exercise type can be saved on the backend
-}
-
 
 /*
 //The Router structure is key to make interfaces work.
@@ -1170,7 +1351,6 @@ Router = {
 	"check-in": [
 		//In JS however, I have to use JSON for an object, meaning that I have to specify the key for each "column" I want.  This is a lot of typing... 
 		{ domSelector: "input[ type=range ]" , event: "input"  , f: [ updateTickler, changeSliderNeighborValue ] }  
-	 ,{ domSelector: "input[ type=submit ]", event: "click"   , f: checkAtSubmit }
 	 ,{ domSelector: "select"              , event: "click"   , f: [ updateTickler ] }
 	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
 	 ,{ domSelector: ".modal-load"         , event: "click"   , f: getNextResults }
@@ -1195,6 +1375,8 @@ Router = {
 	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI } 
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal } 
 	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
+	 ,{ domSelector: ".stateChange"  , event: "click"   , f: updateTime } 
+	 ,{ domSelector: ".toggler-input"  , event: "change"   , f: stateChangeUpdate } 
 	]
 
 	,"/":      [

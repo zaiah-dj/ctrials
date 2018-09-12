@@ -1,3 +1,30 @@
+Wed, Sep 12, 2018  4:49:05 PM
+	 -updated ranges and hr.
+	 -also updated uom in recovery page.
+
+Wed, Sep 12, 2018  4:45:01 PM
+	 -Added a column in the database for wrmup_starttime to tables frm_retl and frm_eetl
+
+Wed, Sep 12, 2018  4:35:26 PM
+	 -Added a new API endpoint to update the wrmup_starttime.  Also fixed the disappearing yes/no when activating togglers, but will probably end up getting rid of this.
+	 -Fixed many issues with boxes not showing up correctly when clicked.
+
+Wed, Sep 12, 2018  2:11:23 PM
+	 -Fixed recovery note saving.
+
+Wed, Sep 12, 2018 11:01:25 AM
+	 -Updated verbiage.  'Exercise Metadata' is now 'Exercise Machine Type'.
+	 'Last Previous Visit' is now 'Previous Session Results'
+
+Wed, Sep 12, 2018 10:43:29 AM
+	 -Split out API into it's own ... uh... "app"
+	 -Notes now add at the top of the list and include the date.
+	 -Looked into Blood Pressure readings, but still need to investigate why sometimes the right BP is not being returned.
+	 -Fixed 'view more' link.
+
+Wed, Sep 12, 2018  9:58:33 AM
+	 -Drag and drop was broken due to an exception.  While cleaning up, neglected to remove references to function 'checkAtSubmit()', and this broke the drag and drop interface.
+
 Tue, Sep 04, 2018  2:52:19 PM
 	 -Questions at the top of the input.cfm questionnaire should all be one line.
 

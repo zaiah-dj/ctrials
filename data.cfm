@@ -151,6 +151,9 @@ real data*/
 
 	/* --- API ENDPOINTS --------------------------------------- */
 	/* These pages should never be requested by a user */
+	/*Update something*/
+	,"time"   = { model=  ["init", "api"], view=  "api", content_type = "application/json" }
+
 	/*View the access log*/
 	,"notes"   = { model=  ["init", "api"], view=  "api", content_type = "application/json" }
 

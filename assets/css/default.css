@@ -39,7 +39,7 @@ h1 { font-size: 16em; font-weight: bold; text-align: center; }
 h2 { font-size: 5em; }
 h3 { font-size: 4em; }
 h4 { font-size: 3em; }
-h5 { font-size: 2em; }
+h5 { font-size: 1.5em; }
 h6 { font-size: 1.5em; }
 
 
@@ -915,6 +915,7 @@ a.tiny-link {
 	right: 20px;
 }
 
+button.stateChange,
 input[type=submit] { 
 	margin-top: 10px; 
 	font-size: 1.2em; 
@@ -933,6 +934,7 @@ input[type=submit] {
 	color: white; 
 }
 
+button.stateChange:hover,
 input[type=submit]:hover { 
 	/*background-color: #e6f2ff;*/
 	background-color: #bbbbbb;
@@ -1735,4 +1737,26 @@ table.innard td.thin { width: 10%; }
 
 .hiddenActivate {
 	display: none;
+}
+
+button.stateChange {
+	width: 100%;
+	top: 0px;
+/*
+	display: inline-block;
+	width: 80px;
+	margin-right: 10px;
+	margin-left: 0px;
+	position: relative;
+	left: 0px;
+*/
+}
+
+.round + div {
+	position: relative;
+	width: 30px;
+	height: 35px;
+	z-index: 99;
+	left: 70px;
+	top: 5px;
 }
