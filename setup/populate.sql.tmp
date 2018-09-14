@@ -461,70 +461,71 @@ END
 
 
 /*Seed checked-in participants*/
+/*
 IF @CHECK_IN_PARTICIPANTS = 1
 BEGIN
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 5, 1, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-08-24', '1049', 1);
+	VALUES(1049, 6, 1, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-08-25', '1049', 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 5, 2, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-08-31', '1049', 1);
+	VALUES(1049, 6, 2, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-01', '1049', 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 1, 2, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-03', '1049', 1);
+	VALUES(1049, 2, 2, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-04', '1049', 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 0, 3, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-09', '1049', 1);
+	VALUES(1049, 1, 3, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-10', '1049', 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 0, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-09', '1049', 1);
-
-	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 2, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-11', 1049, 1);
+	VALUES(1049, 1, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-10', '1049', 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, 3, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-12', 1049, 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 4, 5, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-13', 1049, 1);
+	VALUES(1049, 4, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-13', 1049, 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 5, 7, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-28', 1049, 1);
+	VALUES(1049, 5, 5, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-14', 1049, 1);
 
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
-	VALUES(1049, 5, 7, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-28', 1049, 1);
+	VALUES(1049, 6, 7, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-29', 1049, 1);
+
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
+	VALUES(1049, 6, 7, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', '2018-09-29', 1049, 1);
 
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 5, 1, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-08-24', '1049', 1);
+	VALUES(1049, 6, 1, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-08-25', '1049', 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 5, 2, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-08-31', '1049', 1);
+	VALUES(1049, 6, 2, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-01', '1049', 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 1, 2, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-03', '1049', 1);
+	VALUES(1049, 2, 2, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-04', '1049', 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 0, 3, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-09', '1049', 1);
+	VALUES(1049, 1, 3, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-10', '1049', 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 0, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-09', 1049, 1);
-
-	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 2, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-11', 1049, 1);
+	VALUES(1049, 1, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-10', 1049, 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, 3, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-12', 1049, 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 4, 5, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-13', 1049, 1);
+	VALUES(1049, 4, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-13', 1049, 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 5, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-28', 1049, 1);
+	VALUES(1049, 5, 5, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-14', 1049, 1);
 
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
-	VALUES(1049, 5, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-28', 1049, 1);
+	VALUES(1049, 6, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-29', 1049, 1);
+
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
+	VALUES(1049, 6, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', '2018-09-29', 1049, 1);
 
 END
-
+*/
 /*Populate the values*/
 GO

@@ -103,11 +103,14 @@
 			SELECT * FROM #data.data.staff# WHERE ts_siteid = <cfqueryparam value=#cs.siteid# cfsqltype="CF_SQL_NUMERIC"> 
 		</cfquery>
 		<ul class="persistent-nav-hideme">
+			#DateTimeFormat( cdate, "yyyy/mm/dd" )#
+		<!---	
 			Login As Another Member
 			<cfif isDefined("url.date")><cfset mdss="&date=#url.date#"><cfelse><cfset mdss=""></cfif>
 		<cfloop query="ittybitty">
 			<li><a href="#link( 'default.cfm?staffid=' & ts_staffguid & mdss )#">Login as #ts_staffguid#</a></li>
 		</cfloop>
+			--->
 		</ul>
 	</cfif>
 	</div>

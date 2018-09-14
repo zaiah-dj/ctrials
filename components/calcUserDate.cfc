@@ -7,7 +7,6 @@ component {
 	property name="app" default="isAppDateSet";
 	this.object = {};
 
-
 	//Jump date in the future or the past
 	function jumpDate( ) {
 		//Current date
@@ -49,8 +48,8 @@ component {
 
 
 	//Return user date object
-	function init ( ) {
-		userDateObject = session.userdate = Now(); 
+	function init ( Required dtArg ) {
+		userDateObject = session.userdate = dtArg; 
 		this.object = {
 			 userDate = DateTimeFormat( userDateObject, "YYYY-MM-DD HH:nn:ss" )
 			,dateObject = userDateObject

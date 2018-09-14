@@ -8,7 +8,8 @@ CFML-based configuration file.
 Application routes, datasources and more
 are all updated here.
 * ------------------------------------------- */
-useDebug = 0;
+useDebug = 1;
+
 
 /*Passwords if ever needed
 Server:    sqldev.phs.wfubmc.edu
@@ -21,6 +22,9 @@ Pwd:       9F25a26V7j42
 manifest={
 /*This should probably not be modified by you*/
  "cookie" = "3ad2d4dc34e75130c0c2f3c4bbb262481b49250261bcb8e6443728b63d24"
+ 
+/*Use this to move the date forward or backward*/
+//,date = "10/02/2018"
 
 /*----------------- USER-MODIFIABLE STUFF ------------------*/
 /*Turn on debugging, yes or no?*/

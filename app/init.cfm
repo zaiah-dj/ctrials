@@ -2,7 +2,8 @@
 //Include all CFCs first here
 rl    = CreateObject( "component", "components.requestLogger" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
-udo   = CreateObject( "component", "components.calcUserDate" ).init();
+udo   = CreateObject( "component", "components.calcUserDate" )
+	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
 //wfb   = CreateObject( "component", "components.wfbutils" );
 include "constants.cfm";
 include "custom.cfm";
@@ -309,14 +310,8 @@ if ( StructKeyExists( cs, "participants" ) ) {
 		sc.hr2 = cp.details.results.hr2;
 
 		//Day names
-		dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+		dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 		sc.dayName = dayNames[cp.details.results.dayofwk];
-
-		//Populate the finished days
-		sc.cdays = [0,0,0,0,0,0];
-		for ( n in ListToArray( ValueList( cp.completedDays.results.dayofwk, "," ) ) ) {
-			sc.cdays[ n ] = n; 
-		}
 	}
 }
 
