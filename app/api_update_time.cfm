@@ -14,7 +14,7 @@ try {
 
 	//Get the participant
 	stat = dbExec(
-		string = "SELECT * FROM #data.data.participants# WHERE participantGUID = :pid" 
+		string = "SELECT * FROM v_ADUSessionTickler WHERE participantGUID = :pid" 
 	 ,bindArgs = { pid = fv.pid }
 	);
 
@@ -31,13 +31,23 @@ try {
 		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
 		& DateTimeFormat( Now(), "HH:nn:ss" )
 	);
-	req.sendAsJson( status = 1, message = "#errstr# #fv.pid# #tb#" );
+	simpleDstmp = LSParseDateTime( 
+		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
+	);
 
 	stat = dbExec(
-		string = "INSERT INTO #tb# ( wrmup_starttime ) VALUES ( :time ) WHERE participantGUID = :pid" 
+		string = "
+			UPDATE #tb# 
+			SET 
+				wrmup_starttime = :time 
+			WHERE 
+				d_visit = :dvisit
+			AND
+				participantGUID = :pid" 
 	 ,bindArgs = { 
 			pid = fv.pid, 
-			dtstamp  = { value = dstmp, type="cf_sql_date" }
+			dvisit = { value = simpleDstmp, type="cf_sql_date" },
+			time = { value = dstmp, type="cf_sql_date" }
 		}
 	);
 

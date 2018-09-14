@@ -9,14 +9,14 @@ run the motrpac intervention interface
 from a local setup.
 
 NOTE: Only works with SQL server.
-IF db_id( 'DATABASE_NAME' ) IS NULL
+IF db_id( 'zProgrammer_AntonioCollins' ) IS NULL
 BEGIN
-	CREATE DATABASE DATABASE_NAME;
+	CREATE DATABASE zProgrammer_AntonioCollins;
 END
 GO
  ------------------------------- */
 
-USE DATABASE_NAME;
+USE zProgrammer_AntonioCollins;
 GO
 
 DECLARE @BUILD_EQUIPMENT_LOG integer;

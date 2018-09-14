@@ -155,6 +155,23 @@ any errors and whatnot.
 
 An example:
 ...
+	submitAPIRequest({ 
+		location: "/motrpac/web/secure/dataentry/iv/api/note_update.cfm" 
+	 ,onFailure: function ( arg ) { ; }
+	 ,onSuccess: function ( arg ) {
+			parsed = JSON.parse( this.responseText );
+			(li = document.createElement( "li" )).innerHTML = noteValue;
+			//li.innerHTML = noteValue;
+			ref.appendChild( li ); 
+			//TODO: This is not the greatest way to remove this box. 
+			shadenode.parentElement.removeChild( shadenode );
+		} 
+	 ,payload: {
+			note: noteValue
+		 ,pid:  pd[0].value
+		 ,sid:  sd[0].value
+		}
+	);
 
  * ------------------------------------ */
 function submitAPIRequest( obj ) {
@@ -303,7 +320,7 @@ function saveParticipantNote( ev )
 
 Save a participant note to an API endpoint.
 
- * ------------------------------------ */ cc=0;
+ * ------------------------------------ */
 function saveParticipantNote ( ev ) {
 	ev.preventDefault();
 	box = document.getElementById( "ta-inner" );
@@ -322,34 +339,23 @@ function saveParticipantNote ( ev ) {
 		return;
 	}
 
-/*
-	submitAPIRequest({ 
-		location: "/motrpac/web/secure/dataentry/iv/api/note_update.cfm" 
-	 ,onFailure: function ( arg ) { ; }
-	 ,onSuccess: function ( arg ) {
-			parsed = JSON.parse( this.responseText );
-			(li = document.createElement( "li" )).innerHTML = noteValue;
-			//li.innerHTML = noteValue;
-			ref.appendChild( li ); 
-			//TODO: This is not the greatest way to remove this box. 
-			shadenode.parentElement.removeChild( shadenode );
-		} 
-	 ,payload: {
-			note: noteValue
-		 ,pid:  pd[0].value
-		 ,sid:  sd[0].value
-		}
-	);
-*/
-
 	//Update the note field	
 	var xhr = new XMLHttpRequest();	
 	xhr.onreadystatechange = function (ev) { 
 		if ( this.readyState == 4 && this.status == 200 ) {
 			try {
-				console.log( this.responseText );parsed = JSON.parse( this.responseText );
-				(li = document.createElement( "li" )).innerHTML = getDatestamp() + " - " + noteValue;
-				ref.insertBefore( li, ref.children[0] );
+				var li=null;
+				//console.log( this.responseText );
+				parsed = JSON.parse( this.responseText );
+				//This handles cases in which no notes are present for the past two weeks.
+				if ( li = ref.querySelector( "#noNotes" ) ) {
+					li.removeAttribute( "id" ); 
+					li.innerHTML = getDatestamp() + " - " + noteValue;
+				}	
+				else {
+					(li = document.createElement( "li" )).innerHTML = getDatestamp() + " - " + noteValue;
+					ref.insertBefore( li, ref.children[0] );
+				}
 				//TODO: This is not the greatest way to remove this box. 
 				shadenode.parentElement.removeChild( shadenode );
 			}
@@ -809,7 +815,7 @@ function updateExerciseSession ( ev ) {
 
 
 /* ------------------------------------ *
-function releaseParticipant ( ev ) {
+function activateOtherParamText ( ev ) {
 
 Release a participant back into the pool.
 
@@ -916,8 +922,13 @@ function releaseParticipant ( ev ) {
 
 	//Would add to the bottom of the list, but it needs to be at the top
 	a = document.querySelector( "ul.part-drop-list li:nth-child(1)" );
-	console.log( a );
-	a.parentElement.insertBefore( node, a );
+	//console.log( a );
+	if ( a ) 
+		a.parentElement.insertBefore( node, a );
+	else {
+		a = document.querySelector( "ul.part-drop-list" ); 
+		a.appendChild( node ); 
+	}
 
 	//Return false
 	return false;
@@ -1272,6 +1283,7 @@ function updateTime( ev ) {
 	xhr.onreadystatechange = function () {
 		if ( this.readyState == 4 ) {
 			console.log( this.responseText );
+			ev.target.innerHTML = "Exercise Started!";
 			//a = JSON.parse( this.responseText );
 			//str = "<table>";
 			//a.RESULTS.DATA.map( function(aa) { str += "<tr><td>" + aa[3] + "</td><td>" + aa[5] + "</td></tr>"; } );
@@ -1280,12 +1292,12 @@ function updateTime( ev ) {
 	}
 	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/time.cfm", true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
-	xhr.send(
-		"pid=" + pd[0].value +
-		"sid=" + sd[0].value +
-		"exindex=" + pd[0].value +
-		"&this=time"
-	);	
+	xhr.send([
+			"pid=" + pd[0].value 
+		 ,"sid=" + sd[0].value
+		 ,"this=time"
+		].join( "&" )
+	);
 }
 
 

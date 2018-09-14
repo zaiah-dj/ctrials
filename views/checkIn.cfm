@@ -71,9 +71,13 @@
 					<button class="modal-activate">Add New Note</button>
 					<a class="view_more" href="/">View More</a>
 					<ul class="participant-notes">
-					<cfloop query=cp.notes>
+					<cfif cp.notes.prefix.recordCount eq 0> 	
+						<li id="noNotes">No notes found for the past two weeks.</li>
+					<cfelse>
+						<cfloop query=cp.notes.results>
 						<li>#DateTimeFormat(noteDate, "mm/dd/yy")# - #noteText#</li>
-					</cfloop>
+						</cfloop>
+					</cfif>
 					</ul>
 				</td>
 			</tr>

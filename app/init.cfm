@@ -256,7 +256,7 @@ if ( StructKeyExists( cs, "participants" ) ) {
 					pid = { type = "varchar", value = cs.participantId }
 				 ,visit = { type = "date", value = cdate }
 				}
-			).results
+			)
 
 			//Get all the completed days for the week
 		 ,completedDays = dbExec(
@@ -266,7 +266,7 @@ if ( StructKeyExists( cs, "participants" ) ) {
 					pid = cs.participantId 
 				 ,wk  = sc.week
 				}
-			).results
+			)
 
 			//Get all the notes
 		 ,notes = dbExec(
@@ -275,46 +275,46 @@ if ( StructKeyExists( cs, "participants" ) ) {
 					pid = cs.participantId
 				 ,dateLimit = { value = DateAdd("d", -14, cdate), type = "cf_sql_date" } 
 				}
-			).results
+			)
 		};
 
 		//Get 
-		sc.exerciseParameter = cp.details.exerciseType;
+		sc.exerciseParameter = cp.details.results.exerciseType;
 
 		//Calculate remaining blood pressure calculation days
-		sc.bpDaysElapsed = (cp.details.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.bp_daterecorded,Now());
+		sc.bpDaysElapsed = (cp.details.results.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.results.bp_daterecorded,Now());
 
 		//Boolean to tell if we need a new blood pressure or not
-		sc.getNewBP = (cp.details.bp_daterecorded eq "" || sc.BPDaysElapsed gt const.bpDaysLimit); 
+		sc.getNewBP = (cp.details.results.bp_daterecorded eq "" || sc.BPDaysElapsed gt const.bpDaysLimit); 
 
 		//Calculate time until we need to take a new blood pressure
 		sc.bpDaysLeft = const.bpDaysLimit - sc.bpDaysElapsed;
 		
-		//sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.bp_systolic;
-		sc.bpSystolic = cp.details.mthlybpsys;
+		//sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.results.bp_systolic;
+		sc.bpSystolic = cp.details.results.mthlybpsys;
 
-		//sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.bp_diastolic;
-		sc.bpDiastolic = cp.details.MthlyBPDia;
+		//sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.results.bp_diastolic;
+		sc.bpDiastolic = cp.details.results.MthlyBPDia;
 
-		sc.HRWorking = (cp.details.HRWorking eq "" || cp.details.HRWorking eq 0 ) ? 0 : cp.details.HRWorking;
+		sc.HRWorking = (cp.details.results.HRWorking eq "" || cp.details.results.HRWorking eq 0 ) ? 0 : cp.details.results.HRWorking;
 		
-		sc.weight = (cp.details.weight eq "" || cp.details.weight eq 0 ) ? 0 : cp.details.weight;
+		sc.weight = (cp.details.results.weight eq "" || cp.details.results.weight eq 0 ) ? 0 : cp.details.results.weight;
 
-		sc.week = cp.details.stdywk;
+		sc.week = cp.details.results.stdywk;
 
-		sc.day = cp.details.dayofwk;
+		sc.day = cp.details.results.dayofwk;
 
-		sc.hr1 = cp.details.hr1;
+		sc.hr1 = cp.details.results.hr1;
 
-		sc.hr2 = cp.details.hr2;
+		sc.hr2 = cp.details.results.hr2;
 
 		//Day names
 		dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-		sc.dayName = dayNames[cp.details.dayofwk];
+		sc.dayName = dayNames[cp.details.results.dayofwk];
 
 		//Populate the finished days
 		sc.cdays = [0,0,0,0,0,0];
-		for ( n in ListToArray( ValueList( cp.completedDays.dayofwk, "," ) ) ) {
+		for ( n in ListToArray( ValueList( cp.completedDays.results.dayofwk, "," ) ) ) {
 			sc.cdays[ n ] = n; 
 		}
 	}

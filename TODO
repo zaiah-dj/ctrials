@@ -1,27 +1,49 @@
 
-- Write superset columns 
+x Check mark seems to be broken, dunno why... (may not have been exclusive enough when searching for previous results)
+
+x Time recording ought to work... why not?
+
+x finally, endurance previous results do not seem to be working......
+
+- fix up retl with the same thing, BUT
+		test both retl and eetl
+		need to get smart about testing, i dunno ...
+
+
+
+- current bp needs to pull up, i wonder why this is not working
+
+
+- Stop Session button disappears on horiz view
+
+
+
 
 - Fix N/A verbiage to include type of range being recorded
 
-- Let Debbie / Jack know about all the new columns
-
 - Write superset values on retl and eetl api forms
-
-- Split out the API, b/c it may make it easier to take care of 
+		bp1set1, etc
 
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
+		frm_RESL
 
 - Save defaults, min and max to either database or constants.cfc
 
-- A better progress checker will look for something else before marking an exercise as done
+- Add checks for checkbox progress completion
 
-- Check mark seems to be broken, dunno why...
+- What is up with warmup previous session data?
+
+
+
+- Split out the API, b/c it may make it easier to take care of 
 
 - You need a pubsub, this might be more important than I thought... 
 
 - Docs...
 
+- Application.cfc vs data.cfm (easier to read and follow for your customer)
+
 - Favicon
 
-- Application.cfc vs data.cfm (easier to read and follow for your customer)
+
 

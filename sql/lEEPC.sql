@@ -43,9 +43,9 @@ FROM
 		AND
 			stdywk <= :stdywk
 		ORDER BY
-			stdywk ASC, dayofwk ASC ) chimney
+			stdywk DESC, dayofwk DESC ) as wonk
 		ORDER BY
-			stdywk DESC, dayofwk DESC
+			d_visit DESC
 ) As Prev
 
 INNER JOIN

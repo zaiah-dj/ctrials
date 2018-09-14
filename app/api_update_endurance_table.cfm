@@ -3,6 +3,8 @@
 errstr = "Error at /api/endurance/* - ";
 vpath = 1;
 try {
+
+
 	//Differentiate between Cycles, Treadmills and Other
 	CYCLE = 1;
 	TREADMILL = 2;
@@ -239,9 +241,12 @@ try {
 			fp_participantGUID = :pid
 		AND
 			fp_step = :step
+		AND
+			fp_sessdayid = :sid
 		"
 	 ,bindArgs = {
 			pid = fv.pid
+		 ,sid = csSid
 		 ,step = fv.timeblock 
 		}
 	);
@@ -249,8 +254,6 @@ try {
 	if ( !prog.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
 	}
-
-	//req.sendAsJson( status = 1, message = "#errstr# - #prog.prefix.recordCount#" );
 
 	//If there is anything here, add a row
 	if ( prog.prefix.recordCount eq 0 ) {
@@ -272,6 +275,7 @@ try {
 			req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
 		}
 	}
+
 }
 catch (any ff) {
 	req.sendAsJson( status = 0, message = "#errstr# #ff#" );
