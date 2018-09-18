@@ -117,28 +117,6 @@ if ( isEnd || isRes ) {
 			}
 		);
 
-		private.pdd = dbExec(
-			filename = "K#iif(isEnd,DE('EE'),DE('RE'))#PC.sql"
-		 ,bindArgs = { 
-				pid = cs.participantId 
-			 ,dow = udo.object.currentDayOfWeek
-			 ,cdate = { value = cdate, type = "cf_sql_date" }
-			 ,stdywk = sc.week 
-			}
-		);
-
-		private.megadeth = dbExec(
-			filename = "get_prev_#iif(isEnd,DE('eetl'),DE('retl'))#.sql"
-		 ,bindArgs = { 
-				pid = cs.participantId 
-			 ,dow = udo.object.currentDayOfWeek
-			 ,cdate = { value = cdate, type = "cf_sql_date" }
-			 ,stdywk = sc.week 
-			}
-		);
-		//writedump( private.megadeth ); abort;
-		//writedump( private.pdd );writedump( private.lastDays ); abort;//writedump( private.etc ); abort;
-
 		//Select the most recent and current set of results
 		private.etc = dbExec(
 			filename = "input#iif(isEnd,DE('EE'),DE('RE'))#PC.sql"
@@ -165,9 +143,6 @@ if ( isEnd || isRes ) {
 				}
 			);
 		}
-
-		//writedump( private );abort;
-		//writedump(private.lastDays); writedump(private.etc.results); abort;
 
 		//Then create the SQL needed to get the data I want for easy looping
 		private.gcValues = [];

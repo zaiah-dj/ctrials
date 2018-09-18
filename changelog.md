@@ -3,13 +3,25 @@ make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/
 
 ## STATS
 
-- Commit count: 442
+- Commit count: 444
 - Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
-- Last Commit Date:   Tue Sep 18 14:12:45 2018 -0400
+- Last Commit Date:   Tue Sep 18 15:35:51 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
 
 ## HISTORY
+
+commit bb96b15522702bc8792d4d356e2f5b8382c9e209
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 18 15:35:51 2018 -0400
+
+-  Updated constants and added blank timer to 'Begin Exercise' button.
+
+commit 458d31385761130f9bfed4f44a633519f3f947c8
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 18 14:59:27 2018 -0400
+
+-  Removed a useless column in one of the component queries.
 
 commit 09ec2c9ceba31448a15c515c1c28afa0de529ee6
 Merge: 63385f58 7439b2c5

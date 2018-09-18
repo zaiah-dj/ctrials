@@ -22,8 +22,9 @@ const = {
 	,R = 2
 	,C = 3
 
-	//Constants
 	,ampersand = "&##x2714"
+
+
 	,bpm = { uom="BPM", min=70, max=220, defaultValue=145, step=1, formName = "hr", label="Heart Rate" }
 	,rpe = { uom="RPE", min=6, max=20, defaultValue=14, step=1, formName = "rpe", label="RPE" }
 	,afct = { uom="", min=-5, max=5, defaultValue=0, step=1, formName = "Othafct", label="Affect" }

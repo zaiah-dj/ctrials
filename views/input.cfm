@@ -106,7 +106,7 @@
 					<td>Warm-Up Start Time</td>
 					<td>
 						<button class="stateChange">Begin Exercise</button>
-						<div></div>	
+						<div>00:00</div>	
 					</td>
 				</tr>
 			</tbody>
@@ -217,7 +217,7 @@
 				</cfif>
 				<tr>
 					<td>
-						#iif(svMostRecent eq "" || svMostRecent eq 0,DE('N/A'),DE(svMostRecent & ' ' & uom))#
+						#iif(svMostRecent eq "" || svMostRecent eq 0,DE('N/A' & ' <small>' & uom & '</small>'),DE(svMostRecent & ' ' & uom))#
 						<span class="tiny">(as of #private.etc.results.p_d_visit#)</span>
 					</td>
 					<td>

@@ -50,7 +50,7 @@ component name="resistance" {
 		]);
 
 		this.exercises = queryNew( 
-			"type,id,etype,ssGroup,pname,formName,desc", 
+			"type,id,etype,pname,formName,desc", 
 			"Integer,Integer,Integer,Varchar,Varchar,Varchar", [
 			
 		//Chest, shoulders, triceps, ads, calves
