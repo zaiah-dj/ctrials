@@ -7,8 +7,8 @@
 		</p>
 
 		<cfscript>
-		ContainsRe=0; for ( n in selectedParticipants.results )
-			if ( ListContains(const.RESISTANCE,n.randomGroupCode )) { ContainsRe=1; break; }
+		ContainsRe=0; for (n in selectedParticipants.results)
+			if ( ListContains(const.RESISTANCE, n.randomGroupCode )) { ContainsRe=1; break; }
 		</cfscript>
 
 		<div class="zeitgeist">
@@ -106,6 +106,7 @@
 					<td>Warm-Up Start Time</td>
 					<td>
 						<button class="stateChange">Begin Exercise</button>
+						<div></div>	
 					</td>
 				</tr>
 			</tbody>
@@ -140,6 +141,7 @@
 								name="is_exercise_done">
 								
 							<span class="toggler round"></span>
+							<div>#iif( private.exBool.exercise gt 0, DE('Yes'),DE('No') )#</div>
 						</label>
 					</td>
 				</tr>
@@ -151,6 +153,7 @@
 								#iif(private.exBool.superset gt 0,DE('checked'),DE(''))#
 								name="is_superset">
 							<span class="toggler round"></span>
+							<div>#iif( private.exBool.superset gt 0, DE('Yes'),DE('No') )#</div>
 						</label>
 					</td>
 				</tr>

@@ -84,7 +84,7 @@
 					<td>
 						<div class="row">
 							<div class="cc col-sm-7">
-								<input type="range" min="70" max="220" class="slider" value="50" name="recoveryHR">
+								<input type="range" min="70" max="220" class="slider" value="145" name="recoveryHR">
 							</div>
 							<div class="catch cc col-sm-1">0</div>
 							<div class="col-sm-1">BPM</div>
@@ -100,7 +100,7 @@
 					<td>
 						<div class="row">
 							<div class="cc col-sm-7">
-								<input type="range" min="6" max="20" class="slider" value="50" name="recoveryRPE">
+								<input type="range" min="6" max="20" class="slider" value="14" name="recoveryRPE">
 							</div>
 							<div class="catch cc col-sm-1">0</div>
 							<div class="col-sm-1">%</div>
@@ -116,7 +116,7 @@
 					<td>
 						<div class="row">
 							<div class="cc col-sm-7">
-								<input type="range" min="-5" max="5" class="slider" value="50" name="recoveryAffect">
+								<input type="range" min="-5" max="5" class="slider" value="0" name="recoveryAffect">
 							</div>
 							<div class="catch cc col-sm-1">0</div>
 							<div class="col-sm-1"></div>

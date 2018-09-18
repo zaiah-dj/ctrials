@@ -7,7 +7,10 @@ component name="endurance" {
 	this.srcQuery = 0;
 
 	//
-	endurance function init () {
+	endurance function init ( ) {
+		//This really should NOT be invoked this way.  But this is it right now. 
+		include "../app/constants.cfm";
+
 		//Label time defaults for endurance
 		this.srcQuery = queryNew( 
 		 "prefix,urlparam,pname", 
@@ -40,6 +43,15 @@ component name="endurance" {
 		 ,{ uom="BPM", label="Heart Rate", min=70, max=220, step=1, formName="hr", type=0, paramMatch=0 }
 		 ,{ uom="RPE", label="RPE", min=6, max=20, step=1, formName="rpe", type=0, paramMatch=0 }
 		 ,{ uom=""   , label="Affect", min=-5, max=5, step=1, formName="Othafct", type=0, paramMatch=0 }
+/*
+			{ uom="RPM", label="RPM", min=const.rpm.min max=130, step=1, formName="rpm", type=1, paramMatch=1 }
+		 ,{ uom="lb" , label="Watts/Resistance", min=const.wr.min, max=50, step=1, formName="watres", type=1, paramMatch=1 }
+		 ,{ uom="MPH", label="Speed", min=const.mph.min, max=50, step=1, formName="speed", type=2, paramMatch=1 }
+		 ,{ uom="%"  , label="Percent Grade", min=const.prctgrade.min, max=20, step=1, formName="prctgrade", type=2, paramMatch=1 }
+		 ,{ uom="BPM", label="Heart Rate", min=const.bpm.min max=220, step=1, formName="hr", type=0, paramMatch=0 }
+		 ,{ uom="RPE", label="RPE", min=const.rpe.min, max=20, step=1, formName="rpe", type=0, paramMatch=0 }
+		 ,{ uom=""   , label="Affect", min=const.afct.min, max=5, step=1, formName="Othafct", type=0, paramMatch=0 }
+*/
 		]);
 
 		return this;

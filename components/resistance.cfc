@@ -7,6 +7,9 @@ component name="resistance" {
 	this.srcQuery = 0;
 
 	resistance function init () {
+		//This really should NOT be invoked this way.  But this is it right now. 
+		include "../app/constants.cfm";
+
 		this.srcQuery = queryNew( 
 		 "prefix,urlparam,pname,class", 
 		 "Varchar,Integer,Varchar,Integer", [
@@ -48,28 +51,28 @@ component name="resistance" {
 
 		this.exercises = queryNew( 
 			"type,id,etype,ssGroup,pname,formName,desc", 
-			"Integer,Integer,Integer,Integer,Varchar,Varchar,Varchar", [
+			"Integer,Integer,Integer,Varchar,Varchar,Varchar", [
 			
 		//Chest, shoulders, triceps, ads, calves
-		 { type=5, id=5, etype=4,ssGroup=1,pname='Chest Press', formName='chestpress', desc='' }
-		,{ type=4, id=4, etype=4,ssGroup=2,pname='Chest No. 2', formName='chest2', desc='' }
-		,{ type=1, id=1, etype=4,ssGroup=2,pname='Abdominal Crunch', formName='abdominalcrunch', desc='' }
-		,{ type=10,id=10,etype=4,ssGroup=3,pname='Overhead Press', formName='overheadpress', desc='' }
-		,{ type=12,id=12,etype=4,ssGroup=3,pname='Seated Row', formName='seatedrow', desc='' }
-		,{ type=13,id=13,etype=4,ssGroup=4,pname='Shoulder No. 2', formName='shoulder2', desc='' }
-		,{ type=14,id=14,etype=4,ssGroup=4,pname='Tricep Press-Down', formName='triceppress', desc='' }
+		 { type=5, id=5, etype=4,pname='Chest Press', formName='chestpress', desc='' }
+		,{ type=4, id=4, etype=4,pname='Chest No. 2', formName='chest2', desc='' }
+		,{ type=1, id=1, etype=4,pname='Abdominal Crunch', formName='abdominalcrunch', desc='' }
+		,{ type=10,id=10,etype=4,pname='Overhead Press', formName='overheadpress', desc='' }
+		,{ type=12,id=12,etype=4,pname='Seated Row', formName='seatedrow', desc='' }
+		,{ type=13,id=13,etype=4,pname='Shoulder No. 2', formName='shoulder2', desc='' }
+		,{ type=14,id=14,etype=4,pname='Tricep Press-Down', formName='triceppress', desc='' }
 	
 		//Hips/thighs, back, biceps	
 
 		//Calf Press should be 'Modified Leg Press'
 		//Dumbbell Squat should be 'Seated Row'
-		,{ type=9, id=9, etype=5,ssGroup=0,pname='Leg Press', formName='legpress', desc='' }
-		,{ type=3, id=3, etype=5,ssGroup=1,pname='Calf Press', formName='calfpress', desc='' }
-		,{ type=11,id=11,etype=5,ssGroup=2,pname='Pulldown', formName='pulldown', desc='' }
-		,{ type=8, id=8, etype=5,ssGroup=3,pname='Leg Curl', formName='legcurl', desc='' }
-		,{ type=6, id=6, etype=5,ssGroup=0,pname='Dumbbell Squat', formName='dumbbellsquat', desc='' }
-		,{ type=7, id=7, etype=5,ssGroup=4,pname='Knee Extension', formName='kneeextension', desc='' }
-		,{ type=2, id=2, etype=5,ssGroup=4,pname='Biceps Curl', formName='bicepcurl', desc='' }
+		,{ type=9, id=9, etype=5,pname='Leg Press', formName='legpress', desc='' }
+		,{ type=3, id=3, etype=5,pname='Calf Press', formName='calfpress', desc='' }
+		,{ type=11,id=11,etype=5,pname='Pulldown', formName='pulldown', desc='' }
+		,{ type=8, id=8, etype=5,pname='Leg Curl', formName='legcurl', desc='' }
+		,{ type=6, id=6, etype=5,pname='Dumbbell Squat', formName='dumbbellsquat', desc='' }
+		,{ type=7, id=7, etype=5,pname='Knee Extension', formName='kneeextension', desc='' }
+		,{ type=2, id=2, etype=5,pname='Biceps Curl', formName='bicepcurl', desc='' }
 			] 
 		);
 		return this;

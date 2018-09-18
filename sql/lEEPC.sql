@@ -43,7 +43,7 @@ FROM
 		AND
 			stdywk <= :stdywk
 		ORDER BY
-			stdywk DESC, dayofwk DESC ) as wonk
+			stdywk DESC, dayofwk DESC ) as resultSet 
 		ORDER BY
 			d_visit DESC
 ) As Prev

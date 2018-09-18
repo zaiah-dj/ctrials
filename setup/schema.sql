@@ -472,7 +472,9 @@ CREATE TABLE frm_RETL (
 	[stoppedhr] int NULL,
 	[stoppedrpe] int NULL,
 	[stoppedOthafct] int NULL,
-	[wrmup_starttime]  datetime NULL
+	[wrmup_starttime]  datetime NULL,
+	[bp1_ssname] [int] NULL,
+	[bp2_ssname] [int] NULL
 );
 
 

@@ -70,11 +70,13 @@ try {
 	}
 
 	//Check what was submitted from metadata
-	fv.exIsDone = 0;	
+	fv.exIsDone = ( fv.is_exercise_done eq "on" );
+/* 
 	if ( fv.is_exercise_done eq "on" && fv.is_superset eq "on" ) 
 		fv.exIsDone = 2;
 	else if	( fv.is_exercise_done eq "on" )
 		fv.exIsDone = 1;
+*/
 
 	//Insert or update if the row is not there...
 	upd = dbExec( 
@@ -186,7 +188,7 @@ try {
 		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
 		& DateTimeFormat( Now(), "HH:nn:ss" )
 	);
-
+/*
 	//req.sendAsJson( status=0, message='#sqlString# - #SerializeJSON(fv)#' ); abort;
 	qu = dbExec(
 		string = sqlString
@@ -215,7 +217,100 @@ try {
 	if ( !qu.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - QU - #qu.message#" );
 	}
+*/
+	//If a superset was submitted save it.  there can only be a max of 6 submitttals,
+	//have to check betweeen one two and three for the records in frm_retl
+	if ( fv.is_superset eq "on" ) {
+		//Grab the superset values from today and check if any are done
+		supCheck = dbExec(
+			string = "
+				SELECT 
+					bp1set1	
+				 ,bp1set2	
+				 ,bp1set3	
+				 ,bp2set1	
+				 ,bp2set2	
+				 ,bp2set3	
+				FROM
+					frm_retl
+				WHERE
+					d_visit = :today
+				AND
+					participantGUID = :pid
+			"
+		 ,bindArgs = {
+				today = { value = dstmp, type = "cf_sql_date" } 
+			 ,pid = fv.pid
+			}	
+		);
 
+		//the values save, but there is no exercise type.  problem is, I can't recall the selection this way...
+		//either I create my own table to store this, or modify frm_retl
+		res = [ 
+			supCheck.results.bp1set1	
+		 ,supCheck.results.bp1set2	
+		 ,supCheck.results.bp1set3	
+		 ,supCheck.results.bp2set1	
+		 ,supCheck.results.bp2set2	
+		 ,supCheck.results.bp2set3	
+		];
+
+		//If bp1set1 and bp2set2 are both filled, it's likely that the supersets are completed
+		
+		maxSupersets = ArrayFind( res, 0 ); 
+		//req.sendAsJson( status=1, message="#ArrayToList( res )#" );	
+		//req.sendAsJson( status=1, message="#maxSupersets#" );	
+
+		if ( maxSupersets <= 4 ) {
+			if ( maxSupersets < 3 ) {
+				res[ 1 ] = ( res[ 1 ] > 0 ) ? res[ 1 ] : fv.Wt1;
+				res[ 2 ] = ( res[ 2 ] > 0 ) ? res[ 2 ] : fv.Wt2;
+				res[ 3 ] = ( res[ 3 ] > 0 ) ? res[ 3 ] : fv.Wt3;
+			//exname = ?
+			}
+			else {
+				res[ 4 ] = ( res[ 4 ] > 0 ) ? res[ 4 ] : fv.Wt1;
+				res[ 5 ] = ( res[ 5 ] > 0 ) ? res[ 5 ] : fv.Wt2;
+				res[ 6 ] = ( res[ 6 ] > 0 ) ? res[ 6 ] : fv.Wt3;
+			//exname = ?
+			}
+			
+			//req.sendAsJson( status=1, message="#ArrayToList( res )#" );	
+			
+			add = dbExec( 
+				string = "
+					UPDATE	
+						frm_retl
+					SET 
+						bp1set1 = :b1s1	
+					 ,bp1set2 = :b1s2	
+					 ,bp1set3 = :b1s3	
+					 ,bp2set1 = :b2s1	
+					 ,bp2set2 = :b2s2	
+					 ,bp2set3 = :b2s3	
+					WHERE
+						d_visit = :today
+					AND
+						participantGUID = :pid
+					"
+				,bindArgs = {
+					b1s1 = ( res[ 1 ] )
+				 ,b1s2 = ( res[ 2 ] )
+				 ,b1s3 = ( res[ 3 ] )
+				 ,b2s1 = ( res[ 4 ] )
+				 ,b2s2 = ( res[ 5 ] )
+				 ,b2s3 = ( res[ 6 ] )
+				 ,today = { value = dstmp, type = "cf_sql_date" } 
+				 ,pid = fv.pid
+				}	
+			);
+
+req.sendAsJson( status = 1, message = "#SerializeJSON(add)#" );
+			
+		}
+	}
+
+req.sendAsJson( status = 1, message = "#errstr# - superset done" );
 	//Write progress
 	prog = dbExec(
 		string = "

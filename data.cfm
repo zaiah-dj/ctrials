@@ -8,7 +8,7 @@ CFML-based configuration file.
 Application routes, datasources and more
 are all updated here.
 * ------------------------------------------- */
-useDebug = 1;
+useDebug = 0;
 
 
 /*Passwords if ever needed

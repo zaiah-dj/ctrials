@@ -1268,6 +1268,21 @@ function stateChangeUpdate( ev ) {
 
 
 /* ------------------------------------ *
+function timeChangeUpdate (ev)
+
+Update time changes. 
+ * ------------------------------------ */
+function timeChangeUpdate (ev) {
+	var dd = new Date();
+	function padzero(i) { return (( i < 10 ) ? "0" + i : i) ; } 
+	ev.target.nextElementSibling.style.textAlign = "center";
+	ev.target.nextElementSibling.style.fontSize = "2.3em";
+	ev.target.nextElementSibling.style.verticalAlign = "center";
+	ev.target.nextElementSibling.innerHTML = padzero(dd.getHours()) + ":" + padzero(dd.getMinutes());
+}
+
+
+/* ------------------------------------ *
 function updateTime( ev )
 
 Change the state on adjacent text node
@@ -1387,7 +1402,7 @@ Router = {
 	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI } 
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal } 
 	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
-	 ,{ domSelector: ".stateChange"  , event: "click"   , f: updateTime } 
+	 ,{ domSelector: ".stateChange"  , event: "click"   , f: [ updateTime, timeChangeUpdate ] } 
 	 ,{ domSelector: ".toggler-input"  , event: "change"   , f: stateChangeUpdate } 
 	]
 

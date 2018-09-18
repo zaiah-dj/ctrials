@@ -1,40 +1,64 @@
 
-x Check mark seems to be broken, dunno why... (may not have been exclusive enough when searching for previous results)
+>>>
+x hh:mm field and timestamp added when pressing the now, or begin button
+		how to do a formatted text box?
+			js is one way, I wonder if there's a built-in way	
 
-x Time recording ought to work... why not?
-
-x finally, endurance previous results do not seem to be working......
-
-- fix up retl with the same thing, BUT
-		test both retl and eetl
-		need to get smart about testing, i dunno ...
-
-
-
-- current bp needs to pull up, i wonder why this is not working
+? put everything in const., and I MEAN EVERYTHING!
+		this is a bigger change than I thought.  
+		It would be easier if all of this were in a database.
+		Then, the final move, would be to get rid of both component files
 
 
-- Stop Session button disappears on horiz view
+- superset value recall (maybe you can store the value elsewhere, so it's always known?)
+	get clarification on this during the meeting, 
+	if it's just the specific exercises, 
+	then do not show superset everywhere
 
 
+
+- frm_resl?
+	resistance people are going to be tough to work with, that's all you need fortunately, 
 
 
 - Fix N/A verbiage to include type of range being recorded
 
-- Write superset values on retl and eetl api forms
-		bp1set1, etc
+
+- current bp, must be still not be solved
+
+
+- recheck recall... 
+	i wonder if this is due to a difference in exercise types selected (for example hips one day, and the other thing another day, specifically check Ennis Jones)
+
+
+- check before checking progress 
+
+
+- Stop Session button disappears on horiz view, you need to fix this on both vert and horiz
+
 
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
+>>>
+
+
+
+
+
+
+
+PRODUCTION CHECKS
+- Check and make sure that ALL tables that exist in dev, are in prod
+
+- Get rid of all tables and data not in use
 
 - Save defaults, min and max to either database or constants.cfc
 
-- Add checks for checkbox progress completion
-
-- What is up with warmup previous session data?
+? What is up with warmup previous session data?
 
 
 
+BE EXTRA NICE TO HIM, MA
 - Split out the API, b/c it may make it easier to take care of 
 
 - You need a pubsub, this might be more important than I thought... 

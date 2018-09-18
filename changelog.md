@@ -1,26 +1,113 @@
+make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv'
 # CHANGELOG
 
 ## STATS
 
-- Commit count: 3613
-- Project Inception Date:   Wed Jan 25 10:28:08 2017 -0500
-- Last Commit Date:   Fri Sep 14 19:34:16 2018 -0400
+- Commit count: 442
+- Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
+- Last Commit Date:   Tue Sep 18 14:12:45 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
-	- Debbie Steinberg - Work PC <desteinb@wakehealthe.edu>
-	- Debbie Steinberg (work laptop) <desteinb@wakehealth.edu>
-	- Debbie Steinberg (Work laptop) <desteinb@wakehealth.edu>
-	- desteinb <desteinb@wakehealth.edu>
-	- Jack White <johwhite@wakehealth.edu>
-	- jenichol <jenichol@wakehealth.edu>
-	- Jerry - Laptop <jebarnes@wakehealth.edu>
-	- Jerry Barnes (pc-laptop) <jebarnes@wfubmc.edu>
-	- John Nichols (MacBook Pro) <jenichol@wakehealth.edu>
-	- John Nichols (work iMac) <jenichol@wakehealth.edu>
-	- Julia Robertson work desktop <jurobert@wakehealth.edu>
-	- Sarah Bruschi (Work laptop) <sbruschi@wakehealth.edu>
 
 ## HISTORY
+
+commit 09ec2c9ceba31448a15c515c1c28afa0de529ee6
+Merge: 63385f58 7439b2c5
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 18 14:12:45 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 63385f585fa6b9b8104017b264b3bf972de3fd33
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 18 14:08:51 2018 -0400
+
+-  - Updated 24hr timestamper
+-  - Modified schema to account for new wrmup_starttime column
+-  - Modified default.css to account for new timestamp changes
+-  - Also modified index.js
+-  - Need to refactor constants.cfm to be able to return all constants in one place.
+-          There is no questsion that it would be easier put all this in its own giant column and be done.
+-          A vertical schema is going to be difficult to pull off without some help, so going with a horizontal schema will be the easiest choice.
+-  
+-  -
+
+commit 67145dd9932cb07feb7a9b3f29bc109e6f7cb7b0
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 15:36:31 2018 -0400
+
+-  keep plugging away...
+
+commit dc0b0a5feb06f050f15051c2b3621e345837d0c2
+Merge: 6566ec5d ef491330
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:52:58 2018 -0400
+
+-  Merge branch 'dev'
+
+commit ef4913304ceaf546f9cfdc0d163e49ddc82b8fdf
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:52:36 2018 -0400
+
+-  edited debug = 1
+
+commit 6566ec5d361e4cd065994f645e19c4f55e31600b
+Merge: 60eeed90 7a15b585
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:51:56 2018 -0400
+
+-  Merge branch 'dev'
+
+commit 7a15b5857435eb5bfead349847c2a61b4439c264
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:51:46 2018 -0400
+
+-  ...
+
+commit 60eeed90c9719e48e60e0e775fc716b250dc0449
+Merge: dd654e84 13148910
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:49:24 2018 -0400
+
+-  Merge branch 'dev'
+
+commit 131489101be91fa23950614fcd5dca544a27635c
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:48:58 2018 -0400
+
+-  no
+
+commit dd654e84eb48173df09e069f402368da061d6f13
+Merge: 58ec102c c76b3a3f
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:47:57 2018 -0400
+
+-  Merge branch 'dev'
+
+commit c76b3a3fd248b8b066a779a2831fb02076c5dfdd
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:47:21 2018 -0400
+
+-  changed data.cfm
+
+commit 58ec102c7ac071763672438a90c4a815f46c9885
+Merge: 158f16d1 2b97b834
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:28:55 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 158f16d1de32240736db0af5e9a429fdff5e5157
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 13:28:42 2018 -0400
+
+-  ...
+
+commit 45cfa61cd6afc21507855353d859068b4d67bb14
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 17 11:25:16 2018 -0400
+
+-  Added yes/no to all toggle buttons.
 
 commit 7924f0747c25b36e52cb58dea9cea5080b208e41
 Merge: a8062863 4cacc55d
@@ -2817,3 +2904,4 @@ Date:   Wed Feb 21 14:54:58 2018 -0500
 -  Trying to play with selecting different users in real-time.
 
 <link rel=stylesheet href=changelog.css>
+make[1]: Leaving directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv'

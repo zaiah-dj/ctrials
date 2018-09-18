@@ -79,11 +79,6 @@ pkg:
 	tar chzf ../iv.`date +%F-%H-%m-%s`.tgz --exclude=./Application.cfc ./*
 
 
-# lucee - Test on Lucee
-lucee:
-	rsync -arvz --delete --exclude=Application.cfc --exclude=.git --exclude=.gitignore --exclude=.*.swp --exclude=*.tgz /cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv/ /cygdrive/c/lucee/tomcat/webapps/motrpac/web/secure/dataentry/iv/
-	
-
 # dbprep - Prepare the files to be loaded into database
 dbprep:	
 	@sed '{ s/DATABASE_NAME/$(DATABASE)/; }' setup/schema.sql > setup/schema.sql.tmp
@@ -123,4 +118,30 @@ dbload:
 # clean - Clean up any new files
 clean: 
 	rm setup/{schema,populate}.sql.tmp	
+
+
+# gitlog - Generate a full changelog from the commit history
+gitlog:
+	@printf "# CHANGELOG\n\n"
+	@printf "## STATS\n\n"
+	@printf -- "- Commit count: "
+	@git log --full-history --author=Antonio --oneline | wc -l
+	@printf -- "- Project Inception "
+	@git log --full-history --author=Antonio | grep Date: | tail -n 1
+	@printf -- "- Last Commit "
+	@git log -n 1 | grep Date:
+	@printf -- "- Authors:\n"
+	@git log --full-history --author=Antonio | grep Author: | sort | uniq | sed '{ s/Author: //; s/^/\t- /; }'
+	@printf "\n"
+	@printf "## HISTORY\n\n"
+	@git log --full-history --author=Antonio | sed '{ s/^   /- /; }'
+	@printf "\n<link rel=stylesheet href=changelog.css>\n"
+
+
+# lucee - Test on Lucee
+lucee:
+	make gitlog > changelog.md
+	-rsync -arvz --delete --exclude=Application.cfc --exclude=.git --exclude=.gitignore --exclude=.*.swp --exclude=*.tgz /cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv/ /cygdrive/c/lucee/tomcat/webapps/motrpac/web/secure/dataentry/iv/
+	rm changelog.md
+	
 
