@@ -1,0 +1,99 @@
+
+>>>
+x hh:mm field and timestamp added when pressing the now, or begin button
+		how to do a formatted text box?
+			js is one way, I wonder if there's a built-in way	
+
+- being able to edit box is next
+
+- superset value recall (maybe you can store the value elsewhere, so it's always known?)
+	get clarification on this during the meeting, 
+	if it's just the specific exercises, 
+	then do not show superset everywhere
+
+- Get 00:00 on click to work by changing to content-editable (or whatever it was I used...)
+
+- Plug in to John's eq table for eq settings (not exactly sure how this works)
+		frm_RESL
+
+
+- Finish assigned participant list
+		we're not pulling by site... but the way to test shouldn't be difficult...
+>>>
+
+
+x Fix N/A verbiage to include type of range being recorded (works but is too big)
+
+
+- current bp, must be still not be solved
+
+
+- recheck recall... 
+	i wonder if this is due to a difference in exercise types selected (for example hips one day, and the other thing another day, specifically check Ennis Jones)
+
+
+- check values before checking progress 
+
+
+- Stop Session button disappears on horiz view, you need to fix this on both vert and horiz
+
+
+- Animated slider movements...
+
+>>>
+
+
+
+
+
+
+
+PRODUCTION CHECKS
+- Check and make sure that ALL tables that exist in dev, are in prod
+
+- Get rid of all tables and data not in use
+
+- Save defaults, min and max to either database or constants.cfc
+
+? What is up with warmup previous session data?
+
+
+
+BE EXTRA NICE TO HIM, MA
+? put everything in const., and I MEAN EVERYTHING!
+		this is a bigger change than I thought.  
+		It would be easier if all of this were in a database.
+		Then, the final move, would be to get rid of both component files
+
+		*const has proven hard to work with and still doesn't really solve the full problem.
+		*putting this in SQL is a bit tougher, but should make it easier to manage from one location, not to mention stop it from breaking
+			may have to use a union with the resultant row 
+			IF NULL will probably be needed to make the values show up right
+			adding the form vars to the query may help simplify things a lot as well...
+			additionally, you'll need an admin page where users can go in and make changes if need be...
+
+- There are lots of templates using loops, this is difficult to manage and takeover, so keep it simple and repeat yourself...
+
+- objects
+		currentParticipant can have its own thing
+			cp.init( query to select current participant )
+			cp.isEndurance()
+			cp.getName()
+		form valueS?
+
+- increase padding on all containers that scroll (the bar is too close to the edge of the parent window)
+
+- Try to better enforce model logic (lots of ifs) 
+
+- Split out the API, b/c it may make it easier to take care of 
+
+- You need a pubsub, this might be more important than I thought... 
+
+- Docs...
+
+- Application.cfc vs data.cfm (easier to read and follow for your customer)
+
+- Favicon
+
+
+

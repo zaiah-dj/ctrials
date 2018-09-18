@@ -7,6 +7,10 @@ Still ugly though, because it's CF ;)
 <cfscript>
 if ( StructKeyExists( form, "this" ) && form.this eq "startSession" )
 	include "api_start_session.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "notes" )
+	include "api_get_participant_notes.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "time" )
+	include "api_update_time.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "checkin" )
 	include "api_update_checkin_tables.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "control" )
@@ -17,6 +21,8 @@ else if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 	include "api_update_resistance_table.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "addParticipant" ) 
 	include "api_add_participant.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "recovery" ) 
+	include "api_update_recovery.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "releaseParticipant" ) {
 	include "api_release_participant.cfm";
 }

@@ -32,3 +32,5 @@ app/dev/
 
 # This is for all that motrpac stuff
 docs
+
+*.tmp

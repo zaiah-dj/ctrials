@@ -1,14 +1,14 @@
-<div class="container-body">
 <cfoutput>
-<cfif !isDefined("currentParticipant") or (currentParticipant.results.randomGroupCode eq "")>
+<div class="container-body">
+<cfif currentParticipant.results.randomGroupCode eq "">
 	<cfif selectedParticipants.prefix.recordCount gt 0>
 		<p style="text-align: left; color: black;">
 			Please choose a participant from the top to get started.
 		</p>
 
 		<cfscript>
-		ContainsRe=0; for ( n in selectedParticipants.results )
-			if ( ListContains(RESISTANCE,n.randomGroupCode )) { ContainsRe=1; break; }
+		ContainsRe=0; for (n in selectedParticipants.results)
+			if ( ListContains(const.RESISTANCE, n.randomGroupCode )) { ContainsRe=1; break; }
 		</cfscript>
 
 		<div class="zeitgeist">
@@ -17,7 +17,7 @@
 				<!--- Legend --->
 				<ul>
 					<li><div class="box endurance-class"></div> Endurance</li>
-					<li><div class="box resistance-class"></div> Resistance	</li>
+					<li><div class="box resistance-class"></div> Resistance</li>
 					<li><div class="box control-class"></div> Control</li> 
 				</ul>
 			</div>
@@ -58,17 +58,24 @@
 	<!--- Generate the modifier list per each participant type --->
 	<ul class="inner-selection">
 		<a href="#link( 'input.cfm?id=#url.id#&#private.mpName#=0' )#">
-			<li class="#iif(private.magic eq 0, DE('selected'),DE(''))#">5 Minute Warmup</li>
+			<li class="#iif(private.magic eq 0, DE('selected'),DE(''))#">
+				<!--- The x2714 is a checkbox --->
+				<cfif ListFind( private.edlist, 0)>&##x2714</cfif>
+				5 Minute Warmup
+			</li>
 		</a>
 	<cfloop query = "#private.modNames#">
 		<cfif ((urlparam eq 0) && isEnd) || ((urlparam eq 0) && isRes)>
 		<cfelse>
 		<a href="#link( 'input.cfm?id=#url.id#&#private.mpName#=#urlparam#' )#">
-			<li class="#iif(private.magic eq urlparam, DE('selected'),DE(''))#">#pname#</li>
+			<li class="#iif(private.magic eq urlparam, DE('selected'),DE(''))#">
+				<cfif ListFind( private.edlist, urlparam )>&##x2714</cfif>
+				#pname#
+			</li>
 		</a>
 		</cfif>
 	</cfloop>
-		<a href="#link( 'recovery.cfm?id=#url.id#' )#">
+		<a href="#link( 'recovery.cfm?id=#url.id#&abort=true&#private.mpName#=#private.magic#' )#">
 			<li class="bg-red stop-sess">Stop Session</li>
 		</a>
 	</ul>
@@ -76,27 +83,30 @@
 
 	<!--- Now show the meat of the content --->
 	<div class="selection">
-		<!--- Resistance gets these links for quick jumping through results --->
-		<div class="links">
-		<cfif isRes>
-			<a href="##set1">Set 1</a>
-			<a href="##set2">Set 2</a>
-			<a href="##set3">Set 3</a>
-		</cfif>
-		</div>
-
-		<!--- The first question always looks the same, so I'll keep that here --->
 	<cfif private.magic eq 0>
 		<h5>Exercise Prep</h5>
 		<table class="table table-striped table-meta">
 			<tbody>
 				<tr>
+					<td>Exercise Class</td>
+					<td>#private.exSetTypeLabel#</td>
+				</tr>
+				<tr>
 					<td>Is the Heart Rate monitor working properly?</td>
 					<td>
 						<label class="switch">
-							<input class="toggler-input" type="checkbox" name="hrMonitor"> 
+							<input class="toggler-input" type="checkbox" name="hrMonitor" 
+								#iif(private.etc.results.c_wrmup_hr gt 0,DE('checked'),DE(''))#>
 							<span class="toggler round"></span>
+							<div>#iif( private.etc.results.c_wrmup_hr gt 0, DE('Yes'),DE('No') )#</div>
 						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>Warm-Up Start Time</td>
+					<td>
+						<button class="stateChange">Begin Exercise</button>
+						<div>00:00</div>	
 					</td>
 				</tr>
 			</tbody>
@@ -106,7 +116,8 @@
 
 		<!--- Show all the exercise metadata here --->
 		<br />
-		<h5>Exercise Metadata</h5>
+	<cfif private.magic gt 0>
+		<h5>Exercise Machine Type</h5>
 		<div class="table-border-meta">
 		<table class="table table-striped table-meta">
 			<tbody>
@@ -115,15 +126,48 @@
 					<td>#private.exSetTypeLabel#</td>
 				</tr>
 			<cfif !isRes>
-				<tr>
-					<td></td>
-					<td></td>
-				</tr>
+				<tr><td></td><td></td></tr>
 			<cfelse>
 				<tr>
 					<td><b>Exercise Selected</b></td>
 					<td>#private.magicName#</td>
 				</tr>
+				<tr>
+					<td class="title">Was exercise done?</td>
+					<td>
+						<label class="switch">
+							<input class="toggler-input" type="checkbox" 
+								#iif(private.exBool.exercise gt 0,DE('checked'),DE(''))#
+								name="is_exercise_done">
+								
+							<span class="toggler round"></span>
+							<div>#iif( private.exBool.exercise gt 0, DE('Yes'),DE('No') )#</div>
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="title">Is this a Superset?</td>
+					<td>
+						<label class="switch">
+							<input class="toggler-input" type="checkbox" 
+								#iif(private.exBool.superset gt 0,DE('checked'),DE(''))#
+								name="is_superset">
+							<span class="toggler round"></span>
+							<div>#iif( private.exBool.superset gt 0, DE('Yes'),DE('No') )#</div>
+						</label>
+					</td>
+				</tr>
+			</cfif>
+			</tbody>
+		</table>
+		</div>
+	</cfif>
+
+	<cfif isRes and private.magic gt 0>
+		<h5>Machine Data</h5>
+		<div class="table-border-meta">
+		<table class="table table-striped table-meta">
+			<tbody>
 				<tr>
 					<td class="title">Machine</td>
 					<td>
@@ -141,49 +185,23 @@
 					</ul>
 					</td>
 				</tr>
-				<tr>
-					<td class="title">Was exercise done?</td>
-					<td>
-						<label class="switch">
-							<input class="toggler-input" type="checkbox" name="is_exercise_done"> <!--- #iif(private.exdone gt 0,DE('checked'),DE(''))#> --->
-							<span class="toggler round"></span>
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<td class="title">Is this a Superset?</td>
-					<td>
-						<label class="switch">
-							<input class="toggler-input" type="checkbox" name="is_superset"> 
-							<!--- #iif(private.exdone eq 2,DE('checked'),DE(''))#> --->
-							<span class="toggler round"></span>
-						</label>
-					</td>
-				</tr>
-			</cfif>
 			</tbody>
 		</table>
 		</div>
+	</cfif>
 
 		<!--- Finally, show all the exercise results --->
 		<h5>Exercise Results</h5>
+		<div><!--- class="table-border-meta" --->
 		<table class="table table-results-header">
 			<thead>
 				<tr style="height: 20px">
-					<td>Last Visit Results</td>
+					<td>Last Session Results</td>
 					<td><b>Exercise Parameter</b></td>
 				</tr>
 			</thead>
 		</table>
-			<!---
-			<cfdump var=#private.formValues#>
-			<cfdump var=#private.combinedResults["p_legpressWt1"]#>
-			<cfabort>
-			--->
-			<cfloop query=#private.formValues#> <!---index="v" --->
-			</cfloop>
-
-			<cfloop query=#private.formValues#> <!---index="v" --->
+			<cfloop query = #private.formValues# >
 				<!--- Reference the SQL value up here --->
 				<cfset svMostRecent=private.combinedResults[ "p_#private.dbPrefix##formName#" ]>
 				<cfset svCurrent=private.combinedResults[ "c_#private.dbPrefix##formName#" ]>
@@ -198,15 +216,17 @@
 				</tr>
 				</cfif>
 				<tr>
-					<!--- An asterisk should show if nothing is there --->
-<!--- || --->
-					<td>#iif(svMostRecent eq "" || svMostRecent eq 0,DE('*'),DE(svMostRecent & ' ' & uom))#</td>
+					<td>
+						#iif(svMostRecent eq "" || svMostRecent eq 0,DE('N/A' & ' <small>' & uom & '</small>'),DE(svMostRecent & ' ' & uom))#
+						<span class="tiny">(as of #private.etc.results.p_d_visit#)</span>
+					</td>
 					<td>
 						<div class="row">
 							<div class="cc col-sm-8">
 								<input type="range" min="#min#" max="#max#" class="slider" value="#def#" defaultvalue="#def#" name="#formName#">
 							</div>
-							<div class="catch cc col-sm-1"><span>#def#</span><span> #uom#</span></div>
+							<div class="catch cc col-sm-1"><span>#def#</span><span> #uom#</span>
+								</div>
 							<div class="col-sm-1">
 								<button class="incrementor">+</button>
 								<button class="incrementor">-</button>
@@ -218,9 +238,25 @@
 		</table>
 
 			</cfloop>
+		</div>
 		<input id="sendPageVals" type="submit" value="Save Changes" style="width:200px; color:white;"></input>
+
+		<div class="addl">
+			<input type="hidden" name="this" value="#private.cssPrefix#">
+			<input type="hidden" name="exparam" value="#sc.exerciseParameter#">
+			<input type="hidden" name="sess_id" value="#session.ivId#">
+			<input type="hidden" name="pid" value="#cs.participantId#">
+			<input type="hidden" name="dayofwk" value="#session.currentDayOfWeek#">
+			<input type="hidden" name="stdywk" value="#sc.week#">
+			<input type="hidden" name="#private.hiddenVarName#" value="#private.magic#">
+			<input type="hidden" name="insBy" value="#sgid#">
+			<!---
+			<input type="hidden" name="recordthread" value="#sc.recordthread#">
 	#AjaxClientInitCode#
+				--->
+		</div>
+
 	</div>
 </cfif>
-</cfoutput>
 </div>
+</cfoutput>

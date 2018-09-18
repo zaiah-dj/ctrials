@@ -3,6 +3,8 @@
 errstr = "Error at /api/endurance/* - ";
 vpath = 1;
 try {
+
+
 	//Differentiate between Cycles, Treadmills and Other
 	CYCLE = 1;
 	TREADMILL = 2;
@@ -33,15 +35,17 @@ try {
 	}
 
 	//Pull all required values out of the form scope.
-	stat = val.validate( form, { 
+	stat = cmValidate( form, { 
 		 pid = { req = true }
 		,sess_id = { req = true }
-		,recordthread = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
 		,insBy = { req = true }
 		,timeblock = { req = true }
 		,mchntype = { req = false, ifNone = form.exparam }
+
+		//Only required when at timeblock one
+		,hrMonitor = { req = ( ft == 0 ), ifNone = false }
 
 		//Only required when exercise chosen is cycle
 		,rpm = { req = (form.exparam eq CYCLE), ifNone = 0 }
@@ -65,9 +69,16 @@ try {
 		req.sendAsJson( status = 0, message = "#errstr# #stat.message#" );
 	}
 
-
 	//Set fv to validated form values	
 	fv = stat.results;
+
+	//Change hrMonitor
+	if ( StructKeyExists( fv, "hrMonitor" ) ) {
+		fv.hrMonitor = ( fv.hrMonitor eq "on" ) ? 1 : 0;
+	}
+
+	//???
+	//req.sendAsJson( status = 1, message = "#errstr# #SerializeJSON( fv )#" );
 
 	//Figure out the form field name 
 	desig = "";
@@ -76,7 +87,7 @@ try {
 	else if ( fv.timeblock eq 0 )
 		desig = "wrmup_";
 	else if ( fv.timeblock gt 45 )
-		desig = "m5_rec";
+		desig = "m3_rec";
 	else { 
 		desig = "m#fv.timeblock#_ex";
 	}
@@ -104,6 +115,7 @@ try {
 	if ( !upd.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #upd.message#" );
 	}
+
 }
 catch (any thing) {
 	req.sendAsJson( status = 0, message = "#errstr# makes no sense - #thing#" );	
@@ -118,10 +130,10 @@ if ( !upd.prefix.recordCount ) {
 	INSERT INTO 
 		#data.data.endurance#	
 	( participantGUID
-	 ,recordthread
 	 ,insertedBy
 	 ,d_inserted
 	 ,mchntype
+	 #iif(ft eq 0, DE(',hrworking'),DE(''))#
 	 ,#desig#oth1
 	 ,#desig#oth2
 	 ,#desig#prctgrade
@@ -136,10 +148,10 @@ if ( !upd.prefix.recordCount ) {
 	)
 	VALUES
 	(  :pid
-		,:rthrd
 		,:insBy
 		,:dtstamp
 		,:mchntype
+	  #iif(ft eq 0, DE(',:hrworking'),DE(''))#
 		,:oth1
 		,:oth2
 		,:prctgrade
@@ -162,6 +174,7 @@ else {
 		 mchntype = :mchntype
 		,d_inserted = :dtstamp
 		,insertedBy = :insBy
+	  #iif(ft eq 0, DE(',hrworking = :hrworking'),DE(''))#
 		,#desig#oth1 = :oth1
 		,#desig#oth2 = :oth2
 		,#desig#prctgrade = :prctgrade
@@ -169,8 +182,8 @@ else {
 		,#desig#speed = :speed
 		,#desig#watres = :watres
 		,#desig#hr = :hr
-	 #iif(ftstat,DE(',#desig#Othafct = :afct'),DE(''))#
-	 #iif(ftstat,DE(',#desig#rpe = :rpe'),DE(''))#
+	  #iif(ftstat, DE(',#desig#Othafct = :afct'),DE(''))#
+	  #iif(ftstat, DE(',#desig#rpe = :rpe'),DE(''))#
 	 WHERE
 		participantGUID = :pid
 	 AND
@@ -200,6 +213,7 @@ try {
 		 ,oth2     = fv.oth2
 		 ,prctgrade= fv.prctgrade
 		 ,rpm      = fv.rpm
+		 ,hrworking= fv.hrMonitor
 		 ,mchntype = fv.mchntype
 		 ,speed    = fv.speed
 		 ,watres   = fv.watres
@@ -217,6 +231,51 @@ try {
 			message = "#errstr# #iif(vpath,DE("UPDATE"),DE("INSERT"))# #qu.message#" 
 		);
 	}
+
+	//Write progress
+	prog = dbExec(
+		string = "
+		SELECT * FROM
+			ac_mtr_frm_progress
+		WHERE
+			fp_participantGUID = :pid
+		AND
+			fp_step = :step
+		AND
+			fp_sessdayid = :sid
+		"
+	 ,bindArgs = {
+			pid = fv.pid
+		 ,sid = csSid
+		 ,step = fv.timeblock 
+		}
+	);
+
+	if ( !prog.status ) {
+		req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+	}
+
+	//If there is anything here, add a row
+	if ( prog.prefix.recordCount eq 0 ) {
+		prog = dbExec(
+			string = "
+			INSERT INTO	ac_mtr_frm_progress
+				( fp_step, fp_participantGUID, fp_sessdayid )
+			VALUES 
+				( :step, :pid, :sdid )
+			"
+		 ,bindArgs = {
+				step = fv.timeblock 
+			 ,pid = fv.pid
+			 ,sdid = csSid
+			}
+		);
+
+		if ( !prog.status ) {
+			req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+		}
+	}
+
 }
 catch (any ff) {
 	req.sendAsJson( status = 0, message = "#errstr# #ff#" );

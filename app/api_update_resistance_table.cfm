@@ -17,11 +17,6 @@ try {
 	isWarmup = ( form.extype eq 0 ); 
 
 	//Desig
-	/*
-	//This should work but it's crashing every time, why?
-	obj = CreateObject( "component", "components.resistance" );
-	desig = obj.getExerciseName( form.extype ).prefix;
-	*/
 	if ( form.extype eq 1 ) desig = "legpress";
 	else if ( form.extype eq 2 ) desig = "modleg";
 	else if ( form.extype eq 3 ) desig = "pulldown";
@@ -36,59 +31,21 @@ try {
 	else if ( form.extype eq 12 ) desig = "calfpress";
 	else if ( form.extype eq 13 ) desig = "shoulder2";
 	else if ( form.extype eq 14 ) desig = "triceppress";
-/*
-	//Get the formname
-	desig = dbExec(
-		filename = "elExerciseName.sql", 
-		bindArgs = { id = form.extype }
-	).results.prefix;
+	else desig = "wrmup_";
+
+	extype = StructKeyExists( form, "extype" ) ? form.extype : 0;
 
 	//...
-	if ( desig eq "leg" )
-		desig = "legpress";
-	else if ( desig eq "modleg" )
-		desig = "dumbbellsquat";
-	else if ( desig eq "pull" )
-		desig = "pulldown";
-	else if ( desig eq "legcurl" )
-		desig = "legcurl";
-	else if ( desig eq "seatrow" )
-		desig = "seatedrow";
-	else if ( desig eq "knee" )
-		desig = "kneeextension";
-	else if ( desig eq "bicep" )
-		desig = "bicepcurl";
-	else if ( desig eq "chest" )
-		desig = "chestpress";
-	else if ( desig eq "chest2" )
-		desig = "chest2";
-	else if ( desig eq "abs" )
-		desig = "abdominalcrunch";
-	else if ( desig eq "overhead" )
-		desig = "overheadpress";
-	else if ( desig eq "calf" )
-		desig = "calfpress";
-	else if ( desig eq "shoulder" )
-		desig = "shoulder2";
-	else if ( desig eq "triceps" )
-		desig = "triceppress";
-	else {
-		desig = "wrmup_";
-	}
-*/
-
-//req.sendAsJson( status=0, message='{ "weighttype": "#desig#" }' );
-
-	//...
-	stat = val.validate( form, {
+	stat = cmValidate( form, {
 		 pid = { req = true }
 		,sess_id = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
 		,insBy = { req = true }
-		,is_exercise_done = { req = true }
-		,is_superset = { req = true }
-		,recordThread = { req = false, ifNone = "hi" }
+		,hrMonitor = { req = (isWarmup), ifNone = false }
+		,is_exercise_done = { req = false, ifNone = false }
+		,is_superset = { req = false, ifNone = false }
+		,recordThread = { req = false, ifNone = false }
 		,Rep1 = { req = false, ifNone = 0 }
 		,Rep2 = { req = false, ifNone = 0 }
 		,Rep3 = { req = false, ifNone = 0 }
@@ -100,18 +57,26 @@ try {
 		,othafct = { req = (isWarmup), ifNone = 0 }
 	});
 
+	//...
 	if ( !stat.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #stat.message#" );	
 	}
 
 	fv = stat.results;
 
+	//Change hrMonitor
+	if ( StructKeyExists( fv, "hrMonitor" ) ) {
+		fv.hrMonitor = ( fv.hrMonitor eq "on" ) ? 1 : 0;
+	}
+
 	//Check what was submitted from metadata
-	fv.exIsDone = 0;	
+	fv.exIsDone = ( fv.is_exercise_done eq "on" );
+/* 
 	if ( fv.is_exercise_done eq "on" && fv.is_superset eq "on" ) 
 		fv.exIsDone = 2;
 	else if	( fv.is_exercise_done eq "on" )
 		fv.exIsDone = 1;
+*/
 
 	//Insert or update if the row is not there...
 	upd = dbExec( 
@@ -133,12 +98,7 @@ try {
 		 ,dayofwk = fv.dayofwk
 		}
 	);
-/*
-req.sendAsJson( status = 0, message = "#fv.pid#, #fv.stdywk#, #fv.dayofwk#" ); 
-req.sendAsJson( status = 0, message = "#fv.pid#" ); 
-req.sendAsJson( status = 0, message = "#fv.pid#" ); 
-req.sendAsJson( status = 0, message = "#SerializeJSON(upd.results)#" ); 
-*/
+
 	if ( !upd.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - #upd.message#" );
 	}
@@ -161,6 +121,7 @@ if ( !upd.prefix.recordCount ) {
 			,insertedBy
 			,dayofwk
 			,stdywk
+	 		#iif(isWarmup,DE(''),DE(',hrworking'))#
 			#iif(isWarmup,DE(''),DE(',#desig#'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep1'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep2'))#
@@ -179,6 +140,7 @@ if ( !upd.prefix.recordCount ) {
 			,:insBy
 			,:dwk
 			,:swk
+	 		#iif(isWarmup,DE(''),DE(',:hrworking'))#
 			#iif(isWarmup,DE(''),DE(',:exIsDone'))#
 			#iif(isWarmup,DE(''),DE(',:rep1'))#
 			#iif(isWarmup,DE(''),DE(',:rep2'))#
@@ -199,6 +161,7 @@ else {
 		SET 
 			 d_inserted  = :dtstamp
 			,insertedBy  = :insBy
+			#iif(isWarmup,DE(''),DE(',hrWorking = :hrworking'))#
 			#iif(isWarmup,DE(''),DE(',#desig# = :exIsDone'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep1 = :rep1'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Wt1  = :wt1'))#
@@ -218,8 +181,6 @@ else {
 		";
 }
 
-//req.sendAsJson( status=0, message='#sqlString# - #SerializeJSON(fv)#' ); 
-
 //Then perform the query
 try {
 	//This is in case I find myself modifying dates from other times
@@ -227,7 +188,7 @@ try {
 		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
 		& DateTimeFormat( Now(), "HH:nn:ss" )
 	);
-
+/*
 	//req.sendAsJson( status=0, message='#sqlString# - #SerializeJSON(fv)#' ); abort;
 	qu = dbExec(
 		string = sqlString
@@ -238,6 +199,7 @@ try {
 		 ,dtstamp  = { value = dstmp, type="cf_sql_date" }
 		 ,exIsDone = fv.exIsDone 
 		 ,insBy    = fv.insBy
+		 ,hrworking= fv.hrMonitor
 		 ,dwk      = fv.dayofwk
 		 ,swk      = fv.stdywk
 		 ,rep1     = fv.Rep1 
@@ -253,7 +215,143 @@ try {
 	);
 
 	if ( !qu.status ) {
-		req.sendAsJson( status = 0, message = "#errstr# - #qu.message#" );
+		req.sendAsJson( status = 0, message = "#errstr# - QU - #qu.message#" );
+	}
+*/
+	//If a superset was submitted save it.  there can only be a max of 6 submitttals,
+	//have to check betweeen one two and three for the records in frm_retl
+	if ( fv.is_superset eq "on" ) {
+		//Grab the superset values from today and check if any are done
+		supCheck = dbExec(
+			string = "
+				SELECT 
+					bp1set1	
+				 ,bp1set2	
+				 ,bp1set3	
+				 ,bp2set1	
+				 ,bp2set2	
+				 ,bp2set3	
+				FROM
+					frm_retl
+				WHERE
+					d_visit = :today
+				AND
+					participantGUID = :pid
+			"
+		 ,bindArgs = {
+				today = { value = dstmp, type = "cf_sql_date" } 
+			 ,pid = fv.pid
+			}	
+		);
+
+		//the values save, but there is no exercise type.  problem is, I can't recall the selection this way...
+		//either I create my own table to store this, or modify frm_retl
+		res = [ 
+			supCheck.results.bp1set1	
+		 ,supCheck.results.bp1set2	
+		 ,supCheck.results.bp1set3	
+		 ,supCheck.results.bp2set1	
+		 ,supCheck.results.bp2set2	
+		 ,supCheck.results.bp2set3	
+		];
+
+		//If bp1set1 and bp2set2 are both filled, it's likely that the supersets are completed
+		
+		maxSupersets = ArrayFind( res, 0 ); 
+		//req.sendAsJson( status=1, message="#ArrayToList( res )#" );	
+		//req.sendAsJson( status=1, message="#maxSupersets#" );	
+
+		if ( maxSupersets <= 4 ) {
+			if ( maxSupersets < 3 ) {
+				res[ 1 ] = ( res[ 1 ] > 0 ) ? res[ 1 ] : fv.Wt1;
+				res[ 2 ] = ( res[ 2 ] > 0 ) ? res[ 2 ] : fv.Wt2;
+				res[ 3 ] = ( res[ 3 ] > 0 ) ? res[ 3 ] : fv.Wt3;
+			//exname = ?
+			}
+			else {
+				res[ 4 ] = ( res[ 4 ] > 0 ) ? res[ 4 ] : fv.Wt1;
+				res[ 5 ] = ( res[ 5 ] > 0 ) ? res[ 5 ] : fv.Wt2;
+				res[ 6 ] = ( res[ 6 ] > 0 ) ? res[ 6 ] : fv.Wt3;
+			//exname = ?
+			}
+			
+			//req.sendAsJson( status=1, message="#ArrayToList( res )#" );	
+			
+			add = dbExec( 
+				string = "
+					UPDATE	
+						frm_retl
+					SET 
+						bp1set1 = :b1s1	
+					 ,bp1set2 = :b1s2	
+					 ,bp1set3 = :b1s3	
+					 ,bp2set1 = :b2s1	
+					 ,bp2set2 = :b2s2	
+					 ,bp2set3 = :b2s3	
+					WHERE
+						d_visit = :today
+					AND
+						participantGUID = :pid
+					"
+				,bindArgs = {
+					b1s1 = ( res[ 1 ] )
+				 ,b1s2 = ( res[ 2 ] )
+				 ,b1s3 = ( res[ 3 ] )
+				 ,b2s1 = ( res[ 4 ] )
+				 ,b2s2 = ( res[ 5 ] )
+				 ,b2s3 = ( res[ 6 ] )
+				 ,today = { value = dstmp, type = "cf_sql_date" } 
+				 ,pid = fv.pid
+				}	
+			);
+
+req.sendAsJson( status = 1, message = "#SerializeJSON(add)#" );
+			
+		}
+	}
+
+req.sendAsJson( status = 1, message = "#errstr# - superset done" );
+	//Write progress
+	prog = dbExec(
+		string = "
+		SELECT * FROM
+			ac_mtr_frm_progress
+		WHERE
+			fp_participantGUID = :pid
+		AND
+			fp_step = :step
+		"
+	 ,bindArgs = {
+			pid = fv.pid
+		 ,step = extype
+		}
+	);
+
+	if ( !prog.status ) {
+		req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+	}
+
+	//req.sendAsJson( status = 1, message = "#errstr# - #prog.prefix.recordCount#" );
+
+	//If there is anything here, add a row
+	if ( prog.prefix.recordCount eq 0 ) {
+		prog = dbExec(
+			string = "
+			INSERT INTO	ac_mtr_frm_progress
+				( fp_step, fp_participantGUID, fp_sessdayid )
+			VALUES 
+				( :step, :pid, :sdid )
+			"
+		 ,bindArgs = {
+				step = extype
+			 ,pid = fv.pid
+			 ,sdid = csSid
+			}
+		);
+
+		if ( !prog.status ) {
+			req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+		}
 	}
 }
 catch (any ff) {

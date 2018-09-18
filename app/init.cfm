@@ -1,147 +1,32 @@
 <cfscript>
-//writedump( session );abort;
-//Include all CFCs first hereq
-ajax  = CreateObject( "component", "components.writeback" );
-ezdb  = CreateObject( "component", "components.quella" );
+//Include all CFCs first here
 rl    = CreateObject( "component", "components.requestLogger" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
-val   = CreateObject( "component", "components.validate" );
+udo   = CreateObject( "component", "components.calcUserDate" )
+	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
+//wfb   = CreateObject( "component", "components.wfbutils" );
+include "constants.cfm";
+include "custom.cfm";
 
-//Display a message upon redirection
-function errAndRedirect( Required String goto, Required String msg, parameters ) {
-	//clearly, this is not a good way to handle this...
-	if ( StructKeyExists( arguments, "parameters" ) && !IsStruct( StructFind( arguments, "parameters" ) ) ) {
-		throw "Parameters argument is not a struct!";
-	} 
+//Set a smaller reference for the cdate
+cdate = udo.object.dateObject;
 
-	//Create an array for the link
-	theLink = link( goto & ".cfm" ) & "?";
-	theLink &= "err=" & EncodeForURL( msg ) & "";
-
-	//Add the params
-	if ( StructKeyExists( arguments, "parameters" ) ) {
-		//Loop through?
-		for ( Par in arguments.parameters ) {
-			theLink &= "&#Par#=#arguments.parameters[ Par ]#";
-		}
-	}
-
-	//Redirect
-	location( 
-		addtoken="no" 
-	 ,url = theLink
-	);
-}
-
-//TODO: move this and other static data to a component
-CONSTANTS = {
-	 bpDaysLimit = 30
-	,bpMinSystolic = 40 
-	,bpMaxSystolic = 160
-	,bpMinDiastolic = 40
-	,bpMaxDiastolic = 90
-
-	,ENDURANCE = 1
-	,RESISTANCE = 2
-};  
-
-
-//Set a datasource for all things
-ezdb.setDs( datasource = "#data.source#" );
-
-
-//Set labels from over here somewhere
-ENDURANCE_CLASSIFIERS = "ADUEndur,ATHEndur,ADUEnddur";
-RESISTANCE_CLASSIFIERS = "ADUResist,ATHResist";
-CONTROL_CLASSIFIERS = "ADUControl";
-
-ENDURANCE = "ADUEndur,ATHEndur,ADUEnddur";
-RESISTANCE = "ADUResist,ATHResist";
-CONTROL = "ADUControl";
-
-E = 1;
-R = 2;
-C = 3;
-
-
-//writedump( session ); abort;
-
-//On production, the date will always be the current date... I think...
-if ( data.debug eq 0 )
-	userDateObject = Now(); 
-else { 
-	//Current date
-	if ( isDefined( "url.date" ) && StructKeyExists(url, "date") ) {
-		try {
-			userDateObject = LSParseDate( url.date );
-			session.userdate = userDateObject;
-		}
-		catch (any e) {
-			userDateObject = session.userdate = Now();
-		}
-	}
-	else if ( isDefined("url.resetdate" ) && StructKeyExists( url, "resetdate" ) ) {
-		StructDelete( session, "userdate" );	
-		userDateObject = session.userdate = Now();
-	}
-	else if ( StructKeyExists( session, "userdate" ) ) {
-		userDateObject = session.userdate;	
-	}
-	else {
-		//usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-		userDateObject = session.userdate = Now(); 
-	}
-}
+//Set a user date object session key...
+(( data.loaded eq "default" ) && ( data.debug eq 1 )) ? udo.setSessionKeys() : 0;
 
 //Calculate all of these date variables
-//Monday was arbitrarily day 1, but CF uses Sun as day 1, Sun is 7 in the rest of motrpac.
-currentDayOfWeek = ((DayOfWeek(userDateObject) - 1) == 0) ? 7 : DayOfWeek(userDateObject) - 1;
-currentDayOfWeekName = DateTimeFormat( userDateObject, "EEE" );
-currentDayOfMonth = DateTimeFormat( userDateObject, "d" );
-currentMonth = DateTimeFormat( userDateObject, "m" );
-currentYear = DateTimeFormat( userDateObject, "YYYY" );
-currentWeekOfYear = DateTimeFormat( userDateObject, "w" );
-userDate = DateTimeFormat( userDateObject, "YYYY-MM-DD HH:nn:ss" );
-
+( !StructKeyExists( session, "isAppDateSet" )) ? udo.setSessionKeys() : 0;
 
 //Check for session.userguid
 if ( !StructKeyExists( session, "userguid" ) ) {
 	//Redirect if I am not on an approved server
-	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) ) {
-		//writeoutput( "this is redirecting? #data.localdev# - #cgi.http_host#" );abort;
+	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) )
 		location( addtoken = "no", url = data.redirectForLogin );
-	}
 	else {
 		//Also requires a userGUID
 		session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
-	}	
-}
-
-
-//If isDateSet is not set, that means that there is no date in the session 
-if ( !StructKeyExists( session, "isAppDateSet" ) ) {
-	session.isAppDateSet = 1;
-	session.currentDayOfWeek = currentDayOfWeek;
-	session.currentDayOfWeekName = currentDayOfWeekName;
-	session.currentDayOfMonth = currentDayOfMonth;
-	session.currentMonth = currentMonth;
-	session.currentYear = currentYear;
-	session.currentWeekOfYear = currentWeekOfYear;
-}
-//If it is there, then I've already set something, however, I only need to do this on the default page, and if we're in debug mode
-else { 
-	if (( data.loaded eq "default" ) && ( data.debug eq 1 ) ) {
-		//Only change date if on default.cfm - writeoutput( "change date" );abort;
-		session.isAppDateSet = 1;
-		session.currentDayOfWeek = currentDayOfWeek;
-		session.currentDayOfWeekName = currentDayOfWeekName;
-		session.currentDayOfMonth = currentDayOfMonth;
-		session.currentMonth = currentMonth;
-		session.currentYear = currentYear;
-		session.currentWeekOfYear = currentWeekOfYear;
 	}
 }
-
 
 //Set a site ID from here
 staffId = 0;
@@ -187,7 +72,6 @@ siteId = 0;
 if ( StructKeyExists( url, "siteid" ) )
 	session.siteid = siteId = url.siteid;
 else {
-	//siteId = 999;	
 	if ( !StructKeyExists( session, "siteid" ) )
 		session.siteid = siteId = 999;
 	else {
@@ -196,67 +80,13 @@ else {
 	}
 }
 
-
-//Session detection and initialization (if need be)
-expireTime = 60 /*secs*/ * 60 /*minutes*/ * 2 /*hours*/;
-refreshTime = 60 /*secs*/ * 15 /*minutes*/; 
-refreshTime = 20;
-superExpire = -1;
-sess = {
-	 key = 0
-	,exists = 1
-	,needsRefresh = 0
-	,status = 0
-	,elapsed = 0
-	,message = 0
-	,staffId = 0
-	,expiresAfterInactive = 2 * 60 * 60
-};
-
-
-//Here are some controls that might help me test
-if ( data.debug eq 1 ) {
-	refreshTime = (StructKeyExists( url, "refreshTime" )) ? url.refreshTime : refreshTime;
-	expireTime = (StructKeyExists( url, "expireTime" )) ? url.expireTime : expireTime;
-}
-
-
 //Get the last session key in the browser or make a new one.
-if ( StructKeyExists( session, "ivId" ) ) 
-	sess.key = session.ivId;
-else {
+if ( !StructKeyExists( session, "ivId" ) ) 
 	session.ivId = randstr( 5 ) & randnum( 10 ) & randstr( 5 );
-	sess.key = session.ivId; 
-}
-
-sess.status = 2;
-/*
-//....
-//writedump( session );abort;
-sess.currentDayOfWeek = currentDayOfWeek;
-sess.currentDayOfWeekName = currentDayOfWeekName;
-sess.currentDayOfMonth = currentDayOfMonth;
-sess.currentMonth = currentMonth;
-sess.currentYear = currentYear;
-sess.currentWeek = currentWeek;
-sess.userDate = userDate;
-*/
 
 //Look for a matching key of some sort.
 csQuery = dbExec(
-	datasource = "#data.source#"
- ,string = "
-		SELECT 
-			sm_sessdayid as sid 
-		 ,sm_datetimestarted as sdate 
-		FROM 
-			#data.data.sessiondappl# 
-		WHERE sm_dayofweek = :dow
-		AND sm_dayofmonth  = :dom
-		AND sm_month = :mon
-		AND sm_year = :year
-		AND sm_siteid = :siteid	
-	"
+  filename = 'csQuery.sql'
  ,bindArgs = { 
 		siteid = session.siteid 
 	 ,dow    = session.currentDayOfWeek
@@ -274,15 +104,10 @@ if ( csQuery.prefix.recordCount gt 0 ) {
 }
 else {
 	csQuery = dbExec(
-	  string = "
-			INSERT INTO #data.data.sessiondappl# 
-				( sm_siteid, sm_datetimestarted, sm_dayofweek, sm_dayofmonth, sm_month, sm_year )
-			VALUES
-				( :site_id , :dtstarted, :dayofwk, :dayofmonth, :month, :year )
-		"  
+	  filename = "csInsert.sql"
 	 ,bindArgs = { 
 		  site_id = session.siteid 
-		 ,dtstarted = { value = userDateObject, type = "cf_sql_date" }
+		 ,dtstarted = { value = cdate, type = "cf_sql_date" }
 		 ,dayofwk = session.currentDayOfWeek
 		 ,dayofmonth = session.currentDayOfMonth
 		 ,month = session.currentMonth
@@ -295,25 +120,12 @@ else {
 		writeoutput( "Fatal Exception at app/init.cfm. " & 
 			"Database failed to generate new day ID." &
 			"#csQuery.message#" );
-
 		abort;
 	}
 
 	//re-run query and get the data I want
 	csQuery = dbExec(
-		datasource = "#data.source#"
-	 ,string = "
-			SELECT 
-				sm_sessdayid as sid 
-			 ,sm_datetimestarted as sdate 
-			FROM 
-				#data.data.sessiondappl# 
-			WHERE sm_dayofweek = :dow
-			AND sm_dayofmonth  = :dom
-			AND sm_month = :mon
-			AND sm_year = :year
-			AND sm_siteid = :siteid	
-		"
+		filename = "csQuery.sql"
 	 ,bindArgs = { 
 			siteid = session.siteid 
 		 ,dow    = session.currentDayOfWeek
@@ -325,12 +137,21 @@ else {
 
 	csDate = csQuery.results.sdate;
 	csSid = csQuery.results.sid;
+
+	//Also clean up the data table
+	delete = dbExec(
+		datasource = "#data.source#"
+	 ,string = "DELETE FROM ac_mtr_frm_progress WHERE fp_sessdayid NOT :sid"
+ 	 ,bindArgs = {
+			sid = csSid
+		}
+	);
 }
 
 
 //Get participant data 
 currentParticipant = dbExec( 
-	string = "SELECT * FROM #data.data.participants# WHERE participantGUID = :pid"
+	string = "SELECT * FROM v_ADUSessionTickler WHERE participantGUID = :pid"
  ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }}
 );
 
@@ -341,148 +162,23 @@ randomCode = currentParticipant.results.randomGroupCode;
 
 //If nothing is selected, these queries ought to be empty queries
 selectedParticipants = dbExec( 
-	string = "
-	SELECT * FROM
-		( SELECT * FROM
-				#data.data.sia#	
-			WHERE 
-				csd_interventionist_guid = :guid
-			AND
-				csd_daily_session_id = :sid
-		) AS AssociatedParts 
-	LEFT JOIN
-		( SELECT * FROM  #data.data.participants#	) AS amp
-	ON AssociatedParts.csd_participant_guid = amp.participantGUID;
-	"
-	,bindArgs = {
+	filename = "selectedParticipants.sql"
+ ,bindArgs = {
 		guid = session.userguid 
 	 ,sid = csSid 
+   ,today = { value=cdate, type="cf_sql_date" }
 	}	
 );
 
+
+//...
 unselectedParticipants = dbExec( 
-	string = "
-	SELECT * FROM 
-		#data.data.participants# 
-	WHERE participantGUID NOT IN (
-		SELECT DISTINCT csd_participant_guid FROM 
-			#data.data.sia#	
-		WHERE 
-			csd_daily_session_id = :sid
-	) ORDER BY lastname ASC"
+	filename = "unselectedParticipants.sql"
  ,bindArgs = {
 		sid = csSid 
+   ,today = { value=cdate, type="cf_sql_date" }
 	}
 );
-
-
-/*
-A full session ought to look like:
-
-{
-	id = <for reference only: the random ID that is now session.ivId>
-	needsRebuild [boolean]      - defines whether or not to rebuild record thread table
-	interventionist [ varchar ] - the current interventionist logged in for this session
-	footprints [ table ]        - queue of the last five locations, ids and dates of use of app
-	status [ integer ]          - can be used for anything (like rebuild etc)
-	selected [ varchar ]        - the ID of the currently selected participant
-	participants [ table ]      - list of participants and accompanying data
-		[ <participantGUID> ]     = {
-			checkInCompleted[ bool ]  - Check if check-in is done
-			recoveryCompleted[ bool ] - Check if recovery is done
-			lastExerciseCompleted [ int ] - The last exercise completed...
-			lastLocation[ varchar ]   - The last location of the interventionist when working with this guy
-			bpdata [ integer ]        -
-			param [ integer ]         -
-			rType [ integer ]         -
-			rTypeName [ varchar]      -
-			week [ integer ]          -
-			dayname [ integer ]       -
-			day [ integer ]           -
-			getNewBP [ boolean ]      -
-			BPDaysLeft [ integer ]    - 
-			BPSystolic [ integer ]    - 
-			BPDiastolic [ integer ]   - 
-			BPMinSystolic [ integer ] - 
-			BPMaxSystolic [ integer ] - 
-			BPMinDiastolic [ integer ]- 
-			BPMaxDiastolic [ integer ]- 
-			targetHR [ integer ]      - 
-			weight [ integer ]        - 
-			exlist [ table ]          - List of exercises 	
-		}
-}
- */
-
-
-//Pass in the current session ( session[ session.ivId ] )
-/*
-If SelectedParticipants is not defined, 
-	most likely nothing has started, so return a blank table
-If SelectedParticipants is defined, 
-	then extract the GUIDs from the query
-	create a table using participantSchema
-	and match it as the value for the participant GUID
-	you should have
-	[ guid ] = ParticipantSchema
-*/
-//Build all record threads
-function buildRecordThreads( t ) {
-	if ( !StructKeyExists( t, "participants" ) ) { 
-		t.participants = {};
-
-		//If not logged in, this might not be the first time we did anything
-		if ( isDefined( "selectedParticipants" ) ) {
-			for ( p in selectedParticipants.results ) {
-				//Create a key that can be referenced by the participant GUID
-				cp = t.participants[ Trim( p.participantGUID ) ] = {};
-				cp.recordThread = Trim( dbExec( string = "SELECT newID() as newGUID" ).results.newGUID );
-				cp.checkInCompleted = 0 ;
-				cp.exerciseParameter = 0 ;
-				cp.recoveryCompleted = 0;
-				cp.lastExerciseCompleted = 0;
-				cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
-				cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
-				cp.week = 0;
-				cp.getNewBP = 0;	
-				//This has to be initialized later...
-				cp.BPDaysLeft = 0;
-				cp.BPSystolic = 0;
-				cp.BPDiastolic = 0;
-				cp.targetHR = 0;
-				cp.weight = 0;
-				cp.exlist = 0;
-			}
-		}
-	}
-
-	else {
-		//Check for the participant key in the partiicpants struct
-		for ( p in selectedParticipants.results ) {	
-			//Regenerate if this is not there.
-			if ( !StructKeyExists( t.participants, p.participantGUID ) ) {
-				//Create a key that can be referenced by the participant GUID
-				cp = t.participants[ Trim( p.participantGUID ) ] = {};
-				cp.recordThread = Trim( dbExec( string = "SELECT newID() as newGUID" ).results.newGUID );
-				cp.checkInCompleted = 0 ;
-				cp.exerciseParameter = 0 ;
-				cp.recoveryCompleted = 0;
-				cp.lastExerciseCompleted = 0;
-				cp.randomizedType = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? E : R;
-				cp.randomizedTypeName = ( ListContains( ENDURANCE, p.randomGroupCode ) ) ? "Endurance" : "Resistance";
-				cp.week = 0;
-				cp.getNewBP = 0;	
-				//This has to be initialized later...
-				cp.BPDaysLeft = 0;
-				cp.BPSystolic = 0;
-				cp.BPDiastolic = 0;
-				cp.targetHR = 0;
-				cp.weight = 0;
-				cp.exlist = 0;
-			}
-		}
-	}
-}
 
 
 //Redefine this to make life easy
@@ -492,9 +188,10 @@ else {
 	cs = session[ session.ivId ]; 
 }
 
+
 //Record specific session data for this app only
 cs.id = session.ivId ;
-cs.date = session.userDate;
+cs.date = session.userdate;
 cs.day = session.currentDayOfWeek;
 cs.dayName = session.currentDayOfWeekName;
 cs.needsRebuild = 0;
@@ -516,7 +213,7 @@ cs.staff = {
 footprint = {
 	location = "#cgi.script_name##iif( cgi.query_string eq "", DE("?" & cgi.query_string), DE(""))#"
  ,time = Now()
- ,partiicpantGUID = cs.participantId
+ ,participantGUID = cs.participantId
 };
 
 
@@ -532,121 +229,89 @@ else {
 	cs.footprints[ 1 ] = footprint;
 }
 
-//...
-sess.current = cs;
-
 //Only build a new participant database after initial submission
 if ( ( data.loaded eq "input" ) && ( cgi.query_string eq "" ) ) {
-	buildRecordThreads( session[ session.ivId ] );
+	if ( StructKeyExists( selectedParticipants, "results" ) && selectedParticipants.prefix.recordCount gt 0 ) {
+		buildRecordThreads( session[ session.ivId ], selectedParticipants.results );
+	}
 }
 
-
 //Now build session data for the "active" participant
-if ( StructKeyExists( sess.current, "participants" ) ) {
-	if ( StructKeyExists( sess.current.participants, sess.current.participantId ) ) {
+if ( StructKeyExists( cs, "participants" ) ) {
+	if ( StructKeyExists( cs.participants, cs.participantId ) ) {
 		//???
-		isEnd = (ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
-		isRes = (ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
+		isEnd = (ListContains(const.ENDURANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
+		isRes = (ListContains(const.RESISTANCE, currentParticipant.results.randomGroupCode)) ? 1 : 0;
 
 		//Short name for reference throughout the app
-		sc = sess.csp = sess.current.participants[ sess.current.participantId ];
+		sc = cs.participants[ cs.participantId ];
+
+		//Define a prefix to choose between Endurance and Resistance participants
+		prefix = (isEnd) ? "eetl" : "retl";
 
 		//get blood pressure and weight
 		cp = {
 			details = dbExec( 
-				string="
-			SELECT * FROM
-				( SELECT * FROM 
-					#data.data.bloodpressure# 
-				WHERE 
-					bp_pid = :pid ) as bpp 
-				RIGHT JOIN
-				( SELECT 
-						participantGUID as _pid	
-					 ,MthlyBPDia
-					 ,mthlybpsys
-					 ,d_visit
-					 ,dayofwk
-					 ,stdywk
-					 ,weight
-					 ,#iif(isEnd,DE('trgthr1'),DE('0'))# as targetHR
-					 ,#iif(isEnd,DE('mchntype'),DE('bodypart'))# as exerciseType 
-				FROM 
-					#iif(isEnd,DE('#data.data.endurance#'),DE('#data.data.resistance#'))# 
-				WHERE 
-					participantGUID = :pid
-				AND 
-					d_visit = :visit
-				) as frmVal
-			ON bpp.bp_pid = frmVal._pid
-				"
+				filename = "init_#prefix#_pdetails.sql"
 			 ,bindArgs = { 
-					pid = { type = "varchar", value = sess.current.participantId }
-				 ,visit = { type = "date", value = userDateObject }
+					pid = { type = "varchar", value = cs.participantId }
+				 ,visit = { type = "date", value = cdate }
 				}
-			).results
+			)
 
 			//Get all the completed days for the week
 		 ,completedDays = dbExec(
-				string="SELECT dayofwk FROM
-					#iif(isEnd,DE('#data.data.endurance#'),DE('#data.data.resistance#'))# 
+				string="SELECT dayofwk FROM frm_#prefix#
 					WHERE participantGUID = :pid AND stdywk = :wk"
 			 ,bindArgs={ 
-					pid = sess.current.participantId 
-				 ,wk  = sess.csp.week
+					pid = cs.participantId 
+				 ,wk  = sc.week
 				}
-			).results
+			)
 
 			//Get all the notes
 		 ,notes = dbExec(
-				string = "
-					SELECT
-						noteDate
-					 ,noteText	
-					 ,insertedby
-					FROM 
-						#data.data.notes#	
-					WHERE participantGUID = :pid
-					ORDER BY noteDate DESC
-					"
-			 ,bindArgs = {pid = sess.current.participantId}
-			).results
+				filename = "init_all_notes.sql"
+			 ,bindArgs = {
+					pid = cs.participantId
+				 ,dateLimit = { value = DateAdd("d", -14, cdate), type = "cf_sql_date" } 
+				}
+			)
 		};
 
-		//writedump( cp ); abort;
-
 		//Get 
-		sc.exerciseParameter = cp.details.exerciseType;
+		sc.exerciseParameter = cp.details.results.exerciseType;
 
 		//Calculate remaining blood pressure calculation days
-		sc.bpDaysElapsed = (cp.details.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.bp_daterecorded,Now());
+		sc.bpDaysElapsed = (cp.details.results.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.results.bp_daterecorded,Now());
 
 		//Boolean to tell if we need a new blood pressure or not
-		sc.getNewBP = (cp.details.bp_daterecorded eq "" || sc.BPDaysElapsed gt CONSTANTS.bpDaysLimit); 
+		sc.getNewBP = (cp.details.results.bp_daterecorded eq "" || sc.BPDaysElapsed gt const.bpDaysLimit); 
 
 		//Calculate time until we need to take a new blood pressure
-		sc.bpDaysLeft = CONSTANTS.bpDaysLimit - sc.bpDaysElapsed;
+		sc.bpDaysLeft = const.bpDaysLimit - sc.bpDaysElapsed;
 		
-		//sc.bpSystolic = (sc.getNewBP) ? CONSTANTS.bpMinSystolic : cp.details.bp_systolic;
-		sc.bpSystolic = (sc.getNewBP) ? CONSTANTS.bpMinSystolic : cp.details.mthlybpsys;
+		//sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.results.bp_systolic;
+		sc.bpSystolic = cp.details.results.mthlybpsys;
 
-		//sc.bpDiastolic = (sc.getNewBP) ? CONSTANTS.bpMinDiastolic : cp.details.bp_diastolic;
-		sc.bpDiastolic = (sc.getNewBP) ? CONSTANTS.bpMinDiastolic : cp.details.MthlyBPDia;
+		//sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.results.bp_diastolic;
+		sc.bpDiastolic = cp.details.results.MthlyBPDia;
 
-		sc.targetHR = (cp.details.targetHR eq "" || cp.details.targetHR eq 0 ) ? 0 : cp.details.targetHR;
+		sc.HRWorking = (cp.details.results.HRWorking eq "" || cp.details.results.HRWorking eq 0 ) ? 0 : cp.details.results.HRWorking;
 		
-		sc.weight = (cp.details.weight eq "" || cp.details.weight eq 0 ) ? 0 : cp.details.weight;
+		sc.weight = (cp.details.results.weight eq "" || cp.details.results.weight eq 0 ) ? 0 : cp.details.results.weight;
 
-		sc.week = cp.details.stdywk;
+		sc.week = cp.details.results.stdywk;
 
-		sc.day = cp.details.dayofwk;
+		sc.day = cp.details.results.dayofwk;
 
-		//Populate the finished days
-		sc.cdays = [0,0,0,0,0,0];
-		for ( n in ListToArray( ValueList( cp.completedDays.dayofwk, "," ) ) ) {
-			sess.csp.cdays[ n ] = n; 
-		}
-		//writedump( sc ); abort;
+		sc.hr1 = cp.details.results.hr1;
+
+		sc.hr2 = cp.details.results.hr2;
+
+		//Day names
+		dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+		sc.dayName = dayNames[cp.details.results.dayofwk];
 	}
 }
 

@@ -1,14 +1,57 @@
-Mon, May 21, 2018  2:24:46 PM
-	 -Weeks track automatically and change as we progress forward in time (oooOOooOOh)
-	 -The week can be changed in development versions by using week=YYYY-MM-DD in the URL.
-	 -Scuse me: that's startweek=YYYY-MM-DD
-	 -Perhaps I need to add something else that can delete this test data.
-	 -Still working on adding a modal window that can display all previous weeks results.
-	 -Will add a CSV or a straight up SQL file that can populate in a way that I can test this correctly.
-	 -Changed participant IDs to use SQL Server's newid() function to generate unique identifiers.  This is only important for testing.
-	 -Changed all table names in SQL queries to variables.  This makes it easy to switch backends.
-	 -Updated the check-in page to use #currentWeek# instead of
-	 #model.currentWeek#
+Fri, Sep 14, 2018  9:44:50 AM
+	 - Modified notes display to show the user when no notes have been left for the previous two weeks. 
+	 - Also modified Javascript to handle this particular case.
+	 - 
 
-2018-02-20
+Thu, Sep 13, 2018  4:07:12 PM
+	 - Made some big fixes to schema.sql and populate.sql.  Running locally or creating the databases from scratch should be easy to do now.
+	 - Fixed JS bug in which an exception would be thrown when releasing participants into an "empty list".
+
+Wed, Sep 12, 2018  4:49:05 PM
+	 - updated ranges and hr.
+	 - also updated uom in recovery page.
+
+Wed, Sep 12, 2018  4:45:01 PM
+	 - Added a column in the database for wrmup_starttime to tables frm_retl and frm_eetl
+
+Wed, Sep 12, 2018  4:35:26 PM
+	 - Added a new API endpoint to update the wrmup_starttime.  Also fixed the disappearing yes/no when activating togglers, but will probably end up getting rid of this.
+	 - Fixed many issues with boxes not showing up correctly when clicked.
+
+Wed, Sep 12, 2018  2:11:23 PM
+	 - Fixed recovery note saving.
+
+Wed, Sep 12, 2018 11:01:25 AM
+	 - Updated verbiage.  'Exercise Metadata' is now 'Exercise Machine Type'.
+	 'Last Previous Visit' is now 'Previous Session Results'
+
+Wed, Sep 12, 2018 10:43:29 AM
+	 - Split out API into it's own ... uh... "app"
+	 - Notes now add at the top of the list and include the date.
+	 - Looked into Blood Pressure readings, but still need to investigate why sometimes the right BP is not being returned.
+	 - Fixed 'view more' link.
+
+Wed, Sep 12, 2018  9:58:33 AM
+	 - Drag and drop was broken due to an exception.  While cleaning up, neglected to remove references to function 'checkAtSubmit()', and this broke the drag and drop interface.
+
+Tue, Sep 04, 2018  2:52:19 PM
+	 - Questions at the top of the input.cfm questionnaire should all be one line.
+
+Tue, Sep 04, 2018  2:36:09 PM
+	 - Set up 'View More' link to work with modal window.
+	 - Got rid of 'Logout' link because it's useless.
+
+Mon, May 21, 2018  2:24:46 PM
+	 - Weeks track automatically and change as we progress forward in time (oooOOooOOh)
+	 - The week can be changed in development versions by using week=YYYY-MM-DD in the URL.
+	 - Scuse me: that's startweek=YYYY-MM-DD
+	 - Perhaps I need to add something else that can delete this test data.
+	 - Still working on adding a modal window that can display all previous weeks results.
+	 - Will add a CSV or a straight up SQL file that can populate in a way that I can test this correctly.
+	 - Changed participant IDs to use SQL Server's newid() function to generate unique identifiers.  This is only important for testing.
+	 - Changed all table names in SQL queries to variables.  This makes it easy to switch backends.
+	 - Updated the check-in page to use #currentWeek# instead of #model.currentWeek#
+	 
+
+Tue, Feb 20, 2018 12:00:00 AM
 	- Created this project.

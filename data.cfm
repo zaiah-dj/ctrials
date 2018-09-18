@@ -10,6 +10,7 @@ are all updated here.
 * ------------------------------------------- */
 useDebug = 1;
 
+
 /*Passwords if ever needed
 Server:    sqldev.phs.wfubmc.edu
 Account:   motrpacDevUser
@@ -21,6 +22,9 @@ Pwd:       9F25a26V7j42
 manifest={
 /*This should probably not be modified by you*/
  "cookie" = "3ad2d4dc34e75130c0c2f3c4bbb262481b49250261bcb8e6443728b63d24"
+ 
+/*Use this to move the date forward or backward*/
+//,date = "10/02/2018"
 
 /*----------------- USER-MODIFIABLE STUFF ------------------*/
 /*Turn on debugging, yes or no?*/
@@ -112,7 +116,6 @@ real data*/
 	/*The participant selection page as seen by the interventionists.*/
 	"default"= { model="init", view = [ "master/head", "default", "master/tail" ] }
 
-	/*Marks the end of a session for a particular participant*/
  ,"recovery-done" = {model = [ "init", "recoveryDone" ], view = "recovery-done" }
 
 	/*See how participants are currently assigned among staff members*/ 
@@ -130,7 +133,7 @@ real data*/
 	,"logout" = { model="logoutUser", view="logout" , hint="Logs out a user." }
 
 	/*Either stop a session early, or input participant recovery data*/
-	,"recovery" = { model= "init",
+	,"recovery" = { model= [ "init", "recovery" ],
 	  view = [ "master/head", "participant/list", "participant/nav", "recovery", "master/tail" ] }
 
 	/*View the access log*/
@@ -139,6 +142,9 @@ real data*/
 	 
  
 	/* --- DEBUGGING ENDPOINTS ----------------------------------- */
+	,"querytest"= { model=["init", "input","querytest"], view = [ "master/head", "participant/list", "participant/nav", "querytest", "master/tail" ] }
+
+	/*Marks the end of a session for a particular participant*/
 	/*Logs out ALL users and releases participants into available pool. (Debug only)*/
 	,"logout-all" = { model="logoutAll", view="logoutAll"  }
 
@@ -149,6 +155,11 @@ real data*/
 
 	/* --- API ENDPOINTS --------------------------------------- */
 	/* These pages should never be requested by a user */
+	/*Update something*/
+	,"time"   = { model=  ["init", "api"], view=  "api", content_type = "application/json" }
+
+	/*View the access log*/
+	,"notes"   = { model=  ["init", "api"], view=  "api", content_type = "application/json" }
 
 	/*Return results for previous weeks*/
 	,"modal-results" = { model= [ "init", "api" ], view= "modal-results",content_type= "application/json" }
@@ -157,10 +168,10 @@ real data*/
 	,"completed-days-results" = { model= [ "init", "api" ], view= "days-results" }
 
 	/*Handle all CRUD functions*/
-	,"update" = { model= ["init","api" ],view=  "update",content_type= "application/json" }
+	,"update" = { model= ["init","api" ],view=  "api",content_type= "application/json" }
 
 	/*Update notes (should eventually be done up top)*/
-	,"update-note" = {model = [ "init", "api" ], view = "nothing" }
+	,"update-note" = {model = [ "init", "api" ], view = "api", content_type="application/json" }
 
  } /*end routes*/
 };

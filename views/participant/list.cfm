@@ -5,9 +5,9 @@
 		 <cfif isDefined("selectedParticipants")>
 		  <cfloop query = selectedParticipants.results >
 			
-			<cfif ListContains( ENDURANCE, randomGroupCode )>
+			<cfif ListContains( const.ENDURANCE, randomGroupCode )>
 				<cfset listClassPrefix="endurance">
-			<cfelseif ListContains( RESISTANCE, randomGroupCode )>
+			<cfelseif ListContains( const.RESISTANCE, randomGroupCode )>
 				<cfset listClassPrefix="resistance">
 			<cfelse>
 				<cfset listClassPrefix="control">
@@ -19,7 +19,7 @@
 
 			<cfif IsDefined("url.id") and #url.id# eq #participantGUID#>
 				<a class="selected" href="#link( "check-in.cfm?id=#participantGUID#" )#">
-					<li class="selected #listClassPrefix#-class-container">#firstname# #lastname#<br />( #pid# )</span></li>
+					<li class="#listClassPrefix#-selected #listClassPrefix#-class-container">#firstname# #lastname#<br />( #pid# )</span></li>
 				</a>
 			<cfelse>	
 				<a class="" href="#link( "check-in.cfm?id=#participantGUID#" )#">

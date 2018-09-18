@@ -1,9 +1,16 @@
-/* List of endurance exercises. */
+/* -------------------------------------------------- * 
+	endurance.cfc
+
+  List of endurance exercises. 
+ * -------------------------------------------------- */
 component name="endurance" {
 	this.srcQuery = 0;
 
 	//
-	endurance function init () {
+	endurance function init ( ) {
+		//This really should NOT be invoked this way.  But this is it right now. 
+		include "../app/constants.cfm";
+
 		//Label time defaults for endurance
 		this.srcQuery = queryNew( 
 		 "prefix,urlparam,pname", 
@@ -18,7 +25,8 @@ component name="endurance" {
 		,{ prefix="m35_ex", urlparam=35, pname="<35m" }
 		,{ prefix="m40_ex", urlparam=40, pname="<40m" }
 		,{ prefix="m45_ex", urlparam=45, pname="<45m" }
-		,{ prefix="m5_rec", urlparam=50, pname="Stop Session" }
+		,{ prefix="m3_rec", urlparam=50, pname="3<super>rd</super> Minute Recovery" }
+//	,{ prefix="m5_rec", urlparam=50, pname="Stop Session" }
 		]);
 
 		//Label defaults for endurance
@@ -26,15 +34,24 @@ component name="endurance" {
 		this.labelDefaults = queryNew( 
 		 "uom,label,min,max,step,formName,type,paramMatch",
 		 "Varchar,Varchar,Integer,Integer,Integer,Varchar,Integer,Integer", [
-			{ uom="rpm", label="RPM", min=30, max=130, step=1, formName="rpm", type=1, paramMatch=1 }
+			{ uom="RPM", label="RPM", min=30, max=130, step=1, formName="rpm", type=1, paramMatch=1 }
 		 ,{ uom="lb" , label="Watts/Resistance", min=0, max=50, step=1, formName="watres", type=1, paramMatch=1 }
-		 ,{ uom="mph", label="Speed", min=0, max=50, step=1, formName="speed", type=2, paramMatch=1 }
+		 ,{ uom="MPH", label="Speed", min=0, max=50, step=1, formName="speed", type=2, paramMatch=1 }
 		 ,{ uom="%"  , label="Percent Grade", min=0, max=20, step=1, formName="prctgrade", type=2, paramMatch=1 }
 		 ,{ uom=""   , label="othMchn1", min=20, max=120, step=1, formName="oth1", type=3, paramMatch=1 }
 		 ,{ uom=""   , label="othMchn2", min=20, max=120, step=1, formName="oth2", type=3, paramMatch=1 }
-		 ,{ uom="bpm", label="Heart Rate", min=20, max=120, step=1, formName="hr", type=0, paramMatch=0 }
-		 ,{ uom="rpe", label="RPE", min=6, max=20, step=1, formName="rpe", type=0, paramMatch=0 }
-		 ,{ uom="%"  , label="Affect", min=-5, max=5, step=1, formName="Othafct", type=0, paramMatch=0 }
+		 ,{ uom="BPM", label="Heart Rate", min=70, max=220, step=1, formName="hr", type=0, paramMatch=0 }
+		 ,{ uom="RPE", label="RPE", min=6, max=20, step=1, formName="rpe", type=0, paramMatch=0 }
+		 ,{ uom=""   , label="Affect", min=-5, max=5, step=1, formName="Othafct", type=0, paramMatch=0 }
+/*
+			{ uom="RPM", label="RPM", min=const.rpm.min max=130, step=1, formName="rpm", type=1, paramMatch=1 }
+		 ,{ uom="lb" , label="Watts/Resistance", min=const.wr.min, max=50, step=1, formName="watres", type=1, paramMatch=1 }
+		 ,{ uom="MPH", label="Speed", min=const.mph.min, max=50, step=1, formName="speed", type=2, paramMatch=1 }
+		 ,{ uom="%"  , label="Percent Grade", min=const.prctgrade.min, max=20, step=1, formName="prctgrade", type=2, paramMatch=1 }
+		 ,{ uom="BPM", label="Heart Rate", min=const.bpm.min max=220, step=1, formName="hr", type=0, paramMatch=0 }
+		 ,{ uom="RPE", label="RPE", min=const.rpe.min, max=20, step=1, formName="rpe", type=0, paramMatch=0 }
+		 ,{ uom=""   , label="Affect", min=const.afct.min, max=5, step=1, formName="Othafct", type=0, paramMatch=0 }
+*/
 		]);
 
 		return this;

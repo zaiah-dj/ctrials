@@ -1,10 +1,10 @@
 <cfoutput>
 <h3>Week #week# | Day #day#</h3>
 <cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14" index="lweek">
-<a class="modal-load" href="#link( 'modal-results.cfm?id=#sess.current.participantId#&week=#lweek#' )#">Week #lweek#</a>
+<a class="modal-load" href="#link( 'modal-results.cfm?id=#cs.participantId#&week=#lweek#' )#">Week #lweek#</a>
 </cfloop>
 <table>
-<cfif ListContains(ENDURANCE, currentParticipant.results.randomGroupCode)>
+<cfif ListContains(const.ENDURANCE, currentParticipant.results.randomGroupCode)>
 	<thead>
 		<th>Endurance Exercises</th>
 	<cfloop array="#times#" index="tx"><th>#tx.text#</th></cfloop>
@@ -29,7 +29,7 @@
 	</tr>
 		</cfloop>
 	</cfloop>
-<cfelseif ListContains(RESISTANCE, currentParticipant.results.randomGroupCode)>
+<cfelseif ListContains(const.RESISTANCE, currentParticipant.results.randomGroupCode)>
 	<!--- Create a seperate list for looping --->
 	<cfset NameList=[]>
 

@@ -5,23 +5,27 @@ cprgc = currentParticipant.results.randomGroupCode;
 
 if ( cprgc eq "" ) 
 	{ listClassPrefix = "unselected"; exName = "Nothing"; }
-else if ( ListContains( ENDURANCE, cprgc ) )
+else if ( ListContains( const.ENDURANCE, cprgc ) )
 	{ listClassPrefix = "endurance"; exName = "Endurance"; }
-else if ( ListContains( RESISTANCE, cprgc ) )
+else if ( ListContains( const.RESISTANCE, cprgc ) )
 	{ listClassPrefix = "resistance"; exName = "Resistance"; }
 else {
-	listClassPrefix="control"; exName = "Control";
+	listClassPrefix="control"; 
+	exName = "Control";
 }
 
 //The navigation menu
 container_nav = [
-	{ title = "<span style='font-size:0.9em'>View Check-In Data</span>", href = "check-in.cfm", show = true }
+	{ title = "View Check-In Data", href = "check-in.cfm", show = true }
  ,{ title = "#exName# Data", href = "input.cfm", show = ( listClassPrefix neq "control" ) } 
  ,{ title = "Recovery", href = "recovery.cfm", show = ( listClassPrefix neq "control" ) } 
-/*,{ title = "dow", href = "dow.cfm", show = ( listClassPrefix neq "control" ) } */
 /*,{ title = "Compare Data", href = "compare.cfm" }*/
 /* ,{ title = "Information", href = "info.cfm" }*/
 ];
+
+if ( data.debug gt 0 ) {
+	ArrayAppend( container_nav, { title = "querytest", href = "querytest.cfm", show = ( listClassPrefix neq "control" ) } );
+}
 </cfscript>
 
 <cfoutput>
@@ -30,7 +34,7 @@ container_nav = [
 	<cfloop query= currentParticipant.results >
 		<ul class="participant-info-nav">
 		<cfif isDefined( "url.id" )>
-		 <cfloop array = #container_nav# index="cn">
+		 <cfloop array=#container_nav# index="cn">
 			<cfif cn.show>
 			<a href="#link( "#cn.href#?id=#participantGUID#" )#">
 				<cfif data.page eq Left( cn.href, Len( cn.href ) - 4 )>
