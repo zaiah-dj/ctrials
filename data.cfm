@@ -140,19 +140,6 @@ real data*/
 	,"log"   = { model=  "dev/log", view=  "log" }
 
 	 
- 
-	/* --- DEBUGGING ENDPOINTS ----------------------------------- */
-	,"querytest"= { model=["init", "input","querytest"], view = [ "master/head", "participant/list", "participant/nav", "querytest", "master/tail" ] }
-
-	/*Marks the end of a session for a particular participant*/
-	/*Logs out ALL users and releases participants into available pool. (Debug only)*/
-	,"logout-all" = { model="logoutAll", view="logoutAll"  }
-
-	/*Logs XMLHttpRequests and writes them to a database table.*/
-	,"robocop"   = { hint= "Log XHR requests.", model= "dev/robocop" , view= "robocop" }
-
-
-
 	/* --- API ENDPOINTS --------------------------------------- */
 	/* These pages should never be requested by a user */
 	/*Update something*/

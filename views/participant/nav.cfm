@@ -22,10 +22,6 @@ container_nav = [
 /*,{ title = "Compare Data", href = "compare.cfm" }*/
 /* ,{ title = "Information", href = "info.cfm" }*/
 ];
-
-if ( data.debug gt 0 ) {
-	ArrayAppend( container_nav, { title = "querytest", href = "querytest.cfm", show = ( listClassPrefix neq "control" ) } );
-}
 </cfscript>
 
 <cfoutput>

@@ -1,4 +1,7 @@
 
+- Plug in to John's eq table for eq settings (not exactly sure how this works)
+		frm_RESL
+
 x hh:mm field and timestamp added when pressing the now, or begin button
 
 x formatted hh:mm field
@@ -13,9 +16,6 @@ x inputable hh:mm field
 	get clarification on this during the meeting, 
 	if it's just the specific exercises, 
 	then do not show superset everywhere
-
-- Plug in to John's eq table for eq settings (not exactly sure how this works)
-		frm_RESL
 
 - Finish assigned participant list
 		we're not pulling by site... but the way to test shouldn't be difficult...
