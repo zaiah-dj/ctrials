@@ -2,6 +2,12 @@
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
 
+- Pull tickler participants in by site (how to test?)
+
+- Finish assigned participant list
+		we're not pulling by site... but the way to test shouldn't be difficult...
+
+
 x hh:mm field and timestamp added when pressing the now, or begin button
 
 x formatted hh:mm field
@@ -16,10 +22,6 @@ x inputable hh:mm field
 	get clarification on this during the meeting, 
 	if it's just the specific exercises, 
 	then do not show superset everywhere
-
-- Finish assigned participant list
-		we're not pulling by site... but the way to test shouldn't be difficult...
-
 
 x Fix N/A verbiage to include type of range being recorded (works but is too big)
 
