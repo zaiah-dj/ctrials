@@ -228,8 +228,8 @@
 							<div class="catch cc col-sm-1"><span>#def#</span><span> #uom#</span>
 								</div>
 							<div class="col-sm-1">
-								<button class="incrementor">+</button>
-								<button class="incrementor">-</button>
+								<button class="incrementor js-up">#const.thickArrow#</button>
+								<button class="incrementor js-down">#const.thickArrow#</button>
 							</div>
 						</div>
 					</td>

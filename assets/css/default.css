@@ -44,7 +44,14 @@ h1 { font-size: 16em; font-weight: bold; text-align: center; }
 h2 { font-size: 5em; }
 h3 { font-size: 4em; }
 h4 { font-size: 3em; }
-h5 { font-size: 1.5em; }
+h5 { 
+	font-size: 1.5em; 
+	font-family: "Ropa Sans", sans-serif;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	color: white;
+	border-bottom: 2px solid black;
+}
 h6 { font-size: 1.5em; }
 
 
@@ -157,8 +164,8 @@ a.selected {
 	overflow-Y: scroll;
 	overflow-X: none;
 	height: 90%;
-	padding-left: 15px;
-	padding-right: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
 	padding-top: 10px;
 	padding-bottom: 70px;
 	background-color: white;
@@ -322,28 +329,29 @@ div.inner-selection {
 }
 
 ul.inner-selection {
-	position: fixed;
+	position: relative;
+	float: left;
 	margin-bottom: 10px;
-	width : 20%;
-	border-right: 1px solid black;
+	left: 0px;
+	width: 150px;
 }
 
 .container-body .inner-selection li {
 	position: relative;
 	height: 35px;
-	width: 90%;
-	left: 0.5%;
+	width: 100%;
 	font-weight: bold;
-	text-align: center;
-	font-size: 0.9em;
+	text-align: left;
+	font-size: 1.2em;
 	padding: 5px; 
-	padding-top: 5px; 
+	font-family: "Ropa Sans";
 	margin-bottom: 5px;
 	display: inline-block; 
 	background-color: #333; 
 	color: white;
 	transition: background-color 0.2s, color 0.2s;
 	vertical-align: top;
+	border-radius:  0px 10px 10px  0px;
 /*	top: 30px; */
 /*	transform: rotate(-75deg);*/
 }
@@ -1087,7 +1095,9 @@ table.participant-entry tr.heading {
 }
 
 .selection {
-	width: 74%;
+	position: absolute;
+	left: 170px;
+	width: 82%;
 	float: right;
 	min-width: 300px;
 	margin: 0 auto;
@@ -1151,36 +1161,46 @@ table.participant-entry tr.heading {
 
 
 .inc-button,
-.incrementor
-{
+.incrementor {
 	background-color: #ced6e4; 
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	-ms-appearance: none;
 	appearance: none;
-	min-width: 50px;
-	height: 30px;
 	display: block;
-	font-size: 1.0em;
+	font-size: 2.0em;
 	border: 0px;
 	position: relative;
 	top: -10px;
 	margin-bottom: 5px;
 	padding: 0px;
-	padding-bottom: 5px;
 	font-weight: bold;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-moz-border-radius: 10px;
+	overflow: hidden;
+	color: #888;
+	padding-top: 8px;
+	height: 50px;
+	min-width: 50px;
+	width: 50px;
+	border-radius: 25px;
+	-moz-border-radius: 25px;
+	-moz-border-radius: 25px;
 }
 
 .incrementor:hover {
 	background-color: #e6f2ff;
+	color: #555;
 }
 
 .incrementor:active {
 	background-color: white;
 	border: 0px;
+}
+
+.js-up {
+}
+
+.js-down {
+	transform: rotate( 180deg );
 }
 
 .inc-button {

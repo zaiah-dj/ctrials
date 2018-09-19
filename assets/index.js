@@ -505,9 +505,10 @@ function updateNeighborBoxFromSI (ev) {
 
 	//Now, make an adjustment to the field value.  Query the DOM for value limits.
 	forceNum = Number( aav.innerHTML );
-	if ( ev.target.innerHTML == '-' )
+console.log( ev.target.className );
+	if ( ev.target.className.indexOf( "js-down" ) > -1 )
 		aav.innerHTML = (( forceNum - 1 ) < min ) ? aav.innerHTML : --( aav.innerHTML ); 
-	else if ( ev.target.innerHTML == '+' ) {
+	else if ( ev.target.className.indexOf("js-up") > -1 ) {
 		aav.innerHTML = (( forceNum + 1 ) <= max ) ? ++( aav.innerHTML ) : aav.innerHTML; 
 	} 
 	
