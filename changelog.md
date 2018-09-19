@@ -1,4 +1,3 @@
-make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv'
 # CHANGELOG
 
 ## STATS
@@ -2916,4 +2915,3 @@ Date:   Wed Feb 21 14:54:58 2018 -0500
 -  Trying to play with selecting different users in real-time.
 
 <link rel=stylesheet href=changelog.css>
-make[1]: Leaving directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv'

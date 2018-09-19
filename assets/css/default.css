@@ -1,4 +1,9 @@
-/*global*/
+/* -------------------------- *
+default.css
+
+Stylesheet for Motrpac Intervention
+Tracking application. 
+ * -------------------------- */
 html, p, div {
 	font-family: 'Tahoma', sans-serif;
 	font-size: 1.0em;
@@ -963,24 +968,58 @@ input[type=search] {
 	position: relative;
 }
 
+/* -------------------------- *
+Top navigation.
+ 
+ * -------------------------- */
 .persistent-nav {
 	position: relative;
-	top: 10px;
-	left: 10px;
+	height: 50px;
 	margin: 0;
-	display: inline-block;
-	padding: 0;
+	display: block;
+	padding: 5px;
 	width: 100%;
+	background-color: #ffffff;
+	border-bottom: 1px solid #eeeeee;
+	box-shadow: 2px 2px 2px 2px #cccccc;
 }
 
-.persistent-nav a {
+.persistent-nav div {
+	width: 33%;
+	display: inline-block;
+	padding: 0px;
+	margin: 0;
+	height: 100%;
+}
+
+.persistent-nav li {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-gecko-border-radius: 3px;
+	display: inline-block;
+	text-align: center;
+	font-size: 1.0em;
+	background-color: #666666;
+	color: white;
+	height: 80%;
+	top: 10%;
 	position: relative;
-	margin-right: 20px;
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 8px;
 }
 
-.persistent-nav a:hover {
-	font-weight: bold;
+.persistent-nav li:hover {
+	background-color: #bbbbbb;
 }
+
+.persistent-nav-center {
+	text-align: center;
+}
+.persistent-nav-right {
+	text-align: right;
+}
+
 
 .container-body table tr td {
 	/*border: 1px solid black;*/
@@ -1760,6 +1799,14 @@ button.stateChange + div {
 	position: relative;
 	top: 10px;
 	float: right;
+	font-size: 2.5em !important;
+	text-align: center;
+	border: 0px solid red;
+	transition: border 0.2s;
+}
+
+button.stateChange + div:hover {
+	border: 4px solid red;	
 }
 
 .round + div {

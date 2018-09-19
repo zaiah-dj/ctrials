@@ -1,10 +1,11 @@
 
->>>
 x hh:mm field and timestamp added when pressing the now, or begin button
-		how to do a formatted text box?
-			js is one way, I wonder if there's a built-in way	
 
-- being able to edit box is next
+- formatted hh:mm field
+
+- inputable hh:mm field
+
+- check that saves still work on hh:mm field
 
 - superset value recall (maybe you can store the value elsewhere, so it's always known?)
 	get clarification on this during the meeting, 
@@ -16,10 +17,8 @@ x hh:mm field and timestamp added when pressing the now, or begin button
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
 
-
 - Finish assigned participant list
 		we're not pulling by site... but the way to test shouldn't be difficult...
->>>
 
 
 x Fix N/A verbiage to include type of range being recorded (works but is too big)
@@ -40,7 +39,6 @@ x Fix N/A verbiage to include type of range being recorded (works but is too big
 
 - Animated slider movements...
 
->>>
 
 
 

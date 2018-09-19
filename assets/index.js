@@ -23,6 +23,387 @@ var TEMPLATES = {};
 var RECOVERY_STATE = 0;
 //All things that need state tracked can go here for now...
 var STATE_TRACKER = {};
+//All endpoints go here for easy editing in the future
+/*
+var ENDPOINTS = {
+	["/time"] = "/motrpac/web/secure/dataentry/iv/time.cfm"
+};
+*/
+
+/* ----------------------------------------------------- * 
+ * obs-inplace
+ *
+ * This is an in-place editor (or a workaround for broken
+ * contentEditable implementations).
+ *
+ * Usage
+ * =====
+ * 1. Initialize the module somewhere on your page with
+ * the following code:
+ *
+ * var tutti = fruityEdits({ 
+ * 	name: "esteban" 
+ * });
+ *
+ * 1a.  By default, if the JSON key 'name' points to a 
+ * string, then fruityEdits will find all matching
+ * class names on the DOM and make them editable.
+ *
+ * 1b.  Supplying a JSON object as 'name's value will
+ * cause fruityEdits to act a bit differently.  For
+ * example:
+ *
+ * var tutti = fruityEdits({
+ *	name: {
+ * 		{ class: "jojosBizarreAdventure" },
+ * 		{ id:    "jotaroKujo" },
+ * 		{ id:  	 "noriakiKakyoin" },
+ * 		{ id:    "dioBrando" },
+ *	}
+ * }); 
+ *
+ * ----------------------------------------------------- */
+function inPlaceEdit (arr) {
+	//Initialize a global object somewhere
+	var local  = {};
+	local.obj  = {};               //Storage
+	local.post = {};               //Post
+	local.name = arr.name;	       //Class name
+	local.attrName = "fruityEdit"; //An attribute name
+	local.formField = arr.addField;   //Field will activate here
+	local.formParent = arr.toForm;  //Look for something here
+	local.verbose = arr.verbose || 0;
+	local.post.keys = []; 
+	local.titleIndex = 0;
+
+	local.field      = document.createElement("input");
+	local.field.name = local.formField || "shamus";
+	local.field.type = "hidden";
+	document.getElementById( local.formParent ).appendChild( local.field );
+
+	local.log = function (args) 
+		{
+			( local.verbose ) ? console.log( args ) : 0;
+		}
+
+	//....
+	if ( !local.name ) {
+		local.log( "Not initialized yet....\n" );
+		return;
+	}
+
+
+	//
+	local.dummyHandler = function (event) {
+		event.preventDefault();
+		local.log( "Hello, Keyshia Cole..." );
+	}
+
+
+	//Dump post
+	local.formatPost = function () 
+		{
+			//?
+			for ( var i=0; i < local.obj.length; i++ ) 
+			{
+				local.log( local.obj );
+			}
+			return;
+		}
+
+
+	//Generate a random string for removal and addition.
+	local.randStr = function ( length )
+		{ //...
+			var alphaStr = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+			var rS="";
+
+			function getRandomInt(min, max) {
+				return Math.floor(Math.random() * (max - min)) + min;
+			}
+
+			for (n=0; n < length; n++) {
+				rS += alphaStr[ getRandomInt(0, alphaStr.length) ];
+			}
+
+			return rS;
+		}
+
+
+	//...
+	local.showStorage = function () 
+		{
+			//Create an empty string fresh everytime.
+			var empStr = "";
+			
+			//Create virtual headers
+			for ( key in local.obj )  
+				if ( !local.post [ local.obj [ key ] ["header"]] ) 
+				{
+					local.post [ local.obj [ key ] ["header"] ] = [];
+					local.post.keys[ local.titleIndex++ ] = local.obj[key]["header"]; 
+				}
+
+			//Populate?
+			for ( key in local.obj ) 
+			{
+				//Unfortunately, I need this silliness to easily extract a doctype without lots of string manipulation
+				var fakeElement = document.createElement("document");
+				fakeElement.innerHTML = local.obj[ key ][ "value" ];
+
+				//This makes some (possibly unfounded) assumptions that elements with values have children.
+				if ( !fakeElement.children[0] ) 
+					val = local.obj [ key ] ["value"] ;
+				else
+				{
+					var tag = fakeElement.children[ 0 ];
+					if ( tag.tagName.toLowerCase() == "a" )
+						val = tag.href;
+					else if ( tag.tagName.toLowerCase() == "img" )
+						val = tag.src;
+					else 
+						val = local.obj [ key ] ["value"] ;
+				}
+				
+				//Save the current value to the right column and the right index
+				local.post [ local.obj [ key ] ["header"] ][ local.obj[key]["index"] ] = val;
+				local.log( local.post [ local.obj [ key ] ["header"] ] );
+
+				//The total index should be higher than anything
+				local.post.totalIndex = local.obj [ key ] ["index"] ;
+			}
+
+			//Combine a string last
+			for ( var ii=0; ii <= local.post.totalIndex; ii++ ) 
+			{
+				for ( var tt=0; tt < local.titleIndex; tt++ ) 
+				{
+					local.log( local.post.keys[ tt ] + "=" + local.post[ local.post.keys[tt] ][ ii ] + "," );
+					empStr += local.post.keys[ tt ] + "=" + local.post[ local.post.keys[tt] ][ ii ] + ",";
+				}
+				local.log( "|" );
+				empStr = empStr.substr( 0, empStr.length - 1 );	
+				empStr += "|";
+			}
+
+			empStr = empStr.substr( 0, empStr.length - 1 );	
+			local.field.value = empStr;
+		}
+
+
+	//Edit text in place
+	local.edit = function (event)
+		{ //Get the parent element
+			event.preventDefault();
+			
+			//Short reference
+			var elName = this.getAttribute( local.attrName );
+			var genie = local.obj[ elName ];
+
+			//Initiate a change in the DOM (0 = off, 1 = on, 2 = on)
+			if ( genie.initialized == 1 ) 
+				return;	
+			else if ( genie.initialized == 2 ) 
+				{/*local.log( "onblur came first." );*/genie.initialized = 0;return;}
+			else if ( !genie.initialized ) 
+			{
+				//Check the first child (if there is one) to see if it is a link.
+				var c, tag = {};
+				//content = ((c = this.children[0]) && c.href) ? c.href : this.innerHTML
+
+				//Create an element all quick and dirty like
+				tag.name    = this.tagName.toLowerCase();
+				tag.height  = this.clientHeight;
+				tag.width   = this.clientWidth;
+				tag.display = this.style.display;
+				tag.content = ((c = this.children[0]) && c.href) ? c.href : this.innerHTML
+				tag.clength = tag.content.length;
+				tag.start   = 0;
+				tag.end     = tag.content.length + 1;
+
+				//Callback needs to take place somewhere here...
+				// callback( ... );	
+
+				//Trim whitespace and other undesirables from content. 
+				for ( var chr=0; tag.start < tag.clength; tag.start++ )
+					if ( (chr = tag.content.charCodeAt( tag.start )) > 31 && chr < 127 ) break;
+				
+				for ( var chr=0; tag.end >= tag.clength; tag.end-- ) 
+					if ( ( chr = tag.content.charCodeAt( tag.end )) > 31 && chr < 127 ) break;
+					
+				tag.content = tag.content.substr( tag.start, tag.end + 1 );	
+
+
+				//Do other things
+				if ( tag.name == "p" ) 
+				{
+					//If encountering p tags, cut any whitespace.
+					//Note: This is not Unicode compatible
+					this.innerHTML =
+						"<textarea style='font-family:Georgia;height:" + tag.height + 
+						"px;width:" + tag.width + "px' id='" + 
+						genie.id + "'>" + tag.content + "</textarea>";
+				}
+				else if ( tag.name == "td" ) 
+				{
+					this.innerHTML =
+						"<input style='height:" + tag.height + 
+						"px;width:" + tag.width + "px' id='" + 
+						genie.id + "' type=text value='" + tag.content + "'></input>";
+					document.getElementById( genie.id ).value = tag.content;
+				}
+				else if ( tag.name == "li" )
+				{
+					this.innerHTML =
+						"<input style='font-family:Georgia;display:inline-block;height:" + tag.height + 
+						"px;width:" + tag.width + "px' id='" + 
+						genie.id + "' type=text value='" + tag.content + "'></input>";
+					document.getElementById( genie.id ).value = tag.content;
+				}
+				else 
+				{
+					this.innerHTML =
+						"<input style='height:" + tag.height + 
+						"px;width:" + tag.width + "px' id='" + 
+						genie.id + "' type=text value='" + tag.content + "'></input>";
+					document.getElementById( genie.id ).value = tag.content;
+				}
+
+				//Set this ID and do other stuff
+				var tid = document.getElementById( genie.id );
+				tid.style.fontFamily = "Georgia";
+				tid.style.fontSize = "1.3em";
+
+				//Initialize the element
+				genie.initialized = 1;
+
+				//Add an onblur listener and disable that way.
+				tid.focus();
+				tid.addEventListener( "blur", function (event)
+					{
+						//Get current data and add it to index  
+						var val = document.getElementById( genie.id ).value;
+						//var arr = ll[ index ].split( "|" );
+						//arr[ ( className == "relLink" ) ? 1 : 2 ] = val;
+						//ll[ index ] = arr.join( "|" );
+						this.parentElement.innerHTML = val;
+						genie.initialized = 2;
+						genie.value = val;
+						local.showStorage();
+					});
+			}
+			local.showStorage();
+		}
+
+
+	//...
+	local.init = function (event)
+		{ //Initialize everything by looping through ids, classes and possibly elements.
+			var choody = [];
+			var chIndex = 0;
+			delete local.obj;
+			local.obj = {};
+			local.log( typeof(local.name) ); 
+
+			//String can automatically assume it's a class.
+			if ( typeof(local.name) == "string" )
+				choody[ chIndex ] = 
+				{
+					type: 'c', 
+					element: local.name, 
+					fieldType: "input" 
+				};	
+			//Objects don't
+			else if ( typeof (local.name) == "object" ) 
+			{
+				for (x in local.name) 
+				{
+					var str = x.toLowerCase();
+					var ind = local.name[x];
+					
+					//?
+					for ( y=0; y < ind.length; y++ )
+					{
+						local.log( "Reinitializing element " + y );
+						choody[ chIndex ] = 
+						{
+							type: (str == "class") ? 'c' : (str == "id") ? 'i' : (str == "tag") ? 't' : null,
+							element: ind[ y ],
+							//fieldType: 
+						}
+
+						if ( choody[ chIndex ].type == null )
+						{
+							local.log( "Couldn't initialize element.  Missing type..." );
+							return; 
+						}
+						chIndex++;
+					}
+				}
+			}
+
+			//Now loop through everything and set listeners
+			for ( var nm=0; nm < choody.length; nm++ )
+			{
+				var p;
+				if (choody[nm].type == 'c') 
+					p = document.getElementsByClassName( choody[nm].element );
+				else if (choody[nm].type == 'i') 
+					p = document.getElementById( choody[nm].element );
+				else if (choody[nm].type == 't') 
+					p = document.getElementsByTagName( choody[nm].element );
+
+				for ( var i=0; i < p.length; i++ )
+				{
+					//Each element gets its own little identifier
+					var lname = local.randStr( 10 );
+					local.log( "Initializing object with index: '" + lname + "'" );
+					local.obj[ lname ] = {};
+					local.obj[ lname ].id = local.randStr(10); 
+					local.obj[ lname ].parentRef = p[i].parentElement;
+					local.obj[ lname ].initialized = 0;
+					local.obj[ lname ].value = p[i].innerHTML;
+					local.obj[ lname ].header = choody[nm].element; 
+					local.obj[ lname ].index = i;
+					local.obj[ lname ].classes = null;
+					//}
+
+					//Hi, there!  Let's add an attribute
+					var att = document.createAttribute( local.attrName );	
+					att.value = lname;
+	
+					//Reinitializing will always work b/c of this
+					p[ i ].removeEventListener( "click", local.edit );
+					p[ i ].setAttributeNode( att );
+					p[ i ].addEventListener( "click", local.edit );	
+				}
+			}
+
+
+			//Find the form that it's supposed to be part of and set a handler
+			document.getElementById( local.formParent ).addEventListener( "submit", 
+				function () {
+					local.init();
+					local.showStorage();
+				});
+
+			//return local;
+		}
+
+	local.dumpStorage = function () 
+		{
+			local.showStorage();
+			local.log( local.field.value ); 
+		}
+
+
+	//....
+	return {
+		init: local.init,
+		show: local.show,
+		showStorage: local.dumpStorage
+	}
+}
 
 /* ----------------------------------------------------*
  * Routex( args )
@@ -1283,6 +1664,71 @@ function timeChangeUpdate (ev) {
 
 
 /* ------------------------------------ *
+function changeUp (ev)
+
+....
+ * ------------------------------------ */
+function changeUp (ev) {
+	//Remove the node from view
+	a = ev.target;
+	a.style.display = "none";
+
+	//Add a new input field 
+	d = document.createElement( "input" );
+	d.style.width = "48%";
+	d.style.display = "inline-block";
+	d.style.fontSize = a.style.fontSize;
+	d.style.height = "50px"; 
+	d.placeholder = "HH:mm";
+
+	//Add a listener that will handle visual formatting
+	d.addEventListener( "keyup", function (ev) {
+		if ( ev.target.value.length == 5 )
+			ev.preventDefault();
+		else if (( ev.target.value.length == 2 ) && (ev.target.value.indexOf( ":" ) == -1) ) {
+			ev.preventDefault();
+			ev.target.value += ":";
+		}
+	});
+
+	//Finally, add a listener that will make our value something natural again
+	d.addEventListener( "blur", function (ev) {
+		//Check that the value is not less than 00:00 or greater than 23:59
+		try {
+			var hh = Number( ev.target.value.substring( 0, 2 ) );
+			var mm = Number( ev.target.value.substring( 3, 5 ) );
+
+			if ( ( hh < 0 || hh > 23 ) || ( mm < 0 || mm > 59 ) ) {
+				console.log( "input range is off..." );//ALERTBOX
+				ev.target.focus();
+			}
+			else if ( ev.target.value.length < 5 ) {
+				console.log( "please input a 24-hour clock time of the format HH:mm" );//ALERTBOX
+			} 
+			else if ( isNaN(hh) || isNaN(mm) ) {
+				console.log( "time range is not a number..." );//ALERTBOX
+				ev.target.focus();
+			}
+			else {	 
+				a.innerHTML = ev.target.value;	
+				a.style.display = "inline-block";
+				ev.target.parentElement.removeChild( ev.target );	
+			}
+		}
+		catch(e) {
+			//also let the user know that the value is off...
+			//ALERTBOX
+			console.log( e );
+		}
+	});
+
+	//Add the node where the old used to be
+	a.parentElement.appendChild( d );
+	d.focus();
+}
+
+
+/* ------------------------------------ *
 function updateTime( ev )
 
 Change the state on adjacent text node
@@ -1299,10 +1745,6 @@ function updateTime( ev ) {
 		if ( this.readyState == 4 ) {
 			console.log( this.responseText );
 			ev.target.innerHTML = "Exercise Started!";
-			//a = JSON.parse( this.responseText );
-			//str = "<table>";
-			//a.RESULTS.DATA.map( function(aa) { str += "<tr><td>" + aa[3] + "</td><td>" + aa[5] + "</td></tr>"; } );
-			//str += "</table>";
 		}
 	}
 	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/time.cfm", true );
@@ -1403,6 +1845,7 @@ Router = {
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: makeModal } 
 	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
 	 ,{ domSelector: ".stateChange"  , event: "click"   , f: [ updateTime, timeChangeUpdate ] } 
+	 ,{ domSelector: "button.stateChange + div"  , event: "click"   , f: changeUp } 
 	 ,{ domSelector: ".toggler-input"  , event: "change"   , f: stateChangeUpdate } 
 	]
 

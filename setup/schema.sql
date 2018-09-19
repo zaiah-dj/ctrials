@@ -9,12 +9,12 @@ run the motrpac intervention interface
 from a local setup.
 
 NOTE: Only works with SQL server.
+ ------------------------------- */
 IF db_id( 'DATABASE_NAME' ) IS NULL
 BEGIN
 	CREATE DATABASE DATABASE_NAME;
 END
 GO
- ------------------------------- */
 
 USE DATABASE_NAME;
 GO
@@ -718,8 +718,6 @@ CREATE TABLE ParticipantNotes (
 /* ---------------------------
 ac_mtr_session_interventionist_assignment 
 
--
-
  [csd_id] int IDENTITY(1,1) NOT NULL
 ,[csd_daily_session_id] VARCHAR(64)
 ,[csd_interventionist_guid] VARCHAR(64)
@@ -736,8 +734,6 @@ CREATE TABLE ac_mtr_session_interventionist_assignment (
 	,[csd_participant_guid] VARCHAR(64)
 );
 
-<<<<<<< HEAD
-/* --------------------------- *
 /* --------------------------- */
 IF OBJECT_ID( N'ac_mtr_session_interventionist_logged_in', N'U') IS NOT NULL
 BEGIN
@@ -748,7 +744,7 @@ CREATE TABLE ac_mtr_session_interventionist_logged_in (
 	,[iln_login_time] DATETIME 
 	,[iln_interventionist_guid] VARCHAR(64)
 );
-=======
+
 /* ---------------------------
 ac_mtr_frm_labels 
 
@@ -795,7 +791,6 @@ INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'overheadpress'  , 11, 'Overhead Pres
 INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'calfpress'      , 12, 'Calf Press', 2 );
 INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'shoulder2'      , 13, 'Non-Press Shoulder Exercise', 2 );
 INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'triceppress'    , 14, 'Tricep Push-Down', 2 );
->>>>>>> 5c5dcb6275a80f42e1f42f8931abf27e22afc5e4
 
 
 IF @BUILD_EQUIPMENT_LOG = 1

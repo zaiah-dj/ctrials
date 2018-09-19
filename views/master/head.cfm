@@ -66,53 +66,21 @@
 <body>
 
 	<div class="persistent-nav">
-		<a href="#data.redirectHome#">Back to MoTrPAC</a>
-		<a href="#link( "input.cfm" )#">Home</a>
-		<a href="#link( "default.cfm" )#">Participant List</a>
-	<!---
-		<a href="#link( "save.cfm" )#">Save Session</a>
-		<a href="#link( "logout.cfm" )##iif( isDefined( 'staffId' ), DE('?staffid=#staffId#'), "" )#">Logout</a>
-	--->
-		<a href="#link( "staff.cfm" )#">Assigned Participant List</a>
-	<cfif data.debug eq 1>
-		<a style="color:red" href="#link( "logout-all.cfm?siteid=" & siteId )#">Logout All</a>
-		<style type="text/css">
-		.persistent-nav-hideme {
-			display: inline-block;
-			position: absolute;
-			z-index: 99;
-			right: 30px;
-			top: -10px;
-			padding: 10px;
-			transition: display 0.2s;
-			background: ##eee;
-		}
-		.persistent-nav-hideme li {
-			display:none;
-		}
-		.persistent-nav-hideme li:nth-child(0) {
-			display:block;
-		}
-		.persistent-nav-hideme:hover li {
-			display:block;
-		}
-		</style>
-		<!--- This should be debuggable too --->
-		<!--- The links here... --->
-		<cfquery name="ittybitty" datasource="#data.source#">
-			SELECT * FROM #data.data.staff# WHERE ts_siteid = <cfqueryparam value=#cs.siteid# cfsqltype="CF_SQL_NUMERIC"> 
-		</cfquery>
-		<ul class="persistent-nav-hideme">
-			#DateTimeFormat( cdate, "yyyy/mm/dd" )#
-		<!---	
-			Login As Another Member
-			<cfif isDefined("url.date")><cfset mdss="&date=#url.date#"><cfelse><cfset mdss=""></cfif>
-		<cfloop query="ittybitty">
-			<li><a href="#link( 'default.cfm?staffid=' & ts_staffguid & mdss )#">Login as #ts_staffguid#</a></li>
-		</cfloop>
-			--->
-		</ul>
-	</cfif>
+		<div class="persistent-nav-left">
+			<a href="#data.redirectHome#"><li>Back to MoTrPAC</li></a>
+			<!---<a>#DateTimeFormat(cdate,"mm/dd/YYYY")# #DateTimeFormat(cdate,"hh:nn:ss")#</a>--->
+		</div>
+
+		<div class="persistent-nav-center">
+			<a href="#link( "input.cfm" )#"><li>Home</li></a>
+			<a href="#link( "default.cfm" )#"><li>Participants</li></a>
+			<a href="#link( "staff.cfm" )#"><li>Assignments</li></a>
+		</div>
+
+		<div class="persistent-nav-right">
+			<a href="#link( "" )#"><li>Notifications</li></a>
+			<a href="#link( "" )#"><li>Username001</li></a>
+		</div>
 	</div>
 
 	<div class="container">

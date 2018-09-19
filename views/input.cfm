@@ -103,7 +103,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Warm-Up Start Time</td>
+					<td>Warm-Up Start Time (24 hour <i>HH:mm</i>)</td>
 					<td>
 						<button class="stateChange">Begin Exercise</button>
 						<div>00:00</div>	
