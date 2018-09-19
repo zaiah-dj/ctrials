@@ -24,7 +24,7 @@ const = {
 
 	//Unicode character symbols used for application parts
 	,ampersand = "&##x2714"
-	,thickArrow = "&##x26f0"
+	,thickArrow = "^" /*"&##x26f0"*/
 
 
 	,bpm = { uom="BPM", min=70, max=220, defaultValue=145, step=1, formName = "hr", label="Heart Rate" }

@@ -24,7 +24,7 @@ if ( !StructKeyExists( session, "userguid" ) ) {
 		location( addtoken = "no", url = data.redirectForLogin );
 	else {
 		//Also requires a userGUID
-		session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
+		//session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
 	}
 }
 
@@ -149,10 +149,14 @@ else {
 }
 
 
+//Calculate site ID here if not already done...
+csSiteId = session.siteid;
+
+
 //Get participant data 
 currentParticipant = dbExec( 
-	string = "SELECT * FROM v_ADUSessionTickler WHERE participantGUID = :pid"
- ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }}
+	string = "SELECT * FROM v_ADUSessionTickler WHERE participantGUID = :pid AND siteID = :site_id"
+ ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }, site_id = csSiteId }
 );
 
 
@@ -166,16 +170,18 @@ selectedParticipants = dbExec(
  ,bindArgs = {
 		guid = session.userguid 
 	 ,sid = csSid 
+	 ,site_id = csSiteId
    ,today = { value=cdate, type="cf_sql_date" }
 	}	
 );
 
 
-//...
+//Unselected participants
 unselectedParticipants = dbExec( 
 	filename = "unselectedParticipants.sql"
  ,bindArgs = {
 		sid = csSid 
+	 ,site_id = csSiteId
    ,today = { value=cdate, type="cf_sql_date" }
 	}
 );
@@ -249,8 +255,8 @@ if ( StructKeyExists( cs, "participants" ) ) {
 		//Define a prefix to choose between Endurance and Resistance participants
 		prefix = (isEnd) ? "eetl" : "retl";
 
-		//get blood pressure and weight
 		cp = {
+			//get blood pressure and weight
 			details = dbExec( 
 				filename = "init_#prefix#_pdetails.sql"
 			 ,bindArgs = { 

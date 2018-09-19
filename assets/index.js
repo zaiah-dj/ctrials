@@ -1322,6 +1322,13 @@ return;
 }
 
 
+function slidemenu( ev ) {
+	ev.preventDefault();
+	var st = STATE_TRACKER[ ev.target.name ];
+	a = document.querySelector( ".js-overlay-window" );
+	a.style.display = (st) ? "none" : "block";
+	STATE_TRACKER[ ev.target.name ] = ( st ) ? 0 : 1; 
+}
 
 /*
 //The Router structure is key to make interfaces work.
@@ -1409,4 +1416,8 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 
 	str = [];
 	for ( n in Router ) str.push( n ); 
+
+	//Initialize all global elements here, because Routex does not include a way to do this right now.
+	document.querySelector( ".loggedInAs"	).addEventListener( "click", slidemenu );
+
 });

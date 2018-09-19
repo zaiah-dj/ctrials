@@ -35,7 +35,7 @@ try {
 
 	extype = StructKeyExists( form, "extype" ) ? form.extype : 0;
 
-	//...
+	//Pull all keys from POST that we need to continue processing
 	stat = cmValidate( form, {
 		 pid = { req = true }
 		,sess_id = { req = true }
@@ -62,6 +62,7 @@ try {
 		req.sendAsJson( status = 0, message = "#errstr# - #stat.message#" );	
 	}
 
+	//Make this easier to reference throughout the rest of this page.
 	fv = stat.results;
 
 	//Change hrMonitor
@@ -71,12 +72,6 @@ try {
 
 	//Check what was submitted from metadata
 	fv.exIsDone = ( fv.is_exercise_done eq "on" );
-/* 
-	if ( fv.is_exercise_done eq "on" && fv.is_superset eq "on" ) 
-		fv.exIsDone = 2;
-	else if	( fv.is_exercise_done eq "on" )
-		fv.exIsDone = 1;
-*/
 
 	//Insert or update if the row is not there...
 	upd = dbExec( 
@@ -108,7 +103,7 @@ catch (any ff) {
 }
 
 
-//Choose a SQL statment
+//If no record of this participant exists yet for the day, add a row.  Otherwise, update a row.
 sqlStatement = "";
 if ( !upd.prefix.recordCount ) {
 	vpath = 0;
@@ -181,15 +176,14 @@ else {
 		";
 }
 
-//Then perform the query
 try {
 	//This is in case I find myself modifying dates from other times
 	dstmp = LSParseDateTime( 
 		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
 		& DateTimeFormat( Now(), "HH:nn:ss" )
 	);
-/*
-	//req.sendAsJson( status=0, message='#sqlString# - #SerializeJSON(fv)#' ); abort;
+
+	//Go ahead and either INSERT or UPDATE a row for the participant in question.
 	qu = dbExec(
 		string = sqlString
 	 ,datasource = "#data.source#"
@@ -217,9 +211,8 @@ try {
 	if ( !qu.status ) {
 		req.sendAsJson( status = 0, message = "#errstr# - QU - #qu.message#" );
 	}
-*/
-	//If a superset was submitted save it.  there can only be a max of 6 submitttals,
-	//have to check betweeen one two and three for the records in frm_retl
+
+	//If the exercise was a superset, the fact that this was the case needs to be recorded. 
 	if ( fv.is_superset eq "on" ) {
 		//Grab the superset values from today and check if any are done
 		supCheck = dbExec(
@@ -244,8 +237,12 @@ try {
 			}	
 		);
 
-		//the values save, but there is no exercise type.  problem is, I can't recall the selection this way...
-		//either I create my own table to store this, or modify frm_retl
+		//I don't really think this counts as a fatal error, but I need to let the app know what happened.	
+		if ( !supCheck.status ) {
+			req.sendAsJson( status = 0, message = "#errstr# - Couldn't retrieve today's supersets - #supCheck.message#" );
+		}
+
+		//There can only be a max of 6 supersets per session.
 		res = [ 
 			supCheck.results.bp1set1	
 		 ,supCheck.results.bp1set2	
@@ -256,27 +253,23 @@ try {
 		];
 
 		//If bp1set1 and bp2set2 are both filled, it's likely that the supersets are completed
-		
-		maxSupersets = ArrayFind( res, 0 ); 
-		//req.sendAsJson( status=1, message="#ArrayToList( res )#" );	
-		//req.sendAsJson( status=1, message="#maxSupersets#" );	
-
+		maxSupersets = ArrayFind(res,0);
 		if ( maxSupersets <= 4 ) {
+			//If at least set1 was done for the first body part, then we can assume that the first superset was attempted.
+			//If at least set1 was done for the second body part, we want to only update bp2set[1,2,3], while updating 
+			//bp1set[1,2,3] with their original values.
 			if ( maxSupersets < 3 ) {
 				res[ 1 ] = ( res[ 1 ] > 0 ) ? res[ 1 ] : fv.Wt1;
 				res[ 2 ] = ( res[ 2 ] > 0 ) ? res[ 2 ] : fv.Wt2;
 				res[ 3 ] = ( res[ 3 ] > 0 ) ? res[ 3 ] : fv.Wt3;
-			//exname = ?
 			}
 			else {
 				res[ 4 ] = ( res[ 4 ] > 0 ) ? res[ 4 ] : fv.Wt1;
 				res[ 5 ] = ( res[ 5 ] > 0 ) ? res[ 5 ] : fv.Wt2;
 				res[ 6 ] = ( res[ 6 ] > 0 ) ? res[ 6 ] : fv.Wt3;
-			//exname = ?
 			}
-			
-			//req.sendAsJson( status=1, message="#ArrayToList( res )#" );	
-			
+		
+			//Modify today's result set to account for the changes.	
 			add = dbExec( 
 				string = "
 					UPDATE	
@@ -305,13 +298,20 @@ try {
 				}	
 			);
 
-req.sendAsJson( status = 1, message = "#SerializeJSON(add)#" );
-			
+			//Even though the spec does not call for recall, the app needs it to display supersets correctly
+			typeUpdate = dbExec(
+				string = "INSERT INTO ac_mtr_retl_superset_bodypart VALUES ( :pid, :today, :exc, :bpi )"
+			 ,bindArgs = {
+					pid = fv.pid
+				 ,today = { value = dstmp, type = "cf_sql_date" } 
+				 ,exc = form.extype
+				 ,bpi = (form.extype < 8) ? 1 : 2
+				}	
+			);
 		}
 	}
 
-req.sendAsJson( status = 1, message = "#errstr# - superset done" );
-	//Write progress
+	//Finally, record the user's progress through the exercises.
 	prog = dbExec(
 		string = "
 		SELECT * FROM
@@ -331,9 +331,7 @@ req.sendAsJson( status = 1, message = "#errstr# - superset done" );
 		req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
 	}
 
-	//req.sendAsJson( status = 1, message = "#errstr# - #prog.prefix.recordCount#" );
-
-	//If there is anything here, add a row
+	//Record exercise, participantGUID and session id of the current day
 	if ( prog.prefix.recordCount eq 0 ) {
 		prog = dbExec(
 			string = "

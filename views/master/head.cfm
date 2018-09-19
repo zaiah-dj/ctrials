@@ -39,8 +39,8 @@
 	<script src="#link( 'assets/js/libs/modal.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/touch.js'  )#" type="text/javascript"></script> 
 	<script src="#link( 'assets/js/libs/routex.js'  )#" type="text/javascript"></script>
-	--->
 	<script src="#link( 'assets/js/proc/debug.js'  )#" type="text/javascript"></script>
+	--->
 	<!--- <script src="#link( 'assets/js/proc/indy.js'  )#" type="text/javascript"></script> --->
 	<script src="#link( 'assets/index.js'  )#" type="text/javascript"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
@@ -78,9 +78,30 @@
 		</div>
 
 		<div class="persistent-nav-right">
+			<a href="#link( "" )#"><li>Refresh</li></a>
 			<a href="#link( "" )#"><li>Notifications</li></a>
-			<a href="#link( "" )#"><li>Username001</li></a>
+			<!---
+				- session.email
+				- session.firstname
+				- session.lastname
+				- session.siteid
+				- session.logindts
+				- session.username
+				- session.userid
+ 				--->
+			<a class="loggedInAs" href="#link( "" )#"><li>#session.username#</li></a>
 		</div>
+	</div>
+
+	<div class="js-overlay-window">
+		<ul>
+			<li>#session.firstname# #session.lastname#</li>
+			<li>Email: #session.email#</li>
+			<li>Site ID: #session.siteid#</li>
+			<li>Logged In Since #DateTimeFormat( session.logindts, "mm/dd/yyyy hh:nn:ss" )#</li>
+			<li>Logged in as: #session.username#</li>
+			<li>User ID: #session.userid#</li>
+		</ul>	
 	</div>
 
 	<div class="container">

@@ -63,3 +63,6 @@ FROM
 	) AS UP
 
 ON TP.participantGUID = UP.participantGUID
+
+WHERE
+	UP.siteID = :site_id 

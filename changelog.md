@@ -1,14 +1,105 @@
+make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv'
 # CHANGELOG
 
 ## STATS
 
-- Commit count: 444
+- Commit count: 456
 - Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
-- Last Commit Date:   Tue Sep 18 15:35:51 2018 -0400
+- Last Commit Date:   Wed Sep 19 16:33:01 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
 
 ## HISTORY
+
+commit 7b60c42f9183cbc1db30f32ab1f454771afe20d6
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 16:33:01 2018 -0400
+
+-  - Got rid of some more files.
+-  - Still have to rework user assignment query.
+-  - staff.cfm and head.cfm views have been tweaked.
+
+commit a9ce183d8509fdd036150cc7da612bc771b214d9
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 15:38:58 2018 -0400
+
+-  - Got rid of so many useless files.
+-  - Working on members associated with other staff members.
+
+commit 8c945f933f0336856bbc705d16ec844aeb53d540
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 13:53:34 2018 -0400
+
+-  - initialized siteid differently
+-  - added unselected and selected to staff.cfm (now just need assigned to others)
+-  - modified styles for {app,views}/staff.cfm, now all participant blocks use the same CSS style
+-  - added some js to make a menu pop out
+-  - added much more information to logged in as tab
+
+commit 9600064165a200f9ad63deb636a50045a10966db
+Merge: 71347c78 5ade46b7
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 12:08:54 2018 -0400
+
+-  Merge branch 'dev3'
+
+commit 5ade46b70760291093514b02d044d9fa2f567e16
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 12:08:17 2018 -0400
+
+-  Modified all queries that rely on a specific site id, to actually rely on that site id.
+
+commit 71347c78258e8447896c4b2d543d6c326dd79bce
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 11:50:45 2018 -0400
+
+-  ...
+
+commit 9efd172e358a444982886ac336e635ea59613939
+Merge: 37789142 c6cd035c
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 11:48:56 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 37789142023cd795457922f9a31000c7c9249fcb
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 11:46:01 2018 -0400
+
+-  Completed adding (and tracking) the superset.
+-  
+-  Now, when a superset is done, the user will see which exercise it belongs to.
+-  
+-  A new table was added to enable this, so the schema has changed.
+-  Also the api endpoint was modified heavily to get this particular change to work.
+
+commit f5deb7757cc604768e26163b7bec8184cb5ca0eb
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 10:55:27 2018 -0400
+
+-  Unicode arrow did not work on Chrome in Windows, changed to a caret '^', looks great!
+
+commit 7ff9bc93738f4db267a0e1780e8041c650130514
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 19 10:48:19 2018 -0400
+
+-  - Got rid of an errantly added directory.
+-  - Highly improved the presentation of the top navigation menu
+-  - Also highly modified the navigation between different exercise types.
+-  - Added a notifications button (and soon to be window)
+
+commit eeee5d7ccae30bcbe4066eb5061f961347d0dead
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 18 17:29:01 2018 -0400
+
+-  ...
+
+commit 0567297558307d020d8a63c728f9ef912ed607cf
+Merge: bb96b155 ce7cb4e9
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 18 17:25:58 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
 
 commit bb96b15522702bc8792d4d356e2f5b8382c9e209
 Author: Antonio R. Collins II <arcollin@wakehealth.edu>
@@ -2915,3 +3006,4 @@ Date:   Wed Feb 21 14:54:58 2018 -0500
 -  Trying to play with selecting different users in real-time.
 
 <link rel=stylesheet href=changelog.css>
+make[1]: Leaving directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv'

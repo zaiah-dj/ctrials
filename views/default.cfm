@@ -25,7 +25,7 @@ to reorganize participants.
 		<div class="bigly-wrap">
 			<div class="bigly bigly-left">
 				<div class="listing">
-					<ul class="part-drop-list">
+					<ul class="part-drop-list disp-list">
 						<cfloop query = unselectedParticipants.results>
 							<cfif ListContains( const.ENDURANCE, randomGroupCode )>
 								<cfset listClassPrefix="endurance">
@@ -45,7 +45,7 @@ to reorganize participants.
 
 			<div class="bigly bigly-right" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
 				<div class="listing listing-drop">
-					<ul> 
+					<ul class="disp-list"> 
 					<cfloop query = selectedParticipants.results>
 						<cfif ListContains( const.ENDURANCE, randomGroupCode )>
 							<cfset listClassPrefix="endurance">

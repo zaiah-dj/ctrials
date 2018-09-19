@@ -716,6 +716,33 @@ CREATE TABLE ParticipantNotes (
 
 
 /* ---------------------------
+ac_retl_superset_bodypart
+
+Even though it's not needed as 
+part of the study, the application
+needs to know which supersets were
+done in order to display this data
+correctly.
+
+id int IDENTITY(1,1) NOT NULL, 
+participantGUID varchar(64) NOT NULL,
+exercise int NOT NULL, 
+bp_index int NOT NULL 
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_retl_superset_bodypart', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_retl_superset_bodypart;
+END
+
+CREATE TABLE ac_mtr_retl_superset_bodypart ( 
+	id int IDENTITY(1,1) NOT NULL, 
+	participantGUID varchar(64) NOT NULL,
+	exercise int NOT NULL, 
+	bp_index int NOT NULL 
+);
+	
+
+/* ---------------------------
 ac_mtr_session_interventionist_assignment 
 
  [csd_id] int IDENTITY(1,1) NOT NULL
@@ -761,6 +788,24 @@ CREATE TABLE ac_mtr_frm_labels (
 	,urlparam INT NOT NULL
 	,pname VARCHAR(512) NOT NULL
 	,class INT NULL
+);
+
+/* ---------------------------
+v_Interventionists
+
+...
+
+ ---------------------------- */
+IF OBJECT_ID( N'v_Interventionists', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE v_Interventionists;
+END
+CREATE TABLE v_Interventionists (
+    userGUID VARCHAR(64) NOT NULL,
+    firstname VARCHAR(64) NOT NULL,
+    lastname VARCHAR(64) NOT NULL,
+    userID INT NOT NULL,
+    siteID INT NOT NULL
 );
 
 INSERT INTO ac_mtr_frm_labels VALUES ( 0,  'wrmup_', 0,  'Warm-Up' , 0 );

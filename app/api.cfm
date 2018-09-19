@@ -19,10 +19,10 @@ else if ( StructKeyExists( form, "this" ) && form.this eq "endurance" )
 	include "api_update_endurance_table.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "resistance" )
 	include "api_update_resistance_table.cfm";
-else if ( StructKeyExists( form, "this" ) && form.this eq "addParticipant" ) 
-	include "api_add_participant.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "recovery" ) 
 	include "api_update_recovery.cfm";
+else if ( StructKeyExists( form, "this" ) && form.this eq "addParticipant" ) 
+	include "api_add_participant.cfm";
 else if ( StructKeyExists( form, "this" ) && form.this eq "releaseParticipant" ) {
 	include "api_release_participant.cfm";
 }

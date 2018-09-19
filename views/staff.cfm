@@ -1,45 +1,58 @@
 <cfoutput>
 	<div class="container-body">
-<!---
-		<table>
-			<tr>
-				<th>ID</th>
-				<th>First Name</th>
-				<th>Last Name</th>
-			</tr>
-		<cfloop query=public.staff.results>
-			<tr>
-				<td>#ts_id#</td>
-				<td>#ts_firstname#</td>
-				<td>#ts_lastname#</td>
-			</tr>
-		</cfloop>
-		</table>
---->
-
 		<div id="staff-reorder">
-			<div class="listing">
-			<cfloop query=public.sel.results>
-			<div>
-				<u>#firstname# #lastname# ( #acrostic# ) </u>
-			</div>
-			</cfloop>
+			<div style="width: 100%; height: 150px;">
+				<h5>Area for Notes</h5>
+				Below are lists of participants.
 			</div>
 
-			<div class="listing">
-			<cfloop query=public.allSel.results>
-			<div>
-				<u>#firstname# #lastname# ( Assigned to #ts_staffguid# ) </u>
-			</div>
-			</cfloop>
+			<div class="group">
+				<h5>Selected</h5>
+				<div class="listing">
+					<ul class="disp-list">
+					<cfloop query=selectedParticipants.results>
+						<cfif ListContains( const.ENDURANCE, randomGroupCode )>
+							<cfset listClassPrefix="endurance">
+						<cfelseif ListContains( const.RESISTANCE, randomGroupCode )>
+							<cfset listClassPrefix="resistance">
+						<cfelse>
+							<cfset listClassPrefix="control">
+						</cfif>
+						<li class="#listClassPrefix#-class">#firstname# #lastname# ( #pid# ) </li>
+					</cfloop>
+					</ul>
+				</div>
 			</div>
 
-			<div class="listing">
-			<cfloop query=unselectedParticipants.results>
-			<div>
-				<u>#firstname# #lastname# ( #acrostic# ) </u>
+			<div class="group">
+				<h5>Assigned</h5>
+				<div class="listing">
+					<ul class="disp-list">
+<!---
+					<cfloop query=public.allSel.results>
+						<li>#firstname# #lastname# ( Assigned to #ts_staffguid# ) </li>
+					</cfloop>
+--->
+					</ul>
+				</div>
 			</div>
-			</cfloop>
+
+			<div class="group">
+				<h5>Available</h5>
+				<div class="listing">
+					<ul class="disp-list">
+					<cfloop query=unselectedParticipants.results>
+						<cfif ListContains( const.ENDURANCE, randomGroupCode )>
+							<cfset listClassPrefix="endurance">
+						<cfelseif ListContains( const.RESISTANCE, randomGroupCode )>
+							<cfset listClassPrefix="resistance">
+						<cfelse>
+							<cfset listClassPrefix="control">
+						</cfif>
+						<li class="#listClassPrefix#-class">#firstname# #lastname# ( #pid# ) </li>
+					</cfloop>
+					</ul>
+				</div>
 			</div>
 		</div>
 

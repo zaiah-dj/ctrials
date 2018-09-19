@@ -660,7 +660,7 @@ input.collapsible:checked + div > table { display: block; }
 	to: { left: 10px; }
 }
 
-.bigly li {
+.disp-list li {
 	position: relative;
 	overflow: hidden;
 	border: 0px;
@@ -675,19 +675,18 @@ input.collapsible:checked + div > table { display: block; }
 	transition: color 0.1s, background-color 0.1s, height 0.1s;
 }
 
-.bigly-left li:active {
+.disp-list li:active {
 	height: 50px;
 	font-size: 1.8em;
  	animation-name: shake;
 	animation-duration: 1s;
 }
 
-.bigly li:hover {
+.disp-list li:hover {
 	color: black;
 	font-size: 1.6em;
 	height: 55px;
 }
-
 
 
 #bigly-search {
@@ -1383,9 +1382,25 @@ label.param-ta {
 	width: 100%;
 }
 
-#staff-reorder .listing {
-	width: 33.33%;
+/* -------------------------- *
+ * Staff page has its own CSS
+ * for whatever reason.
+ * -------------------------- */
+#staff-reorder h5 {
+	color: black;
+}
+
+#staff-reorder .group {
+	width: 32%;
+	height: 70%;
 	float: left;
+	border: 1px solid black;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	padding: 10px;
+	overflow: hidden;
+	margin-right: 1%;
 }
 
 #staff-reorder:after {
@@ -1857,3 +1872,14 @@ block.
 All windows are prefixed with
 js- (e.g. js-div, js-popup, etc)
  * -------------------------- */
+.js-overlay-window {
+	position: fixed;	
+	display: none;
+	height: 95%;
+	width: 25%;
+	min-width: 200px;
+	z-index: 99;
+	right: 0px;
+	background-color: white;
+	border: 1px solid #ccc;
+}

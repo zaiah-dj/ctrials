@@ -130,9 +130,20 @@ if ( isEnd || isRes ) {
 		);
 
 		if ( isRes ) {
+			//Out of laziness, I'm just going to hit the db again to figure out which superset this is for.
+			supsup = dbExec( 
+				string = "SELECT * FROM ac_mtr_retl_superset_bodypart 
+					WHERE d_visit = :t AND participantGUID = :pid AND exercise = :ex"
+			, bindArgs = { 
+					pid = cs.participantId
+				, ex = private.magic 
+				,	t = { value = cdate, type = "cf_sql_date" } 
+				}
+			);
+
 			private.exBool = {
 				exercise = ( private.magic gt 0 ) ? private.etc.results[ "c_#private.dbPrefix#" ] : false
-			 ,superset = false
+			 ,superset = ( supsup.prefix.recordCount gt 0 ) 
 			};
 
 			private.eqlog = dbExec(
