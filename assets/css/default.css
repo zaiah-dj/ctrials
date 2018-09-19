@@ -53,10 +53,6 @@ p {
 	margin-top: 30px;
 }
 
-.container p {
-	font-size: 1.5em;
-}
-
 
 
 
@@ -68,17 +64,24 @@ a.selected {
 	color: black;
 }
 
+/* -------------------------- *
+	container
+
+	...
+ * -------------------------- */
 .container {
 	position: relative;
-	background-color: #fff;
-	top: 2.5%;
+	padding: 0px;
 	padding-bottom: 10px;
-	height: 91%;
-
+	height: 94%;
 	margin: 0 auto;
-	width: 96%;
-	box-shadow: 10px 10px 5px gray;
+	width: 100%;
 	overflow: hidden;
+	background-color: #ffffff;
+}
+
+.container p {
+	font-size: 1.5em;
 }
 
 
@@ -90,13 +93,15 @@ a.selected {
 
 .container-navAndBodyWrapper {
 	padding: 0px;
-	width: 100%;
+	left: 0.5%;
+	width: 99%;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	position: relative;
 	z-index: 99;
 	overflow: hidden;
 		height: 90%; 
+	box-shadow: 10px 10px 20px 2px #cccccc;
 /*
 	height: 0px;
 	animation-duration: 0.3s;
@@ -979,9 +984,10 @@ Top navigation.
 	display: block;
 	padding: 5px;
 	width: 100%;
-	background-color: #ffffff;
 	border-bottom: 1px solid #eeeeee;
 	box-shadow: 2px 2px 2px 2px #cccccc;
+	background-color: #ddd;
+	z-index: 99;
 }
 
 .persistent-nav div {
@@ -993,9 +999,9 @@ Top navigation.
 }
 
 .persistent-nav li {
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-gecko-border-radius: 3px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
 	display: inline-block;
 	text-align: center;
 	font-size: 1.0em;
@@ -1555,12 +1561,14 @@ table.table-results {
 	left: 20px;
 }
 
+/*
 .endurance-class-container, 
 .resistance-class-container {
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-gecko-border-radius: 10px;
+	border-radius: 0px 0px 10px 10px;
+	-moz-border-radius: 0px 0px 10px 10px;
+	-gecko-border-radius: 0px 0px 10px 10px;
 }
+*/
 
 
 /*change color schemes depending on what's around */
@@ -1817,3 +1825,15 @@ button.stateChange + div:hover {
 	left: 70px;
 	top: 5px;
 }
+
+
+
+/* -------------------------- *
+Javascript creates a bunch
+of it's own	windows and they
+can be styled via the following
+block.
+
+All windows are prefixed with
+js- (e.g. js-div, js-popup, etc)
+ * -------------------------- */

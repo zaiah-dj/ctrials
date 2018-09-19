@@ -1,18 +1,18 @@
 
 x hh:mm field and timestamp added when pressing the now, or begin button
 
-- formatted hh:mm field
+x formatted hh:mm field
 
-- inputable hh:mm field
+x inputable hh:mm field
 
-- check that saves still work on hh:mm field
+- styled hh:mm field
+
+? check that saves still work on hh:mm field (use a hidden field?)
 
 - superset value recall (maybe you can store the value elsewhere, so it's always known?)
 	get clarification on this during the meeting, 
 	if it's just the specific exercises, 
 	then do not show superset everywhere
-
-- Get 00:00 on click to work by changing to content-editable (or whatever it was I used...)
 
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
