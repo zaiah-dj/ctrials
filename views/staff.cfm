@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="group">
-				<h5>Selected</h5>
+				<h5>Assigned to Me</h5>
 				<div class="listing">
 					<ul class="disp-list">
 					<cfloop query=selectedParticipants.results>
@@ -18,27 +18,41 @@
 						<cfelse>
 							<cfset listClassPrefix="control">
 						</cfif>
-						<li class="#listClassPrefix#-class">#firstname# #lastname# ( #pid# ) </li>
+						<li class="#listClassPrefix#-class">
+							<div class="left">#firstname# #lastname#</div>
+							<div class="right">
+								PID: #pid#<br />
+								Acrostic: #iif(acrostic eq "",DE('Unspecified'),DE(acrostic))#
+							</div>
+						</li>
 					</cfloop>
 					</ul>
 				</div>
 			</div>
 
 			<div class="group">
-				<h5>Assigned</h5>
+				<h5>Assigned to Others</h5>
 				<div class="listing">
-					<ul class="disp-list">
-<!---
-					<cfloop query=public.allSel.results>
-						<li>#firstname# #lastname# ( Assigned to #ts_staffguid# ) </li>
+					<ul class="disp-list disp-assignees">
+					<cfloop query=associatedParticipants.results>
+						<cfif ListContains( const.ENDURANCE, randomGroupCode )>
+							<cfset listClassPrefix="endurance">
+						<cfelseif ListContains( const.RESISTANCE, randomGroupCode )>
+							<cfset listClassPrefix="resistance">
+						<cfelse>
+							<cfset listClassPrefix="control">
+						</cfif>
+						<li class="#listClassPrefix#-class">
+							<div class="left">#firstname# #lastname#</div>
+							<div class="right">Assigned to<br />#staff_fname# #staff_lname#</div>
+						</li>
 					</cfloop>
---->
 					</ul>
 				</div>
 			</div>
 
 			<div class="group">
-				<h5>Available</h5>
+				<h5>Unassigned</h5>
 				<div class="listing">
 					<ul class="disp-list">
 					<cfloop query=unselectedParticipants.results>
@@ -49,7 +63,13 @@
 						<cfelse>
 							<cfset listClassPrefix="control">
 						</cfif>
-						<li class="#listClassPrefix#-class">#firstname# #lastname# ( #pid# ) </li>
+						<li class="#listClassPrefix#-class">
+							<div class="left">#firstname# #lastname#</div>
+							<div class="right">
+								PID: #pid#<br />
+								Acrostic: #iif(acrostic eq "",DE('Unspecified'),DE(acrostic))#
+							</div>
+						</li>
 					</cfloop>
 					</ul>
 				</div>

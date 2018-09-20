@@ -86,6 +86,6 @@
 	</table>
 
 	<input type="hidden" name="ps_pid" value="#cs.participantId#">
-	<input type="hidden" name="ps_sid" value="#session.userguid#">
+	<input type="hidden" name="ps_sid" value="#usr.userguid#">
 </div> <!--- container-body --->
 </cfoutput>

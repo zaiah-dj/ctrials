@@ -3,13 +3,62 @@ make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/
 
 ## STATS
 
-- Commit count: 456
+- Commit count: 463
 - Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
-- Last Commit Date:   Wed Sep 19 16:33:01 2018 -0400
+- Last Commit Date:   Thu Sep 20 13:26:04 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
 
 ## HISTORY
+
+commit 6454efd19f15319ed9e5d05045d619c14a9ceee1
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 13:26:04 2018 -0400
+
+-  modified scheam file slightly.  just got rid of old tables.
+
+commit 043c059451284165b7591f1899fba34fad2793fa
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 13:21:39 2018 -0400
+
+-  fixed data.cfm
+
+commit a083c9e36e411ea78fbfc64b2eb595cfd9147296
+Merge: 295a7c81 ea0c7184
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 13:21:11 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 295a7c81b26b4e15207e971e70cc0436aec98062
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 13:20:18 2018 -0400
+
+-  ...
+
+commit 89f6d147021cc7ca580e4fe80e51a229c69aaf13
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 13:09:15 2018 -0400
+
+-  - Finished assignment view.  Clicking on 'assignments' will show interventionists where people are assigned.
+-  
+-  - Reworked drag and drop tiles to show more information, have yet to finish adding changes to home page.
+-  
+-  - Added a specific file for the Assigned to Others query.
+-  
+-  - Tested that staff results work correctly with mock and not-so-mock users.
+
+commit 58f54b1d46a2bb41df48fd761370a026fcc4e098
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 10:37:21 2018 -0400
+
+-  Got rid of staff id references.  This field is no longer used.
+
+commit a14d226b1dda0a382617dc18de270e17c17b8792
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Thu Sep 20 10:30:32 2018 -0400
+
+-  Clean up current user session variables.  Very messy and hard to make sense of.
 
 commit 7b60c42f9183cbc1db30f32ab1f454771afe20d6
 Author: Antonio R. Collins II <arcollin@wakehealth.edu>

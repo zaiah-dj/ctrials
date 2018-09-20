@@ -1,13 +1,14 @@
 <cfscript>
 //Include all CFCs first here
-rl    = CreateObject( "component", "components.requestLogger" );
+//rl    = CreateObject( "component", "components.requestLogger" );
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
-udo   = CreateObject( "component", "components.calcUserDate" ).init();
+udo   = CreateObject( "component", "components.calcUserDate" )
+	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
 //wfb   = CreateObject( "component", "components.wfbutils" );
 include "constants.cfm";
 include "custom.cfm";
 
-//Set a smaller reference for the cdate
+//Set an easy to remember reference for the current date
 cdate = udo.object.dateObject;
 
 //Set a user date object session key...
@@ -23,35 +24,7 @@ if ( !StructKeyExists( session, "userguid" ) ) {
 		location( addtoken = "no", url = data.redirectForLogin );
 	else {
 		//Also requires a userGUID
-		session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
-	}
-}
-
-//Set a site ID from here
-staffId = 0;
-if ( data.debug eq 1 ) {
-	if ( StructKeyExists( form, "setstaffid" ) )
-		session.userguid = sgid = form.setstaffid;
-	else if ( data.loaded eq "default" && StructKeyExists( url, "staffid" ) )
-		session.userguid = sgid = url.staffid;
-	//This condition could break API updates... so if there are any exceptions look here first...
-	else if ( !StructKeyExists( session, "userguid" ) )
-		location( addtoken = "no", url = data.redirectForLogin );
-	else {
-		sgid = session.userguid;
-	}
-}
-else {
-	//api updates may break...
-	if ( !StructKeyExists( session, "userguid" ) || !isDefined( "session.userguid" ) ) {
-		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid is not defined</h2>" );abort;}
-		//No default will be set if no guid exists, just redirect and get credentials again
-		location( addtoken = "no", url = data.redirectForLogin );
-	}
-	else {
-		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid defined and is '#session.userguid#'</h2>" );abort;}
-		//staffId = session.userguid;
-		sgid = session.userguid;
+		//session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
 	}
 }
 
@@ -148,10 +121,14 @@ else {
 }
 
 
+//Calculate site ID here if not already done...
+csSiteId = session.siteid;
+
+
 //Get participant data 
 currentParticipant = dbExec( 
-	string = "SELECT * FROM v_ADUSessionTickler WHERE participantGUID = :pid"
- ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }}
+	string = "SELECT * FROM v_ADUSessionTickler WHERE participantGUID = :pid AND siteID = :site_id"
+ ,bindArgs = { pid = { value = currentId, type="cf_sql_varchar" }, site_id = csSiteId }
 );
 
 
@@ -165,16 +142,18 @@ selectedParticipants = dbExec(
  ,bindArgs = {
 		guid = session.userguid 
 	 ,sid = csSid 
+	 ,site_id = csSiteId
    ,today = { value=cdate, type="cf_sql_date" }
 	}	
 );
 
 
-//...
+//Unselected participants
 unselectedParticipants = dbExec( 
 	filename = "unselectedParticipants.sql"
  ,bindArgs = {
 		sid = csSid 
+	 ,site_id = csSiteId
    ,today = { value=cdate, type="cf_sql_date" }
 	}
 );
@@ -196,12 +175,10 @@ cs.dayName = session.currentDayOfWeekName;
 cs.needsRebuild = 0;
 cs.selected = 0;
 cs.siteid = session.siteid;
-cs.staffId = staffId;
 cs.participantId = currentId ;
 cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.participantGUID, ", ") : "";
 cs.staff = {
 	 email     =  (isDefined( 'session.email' )) ? session.email : ""
-	,guid      = 	staffId 
 	,userid    =  (isDefined( 'session.userid' )) ? session.userid : ""
 	,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
 	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
@@ -248,15 +225,15 @@ if ( StructKeyExists( cs, "participants" ) ) {
 		//Define a prefix to choose between Endurance and Resistance participants
 		prefix = (isEnd) ? "eetl" : "retl";
 
-		//get blood pressure and weight
 		cp = {
+			//get blood pressure and weight
 			details = dbExec( 
 				filename = "init_#prefix#_pdetails.sql"
 			 ,bindArgs = { 
 					pid = { type = "varchar", value = cs.participantId }
 				 ,visit = { type = "date", value = cdate }
 				}
-			).results
+			)
 
 			//Get all the completed days for the week
 		 ,completedDays = dbExec(
@@ -266,7 +243,7 @@ if ( StructKeyExists( cs, "participants" ) ) {
 					pid = cs.participantId 
 				 ,wk  = sc.week
 				}
-			).results
+			)
 
 			//Get all the notes
 		 ,notes = dbExec(
@@ -275,48 +252,42 @@ if ( StructKeyExists( cs, "participants" ) ) {
 					pid = cs.participantId
 				 ,dateLimit = { value = DateAdd("d", -14, cdate), type = "cf_sql_date" } 
 				}
-			).results
+			)
 		};
 
 		//Get 
-		sc.exerciseParameter = cp.details.exerciseType;
+		sc.exerciseParameter = cp.details.results.exerciseType;
 
 		//Calculate remaining blood pressure calculation days
-		sc.bpDaysElapsed = (cp.details.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.bp_daterecorded,Now());
+		sc.bpDaysElapsed = (cp.details.results.bp_daterecorded eq "") ? 0 : DateDiff("d",cp.details.results.bp_daterecorded,Now());
 
 		//Boolean to tell if we need a new blood pressure or not
-		sc.getNewBP = (cp.details.bp_daterecorded eq "" || sc.BPDaysElapsed gt const.bpDaysLimit); 
+		sc.getNewBP = (cp.details.results.bp_daterecorded eq "" || sc.BPDaysElapsed gt const.bpDaysLimit); 
 
 		//Calculate time until we need to take a new blood pressure
 		sc.bpDaysLeft = const.bpDaysLimit - sc.bpDaysElapsed;
 		
-		//sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.bp_systolic;
-		sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.mthlybpsys;
+		//sc.bpSystolic = (sc.getNewBP) ? const.bpMinSystolic : cp.details.results.bp_systolic;
+		sc.bpSystolic = cp.details.results.mthlybpsys;
 
-		//sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.bp_diastolic;
-		sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.MthlyBPDia;
+		//sc.bpDiastolic = (sc.getNewBP) ? const.bpMinDiastolic : cp.details.results.bp_diastolic;
+		sc.bpDiastolic = cp.details.results.MthlyBPDia;
 
-		sc.HRWorking = (cp.details.HRWorking eq "" || cp.details.HRWorking eq 0 ) ? 0 : cp.details.HRWorking;
+		sc.HRWorking = (cp.details.results.HRWorking eq "" || cp.details.results.HRWorking eq 0 ) ? 0 : cp.details.results.HRWorking;
 		
-		sc.weight = (cp.details.weight eq "" || cp.details.weight eq 0 ) ? 0 : cp.details.weight;
+		sc.weight = (cp.details.results.weight eq "" || cp.details.results.weight eq 0 ) ? 0 : cp.details.results.weight;
 
-		sc.week = cp.details.stdywk;
+		sc.week = cp.details.results.stdywk;
 
-		sc.day = cp.details.dayofwk;
+		sc.day = cp.details.results.dayofwk;
 
-		sc.hr1 = cp.details.hr1;
+		sc.hr1 = cp.details.results.hr1;
 
-		sc.hr2 = cp.details.hr2;
+		sc.hr2 = cp.details.results.hr2;
 
 		//Day names
-		dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-		sc.dayName = dayNames[cp.details.dayofwk];
-
-		//Populate the finished days
-		sc.cdays = [0,0,0,0,0,0];
-		for ( n in ListToArray( ValueList( cp.completedDays.dayofwk, "," ) ) ) {
-			sc.cdays[ n ] = n; 
-		}
+		dayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+		sc.dayName = dayNames[cp.details.results.dayofwk];
 	}
 }
 

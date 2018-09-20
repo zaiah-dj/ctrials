@@ -72,7 +72,7 @@ to reorganize participants.
 
 		<!--- On submit, or next, do it. --->
 		<form id="wash-id" method="POST" action="#link('input.cfm')#" class="wash">
-			<input type="text" name="interventionist_id" value="#session.userguid#">
+			<input type="text" name="interventionist_id" value="#usr.userguid#">
 			<input type="text" name="transact_id" value="#session.ivId#">
 			<input type="text" name="sessday_id" value="#csSid#">
 			<input type="text" name="list"> <!--- make a list here --->

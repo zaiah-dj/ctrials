@@ -499,6 +499,95 @@ CREATE TABLE ac_mtr_iv_metrics (
 );
  
  
+
+
+
+
+/* ---------------------------
+ParticipantNotes
+
+New participant notes table to
+more accurately match what is 
+going on.
+
+ [recID]            int IDENTITY(1,1) NOT NULL
+,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
+,[participantGUID]  varchar(50) NULL
+,[noteText]         varchar(max) NULL
+,[noteCategory]     int NULL
+,[noteDate]         datetime NULL
+,[d_inserted]       datetime NOT NULL DEFAULT (getdate())
+,[insertedby]       varchar(50) NULL
+,[deleted]          int NULL
+,[deletedby]        varchar(50) NULL
+,[d_deleted]        datetime NULL
+ ---------------------------- */
+IF OBJECT_ID( N'ParticipantNotes', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ParticipantNotes;
+END
+CREATE TABLE ParticipantNotes (
+	 [recID]            int IDENTITY(1,1) NOT NULL
+	,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
+	,[participantGUID]  varchar(50) NULL
+	,[noteText]         varchar(max) NULL
+	,[noteCategory]     int NULL
+	,[noteDate]         datetime NULL
+	,[d_inserted]       datetime NOT NULL DEFAULT (getdate())
+	,[insertedby]       varchar(50) NULL
+	,[deleted]          int NULL
+	,[deletedby]        varchar(50) NULL
+	,[d_deleted]        datetime NULL
+);
+
+
+/* ---------------------------
+ac_retl_superset_bodypart
+
+Even though it's not needed as 
+part of the study, the application
+needs to know which supersets were
+done in order to display this data
+correctly.
+
+id int IDENTITY(1,1) NOT NULL, 
+participantGUID varchar(64) NOT NULL,
+exercise int NOT NULL, 
+bp_index int NOT NULL 
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_retl_superset_bodypart', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_retl_superset_bodypart;
+END
+
+CREATE TABLE ac_mtr_retl_superset_bodypart ( 
+	id int IDENTITY(1,1) NOT NULL, 
+	participantGUID varchar(64) NOT NULL,
+	d_visit datetime NOT NULL,
+	exercise int NOT NULL, 
+	bp_index int NOT NULL 
+);
+	
+
+/* ---------------------------
+ac_mtr_session_interventionist_assignment 
+
+ [csd_id] int IDENTITY(1,1) NOT NULL
+,[csd_daily_session_id] VARCHAR(64)
+,[csd_interventionist_guid] VARCHAR(64)
+,[csd_participant_guid] VARCHAR(64)
+ ---------------------------- */
+IF OBJECT_ID( N'ac_mtr_session_interventionist_assignment', N'U') IS NOT NULL
+BEGIN
+	DROP TABLE ac_mtr_session_interventionist_assignment ;
+END
+CREATE TABLE ac_mtr_session_interventionist_assignment (
+	 [csd_id] int IDENTITY(1,1) NOT NULL
+	,[csd_daily_session_id] VARCHAR(64)
+	,[csd_interventionist_guid] VARCHAR(64)
+	,[csd_participant_guid] VARCHAR(64)
+);
+
  /* ---------------------------
 ac_mtr_premature_sessions
 
@@ -561,216 +650,6 @@ CREATE TABLE ac_mtr_session_metadata (
 	,sm_year INT
 );
  	
- 
- /* ---------------------------
-ac_mtr_session_staff_selected
-
-When a staff member logs in and
-chooses participants, they get
-listed here.
-
- ss_id int IDENTITY(1,1)  - Unique ID
-,ss_ivid VARCHAR(64)      - JOIN against sm_ivid in ac_mtr_session_metadata
-,ss_staffid VARCHAR(64)   - Staff member logged in
-,ss_participantrecordkey  - The key used to identify which participants are in the selected table
-,ss_datelastaccessed DATE - Date last accessed by staff
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_session_staff_selected', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_session_staff_selected;
-END
-CREATE TABLE ac_mtr_session_staff_selected (
-	 ss_id int IDENTITY(1,1) NOT NULL
-	,ss_sessdayid VARCHAR(64)
-	,ss_staffguid VARCHAR(50)
-	,ss_staffsessionid VARCHAR(64)
-	,ss_participantrecordkey VARCHAR(64) NOT NULL DEFAULT (newid())
-	,ss_datelastaccessed DATETIME NOT NULL DEFAULT (getdate())
-);
-  
-
-/* ---------------------------
-ac_mtr_session_participants_selected
-
-When a partcipant is chosen,
-a record of that choice will be
-recorded here.
-
- sp_id int IDENTITY(1,1) NOT NULL
-,sp_ivid VARCHAR(64)
-,sp_participantrecordkey VARCHAR(64)
-,sp_participantGUID VARCHAR(64)
-,sp_participantRecordThread DATE
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_session_participants_selected', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_session_participants_selected;
-END
-CREATE TABLE ac_mtr_session_participants_selected (
-	 sp_id int IDENTITY(1,1) NOT NULL
-	,sp_sessdayid VARCHAR(64)
-	,sp_participantrecordkey VARCHAR(64)
-	,sp_participantGUID VARCHAR(64)
-	,sp_participantRecordThread VARCHAR(64)
-);
- 
- 
- /* ---------------------------
-ac_mtr_session_participant_data_tracker
-
--
-
- spdt_id int IDENTITY(1,1) NOT NULL
-,spdt_sessdayid VARCHAR( 50 )
-,spdt_check_in_completed BIT
-,spdt_recovery_completed BIT
-,spdt_exercise_parameter INTEGER
-,spdt_exercise_list VARCHAR(1024)
-,spdt_exercise_last_completed INTEGER
-,spdt_week_chosen INTEGER
-,spdt_last_interventionist_guid VARCHAR(50)
-,spdt_user_guid VARCHAR(50)
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_session_participant_data_tracker', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_session_participant_data_tracker;
-END
-CREATE TABLE ac_mtr_session_participant_data_tracker 
-(
-	 spdt_id int IDENTITY(1,1) NOT NULL
-	,spdt_sessdayid VARCHAR( 50 )
-	,spdt_check_in_completed BIT
-	,spdt_recovery_completed BIT
-	,spdt_exercise_parameter INTEGER
-	,spdt_exercise_list VARCHAR(1024)
-	,spdt_exercise_last_completed INTEGER
-	,spdt_week_chosen INTEGER
-	,spdt_last_interventionist_guid VARCHAR(50)
-	,spdt_user_guid VARCHAR(50)
-); 
- 
- 
-
-/* ---------------------------
-ac_mtr_test_staff
-
-Some test staff to see how overlapping
-people would work.
-
- ts_id int IDENTITY(1,1) NOT NULL    - unique id
-,ts_staffid VARCHAR(64)              - staff id
-,ts_firstname VARCHAR(1024)          - 
-,ts_middlename VARCHAR(1024)         -
-,ts_lastname VARCHAR(1024)           -
-,ts_siteid VARCHAR(64)               - where do they belong?
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_test_staff', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_test_staff;
-END
-CREATE TABLE ac_mtr_test_staff (
-	 ts_id int IDENTITY(1,1) NOT NULL
-	,ts_staffguid VARCHAR(50)
-	,ts_firstname VARCHAR(1024)
-	,ts_middlename VARCHAR(1024)
-	,ts_lastname VARCHAR(1024)
-	,ts_siteid VARCHAR(64)
-);
-
-/* ---------------------------
-ParticipantNotes
-
-New participant notes table to
-more accurately match what is 
-going on.
-
- [recID]            int IDENTITY(1,1) NOT NULL
-,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
-,[participantGUID]  varchar(50) NULL
-,[noteText]         varchar(max) NULL
-,[noteCategory]     int NULL
-,[noteDate]         datetime NULL
-,[d_inserted]       datetime NOT NULL DEFAULT (getdate())
-,[insertedby]       varchar(50) NULL
-,[deleted]          int NULL
-,[deletedby]        varchar(50) NULL
-,[d_deleted]        datetime NULL
- ---------------------------- */
-IF OBJECT_ID( N'ParticipantNotes', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ParticipantNotes;
-END
-CREATE TABLE ParticipantNotes (
-	 [recID]            int IDENTITY(1,1) NOT NULL
-	,[noteGUID]         varchar(50) NOT NULL DEFAULT (newid())
-	,[participantGUID]  varchar(50) NULL
-	,[noteText]         varchar(max) NULL
-	,[noteCategory]     int NULL
-	,[noteDate]         datetime NULL
-	,[d_inserted]       datetime NOT NULL DEFAULT (getdate())
-	,[insertedby]       varchar(50) NULL
-	,[deleted]          int NULL
-	,[deletedby]        varchar(50) NULL
-	,[d_deleted]        datetime NULL
-);
-
-
-/* ---------------------------
-ac_retl_superset_bodypart
-
-Even though it's not needed as 
-part of the study, the application
-needs to know which supersets were
-done in order to display this data
-correctly.
-
-id int IDENTITY(1,1) NOT NULL, 
-participantGUID varchar(64) NOT NULL,
-exercise int NOT NULL, 
-bp_index int NOT NULL 
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_retl_superset_bodypart', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_retl_superset_bodypart;
-END
-
-CREATE TABLE ac_mtr_retl_superset_bodypart ( 
-	id int IDENTITY(1,1) NOT NULL, 
-	participantGUID varchar(64) NOT NULL,
-	exercise int NOT NULL, 
-	bp_index int NOT NULL 
-);
-	
-
-/* ---------------------------
-ac_mtr_session_interventionist_assignment 
-
- [csd_id] int IDENTITY(1,1) NOT NULL
-,[csd_daily_session_id] VARCHAR(64)
-,[csd_interventionist_guid] VARCHAR(64)
-,[csd_participant_guid] VARCHAR(64)
- ---------------------------- */
-IF OBJECT_ID( N'ac_mtr_session_interventionist_assignment', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_session_interventionist_assignment ;
-END
-CREATE TABLE ac_mtr_session_interventionist_assignment (
-	 [csd_id] int IDENTITY(1,1) NOT NULL
-	,[csd_daily_session_id] VARCHAR(64)
-	,[csd_interventionist_guid] VARCHAR(64)
-	,[csd_participant_guid] VARCHAR(64)
-);
-
-/* --------------------------- */
-IF OBJECT_ID( N'ac_mtr_session_interventionist_logged_in', N'U') IS NOT NULL
-BEGIN
-	DROP TABLE ac_mtr_session_interventionist_logged_in ;
-END
-CREATE TABLE ac_mtr_session_interventionist_logged_in (
-	 [iln_id] int IDENTITY(1,1) NOT NULL
-	,[iln_login_time] DATETIME 
-	,[iln_interventionist_guid] VARCHAR(64)
-);
 
 /* ---------------------------
 ac_mtr_frm_labels 

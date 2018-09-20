@@ -9,76 +9,14 @@ x Finish assigned participant list
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
 
+- Javascript fix to allow new info on drag and droppers...
 
-- Checkmark is not showing on production, why?
+? Checkmark is not showing on production, why?
 
+x selected, assigned, available
 
-- selected, assigned, available
-	+ log in as someone else, so that you can see the assignments
-	+ it's possible that the user won't be in whatever table, so how do you work around that?
-	+ here are some test users:
-		userGUID	firstname	lastname	userID	siteID
-		480B40D6-1243-485D-B27C-51FB3707EA55	Debbie	Steinberg	1005	999
-		480B40D6-1243-485D-B27C-51FB3707EA55	Debbie	Steinberg	1005	120
-		A90901E8-8D7E-4E69-957F-2B80632BDEC7	Jack	White	1050	999
-		5A6DAE90-4F54-4D9B-A5AF-3D3156E9BA28	Cynthia	Stowe	1035	930
-		CDDAC161-2B5E-44CF-ABC8-D15623942239	Antonio	Collins	1049	999
-	+ a very pseudocode version of the query will look like this:
-	  select * from
-		( select * from
-			( select * from $SESSION_ASSIGNMENT (ac_mtr_session_assignment...) ) as sa
-			LEFT JOIN
-			( select * from $STAFF_TABLE (v_Interventionists) ) as vi
-			ON sa.userGUID = vi.userGUID (may not be this...)
-		) as SAST
-		LEFT JOIN
-		( select * from $PARTICIPANT_LIST (v_ADUSessionTickler) as PT
-	  where SAST.participantGUID = PT.participantGUID
-	  and site_id = $SITE_ID
-		
-
-
-x Superset recording and tracking (and showing up)
-
-
-
-
-
-x hh:mm field and timestamp added when pressing the now, or begin button
-
-x formatted hh:mm field
-
-x inputable hh:mm field
-
-- styled hh:mm field
-
-? check that saves still work on hh:mm field (use a hidden field?)
-
-- superset value recall (maybe you can store the value elsewhere, so it's always known?)
-	get clarification on this during the meeting, 
-	if it's just the specific exercises, 
-	then do not show superset everywhere
-
-x Fix N/A verbiage to include type of range being recorded (works but is too big)
-
-
-- current bp, must be still not be solved
-
-
-- recheck recall... 
-	i wonder if this is due to a difference in exercise types selected (for example hips one day, and the other thing another day, specifically check Ennis Jones)
-
-
-- check values before checking progress 
-
-
-- Stop Session button disappears on horiz view, you need to fix this on both vert and horiz
-
-
-- Animated slider movements...
-
-
-
+? Stop Session button disappears on horiz view
+		the button and header changes may have solved this... check again 
 
 
 
@@ -109,19 +47,16 @@ BE EXTRA NICE TO HIM, MA
 			additionally, you'll need an admin page where users can go in and make changes if need be...
 
 - There are lots of templates using loops, this is difficult to manage and takeover, so keep it simple and repeat yourself...
+		switch to copy pasta...
 
 - objects
 		currentParticipant can have its own thing
 			cp.init( query to select current participant )
 			cp.isEndurance()
 			cp.getName()
-		form valueS?
+		exercise? (when initializing all data on input, a specific time or exercise is selected)	
 
-- increase padding on all containers that scroll (the bar is too close to the edge of the parent window)
-
-- Try to better enforce model logic (lots of ifs) 
-
-- Split out the API, b/c it may make it easier to take care of 
+- Try to better enforce model logic (lots of ifs in templates) 
 
 - You need a pubsub, this might be more important than I thought... 
 

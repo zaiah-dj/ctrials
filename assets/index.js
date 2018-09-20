@@ -283,6 +283,8 @@ function saveParticipantNote ( ev ) {
 	);
 }
 
+
+
 /* ------------------------------------ *
 function getDatestamp(  ) {
 
@@ -505,7 +507,7 @@ function updateNeighborBoxFromSI (ev) {
 
 	//Now, make an adjustment to the field value.  Query the DOM for value limits.
 	forceNum = Number( aav.innerHTML );
-console.log( ev.target.className );
+//console.log( ev.target.className );
 	if ( ev.target.className.indexOf( "js-down" ) > -1 )
 		aav.innerHTML = (( forceNum - 1 ) < min ) ? aav.innerHTML : --( aav.innerHTML ); 
 	else if ( ev.target.className.indexOf("js-up") > -1 ) {
@@ -571,7 +573,7 @@ function checkInSaveNote ( ev ) {
 
 	//Only save if content is there
 	if ( noteValue == "" ) {
-		console.log( "nothing is here, guy" );
+		//console.log( "nothing is here, guy" );
 		console.log( ev.target.parentElement.parentElement );
 		return;
 	}
@@ -727,7 +729,7 @@ function updateExerciseSession ( ev ) {
 /* ------------------------------------ *
 function activateOtherParamText ( ev ) {
 
-Release a participant back into the pool.
+???
 
  * ------------------------------------ */
 function activateOtherParamText ( ev ) {

@@ -7,46 +7,6 @@ component {
 	property name="app" default="isAppDateSet";
 	this.object = {};
 
-	//Jump date in the future or the past
-	function jumpDate( ) {
-		//Current date
-		if ( StructKeyExists( url, "resetdate" ) ) {
-			StructDelete( session, "userdate" );	
-			//userDateObject = session.userdate = Now();
-			if ( StructKeyExists(url, "date") ) {
-				try {
-					userDateObject = LSParseDateTime( url.date );
-					session.userdate = userDateObject;
-				}
-				catch (any ee) {
-					userDateObject = session.userdate = Now();
-				}
-			}
-			else {
-				userDateObject = session.userdate = Now();
-			}
-		}
-		else if ( StructKeyExists(url, "date") ) {
-			try {
-				userDateObject = LSParseDateTime( url.date );
-	//writeoutput( "<h2>choosy</h2>" );writedump( userDateObject );
-				session.userdate = userDateObject;
-			}
-			catch (any ee) {
-				userDateObject = session.userdate = Now();
-	//writeoutput( "<h2>golden</h2>" );writedump( ee );
-			}
-		}
-		else if ( StructKeyExists( session, "userdate" ) ) {
-			userDateObject = session.userdate;	
-		}
-		else {
-			//usedDate = DateTimeFormat( Now(), "YYYY-MM-DD HH:nn:ss" );
-			userDateObject = session.userdate = Now(); 
-		}
-	}
-
-
 	//Return user date object
 	function init ( Required dtArg ) {
 		userDateObject = session.userdate = dtArg; 

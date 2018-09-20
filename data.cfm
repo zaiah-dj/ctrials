@@ -20,11 +20,15 @@ Pwd:       9F25a26V7j42
 
 /*This variable is used by ColdMVC to load all configuration data*/
 manifest={
-/*This should probably not be modified by you*/
+/*----------------- NOT SMART TO MODIFY THIS STUFF ------------------*/
  "cookie" = "3ad2d4dc34e75130c0c2f3c4bbb262481b49250261bcb8e6443728b63d24"
  
+/*----------------- DEBUGGABLE STUFF ------------------*/
 /*Use this to move the date forward or backward*/
 //,date = "10/02/2018"
+
+/*Use this to spoof yourself as another user*/
+//,"user" = 1081 
 
 /*----------------- USER-MODIFIABLE STUFF ------------------*/
 /*Turn on debugging, yes or no?*/

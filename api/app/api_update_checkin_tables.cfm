@@ -10,7 +10,6 @@ if ( !StructIsEmpty( form ) ) {
 		 ,ps_week = { req = true }
 		 ,param = { req = true }
 		 ,insby  = { req = false, ifNone = 0 }
-		 ,staffid = { req = false, ifNone = 0 }
 		 ,ps_next_sched = { req = false , ifNone = 0 }
 		 ,bp_systolic = { req = false, ifNone = 0 }
 		 ,bp_diastolic = { req = false, ifNone = 0 }
@@ -75,8 +74,8 @@ if ( !StructIsEmpty( form ) ) {
 		if ( exists eq "" ) {
 			sqlString	= "
 				INSERT INTO #tbName# 
-					( staffId 
-					, #iif( isEnd, DE('mchntype'), DE('bodypart') )# 
+					( 
+					  #iif( isEnd, DE('mchntype'), DE('bodypart') )# 
 					, insertedBy
 					, weight
 					, participantGUID
@@ -87,8 +86,8 @@ if ( !StructIsEmpty( form ) ) {
 					, othMchn2
 					)
 		    VALUES 
-					( :staffid
-					, #iif( isEnd, DE(':mchntype'), DE(':bodypart') )# 
+					( 
+					  #iif( isEnd, DE(':mchntype'), DE(':bodypart') )# 
 					, :iby 
 					, :weight 
 					, :pid
@@ -107,7 +106,6 @@ if ( !StructIsEmpty( form ) ) {
 				SET 
 					weight  = :weight
 				 ,#iif( isEnd, DE('mchntype = :magic'), DE('bodypart = :magic') )# 
-				 ,staffId = :staffid 
 				 ,othMchn1= :om1
 				 ,othMchn2= :om2
 				WHERE participantGUID = :pid 
@@ -120,8 +118,7 @@ if ( !StructIsEmpty( form ) ) {
 		qh = dbExec(
 			string = sqlString
 		 ,bindArgs = {
-			  staffid = fv.staffid
-			 ,magic   = fv.param
+			  magic   = fv.param
 			 ,iby     = fv.insby
 			 ,weight  = fv.ps_weight
 			 ,pid     = fv.ps_pid

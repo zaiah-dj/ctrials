@@ -80,27 +80,18 @@
 		<div class="persistent-nav-right">
 			<a href="#link( "" )#"><li>Refresh</li></a>
 			<a href="#link( "" )#"><li>Notifications</li></a>
-			<!---
-				- session.email
-				- session.firstname
-				- session.lastname
-				- session.siteid
-				- session.logindts
-				- session.username
-				- session.userid
- 				--->
-			<a class="loggedInAs" href="#link( "" )#"><li>#session.username#</li></a>
+			<a class="loggedInAs" href="#link( "" )#"><li>#usr.username#</li></a>
 		</div>
 	</div>
 
 	<div class="js-overlay-window">
 		<ul>
-			<li>#session.firstname# #session.lastname#</li>
-			<li>Email: #session.email#</li>
-			<li>Site ID: #session.siteid#</li>
-			<li>Logged In Since #DateTimeFormat( session.logindts, "mm/dd/yyyy hh:nn:ss" )#</li>
-			<li>Logged in as: #session.username#</li>
-			<li>User ID: #session.userid#</li>
+			<li>#usr.firstname# #usr.lastname#</li>
+			<li>Email: #usr.email#</li>
+			<li>Site ID: #usr.siteid#</li>
+			<li>Logged In Since #DateTimeFormat( usr.logindts, "mm/dd/yyyy hh:nn:ss" )#</li>
+			<li>Logged in as: #usr.username#</li>
+			<li>User ID: #usr.userid#</li>
 		</ul>	
 	</div>
 

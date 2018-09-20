@@ -660,6 +660,11 @@ input.collapsible:checked + div > table { display: block; }
 	to: { left: 10px; }
 }
 
+.disp-assignees {
+	font-size: 15px;
+	line-height: 20px;
+}
+
 .disp-list li {
 	position: relative;
 	overflow: hidden;
@@ -686,6 +691,19 @@ input.collapsible:checked + div > table { display: block; }
 	color: black;
 	font-size: 1.6em;
 	height: 55px;
+}
+
+.disp-list li .left {
+	float: left;	
+	width: 60%;
+}
+
+.disp-list li .right {
+	float: right;	
+	width: 35%;
+	text-align: center;
+	font-size: 0.6em;
+	line-height: 15px;
 }
 
 

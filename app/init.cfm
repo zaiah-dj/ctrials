@@ -1,23 +1,5 @@
 <cfscript>
-//Include all CFCs first here
-rl    = CreateObject( "component", "components.requestLogger" );
-req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
-udo   = CreateObject( "component", "components.calcUserDate" )
-	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
-//wfb   = CreateObject( "component", "components.wfbutils" );
-include "constants.cfm";
-include "custom.cfm";
-
-//Set a smaller reference for the cdate
-cdate = udo.object.dateObject;
-
-//Set a user date object session key...
-(( data.loaded eq "default" ) && ( data.debug eq 1 )) ? udo.setSessionKeys() : 0;
-
-//Calculate all of these date variables
-( !StructKeyExists( session, "isAppDateSet" )) ? udo.setSessionKeys() : 0;
-
-//Check for session.userguid
+//If session.userguid is not there, the user probably is either not logged in or has a stale session.
 if ( !StructKeyExists( session, "userguid" ) ) {
 	//Redirect if I am not on an approved server
 	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) )
@@ -28,33 +10,30 @@ if ( !StructKeyExists( session, "userguid" ) ) {
 	}
 }
 
-//Set a site ID from here
-staffId = 0;
-if ( data.debug eq 1 ) {
-	if ( StructKeyExists( form, "setstaffid" ) )
-		session.userguid = sgid = form.setstaffid;
-	else if ( data.loaded eq "default" && StructKeyExists( url, "staffid" ) )
-		session.userguid = sgid = url.staffid;
-	//This condition could break API updates... so if there are any exceptions look here first...
-	else if ( !StructKeyExists( session, "userguid" ) )
-		location( addtoken = "no", url = data.redirectForLogin );
-	else {
-		sgid = session.userguid;
-	}
-}
-else {
-	//api updates may break...
-	if ( !StructKeyExists( session, "userguid" ) || !isDefined( "session.userguid" ) ) {
-		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid is not defined</h2>" );abort;}
-		//No default will be set if no guid exists, just redirect and get credentials again
-		location( addtoken = "no", url = data.redirectForLogin );
-	}
-	else {
-		//if (data.loaded eq "input"){writeoutput( "<h2>session.userguid defined and is '#session.userguid#'</h2>" );abort;}
-		//staffId = session.userguid;
-		sgid = session.userguid;
-	}
-}
+//Include all CFCs first here
+req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
+udo   = CreateObject( "component", "components.calcUserDate" )
+	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
+usr  = CreateObject( "component", "components.switchUser" ).init( dsn="#data.source#", 
+	tn="v_Interventionists", id=(StructKeyExists( data, "user" )) ? data.user : session.userguid );
+//wfb   = CreateObject( "component", "components.wfbutils" );
+include "constants.cfm";
+include "custom.cfm";
+
+//writedump( usr ); abort;
+//Set an easy to remember reference for the current date
+cdate = udo.object.dateObject;
+
+//Set a user date object session key...
+(( data.loaded eq "default" ) && ( data.debug eq 1 )) ? udo.setSessionKeys() : 0;
+
+//Calculate all of these date variables
+( !StructKeyExists( session, "isAppDateSet" )) ? udo.setSessionKeys() : 0;
+
+
+//Get the last session key in the browser or make a new one.
+if ( !StructKeyExists( session, "ivId" ) ) 
+	session.ivId = randstr( 5 ) & randnum( 10 ) & randstr( 5 );
 
 
 //Logic to get the most current ID.
@@ -67,10 +46,11 @@ else {
 }
 
 
-//Logic to get the most current ID.
+//Logic to get the "active" site ID.
 siteId = 0;
 if ( StructKeyExists( url, "siteid" ) )
-	session.siteid = siteId = url.siteid;
+	usr.siteid = siteId = url.siteid;
+/*
 else {
 	if ( !StructKeyExists( session, "siteid" ) )
 		session.siteid = siteId = 999;
@@ -79,16 +59,14 @@ else {
 		siteId = session.siteid;
 	}
 }
+*/
 
-//Get the last session key in the browser or make a new one.
-if ( !StructKeyExists( session, "ivId" ) ) 
-	session.ivId = randstr( 5 ) & randnum( 10 ) & randstr( 5 );
 
 //Look for a matching key of some sort.
 csQuery = dbExec(
   filename = 'csQuery.sql'
  ,bindArgs = { 
-		siteid = session.siteid 
+		siteid = usr.siteid 
 	 ,dow    = session.currentDayOfWeek
 	 ,dom    = session.currentDayOfMonth
 	 ,mon    = session.currentMonth
@@ -106,7 +84,7 @@ else {
 	csQuery = dbExec(
 	  filename = "csInsert.sql"
 	 ,bindArgs = { 
-		  site_id = session.siteid 
+		  site_id = usr.siteid 
 		 ,dtstarted = { value = cdate, type = "cf_sql_date" }
 		 ,dayofwk = session.currentDayOfWeek
 		 ,dayofmonth = session.currentDayOfMonth
@@ -127,7 +105,7 @@ else {
 	csQuery = dbExec(
 		filename = "csQuery.sql"
 	 ,bindArgs = { 
-			siteid = session.siteid 
+			siteid = usr.siteid 
 		 ,dow    = session.currentDayOfWeek
 		 ,dom    = session.currentDayOfMonth
 		 ,mon    = session.currentMonth
@@ -150,7 +128,7 @@ else {
 
 
 //Calculate site ID here if not already done...
-csSiteId = session.siteid;
+csSiteId = usr.siteid;
 
 
 //Get participant data 
@@ -168,7 +146,7 @@ randomCode = currentParticipant.results.randomGroupCode;
 selectedParticipants = dbExec( 
 	filename = "selectedParticipants.sql"
  ,bindArgs = {
-		guid = session.userguid 
+		guid = usr.userguid 
 	 ,sid = csSid 
 	 ,site_id = csSiteId
    ,today = { value=cdate, type="cf_sql_date" }
@@ -202,13 +180,11 @@ cs.day = session.currentDayOfWeek;
 cs.dayName = session.currentDayOfWeekName;
 cs.needsRebuild = 0;
 cs.selected = 0;
-cs.siteid = session.siteid;
-cs.staffId = staffId;
+cs.siteid = usr.siteid;
 cs.participantId = currentId ;
 cs.participantList = (isDefined("selectedParticipants")) ? ValueList(selectedParticipants.results.participantGUID, ", ") : "";
 cs.staff = {
 	 email     =  (isDefined( 'session.email' )) ? session.email : ""
-	,guid      = 	staffId 
 	,userid    =  (isDefined( 'session.userid' )) ? session.userid : ""
 	,firstname =  (isDefined( 'session.firstname' )) ? session.firstname : ""
 	,lastname  =  (isDefined( 'session.lastname' )) ? session.lastname : ""
