@@ -1,36 +1,33 @@
-
 TOP PRIORITY
-
-x Pull tickler participants in by site (how to test? - dunno yet..., you can drop your own thing in, i suppose or use data.cfm)
-
-x Finish assigned participant list
-		assigned to others
-
+=================
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
 
-- Hamburger window on smaller widths 
-
-- adjacent arrows
-
-- const value things
-
-- Javascript to detect actual work (if ANYTHING changes, it will register as done, if a button is simply pressed, it won't)
-
-x Javascript fix to allow new info on drag and droppers...
 
 ? Checkmark is not showing on production, why?
-
-x selected, assigned, available
 
 ? Stop Session button disappears on horiz view
 		the button and header changes may have solved this... check again 
 
+- incrementors on one line (30m)
+- configuration in Application.cfc (15-30m)
+- notifications (1hr, USER_[UN]ASSIGNED, PARTICIPANT_[UN]ASSIGNED)
+- switch to simple form input for 24hr time (not the changeable div) (30m)
+- position: fixed exercise selection menu on input.cfm (15-30, if fixed does not work, this will be rather difficult)
+- matching color scheme on recovery page (5m)
+- big buttons on half width default.cfm (5m)
+- three top sitting columns on assigned page (10m, media query)
+- pretty list views on js-overlay-window (10m, style hidden form)
+- gotta do docs , where is everything, what tables are used, etc
 
+- renderable / updateable might be rough and a bit error prone, so wait on that
+- previous weeks 
+- organize CSS 
 
 
 
 PRODUCTION CHECKS
+=================
 - Check and make sure that ALL tables that exist in dev, are in prod
 
 - Get rid of all tables and data not in use
@@ -38,41 +35,6 @@ PRODUCTION CHECKS
 - Save defaults, min and max to either database or constants.cfc
 
 ? What is up with warmup previous session data?
-
-
-
-BE EXTRA NICE TO HIM, MA
-? put everything in const., and I MEAN EVERYTHING!
-		this is a bigger change than I thought.  
-		It would be easier if all of this were in a database.
-		Then, the final move, would be to get rid of both component files
-
-		*const has proven hard to work with and still doesn't really solve the full problem.
-		*putting this in SQL is a bit tougher, but should make it easier to manage from one location, not to mention stop it from breaking
-			may have to use a union with the resultant row 
-			IF NULL will probably be needed to make the values show up right
-			adding the form vars to the query may help simplify things a lot as well...
-			additionally, you'll need an admin page where users can go in and make changes if need be...
-
-- There are lots of templates using loops, this is difficult to manage and takeover, so keep it simple and repeat yourself...
-		switch to copy pasta...
-
-- objects
-		currentParticipant can have its own thing
-			cp.init( query to select current participant )
-			cp.isEndurance()
-			cp.getName()
-		exercise? (when initializing all data on input, a specific time or exercise is selected)	
-
-- Try to better enforce model logic (lots of ifs in templates) 
-
-- You need a pubsub, this might be more important than I thought... 
-
-- Docs...
-
-- Application.cfc vs data.cfm (easier to read and follow for your customer)
-
-- Favicon
 
 
 

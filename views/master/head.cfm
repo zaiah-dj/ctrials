@@ -65,10 +65,16 @@
 
 <body>
 
-	<div class="persistent-nav">
+	<div class="persistent-nav"> 
+		<div id="persistent-nav-icon" class="persistent-nav-icon">
+			<li>
+				Menu
+				<div class="triangle-down"></div>
+			</li>
+		</div>	
+		
 		<div class="persistent-nav-left">
 			<a href="#data.redirectHome#"><li>Back to MoTrPAC</li></a>
-			<!---<a>#DateTimeFormat(cdate,"mm/dd/YYYY")# #DateTimeFormat(cdate,"hh:nn:ss")#</a>--->
 		</div>
 
 		<div class="persistent-nav-center">
@@ -78,13 +84,28 @@
 		</div>
 
 		<div class="persistent-nav-right">
-			<a href="#link( "" )#"><li>Refresh</li></a>
-			<a href="#link( "" )#"><li>Notifications</li></a>
-			<a class="loggedInAs" href="#link( "" )#"><li>#usr.username#</li></a>
+			<a href="#link( "" )#"><li>
+				Notifications
+				<div class="triangle-down"></div>
+			</li></a>
+			<a id="login" class="login" href="#link( "" )#"><li>
+				#usr.username#
+				<div class="triangle-down"></div>
+			</li></a>
 		</div>
 	</div>
 
-	<div class="js-overlay-window">
+	<div class="js-overlay-window persistent-nav-icon-window">
+		<ul>
+			<a href="#data.redirectHome#"><li>Back to MoTrPAC</li></a>
+			<li></li><!--- Blank list item for styling purposes only.--->
+			<a href="#link( "input.cfm" )#"><li>Home</li></a>
+			<a href="#link( "default.cfm" )#"><li>Participants</li></a>
+			<a href="#link( "staff.cfm" )#"><li>Assignments</li></a>
+		</ul>
+	</div>
+
+	<div class="js-overlay-window login-window">
 		<ul>
 			<li>#usr.firstname# #usr.lastname#</li>
 			<li>Email: #usr.email#</li>

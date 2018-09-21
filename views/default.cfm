@@ -70,10 +70,12 @@ to reorganize participants.
 								<span class="name">#firstname# #lastname#</span>
 							</div>
 							<div class="right">
+								PID: <span class="pid">#pid#</span><br />
+								Acrostic: <span class="acrostic">#acrostic#</span>
+								<span class="pguid hiddenFromView">#participantGUID#</span>
 								<span class="release">
 									<a href="" class="release">Release</a>
 								</span>
-								<span class="pguid hiddenFromView">#participantGUID#</span>
 							</div>
 						</li>	
 					</cfloop>

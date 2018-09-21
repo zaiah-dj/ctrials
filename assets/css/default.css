@@ -153,6 +153,57 @@ a.selected {
 .container-header {
 	height: 7%;
 	min-height: 60px; 
+	padding-top: 5px;
+}
+
+.legend {
+	text-align: left;
+	position: relative;
+	width: 100%;
+	height: 90%;
+} 
+
+.legend ul {
+	position: relative;
+	top: 10px;
+	height: 80%;
+	width: 90%;
+	left: 5%;
+	text-align: center;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	background-color: #fff;
+	border: 1px solid #aaa;
+}
+
+.legend ul li, 
+.legend ul li:hover { 
+	display: inline-block;
+	color: black;
+	font-size: 13px;
+	font-weight: normal;
+	transition: none;
+	padding: 0px;
+	padding-top: 0px;
+	border: 0px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-gecko-border-radius: 0px;
+	top: 0px;
+	left: 0px;
+	margin: 0px;
+	height: 30px;
+	vertical-align: top;
+}
+
+.legend ul li:nth-child(1) {
+	padding-top: 7px;
+}
+
+.legend li {
+	width: 23% !important;
+	font-size: 0.9em !important;
 }
 
 /*All info goes here.*/
@@ -865,7 +916,6 @@ a.tiny-link {
 	position: fixed;
 	background-color: #aaa;
 	transition: height 0.1s;
-	z-index: 90;
 	top: 0px;
 	overflow: hidden;
 }
@@ -1010,7 +1060,7 @@ input[type=search] {
 }
 
 /* -------------------------- *
-Top navigation.
+Header and top navigation.
  
  * -------------------------- */
 .persistent-nav {
@@ -1023,18 +1073,28 @@ Top navigation.
 	border-bottom: 1px solid #eeeeee;
 	box-shadow: 2px 2px 2px 2px #cccccc;
 	background-color: #ddd;
-	z-index: 99;
+	z-index: 0;
 }
 
-.persistent-nav div {
-	width: 33%;
-	display: inline-block;
-	padding: 0px;
-	margin: 0;
-	height: 100%;
+.persistent-nav-left ,
+.persistent-nav-center {
+	display:none;
 }
 
-.persistent-nav li {
+.persistent-nav-right {
+	position: absolute;
+	top: 10px;
+	right: 0px;
+}
+
+.change { 
+	transition: 0.4s;
+  -webkit-transform: rotate(-180deg); 
+  transform: rotate(-180deg); 
+}
+
+.persistent-nav-icon li ,
+.persistent-nav-right li {
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-gecko-border-radius: 5px;
@@ -1051,15 +1111,64 @@ Top navigation.
 	padding-top: 8px;
 }
 
+.persistent-nav-icon li {
+	position: relative;
+	top: 5px;
+}
+
+ 
 .persistent-nav li:hover {
 	background-color: #bbbbbb;
 }
 
-.persistent-nav-center {
-	text-align: center;
+.triangle-down {
+	margin-left: 5px;
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 10px solid #fff;
 }
-.persistent-nav-right {
-	text-align: right;
+
+@media only screen and (min-width: 900px) {
+	.persistent-nav div {
+		width: 33%;
+		display: inline-block;
+		padding: 0px;
+		margin: 0;
+		height: 100%;
+	}
+
+	div.persistent-nav-icon { 
+		display: none;	
+	}
+
+	.persistent-nav li {
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+		-gecko-border-radius: 5px;
+		display: inline-block;
+		text-align: center;
+		font-size: 1.0em;
+		background-color: #666666;
+		color: white;
+		height: 80%;
+		top: 10%;
+		position: relative;
+		padding-left: 15px;
+		padding-right: 15px;
+		padding-top: 8px;
+	}
+
+	.persistent-nav-center {
+		text-align: center;
+	}
+	.persistent-nav-right {
+		text-align: right;
+		height: 60%;
+		top: 0%;
+	}
 }
 
 
@@ -1537,36 +1646,6 @@ div.paddMe {
 	margin-bottom: 200px;
 }
 
-.legend {
-	text-align: left;
-	height: 20px;
-	position: relative;
-	top: 20px;
-} 
-
-.legend ul {
-	position: relative;
-	top: 0px;
-	left: -35px;
-}
-
-.legend ul,
-.legend ul li, 
-.legend ul li:hover { 
-	display: inline-block;
-	color: black;
-	font-size: 13px;
-	font-weight: normal;
-	transition: none;
-	padding: 0px;
-	padding-top: 0px;
-	border: 0px;
-	border-radius: 0px;
-	-moz-border-radius: 0px;
-	-gecko-border-radius: 0px;
-	top: 0px;
-	margin: 0px;
-}
 
 .selection h5 {
 	color: black;
@@ -1909,7 +1988,16 @@ js- (e.g. js-div, js-popup, etc)
 	width: 25%;
 	min-width: 200px;
 	z-index: 99;
-	right: 0px;
 	background-color: white;
 	border: 1px solid #ccc;
 }
+
+.persistent-nav-icon-window {
+	left: 0px;
+}
+
+.login-window {
+	right: 0px;
+}
+
+

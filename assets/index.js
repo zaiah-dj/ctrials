@@ -1383,14 +1383,34 @@ return;
 }
 
 
-function slidemenu( ev ) {
+function slideMenu ( ev ) {
 	ev.preventDefault();
-	var st = STATE_TRACKER[ ev.target.name ];
-	a = document.querySelector( ".js-overlay-window" );
-	a.style.display = (st) ? "none" : "block";
-	STATE_TRACKER[ ev.target.name ] = ( st ) ? 0 : 1; 
+	var id = ev.target.parentElement.id;
+	var st = STATE_TRACKER[ id ];
+	(a = document.querySelector( "." + id + "-window" )).style.display = (st) ? "none" : "block";
+	STATE_TRACKER[ id ] = ( st ) ? 0 : 1; 
 }
 
+
+
+function slideMenuLogin( ev ) {
+	ev.preventDefault();
+	var id = ev.target.parentElement.id;
+	var st = STATE_TRACKER[ id ];
+	(a = document.querySelector( "." + id + "-window" )).style.display = (st) ? "none" : "block";
+	STATE_TRACKER[ id ] = ( st ) ? 0 : 1; 
+}
+
+
+function slideMenuNavIcon( ev ) {
+	ev.preventDefault();
+console.log( ev.target.classList );
+	ev.target.classList.toggle( "change" );
+	var id = ev.target.id;
+	var st = STATE_TRACKER[ id ];
+	(a = document.querySelector( "." + id + "-window" )).style.display = (st) ? "none" : "block";
+	STATE_TRACKER[ id ] = ( st ) ? 0 : 1; 
+}
 
 /* ------------------------------------ *
 function wasDocTouched (ev)
@@ -1409,6 +1429,9 @@ function wasDocTouched (ev) {
 		docWasTouched = 1;
 	} 
 }
+
+
+
 
 
 /*
@@ -1503,6 +1526,6 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 	for ( n in Router ) str.push( n ); 
 
 	//Initialize all global elements here, because Routex does not include a way to do this right now.
-	document.querySelector( ".loggedInAs"	).addEventListener( "click", slidemenu );
-
+	document.querySelector( ".login"	).addEventListener( "click", slideMenu );
+	document.querySelector( ".persistent-nav-icon"	).addEventListener( "click", slideMenu );
 });
