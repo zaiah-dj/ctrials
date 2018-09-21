@@ -1140,6 +1140,16 @@ Header and top navigation.
 		height: 100%;
 	}
 
+	.persistent-nav div.triangle-down {
+		margin-left: 5px;
+		display: inline-block;
+		width: 0;
+		height: 0;
+		border-left: 5px solid transparent;
+		border-right: 5px solid transparent;
+		border-top: 10px solid #fff;
+	}
+
 	div.persistent-nav-icon { 
 		display: none;	
 	}
@@ -1165,6 +1175,10 @@ Header and top navigation.
 		text-align: center;
 	}
 	.persistent-nav-right {
+		text-align: right;
+		height: 60%;
+	}
+	.persistent-nav-right li {
 		text-align: right;
 		height: 60%;
 		top: 0%;
