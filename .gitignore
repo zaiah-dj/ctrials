@@ -34,3 +34,5 @@ app/dev/
 docs
 
 *.tmp
+
+snapshots/*

@@ -42,6 +42,7 @@ try {
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
 		,insBy = { req = true }
+		,pageUpdated = { req = true }
 		,hrMonitor = { req = (isWarmup), ifNone = false }
 		,is_exercise_done = { req = false, ifNone = false }
 		,is_superset = { req = false, ifNone = false }
@@ -67,7 +68,7 @@ try {
 
 	//Change hrMonitor
 	if ( StructKeyExists( fv, "hrMonitor" ) ) {
-		fv.hrMonitor = ( fv.hrMonitor eq "on" ) ? 1 : 0;
+		fv.hrMonitor = ( fv.hrMonitor eq "on" ); 
 	}
 
 	//Check what was submitted from metadata
@@ -79,7 +80,7 @@ try {
 		SELECT 
 			participantGUID 
 		FROM 
-			#data.data.resistance#	
+			frm_retl	
 		WHERE 
 			participantGUID = :pid
 		AND 
@@ -109,7 +110,7 @@ if ( !upd.prefix.recordCount ) {
 	vpath = 0;
 	sqlString = "
 		INSERT INTO 
-			#data.data.resistance#	
+			frm_retl	
 		(  
 			 participantGUID
 			,d_inserted
@@ -152,7 +153,7 @@ else {
 	vpath = 1;
 	sqlString = " 
 		UPDATE
-			#data.data.resistance#	
+			frm_retl	
 		SET 
 			 d_inserted  = :dtstamp
 			,insertedBy  = :insBy
@@ -312,43 +313,45 @@ try {
 	}
 
 	//Finally, record the user's progress through the exercises.
-	prog = dbExec(
-		string = "
-		SELECT * FROM
-			ac_mtr_frm_progress
-		WHERE
-			fp_participantGUID = :pid
-		AND
-			fp_step = :step
-		"
-	 ,bindArgs = {
-			pid = fv.pid
-		 ,step = extype
-		}
-	);
-
-	if ( !prog.status ) {
-		req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
-	}
-
-	//Record exercise, participantGUID and session id of the current day
-	if ( prog.prefix.recordCount eq 0 ) {
+	if ( fv.pageUpdated ) { 
 		prog = dbExec(
 			string = "
-			INSERT INTO	ac_mtr_frm_progress
-				( fp_step, fp_participantGUID, fp_sessdayid )
-			VALUES 
-				( :step, :pid, :sdid )
+			SELECT * FROM
+				ac_mtr_frm_progress
+			WHERE
+				fp_participantGUID = :pid
+			AND
+				fp_step = :step
 			"
 		 ,bindArgs = {
-				step = extype
-			 ,pid = fv.pid
-			 ,sdid = csSid
+				pid = fv.pid
+			 ,step = extype
 			}
 		);
 
 		if ( !prog.status ) {
 			req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+		}
+
+		//Record exercise, participantGUID and session id of the current day
+		if ( prog.prefix.recordCount eq 0 ) {
+			prog = dbExec(
+				string = "
+				INSERT INTO	ac_mtr_frm_progress
+					( fp_step, fp_participantGUID, fp_sessdayid )
+				VALUES 
+					( :step, :pid, :sdid )
+				"
+			 ,bindArgs = {
+					step = extype
+				 ,pid = fv.pid
+				 ,sdid = csSid
+				}
+			);
+
+			if ( !prog.status ) {
+				req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+			}
 		}
 	}
 }

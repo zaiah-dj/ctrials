@@ -26,6 +26,8 @@ var TEMPLATES = {};
 var RECOVERY_STATE = 0;
 //All things that need state tracked can go here for now...
 var STATE_TRACKER = {};
+//Document was touched
+var docWasTouched = 0;
 //All endpoints go here for easy editing in the future
 /*
 var ENDPOINTS = {
@@ -130,8 +132,14 @@ function Routex ( args ) {
 }
 
 
+/* ------------------------------------ *
+function allowDrop(ev)
+
+...
+ * ------------------------------------ */
 function allowDrop(ev) {
 	ev.preventDefault();
+	//console.log( "allow drop" );
 }
 
 
@@ -228,7 +236,6 @@ function addFrameworkWin( elChain ) {
 function saveParticipantNote( ev ) 
 
 Save a participant note to an API endpoint.
-
  * ------------------------------------ */
 function saveParticipantNote ( ev ) {
 	ev.preventDefault();
@@ -343,7 +350,12 @@ function saveParticipantEarlyStopReason ( ev ) {
 }
 
 
-function drag(ev, optArg) {
+/* ------------------------------------ *
+function drag(ev, optArg)
+
+When the drag is started, create a node.
+ * ------------------------------------ */
+function drag (ev, optArg) {
 	if ( optArg ) {
 		//( isDebugPresent ) ? console.log( "swipe complete..." ) : 0;
 		return;
@@ -351,64 +363,22 @@ function drag(ev, optArg) {
 	else {
 		//( isDebugPresent ) ? console.log( "drag complete..." ) : 0;
 		//ev.dataTransfer.setData("text", ev.target.id);
+		console.log( "drag started..." ); 
 		fw[fw.index] = prepareParticipantNode( ev.target );
+console.log( fw[ fw.index ] );
 	}
 }
 
 
-//
-function prepareParticipantNode ( el ) {
-	return { 
-		id: el.children[1].innerHTML
-	 ,name: el.children[0].innerHTML.split( " (" )[0]
-	 ,pid: el.children[0].innerHTML.match(/([0-9].*)/)[1].replace(")","")
-	 ,ref: el
-	 ,className: el.className
-	};
-}
+/* ------------------------------------ *
+function drop(ev)
 
-
-//
-function createParticipantNode( el ) {
-	//Add a new node otherwise
-	node = document.createElement( "li" );
-	node.className =  el.className + "-dropped";//"endurance-class-dropped"; 
-	divL = document.createElement( "div" );
-	divL.className = "left";
-	divR = document.createElement( "div" );
-	divR.className = "right";
-
-	//console.log( el.string.replace(/([0-9].*)/,"").replace(" (","") );
-	//console.log( el.id);
-	//console.log( el.string.match(/([0-9].*)/)[1].replace(")","") );
-
-	span1 = document.createElement( "span" );
-	span1.innerHTML = el.name; //el.string.replace(/([0-9].*)/,"").replace(" (","");
-	span2 = document.createElement( "span" );
-	span2.innerHTML = el.id;
-	span3 = document.createElement( "span" );
-
-	//span3.innerHTML = " (" + el.string.match(/([0-9].*)/)[1].replace(")","")  + ")";
-	span3.innerHTML = " (" + el.pid + ")";
-	divL.appendChild( span1 ); 
-	divL.appendChild( span2 ); 
-	divL.appendChild( span3 ); 
-	ahref = document.createElement( "a" );
-	ahref.className = "release"; 
-	ahref.innerHTML = "Release"; 
-	ahref.addEventListener( "click", releaseParticipant );
-	divR.appendChild( ahref );
-	node.appendChild( divL );
-	node.appendChild( divR );
-	return node;
-}
-
-
-//...
+Drop ...
+ * ------------------------------------ */
 function drop(ev) {
 	//var isDebugPresent = document.getElementById( "cfdebug" );
-	//No default
 	ev.preventDefault();
+	console.log( "drop finished..." ); 
 
 	//Always check against drop list and make sure the duplicate entries aren't getting in
 	aa = [].slice.call( document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" ) ); 
@@ -424,12 +394,112 @@ function drop(ev) {
 	}
 
 	//Create a new node
-	node = createParticipantNode( fw[fw.index] );
+	node = createParticipantNode( fw[fw.index], 1 );
 	ev.target.children[0].appendChild( node ); 
 	
 	//Remove the original element
 	ce = fw[ fw.index ].ref;
 	ce.parentElement.removeChild( ce ); 
+}
+
+
+/* ------------------------------------ *
+function prepareParticipantNode ( el )
+
+Prepare a participant node.
+ * ------------------------------------ */
+function prepareParticipantNode ( el ) {
+/*
+	return { 
+		id: el.children[1].innerHTML
+	 ,name: el.children[0].innerHTML.split( " (" )[0]
+	 ,pid: el.children[0].innerHTML.match(/([0-9].*)/)[1].replace(")","")
+	 ,ref: el
+	 ,className: el.className
+	};
+*/
+
+	return {
+		ref: el
+	 ,id: el.querySelector( "span.pguid" ).innerHTML
+	 ,pid: el.querySelector( "span.pid" ).innerHTML
+	 ,name: el.querySelector( "span.name" ).innerHTML
+	 ,acrostic: el.querySelector( "span.acrostic" ).innerHTML
+	 ,className: el.className
+	};
+}
+
+
+/* ------------------------------------ *
+function createParticipantNode( el, rightSide )
+
+Create a participant node suitable for
+either viewing or releasing participants.
+ * ------------------------------------ */
+function createParticipantNode( el, rightSide ) {
+/*
+//This is fine, but a render step is needed...
+<li class="{{ className }}">
+	<div class="left">
+		<span class="name">{{ name }}</span>
+	</div>
+	<div class="right">
+		<span class="release">
+			<a href="{{ releaseLink }}" class="release">Release</a>
+		</span>
+	</div>
+</li>
+
+	//Will return a pretty new node
+	return render( {
+		textHtml: above
+  , elements: {
+			className:
+		 ,name:
+		 ,releaseLink: 	
+		}
+	}
+*/
+	//Add all new nodes
+	(node = document.createElement( "li" )).className = el.className + (( rightSide ) ? "-dropped" : "");
+	(divLeft = document.createElement( "div" )).className = "left";
+	(divRight = document.createElement( "div" )).className = "right";
+	(spanName = document.createElement( "span" )).className = "name";
+	(spanPid = document.createElement( "span" )).className = "pid";
+	(spanAcrostic = document.createElement( "span" )).className = "acrostic";
+	(spanPguid = document.createElement( "span" )).className = "pguid hiddenFromView";
+
+	//Set all of these references
+	spanName.innerHTML = el.name;
+	spanPguid.innerHTML = el.id;
+	spanPid.innerHTML = el.pid;
+	spanAcrostic.innerHTML = el.acrostic;
+
+	//Set the left up first
+	divLeft.appendChild( spanName );
+
+	//Then the right (and yes, this is ridiculous)
+	divRight.appendChild( document.createTextNode("PID: ") );
+	divRight.appendChild( spanPid );
+	divRight.appendChild( document.createElement("br") );
+	divRight.appendChild( document.createTextNode("Acrostic: ") );
+	divRight.appendChild( spanAcrostic );
+	divRight.appendChild( spanPguid );
+
+	//Only add release when it's on a specific side
+	if ( rightSide ) {
+		(relHref = document.createElement( "a" )).className = "release";
+		relHref.innerHTML = "Release";
+		relHref.addEventListener( "click", releaseParticipant );
+		(spanRel = document.createElement( "span" )).className = "release";
+		spanRel.appendChild( relHref );
+		divRight.appendChild( spanRel );
+	}
+	
+	//Then the full node
+	node.appendChild( divLeft );
+	node.appendChild( divRight );
+	return node;
 }
 
 
@@ -619,7 +689,7 @@ function saveSessionUsers (ev) {
 
 	//Serialize all the data
 	vv=[];
-	vals = [].slice.call(document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" )); 
+	vals = [].slice.call(document.querySelectorAll( ".listing-drop ul li span.pguid" )); 
 	if ( vals.length > 0 ) {
 		for ( i=0; i < vals.length; i++) vv[i] = vals[i].innerHTML; 
 	}
@@ -778,28 +848,21 @@ function releaseParticipant ( ev ) {
 	ev.preventDefault();
 
 	//Find the ID of the participant selected
-	par = ev.target.parentElement.parentElement;
+	var par = ev.target.parentElement.parentElement.parentElement;
+	var el = prepareParticipantNode( par );
+	var f = document.getElementById( "wash-id" );
 
-	//Assemble a POST request with the ID and other info
-	f = document.getElementById( "wash-id" );
+	//Replace class name, can't remember why
+	el.className = el.className.replace( "-dropped", "" );
 	
-	//Keep all the things
-	var thisGuy = { 
-		id: par.querySelector( "span:nth-child(2)" ).innerHTML
-	, string: par.querySelector( "span:nth-child(1)" ).innerHTML
-	, className: par.className.replace( "-dropped", "" )
-	, acrostic: par.querySelector( "span:nth-child(3)" ).innerHTML //.replace(" (","").replace(")","")
-	};
-
-	//....
+	//Assemble a POST request with the ID and other info
 	payload = [
 		 "interventionist_id=" + f.interventionist_id.value  
 		,"transact_id=" + f.transact_id.value 
 		,"sessday_id=" + f.sessday_id.value 
-		,"pid=" + thisGuy.id
+		,"pid=" + el.id
 		,"this=releaseParticipant"
 	].join( '&' );
-
 
 	//Start a timer to acutally remove the element from the DOM
 	setTimeout( function () { par.parentElement.removeChild( par ); }, 2000 );	
@@ -827,20 +890,16 @@ function releaseParticipant ( ev ) {
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( payload );
 
-	//Add the other element to the other side
-	node = document.createElement( "li" );
-	node.innerHTML = thisGuy.string + " (" + thisGuy.acrostic + ")";
-	node.className =  thisGuy.className;
-
 	//Would add to the bottom of the list, but it needs to be at the top
-	a = document.querySelector( "ul.part-drop-list li:nth-child(1)" );
-	//console.log( a );
-	if ( a ) 
+	var a=null, node = createParticipantNode( el, 0 );
+	if (a = document.querySelector( "ul.part-drop-list li:nth-child(1)" ))
 		a.parentElement.insertBefore( node, a );
 	else {
 		a = document.querySelector( "ul.part-drop-list" ); 
 		a.appendChild( node ); 
 	}
+
+	//node needs an event listener to control drag and drop again
 
 	//Return false
 	return false;
@@ -1000,8 +1059,8 @@ function touchStart (ev, passedName) {
 					}
 				}
 			}
-		  node = createParticipantNode( pp );
-			targ = document.querySelector( ".listing-drop ul" ) 
+		  node = createParticipantNode( pp, 0 );
+			targ = document.querySelector( ".listing-drop ul" );
 			targ.appendChild( node );
 			ev.target.parentElement.removeChild( ev.target );
 		}
@@ -1332,6 +1391,26 @@ function slidemenu( ev ) {
 	STATE_TRACKER[ ev.target.name ] = ( st ) ? 0 : 1; 
 }
 
+
+/* ------------------------------------ *
+function wasDocTouched (ev)
+
+Checks if the document was ACTUALLY
+interacted with or not.  This is a 
+simple way to detect whether or not
+the user actually interacting with
+important elements.
+ * ------------------------------------ */
+function wasDocTouched (ev) {
+	ev.preventDefault();
+	//Update the following global if things were touched.
+	if ( !docWasTouched ) {
+		document.querySelector( "input[name=pageUpdated]" ).value = 1;
+		docWasTouched = 1;
+	} 
+}
+
+
 /*
 //The Router structure is key to make interfaces work.
 //Can't wait for WASM
@@ -1375,8 +1454,8 @@ Router = {
 	]
 
 	,"input": [
-		{ domSelector: ".slider"            , event: "input"   , f: changeSliderNeighborValue } 
-	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI } 
+		{ domSelector: ".slider"            , event: "input"   , f: [ wasDocTouched, changeSliderNeighborValue ] } 
+	 ,{ domSelector: ".incrementor"       , event: "click"   , f: [ wasDocTouched, updateNeighborBoxFromSI ] } 
 	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
 	 ,{ domSelector: ".stateChange"  , event: "click"   , f: [ updateTime, timeChangeUpdate ] } 
 	 ,{ domSelector: "button.stateChange + div"  , event: "click"   , f: changeUp } 
@@ -1392,6 +1471,8 @@ Router = {
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
 	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
+	 ,{ domSelector: ".bigly-right"       , event: "drop"    , f: drop }
+	 ,{ domSelector: ".bigly-right"       , event: "dragover" , f: allowDrop }
 	]
 
 	,"default":      [
@@ -1403,6 +1484,8 @@ Router = {
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
 	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
+	 ,{ domSelector: ".bigly-right"       , event: "drop"    , f: drop }
+	 ,{ domSelector: ".bigly-right"       , event: "dragover" , f: allowDrop }
 	]
 };
 

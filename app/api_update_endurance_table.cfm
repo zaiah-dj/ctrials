@@ -3,8 +3,6 @@
 errstr = "Error at /api/endurance/* - ";
 vpath = 1;
 try {
-
-
 	//Differentiate between Cycles, Treadmills and Other
 	CYCLE = 1;
 	TREADMILL = 2;
@@ -37,6 +35,7 @@ try {
 	//Pull all required values out of the form scope.
 	stat = cmValidate( form, { 
 		 pid = { req = true }
+		,pageUpdated = { req = true }
 		,sess_id = { req = true }
 		,stdywk = { req = true }
 		,dayofwk = { req = true }
@@ -74,7 +73,7 @@ try {
 
 	//Change hrMonitor
 	if ( StructKeyExists( fv, "hrMonitor" ) ) {
-		fv.hrMonitor = ( fv.hrMonitor eq "on" ) ? 1 : 0;
+		fv.hrMonitor = ( fv.hrMonitor eq "on" ); 
 	}
 
 	//???
@@ -232,50 +231,51 @@ try {
 		);
 	}
 
-	//Write progress
-	prog = dbExec(
-		string = "
-		SELECT * FROM
-			ac_mtr_frm_progress
-		WHERE
-			fp_participantGUID = :pid
-		AND
-			fp_step = :step
-		AND
-			fp_sessdayid = :sid
-		"
-	 ,bindArgs = {
-			pid = fv.pid
-		 ,sid = csSid
-		 ,step = fv.timeblock 
-		}
-	);
-
-	if ( !prog.status ) {
-		req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
-	}
-
-	//If there is anything here, add a row
-	if ( prog.prefix.recordCount eq 0 ) {
+	if ( fv.pageUpdated ) {
+		//Write progress
 		prog = dbExec(
 			string = "
-			INSERT INTO	ac_mtr_frm_progress
-				( fp_step, fp_participantGUID, fp_sessdayid )
-			VALUES 
-				( :step, :pid, :sdid )
+			SELECT * FROM
+				ac_mtr_frm_progress
+			WHERE
+				fp_participantGUID = :pid
+			AND
+				fp_step = :step
+			AND
+				fp_sessdayid = :sid
 			"
 		 ,bindArgs = {
-				step = fv.timeblock 
-			 ,pid = fv.pid
-			 ,sdid = csSid
+				pid = fv.pid
+			 ,sid = csSid
+			 ,step = fv.timeblock 
 			}
 		);
 
 		if ( !prog.status ) {
 			req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
 		}
-	}
 
+		//If there is anything here, add a row
+		if ( prog.prefix.recordCount eq 0 ) {
+			prog = dbExec(
+				string = "
+				INSERT INTO	ac_mtr_frm_progress
+					( fp_step, fp_participantGUID, fp_sessdayid )
+				VALUES 
+					( :step, :pid, :sdid )
+				"
+			 ,bindArgs = {
+					step = fv.timeblock 
+				 ,pid = fv.pid
+				 ,sdid = csSid
+				}
+			);
+
+			if ( !prog.status ) {
+				req.sendAsJson( status = 0, message = "#errstr# - #prog.message#" );
+			}
+		}
+	}
 }
 catch (any ff) {
 	req.sendAsJson( status = 0, message = "#errstr# #ff#" );

@@ -35,15 +35,26 @@ to reorganize participants.
 								<cfset listClassPrefix="control">
 							</cfif>
 							<li class="#listClassPrefix#-class">
+							<!---
 								<span>#firstname# #lastname# (#pid#)</span>
 								<span>#participantGUID#</span>
+							--->
+								<div class="left">
+									<span class="name">#firstname# #lastname#</span>
+								</div>
+								<div class="right">
+									PID: <span class="pid">#pid#</span><br />
+									Acrostic: <span class="acrostic">#acrostic#</span>
+									<span class="pguid hiddenFromView">#participantGUID#</span>
+								</div>
 							</li>	
 						</cfloop>
 					</ul>
 				</div>
 			</div>
 
-			<div class="bigly bigly-right" style="float: right;" ondrop="drop(event)" ondragover="allowDrop(event)">
+			<div class="bigly bigly-right" style="float: right;">
+			<!--- ondrop="drop(event)" ondragover="allowDrop(event)"> --->
 				<div class="listing listing-drop">
 					<ul class="disp-list"> 
 					<cfloop query = selectedParticipants.results>
@@ -56,12 +67,13 @@ to reorganize participants.
 						</cfif>
 						<li class="#listClassPrefix#-class-dropped">
 							<div class="left">
-							<span>#firstname# #lastname#</span>
-							<span>#participantGUID#</span>
-							<span>(#pid#)</span>
+								<span class="name">#firstname# #lastname#</span>
 							</div>
 							<div class="right">
-							<a href="" class="release">Release</a>
+								<span class="release">
+									<a href="" class="release">Release</a>
+								</span>
+								<span class="pguid hiddenFromView">#participantGUID#</span>
 							</div>
 						</li>	
 					</cfloop>

@@ -250,6 +250,7 @@
 			<input type="hidden" name="stdywk" value="#sc.week#">
 			<input type="hidden" name="#private.hiddenVarName#" value="#private.magic#">
 			<input type="hidden" name="insBy" value="#usr.userguid#">
+			<input type="hidden" name="pageUpdated" value=0> 
 			<!---
 			<input type="hidden" name="recordthread" value="#sc.recordthread#">
 	#AjaxClientInitCode#

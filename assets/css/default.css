@@ -706,6 +706,28 @@ input.collapsible:checked + div > table { display: block; }
 	line-height: 15px;
 }
 
+.disp-list li.endurance-class-dropped .right ,
+.disp-list li.resistance-class-dropped .right ,
+.disp-list li.control-class-dropped .right {
+	text-align: left;
+	width: 39%;
+}
+
+span.release {
+	border: 1px solid white;
+	padding: 5px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	float: right;
+	font-size: 1.2em;
+	position: relative;
+	top: -15px;
+}
+
+span.release a {
+	color: white;
+}
 
 #bigly-search {
 	width: 80%;
@@ -753,17 +775,6 @@ input.collapsible:checked + div > table { display: block; }
 	background-color: #ccc;
 }
 
-
-ul.part-drop-list li span:nth-child(2) ,
-.listing li span:nth-child(2) 
-{
-	display: none;	
-}
-
-ul.part-drop-list li span:nth-child(3) ,
-.listing li span:nth-child(3) 
-{
-}
 
 /*#cddc39 - pukey green */
 /*#009688 - teal*/
@@ -1442,6 +1453,10 @@ label.param-ta {
 	float: right;
 }
 
+.right li {
+	display: block;
+}
+
 .selection .links {
 	margin: 0 auto;
 	margin-bottom: 20px;
@@ -1826,13 +1841,10 @@ span.tiny {
 table.innard { width: 100%; }
 table.innard tr { height: 70px; }
 table.innard td.thin { width: 10%; }
-/*
-#done ,
-*/
 
-
+/*Not the greatest solution*/
 .hiddenFromView {
-	display: none;
+	display: none !important;
 }
 
 .hiddenActivate {

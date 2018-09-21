@@ -43,12 +43,12 @@ component {
 			if ( IsNumeric( arguments.id ) ) {
 				sqlQuery = "SELECT * FROM #arguments.tn# WHERE userID = :uid";
 				q.addParam( name="uid", value=arguments.id, cfsqltype="cf_sql_numeric" );
-				stat = ( session.userid == arguments.id );
+				stat = ((StructKeyExists(session,"userid")) && session.userid == arguments.id );
 			}
 			else { 
 				sqlQuery = "SELECT * FROM #arguments.tn# WHERE userGUID = :uid";
 				q.addParam( name="uid", value=arguments.id, cfsqltype="cf_sql_varchar" );
-				stat = ( session.userguid == arguments.id );
+				stat = ((StructKeyExists(session,"userguid")) && session.userguid == arguments.id );
 			}
 
 			//Execute the query

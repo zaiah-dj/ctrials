@@ -6,9 +6,11 @@ if ( !StructKeyExists( session, "userguid" ) ) {
 		location( addtoken = "no", url = data.redirectForLogin );
 	else {
 		//Also requires a userGUID
+		session.userguid = 1049;
 		//session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
 	}
 }
+
 
 //Include all CFCs first here
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
@@ -16,6 +18,7 @@ udo   = CreateObject( "component", "components.calcUserDate" )
 	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
 usr  = CreateObject( "component", "components.switchUser" ).init( dsn="#data.source#", 
 	tn="v_Interventionists", id=(StructKeyExists( data, "user" )) ? data.user : session.userguid );
+
 //wfb   = CreateObject( "component", "components.wfbutils" );
 include "constants.cfm";
 include "custom.cfm";

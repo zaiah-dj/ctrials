@@ -9,7 +9,15 @@ x Finish assigned participant list
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
 
-- Javascript fix to allow new info on drag and droppers...
+- Hamburger window on smaller widths 
+
+- adjacent arrows
+
+- const value things
+
+- Javascript to detect actual work (if ANYTHING changes, it will register as done, if a button is simply pressed, it won't)
+
+x Javascript fix to allow new info on drag and droppers...
 
 ? Checkmark is not showing on production, why?
 
