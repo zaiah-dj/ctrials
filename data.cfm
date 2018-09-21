@@ -10,7 +10,6 @@ are all updated here.
 * ------------------------------------------- */
 useDebug = 1;
 
-
 /*Passwords if ever needed
 Server:    sqldev.phs.wfubmc.edu
 Account:   motrpacDevUser

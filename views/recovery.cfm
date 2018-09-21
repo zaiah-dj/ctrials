@@ -138,7 +138,7 @@
 		<input type="hidden" name="pid" value="#cs.participantId#">
 		<input type="hidden" name="dayofwk" value="#session.currentDayOfWeek#">
 		<input type="hidden" name="stdywk" value="#sc.week#">
-		<input type="hidden" name="insBy" value="#sgid#">
+		<input type="hidden" name="insBy" value="#usr.userguid#">
 	<cfif aborted>
 		<input type="hidden" name="lastExercisePrefix" value="#lastExercisePrefix#">
 	</cfif>

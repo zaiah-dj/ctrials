@@ -3,27 +3,36 @@ TOP PRIORITY
 - Plug in to John's eq table for eq settings (not exactly sure how this works)
 		frm_RESL
 
+- Send a meeting request with you, jack and debbie
+
+- start docs
 
 ? Checkmark is not showing on production, why?
+	login and check this
 
 ? Stop Session button disappears on horiz view
 		the button and header changes may have solved this... check again 
 
-- incrementors on one line (30m)
-- configuration in Application.cfc (15-30m)
-- notifications (1hr, USER_[UN]ASSIGNED, PARTICIPANT_[UN]ASSIGNED)
 - switch to simple form input for 24hr time (not the changeable div) (30m)
+- incrementors on one line / super big input page (30m)
 - position: fixed exercise selection menu on input.cfm (15-30, if fixed does not work, this will be rather difficult)
-- matching color scheme on recovery page (5m)
-- big buttons on half width default.cfm (5m)
-- three top sitting columns on assigned page (10m, media query)
-- pretty list views on js-overlay-window (10m, style hidden form)
-- gotta do docs , where is everything, what tables are used, etc
+- drop down menus should be on top (why are they not?)
+
+- notifications (1hr, USER_[UN]ASSIGNED, PARTICIPANT_[UN]ASSIGNED)
+- configuration in Application.cfc (15-30m)
+
+x matching color scheme on recovery page (5m), also need to try a different checker thingy, cuz it's too hard to see
+C big buttons on half width default.cfm (5m) (not needed...)
+x three top sitting columns on assigned page (10m, media query)
+x pretty list views on js-overlay-window (10m, style hidden form)
 
 - renderable / updateable might be rough and a bit error prone, so wait on that
 - previous weeks 
 - organize CSS 
 
+x kill input.collapsible
+
+- double tap move?
 
 
 PRODUCTION CHECKS

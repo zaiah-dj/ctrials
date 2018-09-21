@@ -3,13 +3,48 @@ make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/
 
 ## STATS
 
-- Commit count: 463
+- Commit count: 468
 - Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
-- Last Commit Date:   Thu Sep 20 13:26:04 2018 -0400
+- Last Commit Date:   Fri Sep 21 14:49:49 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
 
 ## HISTORY
+
+commit 8e85dea022186e2e4536b0d217ec49246325cac5
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 14:49:49 2018 -0400
+
+-  - Refit these checkbox buttons again. (they could use some work...)
+
+commit f25cdb8d8007eef88c419c7c3a72c0d96d780a0c
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 13:54:09 2018 -0400
+
+-  Recovery had a bug, fixed.
+
+commit 95eb1c9956528cdf59f8308c7a88249e094b4752
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 13:46:40 2018 -0400
+
+-  Fixed the list items on staff.cfm.  Look a little better with 3 columns.
+
+commit ac67ebfb9a9e3a75d3bd240d5d0060228ef80d39
+Merge: 1e5aeeb4 7a4a3b19
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 13:19:09 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 1e5aeeb4c6b7bc6cfe5288b08135914485892509
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 13:14:26 2018 -0400
+
+-  - Improved API endpoints to only save progress when a change has taken place on input.cfm
+-  
+-  - Made hovering menu lists a little better looking... just slightly...
+-  
+-  - Added arrow navigation to views/master/head.cfm
 
 commit 6454efd19f15319ed9e5d05045d619c14a9ceee1
 Author: Antonio R. Collins II <arcollin@wakehealth.edu>

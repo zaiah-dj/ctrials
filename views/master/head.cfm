@@ -6,22 +6,20 @@
 
 	<!--- All the CSS files --->
 	<link rel="stylesheet" href="#link( 'assets/css/zero.css' )#">
-	<!--- 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
-	<link rel="stylesheet" href="#link( 'assets/css/modals.css' )#">
-	--->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Montserrat|Poppins|Ropa+Sans" rel="stylesheet">
-
-	<!---
-	<link rel="stylesheet" href="#link( 'assets/css/c3.min.css' )#">
-	<link rel="stylesheet" href="#link( 'assets/css/chart.css' )#">
-	--->
 	<link rel="stylesheet" href="#link( 'assets/css/bootstrap.min.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/sliders.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/toggler.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/checkbox-radio.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/mobileselect.css' )#">
 	<link rel="stylesheet" href="#link( 'assets/css/default.css' )#">
+
+	<!--- 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+	<link rel="stylesheet" href="#link( 'assets/css/modals.css' )#">
+	<link rel="stylesheet" href="#link( 'assets/css/c3.min.css' )#">
+	<link rel="stylesheet" href="#link( 'assets/css/chart.css' )#">
+	--->
 
 	<!--- All the Javascript files --->
 	<!---
@@ -31,17 +29,14 @@
 	<script src="#link( 'assets/js/libs/handlebars-v4.0.11.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/swipesensejs.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/bootstrap.min.js'  )#" type="text/javascript"></script>
-	--->
-
-	<script src="#link( 'assets/js/libs/mobileselect.js'  )#" type="text/javascript"></script>
-	<script src="#link( 'assets/js/libs/sliders.js'  )#" type="text/javascript"></script>
-	<!--- 
 	<script src="#link( 'assets/js/libs/modal.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/libs/touch.js'  )#" type="text/javascript"></script> 
 	<script src="#link( 'assets/js/libs/routex.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/js/proc/debug.js'  )#" type="text/javascript"></script>
+	<script src="#link( 'assets/js/proc/indy.js'  )#" type="text/javascript"></script>
 	--->
-	<!--- <script src="#link( 'assets/js/proc/indy.js'  )#" type="text/javascript"></script> --->
+	<script src="#link( 'assets/js/libs/mobileselect.js'  )#" type="text/javascript"></script>
+	<script src="#link( 'assets/js/libs/sliders.js'  )#" type="text/javascript"></script>
 	<script src="#link( 'assets/index.js'  )#" type="text/javascript"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
 	<script src="#link( 'assets/bootstrap.js' )#" type="text/javascript"></script>
@@ -98,7 +93,6 @@
 	<div class="js-overlay-window persistent-nav-icon-window">
 		<ul>
 			<a href="#data.redirectHome#"><li>Back to MoTrPAC</li></a>
-			<li></li><!--- Blank list item for styling purposes only.--->
 			<a href="#link( "input.cfm" )#"><li>Home</li></a>
 			<a href="#link( "default.cfm" )#"><li>Participants</li></a>
 			<a href="#link( "staff.cfm" )#"><li>Assignments</li></a>

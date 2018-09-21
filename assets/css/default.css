@@ -1,6 +1,5 @@
 /* -------------------------- *
 default.css
-
 Stylesheet for Motrpac Intervention
 Tracking application. 
  * -------------------------- */
@@ -611,51 +610,6 @@ textarea.width {
  * **************************************** *
  * **************************************** *
  * **************************************** */
-input.collapsible {
-	position: relative;
-	top: 5px;
-	display: inline-block;
-	cursor: pointer;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	-ms-appearance: none;
-	appearance: none;
-	outline: 0px none white;
-  border-top: 0;
-  border-left: 0;
-  border-right: 10px solid black;
-  border-bottom: 10px solid black;
-	width: 25px;
-	height: 25px;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-	transition:
-		transform 0.2s
-	;
-}
-
-input.collapsible + div {
-	height: 2px;
-	max-height: 0px;
-	transition: max-height 0.5s;
-}
-
-input.collapsible:checked {
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-input.collapsible:checked + div{
-	display: block;	
-	height: auto;
-	max-height: 1000px;
-}
-
-input.collapsible + div > table {display: none;}
-input.collapsible:checked + div > table { display: block; }
-
 .container-header-inner {
 	position: relative;
 	top: 5px;
@@ -1543,16 +1497,73 @@ label.param-ta {
 }
 
 #staff-reorder .group {
-	width: 32%;
-	height: 70%;
-	float: left;
+	position: relative;
+	width: 90%;
+	left: 5%;
+	min-height: 200px;
+	height: 40%;
 	border: 1px solid black;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-gecko-border-radius: 5px;
 	padding: 10px;
-	overflow: hidden;
 	margin-right: 1%;
+	margin-bottom: 10px;
+}
+
+#staff-reorder .disp-list {
+	overflow-Y: scroll;
+}
+
+@media only screen and (min-width: 600px) {
+	#staff-reorder .group {
+		width: 32%;
+		height: 70%;
+		float: left;
+		border: 1px solid black;
+		border-radius: 5px;
+		-moz-border-radius: 5px;
+		-gecko-border-radius: 5px;
+		padding: 10px;
+		left: 0;
+		overflow: hidden;
+		margin-right: 1%;
+	}
+
+	#staff-reorder .disp-list li {
+		height: 100px;
+	}
+
+	#staff-reorder .disp-list div.left {
+		position: relative;
+		width: 100%;
+		float: left;
+	}
+	#staff-reorder .disp-list div.right {
+		position: relative;
+		width: 50%;
+		display: block;
+		float: right;
+	}
+}
+
+@media only screen and (min-width: 950px) {
+	#staff-reorder .disp-list li .left {
+		float: left;	
+		width: 60%;
+	}
+
+	#staff-reorder .disp-list li .right {
+		float: right;	
+		width: 35%;
+		text-align: center;
+		font-size: 0.6em;
+		line-height: 15px;
+	}
+
+	#staff-reorder .disp-list li {
+		height: 50px;
+	}
 }
 
 #staff-reorder:after {
@@ -1985,6 +1996,61 @@ button.stateChange + div:hover {
 }
 
 
+/* -------------------------- *
+ * checkbox code
+ * -------------------------- */
+.resistance-class-container .checkmark {
+	background: #d3d3d3;
+	background-color: #c9e09f;
+	border: 4px solid #76923c;
+}
+
+.endurance-class-container .checkmark {
+	background: #d3d3d3;
+	border: 4px solid #728ab2; 
+}
+
+.resistance-class-container .clabel:hover input ~ .checkmark {
+	background-color: #f0f7e3;
+}
+
+.endurance-class-container .clabel:hover input ~ .checkmark {
+  background-color: #fff;
+}
+
+.clabel input:checked ~ .checkmark {
+	top: -2px; 
+	left: -2px; 
+	width: 45px; 
+	height: 45px;
+}
+
+.resistance-class-container .clabel input:checked ~ .checkmark {
+	/*super dark for inside selected*/
+/*	left: -5px; top: -5px;*/
+	background: #76923c;
+	border-style: double;
+	border-color: white;
+}
+
+.endurance-class-container .clabel input:checked ~ .checkmark {
+	/*super dark for inside selected*/
+/*	left: -5px; top: -5px;*/
+	background: #b3c6ef; 
+	background: #728ab2;
+	border-style: double;
+	border-color: white;
+}
+
+/* Style the indicator (dot/circle) */
+.clabel .checkmark:after {
+ 	top: 8.5px;
+	left: 8.5px;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: white;
+}
 
 /* -------------------------- *
 Javascript creates a bunch
@@ -1998,12 +2064,23 @@ js- (e.g. js-div, js-popup, etc)
 .js-overlay-window {
 	position: fixed;	
 	display: none;
-	height: 95%;
 	width: 25%;
 	min-width: 200px;
 	z-index: 99;
-	background-color: white;
-	border: 1px solid #ccc;
+}
+
+.js-overlay-window li {
+	width: 100%;
+	height: 50px;
+	background-color: #666;
+	color: white;
+	padding: 10px;
+	margin-bottom: 5px; 
+	z-index: 99;
+}
+
+.js-overlay-window li:hover {
+	background-color: #ccc;
 }
 
 .persistent-nav-icon-window {

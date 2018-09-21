@@ -146,3 +146,8 @@ lucee:
 	rm changelog.md
 	
 
+# pull from lucee
+pulllucee:
+	-rsync -arvz --delete --exclude=Application.cfc --exclude=.git --exclude=.gitignore --exclude=.*.swp --exclude=*.tgz /cygdrive/c/lucee/tomcat/webapps/motrpac/web/secure/dataentry/iv/ /cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/web/secure/dataentry/iv/
+	
+
