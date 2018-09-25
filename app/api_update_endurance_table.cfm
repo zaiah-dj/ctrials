@@ -44,7 +44,7 @@ try {
 		,mchntype = { req = false, ifNone = form.exparam }
 
 		//Only required when at timeblock one
-		,hrMonitor = { req = ( ft == 0 ), ifNone = false }
+		,hrworking = { req = ( ft == 0 ), ifNone = "off" }
 
 		//Only required when exercise chosen is cycle
 		,rpm = { req = (form.exparam eq CYCLE), ifNone = 0 }
@@ -72,8 +72,8 @@ try {
 	fv = stat.results;
 
 	//Change hrMonitor
-	if ( StructKeyExists( fv, "hrMonitor" ) ) {
-		fv.hrMonitor = ( fv.hrMonitor eq "on" ); 
+	if ( StructKeyExists( fv, "hrworking" ) ) {
+		fv.hrworking = ( fv.hrworking eq "on" ) ? 1 : 0; 
 	}
 
 	//???
@@ -212,7 +212,7 @@ try {
 		 ,oth2     = fv.oth2
 		 ,prctgrade= fv.prctgrade
 		 ,rpm      = fv.rpm
-		 ,hrworking= fv.hrMonitor
+		 ,hrworking= fv.hrworking
 		 ,mchntype = fv.mchntype
 		 ,speed    = fv.speed
 		 ,watres   = fv.watres

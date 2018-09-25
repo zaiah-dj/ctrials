@@ -31,6 +31,7 @@ try {
 		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
 		& DateTimeFormat( Now(), "HH:nn:ss" )
 	);
+
 	simpleDstmp = LSParseDateTime( 
 		"#session.currentYear#-#session.currentMonth#-#session.currentDayOfMonth# "
 	);

@@ -461,6 +461,7 @@ function createParticipantNode( el, rightSide ) {
 	}
 */
 	//Add all new nodes
+	var node, divLeft, divRight, spanName, spanAcrostic, spanPguid;
 	(node = document.createElement( "li" )).className = el.className + (( rightSide ) ? "-dropped" : "");
 	(divLeft = document.createElement( "div" )).className = "left";
 	(divRight = document.createElement( "div" )).className = "right";
@@ -491,7 +492,7 @@ function createParticipantNode( el, rightSide ) {
 		(relHref = document.createElement( "a" )).className = "release";
 		relHref.innerHTML = "Release";
 		relHref.addEventListener( "click", releaseParticipant );
-		(spanRel = document.createElement( "span" )).className = "release";
+		(spanRel = document.createElement( "span" )).className = "release-participant";
 		spanRel.appendChild( relHref );
 		divRight.appendChild( spanRel );
 	}
@@ -892,8 +893,9 @@ function releaseParticipant ( ev ) {
 
 	//Would add to the bottom of the list, but it needs to be at the top
 	var a=null, node = createParticipantNode( el, 0 );
-	if (a = document.querySelector( "ul.part-drop-list li:nth-child(1)" ))
+	if (a = document.querySelector( "ul.part-drop-list li:nth-child(1)" )) {
 		a.parentElement.insertBefore( node, a );
+	}
 	else {
 		a = document.querySelector( "ul.part-drop-list" ); 
 		a.appendChild( node ); 
@@ -967,7 +969,7 @@ function sendPageValCallback ( ev ) {
 
 	//Get all the values
 	mv=[].slice.call( document.querySelectorAll( 
-		'.slider, .toggler-input, input[type=radio], input[type=numeric], select, #reasonStoppedEarly' ) );
+		'.slider, .toggler-input, input[name=tfhr_time], input[type=radio], input[type=numeric], select, #reasonStoppedEarly' ) );
 
 	//Get all the additional values
 	tmp = [].slice.call( document.querySelectorAll('.addl input') );
@@ -1239,37 +1241,48 @@ function stateChangeUpdate( ev ) {
 
 
 /* ------------------------------------ *
-function timeChangeUpdate (ev)
+function updateTime( ev )
 
-Update time changes. 
+Change the state on adjacent text node
+elements.
  * ------------------------------------ */
-function timeChangeUpdate (ev) {
-	var dd = new Date();
+function updateTime( ev ) {
+	ev.preventDefault();
 	function padzero(i) { return (( i < 10 ) ? "0" + i : i) ; } 
-	ev.target.nextElementSibling.style.textAlign = "center";
-	ev.target.nextElementSibling.style.fontSize = "2.3em";
-	ev.target.nextElementSibling.style.verticalAlign = "center";
-	ev.target.nextElementSibling.innerHTML = padzero(dd.getHours()) + ":" + padzero(dd.getMinutes());
+	var node;
+	var min=0, sec=0;
+	var pd = [].slice.call( document.querySelectorAll("input[name=pid]") );
+	var sd = [].slice.call( document.querySelectorAll("input[name=sess_id]") );
+
+	//Set the current date, and put that in the box
+	var dd = new Date();
+	ev.target.nextElementSibling.value = padzero(dd.getHours()) + ":" + padzero(dd.getMinutes());
+	ev.target.innerHTML = "Exercise Started!";
+
+	//Create a little box called js-timer
+	//( node = document.createElement( "div" ) ).innerHTML = "00:00";
+	( node = document.createElement( "div" ) ).innerHTML = "00m:00s";
+	node.className = "js-stopwatch";
+	setInterval( function ( ev ) { 
+		sec += ( sec == 60 ) ? -60 : 1;
+		min += ( sec == 60 ) ? 1 : 0;
+		//( min == 60 ) 
+		node.innerHTML = [ padzero( min ),"m:",padzero( sec ),"s" ].join("");
+	}, 1000 );
+	ev.target.parentElement.appendChild( node );
 }
+
+
 
 
 /* ------------------------------------ *
 function changeUp (ev)
 
-....
+Track and format 24-hour time
  * ------------------------------------ */
 function changeUp (ev) {
 	//Remove the node from view
-	a = ev.target;
-	a.style.display = "none";
-
-	//Add a new input field 
-	d = document.createElement( "input" );
-	d.style.width = "48%";
-	d.style.display = "inline-block";
-	d.style.fontSize = a.style.fontSize;
-	d.style.height = "50px"; 
-	d.placeholder = "HH:mm";
+	d = ev.target;
 
 	//Add a listener that will handle visual formatting
 	d.addEventListener( "keyup", function (ev) {
@@ -1300,9 +1313,7 @@ function changeUp (ev) {
 				ev.target.focus();
 			}
 			else {	 
-				a.innerHTML = ev.target.value;	
-				a.style.display = "inline-block";
-				ev.target.parentElement.removeChild( ev.target );	
+				//Send the value back to server
 			}
 		}
 		catch(e) {
@@ -1313,38 +1324,8 @@ function changeUp (ev) {
 	});
 
 	//Add the node where the old used to be
-	a.parentElement.appendChild( d );
-	d.focus();
-}
-
-
-/* ------------------------------------ *
-function updateTime( ev )
-
-Change the state on adjacent text node
-elements.
- * ------------------------------------ */
-function updateTime( ev ) {
-	//Change the state
-	//Execute a callback
-	ev.preventDefault();
-	var pd = [].slice.call( document.querySelectorAll("input[name=pid]") );
-	var sd = [].slice.call( document.querySelectorAll("input[name=sess_id]") );
-	xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function () {
-		if ( this.readyState == 4 ) {
-			console.log( this.responseText );
-			ev.target.innerHTML = "Exercise Started!";
-		}
-	}
-	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/time.cfm", true );
-	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
-	xhr.send([
-			"pid=" + pd[0].value 
-		 ,"sid=" + sd[0].value
-		 ,"this=time"
-		].join( "&" )
-	);
+	//a.parentElement.appendChild( d );
+	//d.focus();
 }
 
 
@@ -1461,7 +1442,7 @@ Router = {
 	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
 	 ,{ domSelector: ".modal-load"         , event: "click"   , f: getNextResults }
 	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: generateModalCheckIn }
-	 ,{ domSelector: ".incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
+	 ,{ domSelector: ".input-slider--incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
 	 ,{ domSelector: ".params"             , event: "focus"   , f: activateOtherParamText }
 	 ,{ domSelector: ".params"             , event: "blur"    , f: activateOtherParamText }
@@ -1470,7 +1451,7 @@ Router = {
 
 	,"recovery": [
 		{ domSelector: ".slider"            , event: "input"   , f: changeSliderNeighborValue } 
-	 ,{ domSelector: ".incrementor"       , event: "click"   , f: updateNeighborBoxFromSI }
+	 ,{ domSelector: ".input-slider--incrementor"       , event: "click"   , f: updateNeighborBoxFromSI }
 	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: generateModalRecovery }
 	 ,{ domSelector: "#participant_list li, .participant-info-nav li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
 	 ,{ domSelector: "#sessStop"    , event: "change"   , f: unhideRecoveryQuestions }
@@ -1478,10 +1459,10 @@ Router = {
 
 	,"input": [
 		{ domSelector: ".slider"            , event: "input"   , f: [ wasDocTouched, changeSliderNeighborValue ] } 
-	 ,{ domSelector: ".incrementor"       , event: "click"   , f: [ wasDocTouched, updateNeighborBoxFromSI ] } 
+	 ,{ domSelector: ".input-slider--incrementor"       , event: "click"   , f: [ wasDocTouched, updateNeighborBoxFromSI ] } 
 	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
-	 ,{ domSelector: ".stateChange"  , event: "click"   , f: [ updateTime, timeChangeUpdate ] } 
-	 ,{ domSelector: "button.stateChange + div"  , event: "click"   , f: changeUp } 
+	 ,{ domSelector: ".stateChange"  , event: "click"   , f: updateTime } 
+	 ,{ domSelector: "button.stateChange + input"  , event: "click"   , f: changeUp } 
 	 ,{ domSelector: ".toggler-input"  , event: "change"   , f: stateChangeUpdate } 
 	]
 
@@ -1506,7 +1487,7 @@ Router = {
 	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: [ touchCancel ] }
 	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
-	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
+	 ,{ domSelector: ".release",event: "click"       , f: releaseParticipant }
 	 ,{ domSelector: ".bigly-right"       , event: "drop"    , f: drop }
 	 ,{ domSelector: ".bigly-right"       , event: "dragover" , f: allowDrop }
 	]
@@ -1515,7 +1496,7 @@ Router = {
 
 //main()
 document.addEventListener("DOMContentLoaded", function(ev) {
-	rx = new Routex( {routes:Router} );
+	rx = new Routex({ routes:Router, debug:true });
 	rx.init();
 	document.addEventListener("touchstart", function() { 
 		TOUCHABLE=1; 

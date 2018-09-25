@@ -107,6 +107,7 @@ if ( isEnd || isRes ) {
 
 		//writedump( private.progress ); abort;	
 	
+		//Select the last days with data 	
 		private.lastdays = dbExec(
 			filename = "l#iif(isEnd,DE('EE'),DE('RE'))#PC.sql"
 		 ,bindArgs = { 
@@ -153,6 +154,60 @@ if ( isEnd || isRes ) {
 				 ,exIndex = private.magic
 				}
 			);
+
+			private.allSettings = dbExec(
+				filename = "equipmentSettings.sql"
+			 ,bindArgs = {
+					pid = cs.participantId
+				}
+			);
+
+			if ( private.magic eq 1 ) settings_prefix = "leg";
+			else if ( private.magic eq 2 ) settings_prefix = "modleg";
+			else if ( private.magic eq 3 ) settings_prefix = "pull";
+			else if ( private.magic eq 4 ) settings_prefix = "legcurl";
+			else if ( private.magic eq 5 ) settings_prefix = "seatrow";
+			else if ( private.magic eq 6 ) settings_prefix = "knee";
+			else if ( private.magic eq 7 ) settings_prefix = "bicep";
+			else if ( private.magic eq 8 ) settings_prefix = "chest";
+			else if ( private.magic eq 9 ) settings_prefix = "chest2";
+			else if ( private.magic eq 10 ) settings_prefix = "abs";
+			else if ( private.magic eq 11 ) settings_prefix = "overhead";
+			else if ( private.magic eq 12 ) settings_prefix = "calf";
+			else if ( private.magic eq 13 ) settings_prefix = "shoulder";
+			else if ( private.magic eq 14 ) settings_prefix = "triceps";
+
+			//In the settings table, these are the column name suffixes
+			private.showResl = 0;
+			private.reslValues = [];
+			private.reslStatic = [
+			/*	"machine"
+			 ,"manufacture" */
+			  "setting1na"
+			 ,"setting1"
+			 ,"setting2na"
+			 ,"setting2"
+			 ,"setting3na"
+			 ,"setting3"
+			 ,"setting4na"
+			 ,"setting4"
+			];
+
+			//We loop through and concatenate them all with an underscore for column names 
+			if ( isDefined( "settings_prefix" ) ) {
+				for ( n in private.reslStatic ) {
+					ArrayAppend( private.reslValues, "#settings_prefix#_#n# as #n#" );
+				}
+
+				//Now get the result
+				private.getSettings = new query();
+				private.getSettings.setDBType( "query" );	
+				private.getSettings.setAttributes( srcQuery = private.allSettings.results ); 
+				private.settingsThin = private.getSettings.execute(	
+					sql="SELECT #ArrayToList(private.reslValues)# FROM srcQuery" );
+				private.settings = private.settingsThin.getResult();
+				private.showResl = 1;
+			}
 		}
 
 		//Then create the SQL needed to get the data I want for easy looping

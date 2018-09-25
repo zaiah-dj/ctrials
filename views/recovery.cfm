@@ -82,15 +82,18 @@
 				<tr>
 					<td class="thin">HR:</td>
 					<td>
-						<div class="row">
-							<div class="cc col-sm-7">
+						<div class="input-slider">
+							<div class="input-slider--slider">
 								<input type="range" min="70" max="220" class="slider" value="145" name="recoveryHR">
+								<div class="input-slider--slider--ranges">
+									<div class="input-slider--slider--min">70</div>
+									<div class="input-slider--slider--max">220</div>
+								</div>
 							</div>
-							<div class="catch cc col-sm-1">0</div>
-							<div class="col-sm-1">BPM</div>
-							<div class="col-sm-1">
-								<button class="incrementor">+</button>
-								<button class="incrementor">-</button>
+							<div class="input-slider--value"><span>0</span><span> </span></div>
+							<div class="input-slider--buttons">
+								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
+								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
 							</div>
 						</div>
 					</td>
@@ -98,15 +101,18 @@
 				<tr>
 					<td class="thin">RPE:</td>
 					<td>
-						<div class="row">
-							<div class="cc col-sm-7">
-								<input type="range" min="6" max="20" class="slider" value="14" name="recoveryRPE">
+						<div class="input-slider">
+							<div class="input-slider--slider">
+								<input type="range" min="6" max="20" class="slider" value="13" name="recoveryRPE">
+								<div class="input-slider--slider--ranges">
+									<div class="input-slider--slider--min">6</div>
+									<div class="input-slider--slider--max">20</div>
+								</div>
 							</div>
-							<div class="catch cc col-sm-1">0</div>
-							<div class="col-sm-1">%</div>
-							<div class="col-sm-1">
-								<button class="incrementor">+</button>
-								<button class="incrementor">-</button>
+							<div class="input-slider--value"><span>0</span><span> %</span></div>
+							<div class="input-slider--buttons">
+								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
+								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
 							</div>
 						</div>
 					</td>
@@ -114,15 +120,18 @@
 				<tr>
 					<td class="thin">Affect:</td>
 					<td>
-						<div class="row">
-							<div class="cc col-sm-7">
+						<div class="input-slider">
+							<div class="input-slider--slider">
 								<input type="range" min="-5" max="5" class="slider" value="0" name="recoveryAffect">
+								<div class="input-slider--slider--ranges">
+									<div class="input-slider--slider--min">-5</div>
+									<div class="input-slider--slider--max">5</div>
+								</div>
 							</div>
-							<div class="catch cc col-sm-1">0</div>
-							<div class="col-sm-1"></div>
-							<div class="col-sm-1">
-								<button class="incrementor">+</button>
-								<button class="incrementor">-</button>
+							<div class="input-slider--value"><span>0</span><span></span></div>
+							<div class="input-slider--buttons">
+								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
+								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
 							</div>
 						</div>
 					</td>

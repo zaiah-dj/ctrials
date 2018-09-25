@@ -95,20 +95,27 @@
 					<td>Is the Heart Rate monitor working properly?</td>
 					<td>
 						<label class="switch">
-							<input class="toggler-input" type="checkbox" name="hrMonitor" 
-								#iif(private.etc.results.c_wrmup_hr gt 0,DE('checked'),DE(''))#>
+							<input class="toggler-input" type="checkbox" name="hrworking" 
+								#iif(private.etc.results.c_Hrworking gt 0,DE('checked'),DE(''))#>
 							<span class="toggler round"></span>
-							<div>#iif( private.etc.results.c_wrmup_hr gt 0, DE('Yes'),DE('No') )#</div>
+							<div>#iif( private.etc.results.c_Hrworking gt 0, DE('Yes'),DE('No') )#</div>
 						</label>
 					</td>
 				</tr>
+				<cfif isRes>
 				<tr>
 					<td>Warm-Up Start Time (24 hour <i>HH:mm</i>)</td>
 					<td>
 						<button class="stateChange">Begin Exercise</button>
-						<div>00:00</div>	
+						<cfif ( private.etc.results.c_wrmup_starttime gt 0)>
+							<cfset tfhr_time=DateTimeFormat( private.etc.results.c_wrmup_starttime, "HH:nn" )>
+						<cfelse>
+							<cfset tfhr_time="">
+						</cfif>
+						<input type="text" placeholder="HH:MM" name="tfhr_time" value="#tfhr_time#"></input>
 					</td>
 				</tr>
+				</cfif>
 			</tbody>
 		</table>
 	</cfif>
@@ -185,6 +192,35 @@
 					</ul>
 					</td>
 				</tr>
+				<cfif private.showResl and private.allSettings.prefix.recordCount gt 0>
+				<tr>
+					<td class="title">Machine Settings</td>
+					<td>
+					<table>
+						<tr>
+							<td>Name</td>
+							<td>Setting Value</td>
+						</tr>
+						<tr>
+							<td>#private.settings.setting1na#</td>
+							<td>#private.settings.setting1#</td>
+						</tr>
+						<tr>
+							<td>#private.settings.setting2na#</td>
+							<td>#private.settings.setting2#</td>
+						</tr>
+						<tr>
+							<td>#private.settings.setting3na#</td>
+							<td>#private.settings.setting3#</td>
+						</tr>
+						<tr>
+							<td>#private.settings.setting4na#</td>
+							<td>#private.settings.setting4#</td>
+						</tr>
+					</table>
+					</td>
+				</tr>
+				</cfif>
 			</tbody>
 		</table>
 		</div>
@@ -205,7 +241,8 @@
 				<!--- Reference the SQL value up here --->
 				<cfset svMostRecent=private.combinedResults[ "p_#private.dbPrefix##formName#" ]>
 				<cfset svCurrent=private.combinedResults[ "c_#private.dbPrefix##formName#" ]>
-				<cfset def=iif( svCurrent eq "", 0, svCurrent )>
+				<cfset def=iif( svCurrent eq "", Round(min + ((max - min) / 2)), svCurrent )>
+			
 
 		<table class="table table-results">
 			<tbody>
@@ -221,15 +258,18 @@
 						<span class="tiny">(as of #private.etc.results.p_d_visit#)</span>
 					</td>
 					<td>
-						<div class="row">
-							<div class="cc col-sm-8">
+						<div class="input-slider">
+							<div class="input-slider--slider">
 								<input type="range" min="#min#" max="#max#" class="slider" value="#def#" defaultvalue="#def#" name="#formName#">
-							</div>
-							<div class="catch cc col-sm-1"><span>#def#</span><span> #uom#</span>
+								<div class="input-slider--slider--ranges">
+									<div class="input-slider--slider--min">#min#</div>
+									<div class="input-slider--slider--max">#max#</div>
 								</div>
-							<div class="col-sm-1">
-								<button class="incrementor js-up">#const.thickArrow#</button>
-								<button class="incrementor js-down">#const.thickArrow#</button>
+							</div>
+							<div class="input-slider--value"><span>#def#</span><span> #uom#</span></div>
+							<div class="input-slider--buttons">
+								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
+								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
 							</div>
 						</div>
 					</td>

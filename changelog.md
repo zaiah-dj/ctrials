@@ -3,19 +3,167 @@ make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/
 
 ## STATS
 
-- Commit count: 468
+- Commit count: 488
 - Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
-- Last Commit Date:   Fri Sep 21 14:49:49 2018 -0400
+- Last Commit Date:   Mon Sep 24 17:58:36 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
 
 ## HISTORY
+
+commit db2e3d994ef3b72441296a1e92ddbd026fddb579
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 17:58:36 2018 -0400
+
+-  - Started frm_resl integration.  Now settings should show up when moving between resistance exercises.
+
+commit a704dfccbaaea4a8c752e11370903039423e7935
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 16:58:15 2018 -0400
+
+-  - Edited endurance api to reflect the same hrmonitor -> hrworking changes.
+
+commit bd13ed0b8eb7b86df5b3969928b29d964f37024c
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 16:51:35 2018 -0400
+
+-  - Fixed resistance API to properly write heart rate monitor boolean value on warmup
+-  
+-  - Changed 'hrMonitor' form name to 'hrworking'
+
+commit 490fbbe821b3a2ecb2d086f24858289b57ebf4c1
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 16:38:02 2018 -0400
+
+-  - Adding new part affects styling again.  Link was set to the wrong class.
+
+commit a7cfdb831ce42e0d59a7ae4389e290ed693e052d
+Merge: dd491c65 336f8f5d
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 16:08:27 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit dd491c6534d746be74d57618d2db31cd8884b7e9
+Merge: 3036145d 48254223
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 16:08:02 2018 -0400
+
+-  Merge branch 'resl'
+
+commit 48254223350f1a2fb662d4b14b5b5e9df239f80f
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 16:07:35 2018 -0400
+
+-  Release link fix?
+
+commit 3036145d9d023dd63dee595ad28c7f147f05b918
+Merge: 778e96e7 643841cb
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 15:50:43 2018 -0400
+
+-  Merge branch 'resl'
+
+commit 643841cba44eb57352e5cabad1b2a3b14b552fef
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 15:47:33 2018 -0400
+
+-  - Fixed the 'double add on remove participant' bug
+-  - Also changed a style.
+
+commit 778e96e7bccfe1b35aafdd8aae08051c8ef73a88
+Merge: 33f61a5e aeaa880e
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 15:08:07 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 33f61a5ef99f61017365d18c59e2ac598f1ca824
+Merge: bf3ff05e 29b7878c
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 15:08:00 2018 -0400
+
+-  Merge branch 'resl'
+
+commit 29b7878cc5e7c9082936c3a039c49e025cc97048
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 15:05:57 2018 -0400
+
+-  - Fixed write start time and related forms so that this value does not show for endurance participants.
+-  
+-  - Had to remove user object, not all folks have access to v_Interventionists (yet)
+-  
+-  - Started adding SQL for exercise machine settings.
+
+commit bf3ff05ebe94e24c52e58468be24259f3018516e
+Merge: fea7350e 51a06f81
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 11:34:54 2018 -0400
+
+-  Merge branch 'hi'
+
+commit 51a06f81a937b7a9143be664d479e24c37225ba4
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 11:33:35 2018 -0400
+
+-  - Double-checked recovery page form to make sure that HR, RPE, and Affect had the same styles.
+-  
+-  - For the most part they did, with the exception of the js-up and js-down buttons.
+
+commit b4ddb8288cd4d9f4e5f4c93cc1e372ac37e75322
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 11:25:25 2018 -0400
+
+-  - Sliders have been improved and now do not disappear from view when working with a thin version of the app.
+-  
+-  - 24hr time writes to database in a more predictable way (specifically, by being submitted at the same time as the other values on the warmup page).
+-  
+-  - Exercise selection menu is now fixed (in place, that is).
+-  
+-  - Collapsible menus are now the top most element via z-index changes.
+-  
+-  - Added wrmup_starttime to SQL code for input recall.
+-  
+-  - Got rid of notifications window.  This won't be done right in the time allotted.
+
+commit 772d2701b042ba005fecea6d57e3b53d771f4107
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 09:23:39 2018 -0400
+
+-  - Menus sit on top again
+-  - Exercise/Time selection menu stays fixed again.
+
+commit 15b912ab596ff3a825d975b2c853e7f44d22e9b1
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Mon Sep 24 08:35:03 2018 -0400
+
+-  - Simplified 24-hour clock time and added a timer.
+
+commit 554f98f878caaf019e4ce7c370b276827334fb2c
+Merge: 4e14f2cd cae1b760
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 14:50:52 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 4e14f2cdc2558d08dc05df72d110d6d5089dea84
+Merge: eb71b9d9 8e85dea0
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 14:50:42 2018 -0400
+
+-  Merge branch 'hi'
 
 commit 8e85dea022186e2e4536b0d217ec49246325cac5
 Author: Antonio R. Collins II <arcollin@wakehealth.edu>
 Date:   Fri Sep 21 14:49:49 2018 -0400
 
 -  - Refit these checkbox buttons again. (they could use some work...)
+
+commit eb71b9d93ecb05f121e08570f908ffa8ebbbe372
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Fri Sep 21 13:54:29 2018 -0400
+
+-  ...fixed
 
 commit f25cdb8d8007eef88c419c7c3a72c0d96d780a0c
 Author: Antonio R. Collins II <arcollin@wakehealth.edu>

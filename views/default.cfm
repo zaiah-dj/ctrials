@@ -73,7 +73,7 @@ to reorganize participants.
 								PID: <span class="pid">#pid#</span><br />
 								Acrostic: <span class="acrostic">#acrostic#</span>
 								<span class="pguid hiddenFromView">#participantGUID#</span>
-								<span class="release">
+								<span class="release-participant">
 									<a href="" class="release">Release</a>
 								</span>
 							</div>

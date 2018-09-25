@@ -16,8 +16,32 @@ if ( !StructKeyExists( session, "userguid" ) ) {
 req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
 udo   = CreateObject( "component", "components.calcUserDate" )
 	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
-usr  = CreateObject( "component", "components.switchUser" ).init( dsn="#data.source#", 
-	tn="v_Interventionists", id=(StructKeyExists( data, "user" )) ? data.user : session.userguid );
+
+
+//writedump( session ); abort;
+
+//Initialize a user and all of their information
+if ( 0 ) {
+	usr  = CreateObject( "component", "components.switchUser" ).init( dsn="#data.source#", 
+		tn="v_Interventionists", id=(StructKeyExists( data, "user" )) ? data.user : session.userguid );
+}
+else {
+	usr  = { 
+	  firstname = session.firstname	
+	 ,lastname  = session.lastname	
+	 ,siteid    = 999
+	 ,userguid  = session.userguid	
+	 ,userid    = session.userid	
+	 //The following keys are not in a database, so if the session
+	 //is used to generate user information (and most of the time
+	 //it will be), add those keys to this resultant object here.
+	 //Otherwise, use some placeholder values 
+	 ,email     = session.email
+	 ,logindts  = session.logindts
+	 ,username  = session.username
+	};
+}
+
 
 //wfb   = CreateObject( "component", "components.wfbutils" );
 include "constants.cfm";

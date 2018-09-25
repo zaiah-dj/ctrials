@@ -43,7 +43,6 @@ try {
 		,dayofwk = { req = true }
 		,insBy = { req = true }
 		,pageUpdated = { req = true }
-		,hrMonitor = { req = (isWarmup), ifNone = false }
 		,is_exercise_done = { req = false, ifNone = false }
 		,is_superset = { req = false, ifNone = false }
 		,recordThread = { req = false, ifNone = false }
@@ -53,7 +52,9 @@ try {
 		,Wt1  = { req = false, ifNone = 0 }
 		,Wt2  = { req = false, ifNone = 0 }
 		,Wt3  = { req = false, ifNone = 0 }
+		,hrworking = { req = (isWarmup), ifNone = "off" }
 		,hr = { req = (isWarmup), ifNone = 0 }
+		,tfhr_time = { req = (isWarmup), ifNone = 0 }
 		,rpe = { req = (isWarmup), ifNone = 0 }
 		,othafct = { req = (isWarmup), ifNone = 0 }
 	});
@@ -66,9 +67,21 @@ try {
 	//Make this easier to reference throughout the rest of this page.
 	fv = stat.results;
 
-	//Change hrMonitor
-	if ( StructKeyExists( fv, "hrMonitor" ) ) {
-		fv.hrMonitor = ( fv.hrMonitor eq "on" ); 
+	//Convert silly Coldfusion on/off to boolean 
+	if ( StructKeyExists( fv, "hrworking" ) ) {
+		fv.hrworking = ( fv.hrworking eq "on" ) ? 1 : 0;
+	}
+
+	//Parse the time
+	if ( fv.tfhr_time eq 0 )
+		ttobj = Now();
+	else {
+		now = Now();
+		ttobj = LSParseDateTime( fv.tfhr_time );
+		ttobj.setMonth( Month( now ) );
+		ttobj.setDay( Day( now ) );
+		ttobj.setYear( Year( now ) );
+		//req.sendAsJson( status = 1, message = "FVVVVVV - #SerializeJSON({ah = ttobj })#" );	
 	}
 
 	//Check what was submitted from metadata
@@ -110,14 +123,13 @@ if ( !upd.prefix.recordCount ) {
 	vpath = 0;
 	sqlString = "
 		INSERT INTO 
-			frm_retl	
+			frm_retl
 		(  
 			 participantGUID
 			,d_inserted
 			,insertedBy
 			,dayofwk
 			,stdywk
-	 		#iif(isWarmup,DE(''),DE(',hrworking'))#
 			#iif(isWarmup,DE(''),DE(',#desig#'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep1'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep2'))#
@@ -125,9 +137,11 @@ if ( !upd.prefix.recordCount ) {
 			#iif(isWarmup,DE(''),DE(',#desig#Wt1'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Wt2'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Wt3'))#
+	 		#iif(isWarmup,DE(',hrworking'),DE(''))#
 			#iif(isWarmup,DE(',#desig#hr'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#rpe'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#othafct'),DE(''))#	
+			#iif(isWarmup,DE(',wrmup_starttime'),DE(''))#	
 		)
 		VALUES
 		(  
@@ -136,7 +150,6 @@ if ( !upd.prefix.recordCount ) {
 			,:insBy
 			,:dwk
 			,:swk
-	 		#iif(isWarmup,DE(''),DE(',:hrworking'))#
 			#iif(isWarmup,DE(''),DE(',:exIsDone'))#
 			#iif(isWarmup,DE(''),DE(',:rep1'))#
 			#iif(isWarmup,DE(''),DE(',:rep2'))#
@@ -144,9 +157,11 @@ if ( !upd.prefix.recordCount ) {
 			#iif(isWarmup,DE(''),DE(',:wt1'))#
 			#iif(isWarmup,DE(''),DE(',:wt2'))#
 			#iif(isWarmup,DE(''),DE(',:wt3'))#
+	 		#iif(isWarmup,DE(',:hrworking'),DE(''))#
 			#iif(isWarmup,DE(',:hr'),DE(''))#	
 			#iif(isWarmup,DE(',:rpe'),DE(''))#	
 			#iif(isWarmup,DE(',:othafct'),DE(''))#	
+			#iif(isWarmup,DE(',:tfhr_time'),DE(''))#	
 		);";
 	}
 else {
@@ -157,7 +172,6 @@ else {
 		SET 
 			 d_inserted  = :dtstamp
 			,insertedBy  = :insBy
-			#iif(isWarmup,DE(''),DE(',hrWorking = :hrworking'))#
 			#iif(isWarmup,DE(''),DE(',#desig# = :exIsDone'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep1 = :rep1'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Wt1  = :wt1'))#
@@ -165,9 +179,11 @@ else {
 			#iif(isWarmup,DE(''),DE(',#desig#Wt2  = :wt2'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Rep3 = :rep3'))#
 			#iif(isWarmup,DE(''),DE(',#desig#Wt3  = :wt3'))#
+			#iif(isWarmup,DE(',hrWorking = :hrworking'),DE(''))#
 			#iif(isWarmup,DE(',#desig#hr = :hr'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#rpe = :rpe'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#othafct = :othafct'),DE(''))#	
+			#iif(isWarmup,DE(',wrmup_starttime = :tfhr_time'),DE(''))#	
 		WHERE
 			participantGUID = :pid
 		AND
@@ -194,7 +210,7 @@ try {
 		 ,dtstamp  = { value = dstmp, type="cf_sql_date" }
 		 ,exIsDone = fv.exIsDone 
 		 ,insBy    = fv.insBy
-		 ,hrworking= fv.hrMonitor
+		 ,hrworking= fv.hrworking
 		 ,dwk      = fv.dayofwk
 		 ,swk      = fv.stdywk
 		 ,rep1     = fv.Rep1 
@@ -204,6 +220,7 @@ try {
 		 ,wt2      = fv.Wt2
 		 ,wt3      = fv.Wt3 
 		 ,hr       = fv.hr
+		 ,tfhr_time= { value = ttobj, type="cf_sql_timestamp" }
 		 ,rpe      = fv.rpe
 		 ,othafct  = fv.othafct
 		} 

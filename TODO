@@ -1,11 +1,21 @@
 TOP PRIORITY
 =================
-- Plug in to John's eq table for eq settings (not exactly sure how this works)
-		frm_RESL
+- site id shit... sigh...
 
-- Send a meeting request with you, jack and debbie
+? Plug in to John's eq table for eq settings (not exactly sure how this works)
+		this doesn't look right...	
+
+x HR monitor question
+
+x JS release markup issue fixed
+
+- random access causes a crash... why?
+
+x double adds on release
 
 - start docs
+
+
 
 ? Checkmark is not showing on production, why?
 	login and check this
@@ -13,11 +23,22 @@ TOP PRIORITY
 ? Stop Session button disappears on horiz view
 		the button and header changes may have solved this... check again 
 
-- switch to simple form input for 24hr time (not the changeable div) (30m)
-- incrementors on one line / super big input page (30m)
-- position: fixed exercise selection menu on input.cfm (15-30, if fixed does not work, this will be rather difficult)
-- drop down menus should be on top (why are they not?)
+x switch to simple form input for 24hr time (not the changeable div) (30m)
+x position: fixed exercise selection menu on input.cfm (15-30, if fixed does not work, this will be rather difficult)
+x drop down menus should be on top (why are they not?)
+		both of these were much easier than I thought they would be... odd...
+		fixed and margin of 2%
 
+x incrementors on one line / super big input page (30m)
+		have to change a lot of classes here and still do restyling... 
+
+     <prev>                        <actual value>
+	| -------------------------------------------- |
+	min                 ^ V -                     max (- == center)
+
+x tfhr_time input field
+
+drop this... too much
 - notifications (1hr, USER_[UN]ASSIGNED, PARTICIPANT_[UN]ASSIGNED)
 - configuration in Application.cfc (15-30m)
 

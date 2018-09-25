@@ -147,6 +147,7 @@ SELECT * FROM
 		,modlegWt1 as p_modlegWt1
 		,modlegWt2 as p_modlegWt2
 		,modlegWt3 as p_modlegWt3
+		,wrmup_starttime as p_wrmup_starttime
 	FROM
 		frm_RETL	
 	WHERE
@@ -306,6 +307,7 @@ RIGHT JOIN
 		,modlegWt1 as c_modlegWt1
 		,modlegWt2 as c_modlegWt2
 		,modlegWt3 as c_modlegWt3
+		,wrmup_starttime as c_wrmup_starttime
 	FROM
 		frm_RETL	
 	WHERE

@@ -79,10 +79,10 @@
 		</div>
 
 		<div class="persistent-nav-right">
-			<a href="#link( "" )#"><li>
+			<!---<a href="#link( "" )#"><li>
 				Notifications
 				<div class="triangle-down"></div>
-			</li></a>
+			</li></a>--->
 			<a id="login" class="login" href="#link( "" )#"><li>
 				#usr.username#
 				<div class="triangle-down"></div>
