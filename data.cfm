@@ -8,7 +8,7 @@ CFML-based configuration file.
 Application routes, datasources and more
 are all updated here.
 * ------------------------------------------- */
-useDebug = 0;
+useDebug = 1;
 
 /*Passwords if ever needed
 Server:    sqldev.phs.wfubmc.edu
@@ -72,8 +72,6 @@ manifest={
 to fix later, I'll seperate them from what should be there*/
 ,"redirectForLogin" = "/motrpac/web/dspLogin.cfm?to=0"
 ,"redirectHome" = "/motrpac/web/secure/index.cfm"
-,"ajaxEveryTime"  =  0
-,"neverExpire"   = -1
 
 /*----------------- DATABASES -------------------------------*/
 /*Aliases for database tables, note you can choose between 

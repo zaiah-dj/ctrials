@@ -54,7 +54,6 @@ try {
 		,Wt3  = { req = false, ifNone = 0 }
 		,hrworking = { req = (isWarmup), ifNone = "off" }
 		,hr = { req = (isWarmup), ifNone = 0 }
-		,tfhr_time = { req = (isWarmup), ifNone = 0 }
 		,rpe = { req = (isWarmup), ifNone = 0 }
 		,othafct = { req = (isWarmup), ifNone = 0 }
 	});
@@ -70,18 +69,6 @@ try {
 	//Convert silly Coldfusion on/off to boolean 
 	if ( StructKeyExists( fv, "hrworking" ) ) {
 		fv.hrworking = ( fv.hrworking eq "on" ) ? 1 : 0;
-	}
-
-	//Parse the time
-	if ( fv.tfhr_time eq 0 )
-		ttobj = Now();
-	else {
-		now = Now();
-		ttobj = LSParseDateTime( fv.tfhr_time );
-		ttobj.setMonth( Month( now ) );
-		ttobj.setDay( Day( now ) );
-		ttobj.setYear( Year( now ) );
-		//req.sendAsJson( status = 1, message = "FVVVVVV - #SerializeJSON({ah = ttobj })#" );	
 	}
 
 	//Check what was submitted from metadata
@@ -141,7 +128,6 @@ if ( !upd.prefix.recordCount ) {
 			#iif(isWarmup,DE(',#desig#hr'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#rpe'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#othafct'),DE(''))#	
-			#iif(isWarmup,DE(',wrmup_starttime'),DE(''))#	
 		)
 		VALUES
 		(  
@@ -161,7 +147,6 @@ if ( !upd.prefix.recordCount ) {
 			#iif(isWarmup,DE(',:hr'),DE(''))#	
 			#iif(isWarmup,DE(',:rpe'),DE(''))#	
 			#iif(isWarmup,DE(',:othafct'),DE(''))#	
-			#iif(isWarmup,DE(',:tfhr_time'),DE(''))#	
 		);";
 	}
 else {
@@ -183,7 +168,6 @@ else {
 			#iif(isWarmup,DE(',#desig#hr = :hr'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#rpe = :rpe'),DE(''))#	
 			#iif(isWarmup,DE(',#desig#othafct = :othafct'),DE(''))#	
-			#iif(isWarmup,DE(',wrmup_starttime = :tfhr_time'),DE(''))#	
 		WHERE
 			participantGUID = :pid
 		AND
@@ -220,7 +204,6 @@ try {
 		 ,wt2      = fv.Wt2
 		 ,wt3      = fv.Wt3 
 		 ,hr       = fv.hr
-		 ,tfhr_time= { value = ttobj, type="cf_sql_timestamp" }
 		 ,rpe      = fv.rpe
 		 ,othafct  = fv.othafct
 		} 
@@ -339,10 +322,13 @@ try {
 				fp_participantGUID = :pid
 			AND
 				fp_step = :step
+			AND
+				fp_sessdayid = :sid
 			"
 		 ,bindArgs = {
 				pid = fv.pid
 			 ,step = extype
+			 ,sid = csSid
 			}
 		);
 
@@ -380,6 +366,6 @@ req.sendAsJson(
 	status = 1, 
 	message = "SUCCESS @ /api/resistance/* - " &
 		"#iif(!vpath,DE('Inserted'),DE('Updated'))# into " &
-		"#data.data.resistance# with values #SerializeJSON( fv )#" 
+		"frm_retl with values #SerializeJSON( fv )#" 
 );	
 </cfscript>

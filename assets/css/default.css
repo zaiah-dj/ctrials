@@ -151,7 +151,7 @@ a.selected {
 /*All participants sit here.*/
 .container-header {
 	height: 7%;
-	min-height: 60px; 
+	min-height: 65px; 
 	padding-top: 5px;
 }
 
@@ -654,11 +654,12 @@ textarea.width {
 	border-radius: 0px 15px 15px 0px;
 }
 
-@keyframes shake {
-	from: { left: 0px; }
-	to: { left: 10px; }
-}
 
+
+/* -------------------------- *
+ * Controls the drag-and-drop
+ * appearance.
+ * -------------------------- */
 .disp-assignees {
 	font-size: 15px;
 	line-height: 20px;
@@ -682,14 +683,9 @@ textarea.width {
 .disp-list li:active {
 	height: 50px;
 	font-size: 1.8em;
- 	animation-name: shake;
-	animation-duration: 1s;
 }
 
 .disp-list li:hover {
-	color: black;
-	font-size: 1.6em;
-	height: 55px;
 }
 
 .disp-list li .left {
@@ -714,6 +710,7 @@ textarea.width {
 
 span.release-participant {
 	border: 1px solid white;
+	background-color: white;
 	padding: 5px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -725,7 +722,11 @@ span.release-participant {
 }
 
 span.release-participant a {
-	color: white;
+	color: black;
+}
+
+span.pguid {
+	display: none;
 }
 
 #bigly-search {
@@ -784,8 +785,10 @@ span.release-participant a {
 { background-color: #17365D;
   color: white; }
 
-.endurance-class:hover
-{ background-color: #b3c6ef; }
+.endurance-class:hover,
+.endurance-class-dropped:hover { 
+	background-color: #b3c6ef; 
+}
 
 .endurance-class-container 
 { text-align: center; }
@@ -794,8 +797,11 @@ span.release-participant a {
 { background-color: #76923c;
   color: white; }
 
-.resistance-class:hover
-{ background-color: #c8f767; }
+.resistance-class:hover,
+.resistance-class-dropped:hover {
+	background-color: #c8f767; 
+	color: black;
+}
 
 /*.container-navAndBodyWrapper*/ .resistance-class-container
 { 
@@ -808,11 +814,6 @@ span.release-participant a {
 	background: linear-gradient( rgb(212,227,244) 1%, rgb(23, 54, 93) 10%, rgb(23, 54, 93) 70%, rgb(4, 20, 40) 80% );
 	text-align: center; 
 }
-
-
-.resistance-class-dropped:hover
-{ text-align: center;
-  background-color: #ffc1ee; }
 
 
 .control-class, .control-class-dropped, .control-class-container
@@ -1368,39 +1369,6 @@ table.participant-entry tr.heading {
 .wash input[type=text] 
 	{ display: none; }
 
-/*
-table.endurance tr:nth-child(1), 
-table.resistance tr:nth-child(1) {
-	height: 30px;
-}
-
-table.endurance tr:nth-child(1) td:nth-child(1),
-table.resistance tr:nth-child(1) td:nth-child(1)
-{
-	padding-top: 10px;
-	font-size: 0.8em;
-}
- 
- 
-table.endurance tr, 
-table.resistance tr {
-	height: 80px;
-} 
-
-table.endurance tr td:nth-child(1) ,
-table.resistance tr td:nth-child(1) {
-	background-color: #eee;
-	text-align: center;
-	padding-top: 20px;
-	width: 120px;
-}
-
-table.resistance tr td.chopt,
-table.endurance tr td.chopt {
-	padding-top: 5px;
-	background-color: #ccc;
-}
-*/
 
 .modal-activate {
 	width: 50%;
@@ -1434,8 +1402,6 @@ ul.participant-notes li {
 .bg-red:hover  {
 	background-color: #ff8080 !important;
 }
-
-/*end of stylesheet ;) */
 
 .modal-content h3 {
 	color: black;
@@ -1531,9 +1497,10 @@ label.param-ta {
 	margin-bottom: 10px;
 }
 
-#staff-reorder .disp-list {
+#staff-reorder .group {
 	overflow-Y: scroll;
 }
+
 
 @media only screen and (min-width: 600px) {
 	#staff-reorder .group {
@@ -1610,6 +1577,31 @@ label.param-ta {
 .right li {
 	display: block;
 }
+
+@media only screen and (max-width: 800px) {
+	.bigly .disp-list li {
+		height: 100px;
+	}
+
+	.bigly .disp-list div.left {
+		position: relative;
+		width: 100%;
+		float: left;
+	}
+	.bigly .disp-list div.right {
+		position: relative;
+		width: 50%;
+		display: block;
+		float: right;
+	}
+
+	.bigly span.release-participant {
+		position: absolute;
+		left: -85%;
+		top: 0px;
+	}
+}
+
 
 .selection .links {
 	margin: 0 auto;
@@ -1802,26 +1794,43 @@ table.checkin tr td.notes {
 	font-size: 1.0em;
 }
 
-.container-header #participant_list li.resistance-class-container
-{ 
+.container-header #participant_list li.resistance-class-container { 
 	background: none;
 	background-color: #76923c; 
 	border-bottom: 0px;
 	box-shadow: 4px 4px 4px #aaa;
 	font-size: 0.8em;
+	border-top: 3px solid #76923c;
+	border-left: 3px solid #76923c;
+	border-right: 3px solid #76923c;
+}
+
+.container-header #participant_list li.resistance-class-container:hover {
+	border-top: 3px solid yellow;
+	border-left: 3px solid yellow;
+	border-right: 3px solid yellow;
 }
 
 .container-header #participant_list li.resistance-selected {
 	background-color: rgb( 231, 242, 208 );
 }
  
-.container-header #participant_list li.endurance-class-container
-{ 
+.container-header #participant_list li.endurance-class-container { 
 	background: none;
 	background-color: #b3c6ef; 
 	border-bottom: 0px;
 	box-shadow: 4px 4px 4px #aaa;
 	font-size: 0.8em;
+	border-top: 3px solid #b3c6ef;
+	border-left: 3px solid #b3c6ef;
+	border-right: 3px solid #b3c6ef;
+	height: 100%;
+}
+
+.container-header #participant_list li.endurance-class-container:hover {
+	border-top: 3px solid yellow;
+	border-left: 3px solid yellow;
+	border-right: 3px solid yellow;
 }
 
 .container-header #participant_list li.endurance-selected {
@@ -1974,15 +1983,6 @@ table.innard { width: 100%; }
 table.innard tr { height: 70px; }
 table.innard td.thin { width: 10%; }
 
-/*Not the greatest solution*/
-.hiddenFromView {
-	display: none !important;
-}
-
-.hiddenActivate {
-	display: none;
-}
-
 button.stateChange {
 	width: 90%;
 	top: 0px;
@@ -2104,6 +2104,16 @@ js- (e.g. js-div, js-popup, etc)
 
 .js-overlay-window li:hover {
 	background-color: #ccc;
+}
+
+.js-toggle-showhide {
+	height: 100px;
+	transition: height 0.2s;
+}
+
+.js-hidden {
+	height: 0px;
+	display: none;
 }
 
 .persistent-nav-icon-window {

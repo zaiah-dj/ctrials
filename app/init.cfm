@@ -1,41 +1,224 @@
+<!--- -------------------------------------------------------------------------
+init.cfm
+========
+
+Notes:
+------
+These comments are written in Markdown and can be converted to HTML by running
+`make doc`.
+
+
+Date Created:        
+------------
+2018-09-25
+
+
+Author(s)
+------------
+-
+
+
+Description: 
+------------
+
+This file handles a number of tasks central
+to getting the MIV app running correctly.
+
+These include:
+- checking for properly authenticated users
+- setting up user information, 
+- initializing the current participant
+- initializing the list of selected participants
+- initializing the list of unselected participants
+- tracking details pertinent to the current date	
+
+
+Summary
+--------
+This file starts by including a few components, then moves on to authenticating
+a user for access to the application.  
+
+Only users who have the following access permission can use the app:
+	'Intervention Tracking Entry'
+
+Additionally, users must also be part of a staff group containing group code
+'ADU'.  Other participant studies may use different codes that line up with the
+type of participant being interacted with.  (Such as 'ANI' for animal or 'PED'
+for chirren. :) ) 
+
+
+Scopes Used
+-----------
+While ColdFusion has some support for scope, it's nothing like what you would
+find in Java or C programs.  The best we can do is use object notation and
+keep things together that way.  
+
+The scopes initialized here are:
+
+type        | description
+----------- | -------------------	
+usr         | For all user data
+udo         | For anything pertaining to the current date
+access      | For access control
+cp          | The current participant
+sc          | Current session's variables
+cs          | MIV session's variables
+
+These scopes are in ColdFusion's built-in 'variables' scope and can be used 
+anywhere throughout the app (provided that 'init.cfm' is always called first).
+
+ ---- ------------------------------------------------------------------------->
 <cfscript>
+//Include all dependencies here
+req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
+udo   = CreateObject( "component", "components.calcUserDate" )
+	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
+
+include "constants.cfm";
+include "custom.cfm";
+
+
 //If session.userguid is not there, the user probably is either not logged in or has a stale session.
 if ( !StructKeyExists( session, "userguid" ) ) {
 	//Redirect if I am not on an approved server
 	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) )
 		location( addtoken = "no", url = data.redirectForLogin );
+	/*
 	else {
 		//Also requires a userGUID
-		session.userguid = 1049;
+		//session.userguid = 1049;
 		//session.userguid = dbExec( string="SELECT TOP(1) ts_staffguid as id FROM #data.data.staff#" ).results.id;
 	}
+	*/
 }
 
 
-//Include all CFCs first here
-req   = CreateObject( "component", "components.sendRequest" ).init( dsn="#data.source#" );
-udo   = CreateObject( "component", "components.calcUserDate" )
-	.init( StructKeyExists( data, "date" ) ? LSParseDateTime( data.date ) : Now() );
+//Check if this an API call or not
+access = { isApi = 0 };
+if ( StructKeyExists( form, "this" ) ) {
+	access.isApi = 1; 
 
-
-//writedump( session ); abort;
-
-//Initialize a user and all of their information
-if ( 0 ) {
-	usr  = CreateObject( "component", "components.switchUser" ).init( dsn="#data.source#", 
-		tn="v_Interventionists", id=(StructKeyExists( data, "user" )) ? data.user : session.userguid );
-}
-else {
+	//All user data will be referenced from this struct 
 	usr  = { 
 	  firstname = session.firstname	
 	 ,lastname  = session.lastname	
-	 ,siteid    = 999
+	 ,siteid    = session.siteid
 	 ,userguid  = session.userguid	
 	 ,userid    = session.userid	
-	 //The following keys are not in a database, so if the session
-	 //is used to generate user information (and most of the time
-	 //it will be), add those keys to this resultant object here.
-	 //Otherwise, use some placeholder values 
+	 ,email     = session.email
+	 ,logindts  = session.logindts
+	 ,username  = session.username
+	};
+}
+
+//Otherwise, initialize the current user
+else if ( StructKeyExists( session, 'mivlogin') ) {
+	//All user data will be referenced from this struct 
+	usr  = { 
+	  firstname = session.firstname	
+	 ,lastname  = session.lastname	
+	 ,siteid    = session.siteid
+	 ,userguid  = session.userguid	
+	 ,userid    = session.userid	
+	 ,email     = session.email
+	 ,logindts  = session.logindts
+	 ,username  = session.username
+	};
+}
+
+else {
+	//admin users should be evaluated first, right now a default site can be assigned?
+	access.isAdmin = session.isDMAQCPM 
+		|| session.isProgrammer 
+		|| session.isSUPERAdmin 
+		|| session.isWebAdmin 
+		|| session.isDMAQCStat 
+		|| session.isRepository;
+
+	//Also set this
+	access.userSiteId = 0;
+
+	//For debugging only
+	//access.isAdmin = 0;
+
+	//Get the most relevant site id
+	//
+	//dom => The Domain Code ( 'ADU' for adults, 'PED' for kids and 'ANI' for animals )
+	//list => The sites that the user belongs to
+	access.siteInfo = dbExec(
+		filename = "init_siteinfo.sql"
+	, bindargs = { 
+			dom = "ADU"
+		 ,list = { value=session.sitelist,type="cf_sql_varchar",list=1 } 
+		}
+	);
+
+	//The query failed - log it and handle it 
+	if ( !access.siteInfo.status ) {
+		//redirect with an error message
+	}
+
+	//It looks like the user is part of no groups
+	if ( access.siteinfo.prefix.recordCount eq 0 ) {
+		access.userAllowed = 0;
+	}
+
+	//The user is part of too many groups and will probably have to choose which one
+	if ( access.siteinfo.prefix.recordCount gt 1 ) {
+		//access.userAllowed = 0;
+	}
+
+	//Get user's access rights
+	access.requestorInfo = dbExec(
+		filename = "init_requestorinfo.sql"
+	, bindargs = { 
+			uuid = session.userguid 
+		, siteguid = access.siteInfo.results.siteGUID
+		, accessTypeName = 'Intervention Tracking Entry'
+		}
+	);	
+
+	//The query failed - log it and handle it 
+	if ( !access.requestorInfo.status ) {
+		//redirect with an error message
+	}
+
+	//This user does not have the access I'm looking for, where to redirect?
+	if ( access.requestorInfo.prefix.recordCount eq 0 ) {
+		access.userAllowed = 0;
+	}
+	else {
+		access.userAllowed = 1;
+		access.userSiteId = access.siteinfo.results.siteid;
+	}
+
+	//Always allow admins to get in
+	access.userAllowed = ( access.isAdmin ) ? 1 : 0; 
+	
+	//If the user is still not authorized by this point, try no more
+	if ( !access.userAllowed ) {
+		location( addtoken = "no", url = data.redirectHome );
+	}
+
+	//Finally, catch any unusual cases in which an admin may not be associated with any sites.
+	if ( access.userAllowed && access.isAdmin && ( access.userSiteId eq "" || access.userSiteId == 0 ) ) {
+		access.userSiteId = 999;
+	}
+
+	//Set the session.siteid here because it's needed so often
+	session.siteid = access.userSiteId;
+
+	//And go ahead and permanently log the user into this app 
+	//for the length of the current session
+	session.mivlogin = 1;
+
+	//All user data will be referenced from this struct 
+	usr  = { 
+	  firstname = session.firstname	
+	 ,lastname  = session.lastname	
+	 ,siteid    = access.userSiteId 
+	 ,userguid  = session.userguid	
+	 ,userid    = session.userid	
 	 ,email     = session.email
 	 ,logindts  = session.logindts
 	 ,username  = session.username
@@ -43,11 +226,7 @@ else {
 }
 
 
-//wfb   = CreateObject( "component", "components.wfbutils" );
-include "constants.cfm";
-include "custom.cfm";
 
-//writedump( usr ); abort;
 //Set an easy to remember reference for the current date
 cdate = udo.object.dateObject;
 

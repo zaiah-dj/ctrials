@@ -3,13 +3,116 @@ make[1]: Entering directory '/cygdrive/c/ColdFusion2016/cfusion/wwwroot/motrpac/
 
 ## STATS
 
-- Commit count: 488
+- Commit count: 503
 - Project Inception Date:   Wed Feb 21 14:54:58 2018 -0500
-- Last Commit Date:   Mon Sep 24 17:58:36 2018 -0400
+- Last Commit Date:   Wed Sep 26 14:42:25 2018 -0400
 - Authors:
 	- Antonio R. Collins II <arcollin@wakehealth.edu>
 
 ## HISTORY
+
+commit 1a0d0537e64729e068b2d40d4e749a0aeebeb9b7
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 14:42:25 2018 -0400
+
+-  made a change to schema for easy local dev.
+
+commit 7ca387263027e72f0a3fef941caa6199d17d8ac8
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 14:36:05 2018 -0400
+
+-  - Added some CSS to change drag and drop button appearance on widths less than 700px. Needed items were disappearing on the iPad.
+-  
+-  - yes/no show/hide functionality on views/recovery.cfm works much better now and the controlling JS code has been simplified to boot
+-  
+-  - hover functionality on "selected" participants has been improved and works like a normal app should.
+-  
+-  - drag listener has been re-applied on newly "unselected" users.  before users that were unselected would not have the ability to be reselected.
+
+commit 97e9ccd5a3fcd7b5334230bfb628700b11cb9158
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 11:01:46 2018 -0400
+
+-  Fixed front styles.
+
+commit bebebfb5230bc18a9db746d01b20c1bb02115b0b
+Merge: 19e60c55 d74d38ea
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 10:35:00 2018 -0400
+
+-  Merge branch '24hrtime' into js-fixes
+
+commit 19e60c5556b2bf464532e9719353ded100c8ae77
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 10:34:57 2018 -0400
+
+-  ...
+
+commit d74d38eaac94d2b7a9d1899cf3164e6d9c4ba17a
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 10:32:28 2018 -0400
+
+-  - 24 hr clock time has been moved to endurance
+-  - lots of updates took place to make that happen...
+
+commit a607ee8c335f8ccf97485d11af8a58a3a95ae128
+Merge: 3015c139 9fb78e58
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 09:56:14 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 3015c139352382efafb64ead31785ef7ba7b88a1
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Wed Sep 26 09:55:45 2018 -0400
+
+-  - This change should allow users to login as admin and still be associated with a site.
+
+commit ebca4c49b87ae6c49af013357397264364a8d7a2
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 13:58:38 2018 -0400
+
+-  - Fixed login and session problem that was causing API updates to fail.
+-  
+-  - Also started adding copious amounts of documentation.
+
+commit dcf0649d5ff561064c3564744f2ddfc9bb710b85
+Merge: 63c652a4 7ec1aebe
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 13:45:13 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit 63c652a40e6ebefb59185e42c465668028df29f0
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 13:45:06 2018 -0400
+
+-  Made a change to allow admins to login with no hitches every time.
+
+commit 581d907741dd39c8300cc99d30d8d766d538102b
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 11:14:59 2018 -0400
+
+-  ...
+
+commit af0e7973661381f6f3c5011e8d76c7446fbcf448
+Merge: e00d60ff 679a4640
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 10:08:56 2018 -0400
+
+-  Merge branch 'master' of phsgit.phs.wakehealth.edu:/srv/git/motrpac
+
+commit e00d60ff9228dd0538f9508e86a9ff23ff97dd44
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 10:02:24 2018 -0400
+
+-  Added a case to handle admin users that may not be associated with a site yet.
+
+commit 203f6bb5b5177cc716145000623c3905bde52867
+Author: Antonio R. Collins II <arcollin@wakehealth.edu>
+Date:   Tue Sep 25 08:44:51 2018 -0400
+
+-  - Checkboxes were not reliably showing up for Resistance partiicpants.  Figured out why and here is the change.
 
 commit db2e3d994ef3b72441296a1e92ddbd026fddb579
 Author: Antonio R. Collins II <arcollin@wakehealth.edu>

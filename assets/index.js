@@ -437,29 +437,6 @@ Create a participant node suitable for
 either viewing or releasing participants.
  * ------------------------------------ */
 function createParticipantNode( el, rightSide ) {
-/*
-//This is fine, but a render step is needed...
-<li class="{{ className }}">
-	<div class="left">
-		<span class="name">{{ name }}</span>
-	</div>
-	<div class="right">
-		<span class="release">
-			<a href="{{ releaseLink }}" class="release">Release</a>
-		</span>
-	</div>
-</li>
-
-	//Will return a pretty new node
-	return render( {
-		textHtml: above
-  , elements: {
-			className:
-		 ,name:
-		 ,releaseLink: 	
-		}
-	}
-*/
 	//Add all new nodes
 	var node, divLeft, divRight, spanName, spanAcrostic, spanPguid;
 	(node = document.createElement( "li" )).className = el.className + (( rightSide ) ? "-dropped" : "");
@@ -468,7 +445,7 @@ function createParticipantNode( el, rightSide ) {
 	(spanName = document.createElement( "span" )).className = "name";
 	(spanPid = document.createElement( "span" )).className = "pid";
 	(spanAcrostic = document.createElement( "span" )).className = "acrostic";
-	(spanPguid = document.createElement( "span" )).className = "pguid hiddenFromView";
+	(spanPguid = document.createElement( "span" )).className = "pguid";
 
 	//Set all of these references
 	spanName.innerHTML = el.name;
@@ -539,13 +516,6 @@ function changeSliderNeighborValue ( ev ) {
 		ev.target.parentElement.parentElement.childNodes[ 3 ]
 			.childNodes[0].innerHTML = ev.target.value;
 	} 
-}
-
-
-//Just update the thing
-function updateTickler( ev ) {
-	//Save the reference somewhere
-	//console.log( ev );
 }
 
 
@@ -893,6 +863,12 @@ function releaseParticipant ( ev ) {
 
 	//Would add to the bottom of the list, but it needs to be at the top
 	var a=null, node = createParticipantNode( el, 0 );
+
+	//Re-add the drag over functionality
+	node.addEventListener( "dragstart", drag );
+	node.addEventListener( "touchstart", touchStart );
+	node.setAttribute( "draggable", true );
+
 	if (a = document.querySelector( "ul.part-drop-list li:nth-child(1)" )) {
 		a.parentElement.insertBefore( node, a );
 	}
@@ -1215,14 +1191,8 @@ show up when a session stops early.
 
  * ------------------------------------ */
 function unhideRecoveryQuestions (ev) {
-	//go to parent node,
-	//unhide everything and mark the choice
-	SS = [ ["hidden","show"], ["show","hidden"] ];
-	var state = ( !RECOVERY_STATE ) ? SS[0] : SS[1];
-	var divs = [].slice.call( document.querySelectorAll( "."+state[0]+"Activate" ));
-	divs.map( function (ev) { ev.className = state[1]+"Activate"; } );	
-	RECOVERY_STATE = (!RECOVERY_STATE) ? 1 : 0;
-	//when the button is pressed, the exercise type can be saved on the backend
+	var divs = [].slice.call( document.querySelectorAll( ".js-toggle-showhide" ) );
+	divs.map( function (el) { el.classList.toggle( "js-hidden" ); } );	
 }
 
 
@@ -1266,7 +1236,6 @@ function updateTime( ev ) {
 	setInterval( function ( ev ) { 
 		sec += ( sec == 60 ) ? -60 : 1;
 		min += ( sec == 60 ) ? 1 : 0;
-		//( min == 60 ) 
 		node.innerHTML = [ padzero( min ),"m:",padzero( sec ),"s" ].join("");
 	}, 1000 );
 	ev.target.parentElement.appendChild( node );
@@ -1437,59 +1406,98 @@ typedef Router {
 Router = {
 	"check-in": [
 		//In JS however, I have to use JSON for an object, meaning that I have to specify the key for each "column" I want.  This is a lot of typing... 
-		{ domSelector: "input[ type=range ]" , event: "input"  , f: [ updateTickler, changeSliderNeighborValue ] }  
-	 ,{ domSelector: "select"              , event: "click"   , f: [ updateTickler ] }
-	 ,{ domSelector: "#ps_note_save"       , event: "click"   , f: checkInSaveNote }
-	 ,{ domSelector: ".modal-load"         , event: "click"   , f: getNextResults }
-	 ,{ domSelector: ".modal-activate"     , event: "click"   , f: generateModalCheckIn }
-	 ,{ domSelector: ".input-slider--incrementor"        , event: "click"   , f: updateNeighborBoxFromSI }
-	 ,{ domSelector: "select[name=ps_week]", event: "change"  , f: updateExerciseSession }
-	 ,{ domSelector: ".params"             , event: "focus"   , f: activateOtherParamText }
-	 ,{ domSelector: ".params"             , event: "blur"    , f: activateOtherParamText }
-	 ,{ domSelector: ".view_more"          , event: "click"   , f: viewAdditional }
+		{ domSelector: "input[ type=range ]" 
+		, event: "input"   , f: changeSliderNeighborValue }  
+	 ,{ domSelector: "#ps_note_save"       
+		, event: "click"   , f: checkInSaveNote }
+	 ,{ domSelector: ".modal-load"         
+		, event: "click"   , f: getNextResults }
+	 ,{ domSelector: ".modal-activate"     
+		, event: "click"   , f: generateModalCheckIn }
+	 ,{ domSelector: ".input-slider--incrementor"
+		, event: "click"   , f: updateNeighborBoxFromSI }
+	 ,{ domSelector: "select[name=ps_week]"
+		, event: "change"  , f: updateExerciseSession }
+	 ,{ domSelector: ".params"             
+		, event: "focus"   , f: activateOtherParamText }
+	 ,{ domSelector: ".params"             
+		, event: "blur"    , f: activateOtherParamText }
+	 ,{ domSelector: ".view_more"          
+		, event: "click"   , f: viewAdditional }
 	]
 
 	,"recovery": [
-		{ domSelector: ".slider"            , event: "input"   , f: changeSliderNeighborValue } 
-	 ,{ domSelector: ".input-slider--incrementor"       , event: "click"   , f: updateNeighborBoxFromSI }
-	 ,{ domSelector: ".modal-activate"    , event: "click"   , f: generateModalRecovery }
-	 ,{ domSelector: "#participant_list li, .participant-info-nav li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
-	 ,{ domSelector: "#sessStop"    , event: "change"   , f: unhideRecoveryQuestions }
+		{ domSelector: ".slider"            
+		, event: "input"   , f: changeSliderNeighborValue } 
+	 ,{ domSelector: ".input-slider--incrementor"
+		, event: "click"   , f: updateNeighborBoxFromSI }
+	 ,{ domSelector: ".modal-activate"    
+		, event: "click"   , f: generateModalRecovery }
+	 ,{ domSelector: "#participant_list li, .participant-info-nav li, #sendPageVals" 
+		, event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
+	 ,{ domSelector: "input[name=sessionStoppedEarly]"    
+		, event: "change"  , f: unhideRecoveryQuestions }
 	]
 
 	,"input": [
-		{ domSelector: ".slider"            , event: "input"   , f: [ wasDocTouched, changeSliderNeighborValue ] } 
-	 ,{ domSelector: ".input-slider--incrementor"       , event: "click"   , f: [ wasDocTouched, updateNeighborBoxFromSI ] } 
-	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" , event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
-	 ,{ domSelector: ".stateChange"  , event: "click"   , f: updateTime } 
-	 ,{ domSelector: "button.stateChange + input"  , event: "click"   , f: changeUp } 
-	 ,{ domSelector: ".toggler-input"  , event: "change"   , f: stateChangeUpdate } 
+		{ domSelector: ".slider"            
+		, event: "input"   , f: [ wasDocTouched, changeSliderNeighborValue ] } 
+	 ,{ domSelector: ".input-slider--incrementor"       
+		, event: "click"   , f: [ wasDocTouched, updateNeighborBoxFromSI ] } 
+	 ,{ domSelector: "#participant_list li, .participant-info-nav li, .inner-selection li, #sendPageVals" 
+		, event: "click"   , f: [ sendPageValsChange, sendPageValCallback ] }
+	 ,{ domSelector: ".stateChange"  
+		, event: "click"   , f: updateTime } 
+	 ,{ domSelector: "button.stateChange + input"  
+		, event: "click"   , f: changeUp } 
+	 ,{ domSelector: ".toggler-input"  
+		, event: "change"  , f: stateChangeUpdate } 
 	]
 
 	,"/":      [
-		{ domSelector: ".part-drop-list li" , event: "dragstart"   , attr: { draggable: true }, f: drag }
-	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: touchStart }
-	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: touchEnd }
-	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: tm }
-	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: touchCancel }
-	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
-	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
-	 ,{ domSelector: ".release"      , event: "click"       , f: releaseParticipant }
-	 ,{ domSelector: ".bigly-right"       , event: "drop"    , f: drop }
-	 ,{ domSelector: ".bigly-right"       , event: "dragover" , f: allowDrop }
+		{ domSelector: ".part-drop-list li" 
+		, event: "dragstart"  , attr: { draggable: true }, f: drag }
+	 ,{ domSelector: ".part-drop-list li" 
+		, event: "touchstart" , attr: { checked:true, draggable: true }, f: touchStart }
+	 ,{ domSelector: ".listing"           
+		, event: "touchEnd"   , f: touchEnd }
+	 ,{ domSelector: ".listing"           
+		, event: "touchMove"  , f: tm }
+	 ,{ domSelector: ".listing"           
+		, event: "touchCancel", f: touchCancel }
+	 ,{ domSelector: "#wash-id"           
+		, event: "click"      , f: saveSessionUsers }
+	 ,{ domSelector: "#bigly-search"      
+		, event: "keyup"      , f: searchParticipants }
+	 ,{ domSelector: ".release"      
+		, event: "click"      , f: releaseParticipant }
+	 ,{ domSelector: ".bigly-right"       
+		, event: "drop"       , f: drop }
+	 ,{ domSelector: ".bigly-right"       
+		, event: "dragover"   , f: allowDrop }
 	]
 
 	,"default":      [
-		{ domSelector: ".part-drop-list li" , event: "dragstart"   , attr: { draggable: true }, f: [ drag ] }
-	 ,{ domSelector: ".part-drop-list li" , event: "touchstart"  , attr: { checked:true, draggable: true }, f: [ touchStart ] }
-	 ,{ domSelector: ".listing"           , event: "touchEnd"    , f: [ touchEnd ] }
-	 ,{ domSelector: ".listing"           , event: "touchMove"   , f: [ tm ] }
-	 ,{ domSelector: ".listing"           , event: "touchCancel" , f: [ touchCancel ] }
-	 ,{ domSelector: "#wash-id"           , event: "click"       , f: saveSessionUsers }
-	 ,{ domSelector: "#bigly-search"      , event: "keyup"       , f: searchParticipants }
-	 ,{ domSelector: ".release",event: "click"       , f: releaseParticipant }
-	 ,{ domSelector: ".bigly-right"       , event: "drop"    , f: drop }
-	 ,{ domSelector: ".bigly-right"       , event: "dragover" , f: allowDrop }
+		{ domSelector: ".part-drop-list li" 
+		, event: "dragstart"  , attr: { draggable: true }, f: [ drag ] }
+	 ,{ domSelector: ".part-drop-list li" 
+		, event: "touchstart" , attr: { checked:true, draggable: true }, f: [ touchStart ] }
+	 ,{ domSelector: ".listing"           
+		, event: "touchEnd"   , f: [ touchEnd ] }
+	 ,{ domSelector: ".listing"           
+		, event: "touchMove"  , f: [ tm ] }
+	 ,{ domSelector: ".listing"           
+		, event: "touchCancel", f: [ touchCancel ] }
+	 ,{ domSelector: "#wash-id"           
+		, event: "click"      , f: saveSessionUsers }
+	 ,{ domSelector: "#bigly-search"      
+		, event: "keyup"      , f: searchParticipants }
+	 ,{ domSelector: ".release"
+		, event: "click"      , f: releaseParticipant }
+	 ,{ domSelector: ".bigly-right"       
+		, event: "drop"       , f: drop }
+	 ,{ domSelector: ".bigly-right"       
+		, event: "dragover"   , f: allowDrop }
 	]
 };
 
@@ -1503,8 +1511,7 @@ document.addEventListener("DOMContentLoaded", function(ev) {
 		//Initialize any date picker elements
 	});
 
-	str = [];
-	for ( n in Router ) str.push( n ); 
+	//str = [];for ( n in Router ) str.push( n ); 
 
 	//Initialize all global elements here, because Routex does not include a way to do this right now.
 	document.querySelector( ".login"	).addEventListener( "click", slideMenu );

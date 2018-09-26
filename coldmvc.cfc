@@ -1597,8 +1597,7 @@ component name = "ColdMVC" {
 	}
 
 
-	public function dbExec ( String datasource = "#data.source#", String filename, String string, bindArgs ) 
-	{
+	public function dbExec ( String datasource = "#data.source#", String filename, String string, bindArgs ) {
 		//Set some basic things
 		Name = "query";
 		SQLContents = "";
@@ -1690,6 +1689,9 @@ component name = "ColdMVC" {
 						return { status = false, message = "Key 'type' does not exist in 'bindArgs' struct key '#n#'" };	
 					if ( !StructKeyExists( v, "value" ) || !IsSimpleValue( v["value"] ) ) 
 						return { status = false, message = "Key 'value' does not exist in 'bindArgs' struct key '#n#'" };	
+					if ( StructKeyExists( v, "list" ) && IsSimpleValue( v["list"] ) ){ 
+						isList = 1;
+					}
 					type  = v.type;
 					value = v.value;
 				}
@@ -1699,7 +1701,13 @@ component name = "ColdMVC" {
 						message = "Each key-value pair in bindArgs must be composed of structs."
 					};
 				}
-				q.addParam( name=LCase(n), value=value, cfsqltype=type );
+
+				q.addParam( 
+					name=LCase(n), 
+					value=value, 
+					cfsqltype=type, 
+					list="#iif(isDefined("isList") && isList gt 0, DE("yes"),DE("no"))#" 
+				);
 			}
 		}
 
@@ -1782,9 +1790,11 @@ component name = "ColdMVC" {
 			}
 		}
 
-		if ( StructKeyExists( appdata, "settings" ) ) 
-			for ( key in keys._optional )
+		if ( StructKeyExists( appdata, "settings" ) ) {
+			for ( key in keys._optional ) {
 				this[key] = (StructKeyExists(appdata.settings, key)) ? appdata.settings[ key ] : false;
+			}
+		}
 
 		this.app = appdata;	
 		return this;

@@ -1,6 +1,7 @@
 <cfscript>
 //Define an error string for use throughout this part
-errstr = "Error at /api/endurance/* - ";
+EP_ENDURANCE = "#link( 'api.cfm' )#";
+errstr = "Error at #EP_ENDURANCE#/* - ";
 vpath = 1;
 try {
 	//Differentiate between Cycles, Treadmills and Other
@@ -43,8 +44,9 @@ try {
 		,timeblock = { req = true }
 		,mchntype = { req = false, ifNone = form.exparam }
 
-		//Only required when at timeblock one
+		//Only required when at timeblock one (or warmup)
 		,hrworking = { req = ( ft == 0 ), ifNone = "off" }
+		,tfhr_time = { req = ( ft == 0 ), ifNone = 0 }
 
 		//Only required when exercise chosen is cycle
 		,rpm = { req = (form.exparam eq CYCLE), ifNone = 0 }
@@ -76,8 +78,17 @@ try {
 		fv.hrworking = ( fv.hrworking eq "on" ) ? 1 : 0; 
 	}
 
-	//???
-	//req.sendAsJson( status = 1, message = "#errstr# #SerializeJSON( fv )#" );
+	//Parse the time
+	if ( fv.tfhr_time eq 0 )
+		ttobj = Now();
+	else {
+		now = Now();
+		ttobj = LSParseDateTime( fv.tfhr_time );
+		ttobj.setMonth( Month( now ) );
+		ttobj.setDay( Day( now ) );
+		ttobj.setYear( Year( now ) );
+		//req.sendAsJson( status = 1, message = "24hrtime - #SerializeJSON({time = ttobj })#" );	
+	}
 
 	//Figure out the form field name 
 	desig = "";
@@ -95,7 +106,7 @@ try {
 	upd = dbExec( 
 		string = "
 		SELECT * FROM 
-			#data.data.endurance#	
+			frm_eetl	
 		WHERE
 			participantGUID = :pid
 		AND 
@@ -127,12 +138,13 @@ if ( !upd.prefix.recordCount ) {
 	vpath = 0;
 	sqlString = "
 	INSERT INTO 
-		#data.data.endurance#	
+		frm_eetl	
 	( participantGUID
 	 ,insertedBy
 	 ,d_inserted
 	 ,mchntype
 	 #iif(ft eq 0, DE(',hrworking'),DE(''))#
+	 #iif(ft eq 0, DE(',wrmup_starttime'),DE(''))#
 	 ,#desig#oth1
 	 ,#desig#oth2
 	 ,#desig#prctgrade
@@ -151,6 +163,7 @@ if ( !upd.prefix.recordCount ) {
 		,:dtstamp
 		,:mchntype
 	  #iif(ft eq 0, DE(',:hrworking'),DE(''))#
+	  #iif(ft eq 0, DE(',:tfhr_time'),DE(''))#
 		,:oth1
 		,:oth2
 		,:prctgrade
@@ -168,12 +181,13 @@ else {
 	vpath = 1;
 	sqlString = "
 	 UPDATE 
-		#data.data.endurance#	
+		frm_eetl	
 	 SET
 		 mchntype = :mchntype
 		,d_inserted = :dtstamp
 		,insertedBy = :insBy
 	  #iif(ft eq 0, DE(',hrworking = :hrworking'),DE(''))#
+	  #iif(ft eq 0, DE(',wrmup_starttime = :tfhr_time'),DE(''))#
 		,#desig#oth1 = :oth1
 		,#desig#oth2 = :oth2
 		,#desig#prctgrade = :prctgrade
@@ -192,8 +206,6 @@ else {
 	";
 }
 
-//req.sendAsJson( status = 0, message = "#errstr# -> #upd.prefix.recordCount# -> #Left(sqlString, 7)#" );
-//abort;
 try {
 	//This is in case I find myself modifying dates from other times
 	dstmp = LSParseDateTime( 
@@ -213,6 +225,7 @@ try {
 		 ,prctgrade= fv.prctgrade
 		 ,rpm      = fv.rpm
 		 ,hrworking= fv.hrworking
+		 ,tfhr_time= { value = ttobj, type="cf_sql_timestamp" }
 		 ,mchntype = fv.mchntype
 		 ,speed    = fv.speed
 		 ,watres   = fv.watres
@@ -284,6 +297,6 @@ catch (any ff) {
 req.sendAsJson( 
 	status = 1, 
 	message = ( !vpath ) ? 
-		"SUCCESS @ /api/endurance/* - Inserted into #data.data.endurance# with values #SerializeJSON( fv )#" :
-		"SUCCESS @ /api/endurance/* - Updated #data.data.endurance# with values #SerializeJSON( fv )#" ) ;
+		"SUCCESS @ #EP_ENDURANCE#/* - Inserted into #data.data.endurance# with values #SerializeJSON( fv )#" :
+		"SUCCESS @ #EP_ENDURANCE#/* - Updated #data.data.endurance# with values #SerializeJSON( fv )#" ) ;
 </cfscript>

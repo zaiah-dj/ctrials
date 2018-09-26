@@ -1,8 +1,31 @@
-<!-----------------------------------------------------
-	constants.cfc
+<!--- -------------------------------------------------------------------------
+constants.cfm
+=============
 
-  List of all constants.
-  ----------------------------------------------------->
+Notes:
+------
+These comments are written in Markdown and can be converted to HTML by running
+`make doc`.
+
+
+Date Created:        
+------------
+2018-09-25
+
+
+Author(s):   
+------------
+-
+
+Description: 
+------------
+A list of constants used throughout the MIV tracking app.
+
+Summary:
+--------
+I got nothing else :)
+
+ ---- ------------------------------------------------------------------------->
 <cfscript>
 const = {
 	 bpDaysLimit=30

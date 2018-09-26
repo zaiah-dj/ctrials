@@ -61,13 +61,7 @@
 				</div>
 			</td>
 		</tr>
-	<!---	
-		<tr class="hiddenActivate">
-			<td>Last #lastIndicator# was</td>
-			<td><!---#lastExerciseName#---></td>
-		</tr>
-	--->	
-		<tr class="hiddenActivate">
+		<tr class="js-toggle-showhide js-hidden">
 			<td>Specify reason stopped early:</td>
 			<td>
 				<button class="modal-activate">Add Reason</button>
@@ -75,7 +69,7 @@
 			</td>
 		</tr>
 
-		<tr class="hiddenActivate">
+		<tr class="js-toggle-showhide js-hidden">
 			<td>Record the Heart Rate, RPE and Affect here if stopped early</td>
 			<td>
 				<table class="innard"> 

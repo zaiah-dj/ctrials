@@ -1,10 +1,30 @@
-<!-----------------------------------------------------
-	custom.cfm
+<!--- -------------------------------------------------------------------------
+custom.cfm
+==========
 
- 	... 
-//Build all record threads
-//Pass in the current session ( session[ session.ivId ] )
+Notes:
+------
+These comments are written in Markdown and can be converted to HTML by running
+`make doc`.
 
+
+Date Created:        
+------------
+2018-09-25
+
+
+Author(s):   
+------------
+-
+
+Description: 
+------------
+This file contains two functions that really shouldn't be functions.  If I do 
+not get the time to come back and refactor this, let these comments serve as 
+a pretty good example of what they do.
+
+Summary:
+--------
 If SelectedParticipants is not defined, 
 	most likely nothing has started, so return a blank table
 If SelectedParticipants is defined, 
@@ -13,7 +33,9 @@ If SelectedParticipants is defined,
 	and match it as the value for the participant GUID
 	you should have
 	[ guid ] = ParticipantSchema
-  ----------------------------------------------------->
+
+
+ ---- ------------------------------------------------------------------------->
 <cfscript>
 function buildRecordThreads( sess_t, q ) {
 	if ( !StructKeyExists( sess_t, "participants" ) ) { 

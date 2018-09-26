@@ -1,9 +1,30 @@
-<!---
+<!--- -------------------------------------------------------------------------
 api.cfm
+=======
+
+Date Created
+------------
+2018-09-25
+
+
+Author(s)
+---------
+-
+
+Description
+-----------
+Each route that utilizes this page will return a JSON payload with the content-type
+'application/json'.
+
+Summary
 -------
-A better way to handle all the API updates needed by CF.
-Still ugly though, because it's CF ;)
-  --->
+-
+
+Scopes Used
+-----------
+No new scopes are introduced here.
+
+ ---- ------------------------------------------------------------------------->
 <cfscript>
 if ( StructKeyExists( form, "this" ) && form.this eq "startSession" )
 	include "api_start_session.cfm";

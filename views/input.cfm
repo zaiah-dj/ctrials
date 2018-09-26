@@ -102,9 +102,9 @@
 						</label>
 					</td>
 				</tr>
-				<cfif isRes>
+				<cfif isEnd>
 				<tr>
-					<td>Warm-Up Start Time (24 hour <i>HH:mm</i>)</td>
+					<td>Warm-Up Start Time <i>(24 hour HH:mm)</i></td>
 					<td>
 						<button class="stateChange">Begin Exercise</button>
 						<cfif ( private.etc.results.c_wrmup_starttime gt 0)>

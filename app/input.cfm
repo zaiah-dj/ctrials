@@ -1,5 +1,41 @@
+<!--- -------------------------------------------------------------------------
+input.cfm
+=========
+
+Notes
+-----
+These comments are written in Markdown and can be converted to HTML by running
+`make doc`.
+
+
+Date Created
+------------
+2018-09-25
+
+
+Author(s)
+---------
+-
+
+Summary
+-------
+Initializing of both RE and EE participants' input data happens here.  The
+code starts by analyzing the current participant's data in [variables.sc] and
+determines whether or not they are an RE or EE participant.  From there
+queries are run and different static data is loaded.
+
+
+Scopes:
+-------
+The scopes [variables.private] and [variables.public].
+
+
+For Maintainers
+---------------
+-
+
+ ---- ------------------------------------------------------------------------->
 <cfscript>
-/* input.cfm - Controls the appearance of pages that need data. */
 if ( cgi.query_string neq "" ) {
 	//What type of exercise has been requested
 	if ( StructKeyExists( url, "param" ) ) {

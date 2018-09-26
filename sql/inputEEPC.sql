@@ -112,6 +112,7 @@ SELECT * FROM
 	,wrmup_speed as p_wrmup_speed
 	,wrmup_watres as p_wrmup_watres
 	,breaks as p_breaks
+	,wrmup_starttime as p_wrmup_starttime
 FROM 
 	frm_EETL	
 WHERE 
@@ -236,6 +237,7 @@ RIGHT JOIN
 	,wrmup_speed as c_wrmup_speed
 	,wrmup_watres as c_wrmup_watres
 	,breaks as c_breaks
+	,wrmup_starttime as c_wrmup_starttime
 FROM 
 	frm_EETL	
 WHERE 
