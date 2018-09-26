@@ -92,139 +92,157 @@ if ( !StructKeyExists( session, "userguid" ) ) {
 	*/
 }
 
+//If application name is ever not set, the user is
+//probably not accessing from where they should be.
+if ( !StructKeyExists( application, "applicationname" ) ) {
+	application.applicationname = "motrpac";
+}
 
 //Check if this an API call or not
 access = { isApi = 0 };
-if ( StructKeyExists( form, "this" ) ) {
-	access.isApi = 1; 
-
-	//All user data will be referenced from this struct 
+if ( application.applicationname == "motrpac-local" ) {
 	usr  = { 
-	  firstname = session.firstname	
-	 ,lastname  = session.lastname	
-	 ,siteid    = session.siteid
-	 ,userguid  = session.userguid	
-	 ,userid    = session.userid	
-	 ,email     = session.email
-	 ,logindts  = session.logindts
-	 ,username  = session.username
+		firstname = 'Antonio' 
+	 ,lastname  = 'Collins'
+	 ,siteid    = 999
+	 ,userguid  = 1049
+	 ,userid    = 1049
+	 ,email     = 'arcollin@wakehealth.edu'
+	 ,logindts  = Now()
+	 ,username  = 'arcollin'
 	};
 }
-
-//Otherwise, initialize the current user
-else if ( StructKeyExists( session, 'mivlogin') ) {
-	//All user data will be referenced from this struct 
-	usr  = { 
-	  firstname = session.firstname	
-	 ,lastname  = session.lastname	
-	 ,siteid    = session.siteid
-	 ,userguid  = session.userguid	
-	 ,userid    = session.userid	
-	 ,email     = session.email
-	 ,logindts  = session.logindts
-	 ,username  = session.username
-	};
-}
-
 else {
-	//admin users should be evaluated first, right now a default site can be assigned?
-	access.isAdmin = session.isDMAQCPM 
-		|| session.isProgrammer 
-		|| session.isSUPERAdmin 
-		|| session.isWebAdmin 
-		|| session.isDMAQCStat 
-		|| session.isRepository;
+	if ( StructKeyExists( form, "this" ) ) {
+		access.isApi = 1; 
 
-	//Also set this
-	access.userSiteId = 0;
-
-	//For debugging only
-	//access.isAdmin = 0;
-
-	//Get the most relevant site id
-	//
-	//dom => The Domain Code ( 'ADU' for adults, 'PED' for kids and 'ANI' for animals )
-	//list => The sites that the user belongs to
-	access.siteInfo = dbExec(
-		filename = "init_siteinfo.sql"
-	, bindargs = { 
-			dom = "ADU"
-		 ,list = { value=session.sitelist,type="cf_sql_varchar",list=1 } 
-		}
-	);
-
-	//The query failed - log it and handle it 
-	if ( !access.siteInfo.status ) {
-		//redirect with an error message
+		//All user data will be referenced from this struct 
+		usr  = { 
+			firstname = session.firstname	
+		 ,lastname  = session.lastname	
+		 ,siteid    = session.siteid
+		 ,userguid  = session.userguid	
+		 ,userid    = session.userid	
+		 ,email     = session.email
+		 ,logindts  = session.logindts
+		 ,username  = session.username
+		};
 	}
 
-	//It looks like the user is part of no groups
-	if ( access.siteinfo.prefix.recordCount eq 0 ) {
-		access.userAllowed = 0;
+	//Otherwise, initialize the current user
+	else if ( StructKeyExists( session, 'mivlogin') ) {
+		//All user data will be referenced from this struct 
+		usr  = { 
+			firstname = session.firstname	
+		 ,lastname  = session.lastname	
+		 ,siteid    = session.siteid
+		 ,userguid  = session.userguid	
+		 ,userid    = session.userid	
+		 ,email     = session.email
+		 ,logindts  = session.logindts
+		 ,username  = session.username
+		};
 	}
 
-	//The user is part of too many groups and will probably have to choose which one
-	if ( access.siteinfo.prefix.recordCount gt 1 ) {
-		//access.userAllowed = 0;
-	}
-
-	//Get user's access rights
-	access.requestorInfo = dbExec(
-		filename = "init_requestorinfo.sql"
-	, bindargs = { 
-			uuid = session.userguid 
-		, siteguid = access.siteInfo.results.siteGUID
-		, accessTypeName = 'Intervention Tracking Entry'
-		}
-	);	
-
-	//The query failed - log it and handle it 
-	if ( !access.requestorInfo.status ) {
-		//redirect with an error message
-	}
-
-	//This user does not have the access I'm looking for, where to redirect?
-	if ( access.requestorInfo.prefix.recordCount eq 0 ) {
-		access.userAllowed = 0;
-	}
 	else {
-		access.userAllowed = 1;
-		access.userSiteId = access.siteinfo.results.siteid;
+		//admin users should be evaluated first, right now a default site can be assigned?
+		access.isAdmin = session.isDMAQCPM 
+			|| session.isProgrammer 
+			|| session.isSUPERAdmin 
+			|| session.isWebAdmin 
+			|| session.isDMAQCStat 
+			|| session.isRepository;
+
+		//Also set this
+		access.userSiteId = 0;
+
+		//For debugging only
+		//access.isAdmin = 0;
+
+		//Get the most relevant site id
+		//
+		//dom => The Domain Code ( 'ADU' for adults, 'PED' for kids and 'ANI' for animals )
+		//list => The sites that the user belongs to
+		access.siteInfo = dbExec(
+			filename = "init_siteinfo.sql"
+		, bindargs = { 
+				dom = "ADU"
+			 ,list = { value=session.sitelist,type="cf_sql_varchar",list=1 } 
+			}
+		);
+
+		//The query failed - log it and handle it 
+		if ( !access.siteInfo.status ) {
+			//redirect with an error message
+		}
+
+		//It looks like the user is part of no groups
+		if ( access.siteinfo.prefix.recordCount eq 0 ) {
+			access.userAllowed = 0;
+		}
+
+		//The user is part of too many groups and will probably have to choose which one
+		if ( access.siteinfo.prefix.recordCount gt 1 ) {
+			//access.userAllowed = 0;
+		}
+
+		//Get user's access rights
+		access.requestorInfo = dbExec(
+			filename = "init_requestorinfo.sql"
+		, bindargs = { 
+				uuid = session.userguid 
+			, siteguid = access.siteInfo.results.siteGUID
+			, accessTypeName = 'Intervention Tracking Entry'
+			}
+		);	
+
+		//The query failed - log it and handle it 
+		if ( !access.requestorInfo.status ) {
+			//redirect with an error message
+		}
+
+		//This user does not have the access I'm looking for, where to redirect?
+		if ( access.requestorInfo.prefix.recordCount eq 0 ) {
+			access.userAllowed = 0;
+		}
+		else {
+			access.userAllowed = 1;
+			access.userSiteId = access.siteinfo.results.siteid;
+		}
+
+		//Always allow admins to get in
+		access.userAllowed = ( access.isAdmin ) ? 1 : 0; 
+		
+		//If the user is still not authorized by this point, try no more
+		if ( !access.userAllowed ) {
+			location( addtoken = "no", url = data.redirectHome );
+		}
+
+		//Finally, catch any unusual cases in which an admin may not be associated with any sites.
+		if ( access.userAllowed && access.isAdmin && ( access.userSiteId eq "" || access.userSiteId == 0 ) ) {
+			access.userSiteId = 999;
+		}
+
+		//Set the session.siteid here because it's needed so often
+		session.siteid = access.userSiteId;
+
+		//And go ahead and permanently log the user into this app 
+		//for the length of the current session
+		session.mivlogin = 1;
+
+		//All user data will be referenced from this struct 
+		usr  = { 
+			firstname = session.firstname	
+		 ,lastname  = session.lastname	
+		 ,siteid    = access.userSiteId 
+		 ,userguid  = session.userguid	
+		 ,userid    = session.userid	
+		 ,email     = session.email
+		 ,logindts  = session.logindts
+		 ,username  = session.username
+		};
 	}
-
-	//Always allow admins to get in
-	access.userAllowed = ( access.isAdmin ) ? 1 : 0; 
-	
-	//If the user is still not authorized by this point, try no more
-	if ( !access.userAllowed ) {
-		location( addtoken = "no", url = data.redirectHome );
-	}
-
-	//Finally, catch any unusual cases in which an admin may not be associated with any sites.
-	if ( access.userAllowed && access.isAdmin && ( access.userSiteId eq "" || access.userSiteId == 0 ) ) {
-		access.userSiteId = 999;
-	}
-
-	//Set the session.siteid here because it's needed so often
-	session.siteid = access.userSiteId;
-
-	//And go ahead and permanently log the user into this app 
-	//for the length of the current session
-	session.mivlogin = 1;
-
-	//All user data will be referenced from this struct 
-	usr  = { 
-	  firstname = session.firstname	
-	 ,lastname  = session.lastname	
-	 ,siteid    = access.userSiteId 
-	 ,userguid  = session.userguid	
-	 ,userid    = session.userid	
-	 ,email     = session.email
-	 ,logindts  = session.logindts
-	 ,username  = session.username
-	};
 }
-
 
 
 //Set an easy to remember reference for the current date

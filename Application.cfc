@@ -19,6 +19,7 @@ component {
 
 	setting showdebugoutput="false";
 	this.sessionManagement = true;
+	this.name = "motrpac-local";
 
 	switch ( #CGI.HTTP_HOST# ) {
 		// LOCAL
