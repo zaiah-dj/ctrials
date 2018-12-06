@@ -2,7 +2,7 @@
 /*Insert fake participants*/
 USE ctrial_db;
 
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 
+INSERT INTO v_ADUSessionTickler VALUES ( 
 	'F2E8B897-FE7F-4FD4-9520-B8A194535B19'
 	,1098112
 	,'Jarius'
@@ -17,36 +17,36 @@ INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, midd
 	,'653A78B1-9BCF-458C-BC70-6E8B5CCFEF80'
 	,'2018/05/16' 
 );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '96EAB663-6804-4624-88AB-720D71C602E0',1098168,'Antonio', 'Collins', 'Ramar',1008,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 'FD371147-F6B8-4E6B-9CB5-2876AFF3B1E1',1098224,'Avagard', 'Reva', '',1019,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '405E01B1-2A0E-4270-8D7F-CA526FB9789B',1098280,'Robert', 'Beasely', 'M',1001,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 'C4D62AEF-C53D-46AA-93EC-1A15EDAA16FE',1098336,'Wellesly', 'Chapel', 'Elliott',1002,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 'AD57D2E5-D6AD-4F4F-9730-C7C479B8D2B7',1098392,'Durn', 'Furn', 'The',1003,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 'E747570B-6640-43C3-ADF3-44BD6C2D2DB6',1098448,'Heidi', 'Woe', 'Woe',1012,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '0D38B435-B719-4AB7-BFF2-B039BAEEF302',1098504,'Dell', 'Jackson', 'Michael',1013,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F',1098560,'Michael', 'Jackson', 'Joe',1014,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '6516AB4C-E270-419F-B35F-136D342A8532',1098616,'Smarty', 'Jopeep', '',1015,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 'B49D18B0-4F59-40FB-A4C9-7C7A754F335D',1098672,'Peter', 'Rabbit', '',1016,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '51303F7A-3DB9-4B45-B62C-5B6A5A24A9C5',1098728,'Gonzaga', 'Montroni', '',1006,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '99BF9538-1CB3-425A-BF0C-B10E08E25DC0',1098784,'Jim', 'Fashionista', '',1007,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '6571CE85-BBF7-4A1E-AF50-7B6833F5629D',1098840,'Virginia', 'Tellurude', '',1005,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '0F858E1A-AF12-4F9C-B1B8-4CC42AF67FB2',1098896, 'Peter', 'Paulson', '',1020,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( 'E9CF0E81-5638-4AAB-A3F0-CA0C6AD062B3',1098952, 'Joanna', 'Hoffman', '',1021,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '46D412E1-0245-4040-896D-2DB8253A7CD8',1099008,'Hiroshima', 'Marketplace', 'The',1011,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
-INSERT INTO v_ADUSessionTickler (participantGUID, pid, firstname, lastname, middlename, acrostic, randomGroupGUID, randomGroupCode, randomGroupDescription, siteID, siteName, siteGUID, d_session ) VALUES ( '67BBDC07-D6BB-4C6C-A5F0-19CDBD65D503',1099064, 'Richard', 'Skeykunk', '',1022,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '96EAB663-6804-4624-88AB-720D71C602E0',1098168,'Antonio', 'Collins', 'Ramar',1008,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( 'FD371147-F6B8-4E6B-9CB5-2876AFF3B1E1',1098224,'Avagard', 'Reva', '',1019,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '405E01B1-2A0E-4270-8D7F-CA526FB9789B',1098280,'Robert', 'Beasely', 'M',1001,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( 'C4D62AEF-C53D-46AA-93EC-1A15EDAA16FE',1098336,'Wellesly', 'Chapel', 'Elliott',1002,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( 'AD57D2E5-D6AD-4F4F-9730-C7C479B8D2B7',1098392,'Durn', 'Furn', 'The',1003,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( 'E747570B-6640-43C3-ADF3-44BD6C2D2DB6',1098448,'Heidi', 'Woe', 'Woe',1012,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '0D38B435-B719-4AB7-BFF2-B039BAEEF302',1098504,'Dell', 'Jackson', 'Michael',1013,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F',1098560,'Michael', 'Jackson', 'Joe',1014,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '6516AB4C-E270-419F-B35F-136D342A8532',1098616,'Smarty', 'Jopeep', '',1015,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( 'B49D18B0-4F59-40FB-A4C9-7C7A754F335D',1098672,'Peter', 'Rabbit', '',1016,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '51303F7A-3DB9-4B45-B62C-5B6A5A24A9C5',1098728,'Gonzaga', 'Montroni', '',1006,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '99BF9538-1CB3-425A-BF0C-B10E08E25DC0',1098784,'Jim', 'Fashionista', '',1007,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '6571CE85-BBF7-4A1E-AF50-7B6833F5629D',1098840,'Virginia', 'Tellurude', '',1005,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '0F858E1A-AF12-4F9C-B1B8-4CC42AF67FB2',1098896, 'Peter', 'Paulson', '',1020,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( 'E9CF0E81-5638-4AAB-A3F0-CA0C6AD062B3',1098952, 'Joanna', 'Hoffman', '',1021,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '46D412E1-0245-4040-896D-2DB8253A7CD8',1099008,'Hiroshima', 'Marketplace', 'The',1011,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
+INSERT INTO v_ADUSessionTickler VALUES ( '67BBDC07-D6BB-4C6C-A5F0-19CDBD65D503',1099064, 'Richard', 'Skeykunk', '',1022,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
 
 
 /*Insert test staff for testing*/
 INSERT INTO v_Interventionists VALUES ( 'CDDAC161-2B5E-44CF-ABC8-D15623942239', 'Antonio', 'Collins', 1049, 999 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Joseph', 'Robertson', 1081, 999 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Kristy', 'Gordon', 1087, 999 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Alba', 'McIntyre', 8181, 999 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Aldous', 'Huxley', 9909, 777 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Cameron',  'Fontana', 7141, 777 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Majel', 'Barrett', 4411, 777 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Aldous', 'Huxley', 2233, 888 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Cameron',  'Fontana', 331, 888 );
-INSERT INTO v_Interventionists VALUES ( UUID(),'Majel', 'Barrett', 8010, 888 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Joseph', 'Robertson', 1081, 999 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Kristy', 'Gordon', 1087, 999 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Alba', 'McIntyre', 8181, 999 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Aldous', 'Huxley', 9909, 777 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Cameron',  'Fontana', 7141, 777 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Majel', 'Barrett', 4411, 777 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Aldous', 'Huxley', 2233, 888 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Cameron',  'Fontana', 331, 888 );
+INSERT INTO v_Interventionists VALUES ( newid(),'Majel', 'Barrett', 8010, 888 );
 
 
 /*Populate the equipment log*/
@@ -465,80 +465,80 @@ INSERT INTO v_Interventionists VALUES ( UUID(),'Majel', 'Barrett', 8010, 888 );
 
 
 /*Seed checked-in participants*/
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_0, 1, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_0', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_1, 2, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_1', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_2, 2, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_2', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_3, 3, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_3', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_4, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_4', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_5, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_5', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_6, 4, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_6', 1049, 1);
 
 	/*This is today*/
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_7, 5, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_7', 1049, 1);
 	
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_7, 5, 1, 180, '405E01B1-2A0E-4270-8D7F-CA526FB9789B', 'DATE_7', 1049, 1);
 	
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_7, 5, 1, 180, 'C4D62AEF-C53D-46AA-93EC-1A15EDAA16FE', 'DATE_7', 1049, 1);
 	/*End of today*/
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_8, 7, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_8', 1049, 1);
 
-	INSERT INTO frm_EETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, mchntype)
+	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_9, 7, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_9', 1049, 1);
 
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_0, 1, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_0', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_1, 2, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_1', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_2, 2, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_2', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_3, 3, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_3', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_4, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_4', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_5, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_5', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_6, 4, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_6', 1049, 1);
 
 	/*This is today*/
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_7, 5, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_7', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_7, 5, 1, 180, 'F2E8B897-FE7F-4FD4-9520-B8A194535B19', 'DATE_7', 1049, 1);
 	
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_7, 5, 1, 180, '0D38B435-B719-4AB7-BFF2-B039BAEEF302', 'DATE_7', 1049, 1);
 	/*End of today*/
 		
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_8, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_8', 1049, 1);
 
-	INSERT INTO frm_RETL (insertedBy, dayofwk, stdywk, typedata, weight, participantGUID, d_visit, staffID, bodypart)
+	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_9, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_9', 1049, 1);
 

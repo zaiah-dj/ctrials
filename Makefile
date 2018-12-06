@@ -1,16 +1,26 @@
 # Vars
 PREFIX=
-SQLCMD=sqlcmd
-SED=sed
-TAR=sed
-DBUSER="SA"
-DBPASSWORD="GKbAt68!"
+
+# Common utilities act differently on different boxes
+SED=gsed
+TAR=tar
+DATE=gdate
+
+# Type your credentials for MySQL here 
+SQLBIN=mysql
 DBSERVER="localhost"
-#DBUSER="arcollinUser"
-#DBPASSWORD="9mKZpaL9B3"
-#DBSERVER="SQLDEV.PHS.WFUBMC.EDU"
-DATABASE=zProgrammer_AntonioCollins
+DBUSER="root"
+DBPASSWORD="toor"
+
+# Type your credentials for SQL Server here
+#SQLBIN=sqlcmd
+#DBSERVER="localhost"
+#DBUSER="SA"
+#DBPASSWORD="GKbAt68!"
+
+# Things that should never change
 CONFIG=
+DATABASE=ctrial_db
 DATES= \
 	'-3 weeks 1 day' \
 	'-2 weeks 1 day' \
@@ -27,19 +37,6 @@ DATES= \
 	'3 weeks 1 day'
 
 
-# I want at least 6 weeks, 3 from before today and 3 from after
-# Additionally, this program cannot populate Sunday or Saturday 
-# ------------------------------------------
-# Mon, Tue, Thurs
-# Mon, Tue, Wed
-# Mon, Tue
-# Tue, Thurs, Fri
-# -
-# Tue
-
-#    Stuff i never used...
-#    @grep '^[a-z].*:$$' Makefile | sed 's/^/\t/'
-
 # check - Check for the right dependencies and show valid options
 check:
 	@printf "Checking for sh...\n"
@@ -54,6 +51,7 @@ check:
 	@printf "Available options are\n"
 	@grep '^# [a-z]' Makefile | sed 's/^# //'
 	@echo $(ACTIVE_DATE)
+
 
 # changelog - Create a changelog
 changelog:
@@ -82,38 +80,50 @@ pkg:
 
 # dbprep - Prepare the files to be loaded into database
 dbprep:	
-	@sed '{ s/DATABASE_NAME/$(DATABASE)/; }' setup/schema.sql > setup/schema.sql.tmp
+	@cp setup/schema.sql setup/schema.sql.tmp
 	@sed "{ \
-		s/DATABASE_NAME/$(DATABASE)/; \
-		s/DATE_0/$$(date --date='-3 weeks 1 day' +%F)/; \
-		s/DATE_1/$$(date --date='-2 weeks 1 day' +%F)/; \
-		s/DATE_2/$$(date --date='-2 weeks 4 day' +%F)/; \
-		s/DATE_3/$$(date --date='-1 week 3 day' +%F)/; \
-		s/DATE_4/$$(date --date='4 days ago' +%F)/; \
-		s/DATE_5/$$(date --date='2 days ago' +%F)/; \
-		s/DATE_6/$$(date --date='1 day ago' +%F)/; \
-		s/DATE_7/$$(date --date='0' +%F)/; \
-		s/DATE_8/$$(date --date='2 weeks 1 day' +%F)/; \
-		s/DATE_9/$$(date --date='2 weeks 1 day' +%F)/; \
-		s/DAYOFWK_0/$$(date --date='-3 weeks 1 day' +%w)/g; \
-		s/DAYOFWK_1/$$(date --date='-2 weeks 1 day' +%w)/g; \
-		s/DAYOFWK_2/$$(date --date='-2 weeks 4 day' +%w)/g; \
-		s/DAYOFWK_3/$$(date --date='-1 week 3 day' +%w)/g; \
-		s/DAYOFWK_4/$$(date --date='4 days ago' +%w)/g; \
-		s/DAYOFWK_5/$$(date --date='2 days ago' +%w)/g; \
-		s/DAYOFWK_6/$$(date --date='1 day ago' +%w)/g; \
-		s/DAYOFWK_7/$$(date --date='0' +%w)/g; \
-		s/DAYOFWK_8/$$(date --date='2 weeks 1 day' +%w)/g; \
-		s/DAYOFWK_9/$$(date --date='2 weeks 1 day' +%w)/g; \
+		s/DATE_0/$$($(DATE) --date='-3 weeks 1 day' +%F)/; \
+		s/DATE_1/$$($(DATE) --date='-2 weeks 1 day' +%F)/; \
+		s/DATE_2/$$($(DATE) --date='-2 weeks 4 day' +%F)/; \
+		s/DATE_3/$$($(DATE) --date='-1 week 3 day' +%F)/; \
+		s/DATE_4/$$($(DATE) --date='4 days ago' +%F)/; \
+		s/DATE_5/$$($(DATE) --date='2 days ago' +%F)/; \
+		s/DATE_6/$$($(DATE) --date='1 day ago' +%F)/; \
+		s/DATE_7/$$($(DATE) --date='0' +%F)/; \
+		s/DATE_8/$$($(DATE) --date='2 weeks 1 day' +%F)/; \
+		s/DATE_9/$$($(DATE) --date='2 weeks 1 day' +%F)/; \
+		s/DAYOFWK_0/$$($(DATE) --date='-3 weeks 1 day' +%w)/g; \
+		s/DAYOFWK_1/$$($(DATE) --date='-2 weeks 1 day' +%w)/g; \
+		s/DAYOFWK_2/$$($(DATE) --date='-2 weeks 4 day' +%w)/g; \
+		s/DAYOFWK_3/$$($(DATE) --date='-1 week 3 day' +%w)/g; \
+		s/DAYOFWK_4/$$($(DATE) --date='4 days ago' +%w)/g; \
+		s/DAYOFWK_5/$$($(DATE) --date='2 days ago' +%w)/g; \
+		s/DAYOFWK_6/$$($(DATE) --date='1 day ago' +%w)/g; \
+		s/DAYOFWK_7/$$($(DATE) --date='0' +%w)/g; \
+		s/DAYOFWK_8/$$($(DATE) --date='2 weeks 1 day' +%w)/g; \
+		s/DAYOFWK_9/$$($(DATE) --date='2 weeks 1 day' +%w)/g; \
 	}" setup/populate.sql > setup/populate.sql.tmp
 
 
-
 # dbload - Load up the database
-dbload:	dbprep
-dbload:	
-	sqlcmd -S $(DBSERVER) -i setup/schema.sql.tmp -U $(DBUSER) -P $(DBPASSWORD)
-	sqlcmd -S $(DBSERVER) -i setup/populate.sql.tmp -U $(DBUSER) -P $(DBPASSWORD)
+dbload_mssql:	dbprep
+dbload_mssql:	
+	$(SQLBIN) -S $(DBSERVER) -i setup/schema.sql.tmp -U $(DBUSER) -P $(DBPASSWORD)
+	$(SQLBIN) -S $(DBSERVER) -i setup/populate.sql.tmp -U $(DBUSER) -P $(DBPASSWORD)
+
+
+# MySQL database load commands
+dbload_mysql:	dbprep
+dbload_mysql:	
+	$(SQLBIN) -u $(DBUSER) --password=$(DBPASSWORD) < setup/schema.sql.tmp
+	$(SQLBIN) -u $(DBUSER) --password=$(DBPASSWORD) < setup/populate.sql.tmp
+
+
+# A command to keep things consistent
+dbload: dbprep
+dbload: dbload_mysql
+dbload:
+	@printf '' > /dev/null 
 
 
 # clean - Clean up any new files

@@ -9,9 +9,9 @@ run the motrpac intervention interface
 from a local setup.
 
  ------------------------------- */
-DROP DATABASE IF EXISTS DATABASE_NAME;
-CREATE DATABASE DATABASE_NAME;
-USE DATABASE_NAME;
+DROP DATABASE IF EXISTS ctrial_db;
+CREATE DATABASE ctrial_db;
+USE ctrial_db;
 
 /* ----------------------------------
 ac_mtr_serverlog
@@ -29,10 +29,10 @@ here as well:
 ,sl_useragent VARCHAR(512)        - Which user agent?
 ,sl_message TEXT          - Custom message (AJAX here)
  ---------------------------------- */
-DROP TABLE IF EXISTS IF EXISTS ac_mtr_serverlog;
+DROP TABLE IF EXISTS ac_mtr_serverlog;
 CREATE TABLE ac_mtr_serverlog
 (
-	 sl_id INT NOT NULL
+	 sl_id INT AUTO_INCREMENT PRIMARY KEY
 	,sl_session_id VARCHAR(64)
 	,sl_method VARCHAR(10)
 	,sl_ip VARCHAR(128)
@@ -59,9 +59,9 @@ in during the visit?
 ,ps_reex_type int                 - (not used)
 ,ps_date_time_assessed datetime   - Date assessed
  ---------------------------- */
-DROP TABLE IF EXISTS IF EXISTS ac_mtr_checkinstatus_v2;
+DROP TABLE IF EXISTS ac_mtr_checkinstatus_v2;
 CREATE TABLE ac_mtr_checkinstatus_v2 (	
-	 ps_id INT NOT NULL
+	 ps_id INT AUTO_INCREMENT PRIMARY KEY
 	,ps_pid VARCHAR(64)
 	,ps_session_id VARCHAR(64)
 	,ps_week int
@@ -89,7 +89,7 @@ participant if needed.
 
 DROP TABLE IF EXISTS ac_mtr_bloodpressure_v2;
 CREATE TABLE ac_mtr_bloodpressure_v2 (
-	 bp_id INT NOT NULL
+	 bp_id INT AUTO_INCREMENT PRIMARY KEY
 	,bp_pid VARCHAR(64)
 	,bp_systolic int
 	,bp_diastolic int
@@ -121,11 +121,9 @@ other data source.
 ,siteGUID varchar(256) NULL              - 
 ,d_session datetime NULL                 - ?
  ---------------------------- */
-
-
 DROP TABLE IF EXISTS v_ADUSessionTickler;
 CREATE TABLE v_ADUSessionTickler (
-	p_id int NOT NULL,
+	p_id INT AUTO_INCREMENT PRIMARY KEY,
 	participantGUID varchar(50) NOT NULL,
 	pid int NOT NULL,
 	firstname varchar(256) NULL,
@@ -148,10 +146,7 @@ ac_mtr_frm_progress
 A table for endurance data
 that can be shared by other apps.
  ---------------------------- */
-
-
-	DROP TABLE IF EXISTS ac_mtr_frm_progress;
-
+DROP TABLE IF EXISTS ac_mtr_frm_progress;
 CREATE TABLE ac_mtr_frm_progress (
 	 fp_step int NULL
 	,fp_participantGUID varchar(50) NOT NULL
@@ -165,13 +160,11 @@ frm_EETL
 A table for endurance data
 that can be shared by other apps.
  ---------------------------- */
-
-
 DROP TABLE IF EXISTS frm_EETL;
 CREATE TABLE frm_EETL (
-	rec_id           int NOT NULL,
-	recordthread     varchar(50) NOT NULL DEFAULT (newid()),
-	d_inserted       datetime NOT NULL DEFAULT (getdate()),
+	rec_id INT AUTO_INCREMENT PRIMARY KEY,
+	recordthread     varchar(50) NOT NULL DEFAULT (UUID()),
+	d_inserted       datetime NOT NULL DEFAULT (CURDATE()),
 	insertedBy       varchar(50) NOT NULL,
 	deleted          int NULL,
 	deleteReason     TEXT NULL,
@@ -296,13 +289,11 @@ frm_RETL
 A table for resistance data
 that can be shared by other apps.
  ---------------------------- */
-
-
 DROP TABLE IF EXISTS frm_RETL;
 CREATE TABLE frm_RETL (
-	rec_id          int NOT NULL,
-	recordthread    varchar(50) NOT NULL DEFAULT (newid()),
-	d_inserted      datetime NOT NULL DEFAULT (getdate()),
+	rec_id INT AUTO_INCREMENT PRIMARY KEY,
+	recordthread    varchar(50) NOT NULL DEFAULT (UUID()),
+	d_inserted      datetime NOT NULL DEFAULT (CURDATE()),
 	insertedBy      varchar(50) NOT NULL,
 	dayofwk int NULL,
 	stdywk int NULL,
@@ -468,7 +459,7 @@ to get the app filled out.
  ---------------------------- */
 DROP TABLE IF EXISTS ac_mtr_iv_metrics;
 CREATE TABLE ac_mtr_iv_metrics (
-	 mt_id int NOT NULL
+	 mt_id INT AUTO_INCREMENT PRIMARY KEY
 	,mt_recordthread VARCHAR(64)
 	,mt_daysession VARCHAR(64)
 	,mt_staffguid VARCHAR(50)
@@ -484,12 +475,12 @@ more accurately match what is
 going on.
 
  recID            int NOT NULL
-,noteGUID         varchar(50) NOT NULL DEFAULT (newid())
+,noteGUID         varchar(50) NOT NULL DEFAULT (UUID())
 ,participantGUID  varchar(50) NULL
 ,noteText         TEXT NULL
 ,noteCategory     int NULL
 ,noteDate         datetime NULL
-,d_inserted       datetime NOT NULL DEFAULT (getdate())
+,d_inserted       datetime NOT NULL DEFAULT (CURDATE())
 ,insertedby       varchar(50) NULL
 ,deleted          int NULL
 ,deletedby        varchar(50) NULL
@@ -497,13 +488,13 @@ going on.
  ---------------------------- */
 DROP TABLE IF EXISTS ParticipantNotes;
 CREATE TABLE ParticipantNotes (
-	 recID            int NOT NULL
-	,noteGUID         varchar(50) NOT NULL DEFAULT (newid())
+	 recID INT AUTO_INCREMENT PRIMARY KEY
+	,noteGUID         varchar(50) NOT NULL DEFAULT (UUID())
 	,participantGUID  varchar(50) NULL
 	,noteText         TEXT NULL
 	,noteCategory     int NULL
 	,noteDate         datetime NULL
-	,d_inserted       datetime NOT NULL DEFAULT (getdate())
+	,d_inserted       datetime NOT NULL DEFAULT (CURDATE())
 	,insertedby       varchar(50) NULL
 	,deleted          int NULL
 	,deletedby        varchar(50) NULL
@@ -527,7 +518,7 @@ bp_index int NOT NULL
  ---------------------------- */
 DROP TABLE IF EXISTS ac_mtr_retl_superset_bodypart;
 CREATE TABLE ac_mtr_retl_superset_bodypart ( 
-	id int NOT NULL, 
+	id INT AUTO_INCREMENT PRIMARY KEY,
 	participantGUID varchar(64) NOT NULL,
 	d_visit datetime NOT NULL,
 	exercise int NOT NULL, 
@@ -545,7 +536,7 @@ ac_mtr_session_interventionist_assignment
  ---------------------------- */
 DROP TABLE IF EXISTS ac_mtr_session_interventionist_assignment ;
 CREATE TABLE ac_mtr_session_interventionist_assignment (
-	 csd_id int NOT NULL
+	 csd_id INT AUTO_INCREMENT PRIMARY KEY
 	,csd_daily_session_id VARCHAR(64)
 	,csd_interventionist_guid VARCHAR(64)
 	,csd_participant_guid VARCHAR(64)
@@ -570,7 +561,7 @@ early.
  ---------------------------- */
 DROP TABLE IF EXISTS ac_mtr_premature_sessions;
 CREATE TABLE ac_mtr_premature_sessions (
-	 pm_id int NOT NULL
+	 pm_id INT AUTO_INCREMENT PRIMARY KEY
 	,pm_breaks INT
 	,pm_guid VARCHAR(64)
 	,pm_dayofwk INT
@@ -595,12 +586,10 @@ the day.
 ,sm_datetimestarted DATE
 ,sm_dayofweek INT        
  ---------------------------- */
-
-
 DROP TABLE IF EXISTS ac_mtr_session_metadata;
 CREATE TABLE ac_mtr_session_metadata (
-	 sm_id int NOT NULL
-	,sm_sessdayid VARCHAR(50) NOT NULL DEFAULT (newid())
+	 sm_id INT AUTO_INCREMENT PRIMARY KEY
+	,sm_sessdayid VARCHAR(50) NOT NULL DEFAULT (UUID())
 	,sm_siteid VARCHAR(64)
 	,sm_datetimestarted DATETIME NOT NULL
 	,sm_dayofweek INT
@@ -616,8 +605,6 @@ ac_mtr_frm_labels
 -
 
  ---------------------------- */
-
-
 DROP TABLE IF EXISTS ac_mtr_frm_labels;
 CREATE TABLE ac_mtr_frm_labels (
 	 parttype INT NOT NULL
@@ -633,8 +620,6 @@ v_Interventionists
 ...
 
  ---------------------------- */
-
-
 DROP TABLE IF EXISTS v_Interventionists;
 CREATE TABLE v_Interventionists (
     userGUID VARCHAR(64) NOT NULL,
@@ -654,7 +639,7 @@ settings.
  ---------------------------- */
 DROP TABLE IF EXISTS frm_RESL;
 CREATE TABLE frm_RESL (
-	rec_id int NOT NULL,
+	rec_id INT AUTO_INCREMENT PRIMARY KEY,
 	recordthread varchar(50) NOT NULL,
 	d_inserted datetime NOT NULL,
 	insertedBy varchar(50) NOT NULL,
@@ -895,7 +880,7 @@ INSERT INTO ac_mtr_frm_labels VALUES ( 1,  'triceppress'    , 14, 'Tricep Push-D
 
 DROP TABLE IF EXISTS equipmentTracking;
 CREATE TABLE equipmentTracking (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -907,12 +892,10 @@ CREATE TABLE equipmentTracking (
 	settingGUID varchar(50) NULL
 );
 
- 
-
 
 DROP TABLE IF EXISTS equipmentTrackingEquipment;
 CREATE TABLE equipmentTrackingEquipment (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -929,9 +912,10 @@ CREATE TABLE equipmentTrackingEquipment (
 	dateVersionChanged datetime NULL
 ); 
 
+
 DROP TABLE IF EXISTS equipmentTrackingExercises;
 CREATE TABLE equipmentTrackingExercises (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -946,7 +930,7 @@ CREATE TABLE equipmentTrackingExercises (
 
 DROP TABLE IF EXISTS equipmentTrackingInterventions;
 CREATE TABLE equipmentTrackingInterventions (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -960,7 +944,7 @@ CREATE TABLE equipmentTrackingInterventions (
 
 DROP TABLE IF EXISTS equipmentTrackingMachines;
 CREATE TABLE equipmentTrackingMachines (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -975,7 +959,7 @@ CREATE TABLE equipmentTrackingMachines (
 
 DROP TABLE IF EXISTS equipmentTrackingManufacturers;
 CREATE TABLE equipmentTrackingManufacturers (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -989,7 +973,7 @@ CREATE TABLE equipmentTrackingManufacturers (
 
 DROP TABLE IF EXISTS equipmentTrackingModels;
 CREATE TABLE equipmentTrackingModels (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -1003,7 +987,7 @@ CREATE TABLE equipmentTrackingModels (
 
 DROP TABLE IF EXISTS equipmentTrackingSettings;
 CREATE TABLE equipmentTrackingSettings (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
@@ -1017,7 +1001,7 @@ CREATE TABLE equipmentTrackingSettings (
 
 DROP TABLE IF EXISTS equipmentTrackingVersions;
 CREATE TABLE equipmentTrackingVersions (
-	recID int NOT NULL,
+	recID INT AUTO_INCREMENT PRIMARY KEY,
 	d_inserted datetime NULL,
 	insertedBy varchar(50) NULL,
 	deleted int NULL,
