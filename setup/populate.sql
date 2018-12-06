@@ -2,12 +2,6 @@
 /*Insert fake participants*/
 USE DATABASE_NAME;
 
-DECLARE @BUILD_EQUIPMENT_LOG integer;
-SET @BUILD_EQUIPMENT_LOG = 1;
-
-DECLARE @CHECK_IN_PARTICIPANTS integer;
-SET @CHECK_IN_PARTICIPANTS = 1;
-
 INSERT INTO v_ADUSessionTickler VALUES ( 'F2E8B897-FE7F-4FD4-9520-B8A194535B19',1098112,'Jarius', 'Richardson', '',1018,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
 INSERT INTO v_ADUSessionTickler VALUES ( '96EAB663-6804-4624-88AB-720D71C602E0',1098168,'Antonio', 'Collins', 'Ramar',1008,'E42063F-BA19-4B39-9EF3-140CC4ECE485','ADUEndur', 'Endurance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
 INSERT INTO v_ADUSessionTickler VALUES ( 'FD371147-F6B8-4E6B-9CB5-2876AFF3B1E1',1098224,'Avagard', 'Reva', '',1019,'ADEB361D-965E-4631-8510-75F1F06F830A','ADUResist', 'Resistance participant',999,'Duke','653A78B1-9BCF-458C-BC70-6E8B5CCFEF80', '2018/05/16' );
@@ -42,8 +36,6 @@ INSERT INTO v_Interventionists VALUES ( newid(),'Majel', 'Barrett', 8010, 888 );
 
 
 /*Populate the equipment log*/
-IF @BUILD_EQUIPMENT_LOG = 1
-BEGIN
 	INSERT INTO equipmentTrackingVersions ( insertedBy,deleted,deletedBy,d_deleted,deleteReason,versionGUID,versionDescription )
 	VALUES ( '303B9E92-DEA7-4FD1-B1C0-BADC027098D4', NULL, NULL, NULL, NULL, 'DAE9CADB-EDA4-47A2-921C-2366E06AD4E9', '1.0' );
 	INSERT INTO equipmentTrackingVersions ( insertedBy,deleted,deletedBy,d_deleted,deleteReason,versionGUID,versionDescription )
@@ -456,12 +448,9 @@ BEGIN
 	VALUES ( '303B9E92-DEA7-4FD1-B1C0-BADC027098D4', NULL, NULL, NULL, NULL, 'E42C8006-567E-4666-A395-1B6D8673758E', 'Non-Press Shoulder Exercise (Site Specific)', 13, 'shoulder' );
 	INSERT INTO equipmentTrackingExercises ( insertedBy,deleted,deletedBy,d_deleted,deleteReason,exerciseGUID,exerciseDescription,exerciseOrder,formVariableName )
 	VALUES ( '303B9E92-DEA7-4FD1-B1C0-BADC027098D4', NULL, NULL, NULL, NULL, '8FCA3C6B-2ADF-4BDA-8A42-4CBFA91137CC', 'Triceps Push-Down or Triceps Extension Exercise', 14, 'triceps' );
-END
 
 
 /*Seed checked-in participants*/
-IF @CHECK_IN_PARTICIPANTS = 1
-BEGIN
 	INSERT INTO frm_EETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [mchntype])
 	VALUES(1049, DAYOFWK_0, 1, 1, 180, '96EAB663-6804-4624-88AB-720D71C602E0', 'DATE_0', 1049, 1);
 
@@ -539,7 +528,3 @@ BEGIN
 	INSERT INTO frm_RETL ([insertedBy], [dayofwk], [stdywk], [typedata], [weight], [participantGUID], [d_visit], [staffID], [bodypart])
 	VALUES(1049, DAYOFWK_9, 7, 1, 180, '6AD200F6-BF4F-4C83-8893-0A6CBDB9FB9F', 'DATE_9', 1049, 1);
 
-END
-
-/*Populate the values*/
-GO
