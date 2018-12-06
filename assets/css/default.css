@@ -1,8 +1,8 @@
-/* -------------------------- *
+/* ----------------------------------- *
 default.css
 Stylesheet for Motrpac Intervention
 Tracking application. 
- * -------------------------- */
+ * ----------------------------------- */
 html, p, div {
 	font-family: 'Tahoma', sans-serif;
 	font-size: 1.0em;
@@ -48,7 +48,6 @@ h5 {
 	font-family: "Ropa Sans", sans-serif;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	color: white;
 	border-bottom: 2px solid black;
 }
 h6 { font-size: 1.5em; }
@@ -961,7 +960,8 @@ a.tiny-link {
 }
 
 button.stateChange,
-input[type=submit] { 
+input[type=submit], 
+button.submit {
 	margin-top: 10px; 
 	font-size: 1.2em; 
 	/*background-color: #728ab2;*/
@@ -980,7 +980,8 @@ input[type=submit] {
 }
 
 button.stateChange:hover,
-input[type=submit]:hover { 
+input[type=submit]:hover,
+button.submit:hover {
 	/*background-color: #e6f2ff;*/
 	background-color: #bbbbbb;
 	color: black; 
@@ -1844,20 +1845,7 @@ table.checkin tr td.notes {
 	border: 0px;
 }
 
-.pop-up button {
-	text-align: center;
-	width: 100px;
-	height: 30px;
-	border: 0px;
-}
 
-.pop-up button:hover {
-	text-align: center;
-	width: 100px;
-	height: 30px;
-	border: 0px;
-	color: white;
-}
 
 .resistance-class-container button.modal-activate ,
 .resistance-class-container .pop-up button {
@@ -1918,25 +1906,6 @@ table.checkin tr td.notes {
 
 
 
-.pop-up {
-	width: 60%;
-	background-color: white;
-	padding: 15px;
-	font-size: 1.3em;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-gecko-border-radius: 5px;
-	min-width: 300px;
-	margin: 0 auto;
-	position: fixed;
-	display: block;
-	top: 10%;
-	height: 80%;
-	left: 20%;
-	overflow: hidden;
-	border: 1px solid black;
-	z-index: 99;
-}
 
 /* rewrite the scrollbar */
 ::-webkit-scrollbar {
@@ -2075,7 +2044,8 @@ input[name=tfhr_time] {
 	background: white;
 }
 
-/* -------------------------- *
+
+/* ----------------------------------- *
 Javascript creates a bunch
 of it's own	windows and they
 can be styled via the following
@@ -2083,7 +2053,7 @@ block.
 
 All windows are prefixed with
 js- (e.g. js-div, js-popup, etc)
- * -------------------------- */
+ * ----------------------------------- */
 .js-overlay-window {
 	position: fixed;	
 	display: none;
@@ -2102,6 +2072,112 @@ js- (e.g. js-div, js-popup, etc)
 	z-index: 99;
 }
 
+.js-popup-underlay {
+	background: rgba(200,200,200,0.6);
+}
+
+.js-popup {
+	width: 80%;
+	background-color: white;
+	padding: 10px;
+	padding-top: 5px;
+	font-size: 1.3em;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-gecko-border-radius: 5px;
+	min-width: 300px;
+	margin: 0 auto;
+	position: fixed;
+	display: block;
+	top: 10%;
+	height: 50%;
+	left: 10%;
+	overflow: hidden;
+	border: 1px solid black;
+	z-index: 99;
+}
+
+.js-popup .js-popup--header {
+	text-align: right;
+	padding: 0px;
+}
+
+.js-popup span.js-popup--close {
+	font-size: 2.5em;
+	color: #999;
+}
+
+.js-popup span.js-popup--close:hover {
+	color: #333;
+}
+
+.js-popup .js-popup--textarea {
+	font-size: 2.0em;
+	display: block;
+	min-height: 100px;
+	width: 95%;
+	margin: 0 auto;
+	position: relative;
+}
+
+.js-popup button {
+  /*refer to button.submit for additional rules pertinent 
+	 *to changing the other parameters of this class*/ 
+	float: none;
+	margin-left: 2.5%;
+}
+
+.js-popup h1,
+.js-popup h2,
+.js-popup h3,
+.js-popup h4,
+.js-popup h5,
+.js-popup h6 {
+	position: relative;
+	padding-top: 0px !important;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+	width: 95%;
+	margin-left: 2.5%;
+	top: -10px;
+	color: black !important;
+}
+
+.js-popup .js-popup--table {
+	height: 65%;
+	min-height: 100px;
+	overflow: auto;
+	width: 95%;
+	margin: 0 auto;
+	position: relative;
+}
+
+.js-popup table tr {
+	line-height: 0.9em;
+}
+
+.js-popup table tr td {
+	font-size: 0.9em;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.js-popup table tr:nth-child(even) { 
+	background-color: #ddd;	
+}
+
+.js-popup table tr td:nth-child(1) {
+	width: 70%;
+}
+
+.js-popup table tr td:nth-child(2) {
+	font-style: italic;
+	font-size: 0.7em;	
+	text-align: center;
+	width: 30%;
+	min-width: 150px;
+}
+
 .js-overlay-window li:hover {
 	background-color: #ccc;
 }
@@ -2116,6 +2192,28 @@ js- (e.g. js-div, js-popup, etc)
 	display: none;
 }
 
+.js-debug {
+	position: absolute;
+	padding: 5px;
+	font-size: 0.8em;
+	top: 10px;
+	left: 70%;
+	height: 50%;
+	width: 30%;
+	overflow-Y: scroll;
+	display: block;	
+	z-index: 99;
+	background-color: blue;
+	color: white;
+}
+
+.js-showuserreason {
+	width: 100%;
+	height: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 .persistent-nav-icon-window {
 	left: 0px;
 }
@@ -2123,5 +2221,4 @@ js- (e.g. js-div, js-popup, etc)
 .login-window {
 	right: 0px;
 }
-
 

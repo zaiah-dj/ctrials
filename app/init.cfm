@@ -82,7 +82,7 @@ include "custom.cfm";
 if ( !StructKeyExists( session, "userguid" ) ) {
 	//Redirect if I am not on an approved server
 	if ( !ListContains( ArrayToList( data.localdev ), cgi.http_host ) )
-		location( addtoken = "no", url = data.redirectForLogin );
+		;//location( addtoken = "no", url = data.redirectForLogin );
 	/*
 	else {
 		//Also requires a userGUID

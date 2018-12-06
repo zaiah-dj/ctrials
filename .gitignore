@@ -22,6 +22,7 @@
 # Some things are just for me.
 TODO
 LOCAL.TODO
+src.vim
 
 # Exclude these directories
 components/*

@@ -1,6 +1,6 @@
 <cfoutput>
 <div class="container-body">
-	<input type="hidden" name="pid" value="#url.id#">
+	<input type="hidden" name="pid" value="#cs.participantId#">
 
 	<table class="table table-striped participant-entry">
 		<!--- Only show if the participant is resistance based --->
@@ -30,17 +30,17 @@
 			<td>
 				<div class="clabel">
 					0
-					<input type=radio name=breaksTaken value="0" checked></input>
+					<input type=radio name=breaksTaken value="0" #values.breaksTaken[1]#></input>
 					<span class="checkmark"></span>
 				</div>
 				<div class="clabel">
 					1
-					<input type=radio name=breaksTaken value="1"></input>
+					<input type=radio name=breaksTaken value="1" #values.breaksTaken[2]#></input>
 					<span class="checkmark"></span>
 				</div>
 				<div class="clabel">
 					More than 1
-					<input type=radio name=breaksTaken value=">1"></input>
+					<input type=radio name=breaksTaken value="2" #values.breaksTaken[3]#></input>
 					<span class="checkmark"></span>
 				</div>
 			</td>
@@ -51,25 +51,36 @@
 			<td>
 				<div class="clabel">
 					No	
-					<input type=radio name=sessionStoppedEarly value="0" #iif(aborted, DE(''), DE('checked'))#></input>
+					<input type=radio name=sessionStoppedEarly value="0" #values.sessionStoppedEarly[1]#></input>
 					<span class="checkmark"></span>
 				</div>
 				<div class="clabel">
 					Yes	
-					<input id=sessStop type=radio name=sessionStoppedEarly value="1" #iif(aborted, DE('checked'), DE(''))#></input>
+					<input id=sessStop type=radio name=sessionStoppedEarly value="1" #values.sessionStoppedEarly[2]#></input>
 					<span class="checkmark"></span>
 				</div>
 			</td>
 		</tr>
-		<tr class="js-toggle-showhide js-hidden">
+		<tr class="js-toggle-showhide #values.hiddenOrNot#">
 			<td>Specify reason stopped early:</td>
 			<td>
-				<button class="modal-activate">Add Reason</button>
-				<input type=hidden id=reasonStoppedEarly name="reasonStoppedEarly"></input>
+				<button class="modal-activate">
+				<cfif values.stoppedReason neq "">
+					Edit Reason
+				<cfelse>
+					Add Reason
+				</cfif>
+				</button>
+				<input type=hidden id=reasonStoppedEarly 
+					value="#values.stoppedReason#"
+					name="reasonStoppedEarly"></input>
+			<cfif values.stoppedReason neq "">
+				<div id="reasonShowUser" class="js-showuserreason">#values.stoppedReason#</div>
+			</cfif>
 			</td>
 		</tr>
 
-		<tr class="js-toggle-showhide js-hidden">
+		<tr class="js-toggle-showhide #values.hiddenOrNot#">
 			<td>Record the Heart Rate, RPE and Affect here if stopped early</td>
 			<td>
 				<table class="innard"> 
@@ -78,13 +89,13 @@
 					<td>
 						<div class="input-slider">
 							<div class="input-slider--slider">
-								<input type="range" min="70" max="220" class="slider" value="145" name="recoveryHR">
+								<input type="range" min="70" max="220" class="slider" value="#values.stoppedHr#" name="recoveryHR">
 								<div class="input-slider--slider--ranges">
 									<div class="input-slider--slider--min">70</div>
 									<div class="input-slider--slider--max">220</div>
 								</div>
 							</div>
-							<div class="input-slider--value"><span>0</span><span> </span></div>
+							<div class="input-slider--value"><span>#values.stoppedHr#</span><span> </span></div>
 							<div class="input-slider--buttons">
 								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
 								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
@@ -97,13 +108,13 @@
 					<td>
 						<div class="input-slider">
 							<div class="input-slider--slider">
-								<input type="range" min="6" max="20" class="slider" value="13" name="recoveryRPE">
+								<input type="range" min="6" max="20" class="slider" value="#values.stoppedRpe#" name="recoveryRPE">
 								<div class="input-slider--slider--ranges">
 									<div class="input-slider--slider--min">6</div>
 									<div class="input-slider--slider--max">20</div>
 								</div>
 							</div>
-							<div class="input-slider--value"><span>0</span><span> %</span></div>
+							<div class="input-slider--value"><span>#values.stoppedRpe#</span><span> %</span></div>
 							<div class="input-slider--buttons">
 								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
 								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
@@ -116,13 +127,13 @@
 					<td>
 						<div class="input-slider">
 							<div class="input-slider--slider">
-								<input type="range" min="-5" max="5" class="slider" value="0" name="recoveryAffect">
+								<input type="range" min="-5" max="5" class="slider" value="#values.stoppedAfct#" name="recoveryAffect">
 								<div class="input-slider--slider--ranges">
 									<div class="input-slider--slider--min">-5</div>
 									<div class="input-slider--slider--max">5</div>
 								</div>
 							</div>
-							<div class="input-slider--value"><span>0</span><span></span></div>
+							<div class="input-slider--value"><span>#values.stoppedAfct#</span><span></span></div>
 							<div class="input-slider--buttons">
 								<button class="input-slider--incrementor js-up">#const.thickArrow#</button>
 								<button class="input-slider--incrementor js-down">#const.thickArrow#</button>
@@ -142,9 +153,6 @@
 		<input type="hidden" name="dayofwk" value="#session.currentDayOfWeek#">
 		<input type="hidden" name="stdywk" value="#sc.week#">
 		<input type="hidden" name="insBy" value="#usr.userguid#">
-	<cfif aborted>
-		<input type="hidden" name="lastExercisePrefix" value="#lastExercisePrefix#">
-	</cfif>
 	</div>
 	<input id="sendPageVals" type="submit" value="Finish!" style="width: 200px;color:white;"></input>
 </div>

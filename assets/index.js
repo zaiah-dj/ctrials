@@ -12,7 +12,9 @@ can be styled via CSS.
 
 //Is this a fully touch capable device?
 var TOUCHABLE=0;
-//???
+//Debug window
+var debug = { on: 0, c: null, p: null, style: 0/*0=window, 1=console*/ }; 
+
 var inc = 0;
 //For check-in
 var local_data = {};
@@ -174,6 +176,7 @@ HTML will look like:
 function addFrameworkWin( elChain ) {
 	//Create the background shade 
 	shadenode = document.createElement( "div" );
+	shadenode.className = "js-popup-underlay";
 	shadenode.style.width = "100%";
 	shadenode.style.height = "100%";
 	shadenode.style.display = "block";
@@ -181,23 +184,21 @@ function addFrameworkWin( elChain ) {
 	shadenode.style.top = "0px";
 	shadenode.style.left = "0px";
 	shadenode.style.zIndex = "99";
-	shadenode.style.backgroundColor = "rgba(190,190,190,0.3)";
 
 	//Generate the window we'll actually work with
 	node = document.createElement( "div" );
-	node.className = "pop-up";
+	node.className = "js-popup";
 	node.style.zIndex = "99";
 	//node.id = "addedwindow";
 
 	//Generate a header
 	xout = document.createElement( "div" );
+	xout.className = "js-popup--header";
 	xout.style.width = "100%";
-	xout.style.height = "50px";
 
 	//Generate the 'X' to close the window
 	span = document.createElement( "span" );
-	span.style.textAlign = "right"; 
-	span.className = "close"; 
+	span.className = "js-popup--close"; 
 	span.innerHTML = "&times;";	
 	span.addEventListener( "click", function (ev) {
 		ev.preventDefault();
@@ -229,6 +230,7 @@ function addFrameworkWin( elChain ) {
 	//Add to the DOM
 	shadenode.appendChild( node );
 	document.body.appendChild( shadenode );
+	return shadenode;
 }
 
 
@@ -331,11 +333,8 @@ function saveParticipantEarlyStopReason ( ev ) {
 			d.innerHTML = r.value;
 		else {
 			d = document.createElement( "div" );
-			d.style.width = "100%";
-			d.style.height = "auto";
-			d.style.marginTop = "20px";
-			d.style.marginBottom = "20px";
 			d.id = "reasonShowUser";
+			d.className = "js-showuserreason";
 			d.innerHTML = r.value;
 			var p = r.parentElement.appendChild( d );
 
@@ -365,7 +364,7 @@ function drag (ev, optArg) {
 		//ev.dataTransfer.setData("text", ev.target.id);
 		console.log( "drag started..." ); 
 		fw[fw.index] = prepareParticipantNode( ev.target );
-console.log( fw[ fw.index ] );
+		//console.log( fw[ fw.index ] );
 	}
 }
 
@@ -409,16 +408,6 @@ function prepareParticipantNode ( el )
 Prepare a participant node.
  * ------------------------------------ */
 function prepareParticipantNode ( el ) {
-/*
-	return { 
-		id: el.children[1].innerHTML
-	 ,name: el.children[0].innerHTML.split( " (" )[0]
-	 ,pid: el.children[0].innerHTML.match(/([0-9].*)/)[1].replace(")","")
-	 ,ref: el
-	 ,className: el.className
-	};
-*/
-
 	return {
 		ref: el
 	 ,id: el.querySelector( "span.pguid" ).innerHTML
@@ -1014,21 +1003,17 @@ Track touches from the beginning.
 function touchStart (ev, passedName) {
 	//Disable the standard ability to select the touched object
 	ev.preventDefault();
-
 	try {
 		//Short name for the stuff I'm concerned with
-		pp = prepareParticipantNode( ev.target );
+		pp = prepareParticipantNode( ev.currentTarget );
 
-		//Get the total number of fingers touching the screen
-		fingerCount = ev.touches.length;
-
-		// since we're looking for a swipe (single finger) and not a gesture (multiple fingers),
-		// check that only one finger was used
-		if ( fingerCount > 1 ) 
+		// Check that only one finger was used
+		if (( fingerCount = ev.touches.length ) > 1 ) 
 			touchCancel(ev);
 		else {
 			//Always check against drop list and make sure the duplicate entries aren't getting in
-			aa = [].slice.call( document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" ) ); 
+			//aa = [].slice.call( document.querySelectorAll( ".listing-drop ul li span:nth-child(2)" ) ); 
+			aa = [].slice.call( document.querySelectorAll( ".listing-drop span.pguid" ) );
 			if ( aa.length > 0 ) {
 				for ( i=0; i<aa.length; i++) {
 					if ( aa[i].innerHTML == pp.id ) {
@@ -1037,15 +1022,15 @@ function touchStart (ev, passedName) {
 					}
 				}
 			}
-		  node = createParticipantNode( pp, 0 );
+		  node = createParticipantNode( pp, 1 );
 			targ = document.querySelector( ".listing-drop ul" );
 			targ.appendChild( node );
-			ev.target.parentElement.removeChild( ev.target );
+			ev.currentTarget.parentElement.removeChild( ev.currentTarget );
 		}
 	}
 	catch (err) {
 		//Create a window display the exception
-		//addFrameworkWin({[ {div:{ innerHTML: err }} ]});
+		db( JSON.stringify( ee ).replace(/,/g,",<br>") );
 	}
 }
 
@@ -1055,6 +1040,7 @@ function touchCancel (ev, pn)
 
 Cancel touch on a screen.
  * ------------------------------------ */
+						/*
 function touchCancel (ev, pn) {
 	// reset the variables back to default values
 	fingerCount = 0;
@@ -1071,6 +1057,7 @@ function touchCancel (ev, pn) {
 	swipeDirection = null;
 	triggerElementID = null;
 }
+*/
 
 
 /* ------------------------------------ *
@@ -1078,7 +1065,7 @@ function tm (ev, pn)
 
 Create a modal for the checkin page.
  * ------------------------------------ */
-function tm (ev, pn) {
+/*function tm (ev, pn) {
 	ev.preventDefault();
 	if ( ev.touches.length == 1 ) {
 		curX = ev.touches[0].pageX;
@@ -1088,16 +1075,9 @@ function tm (ev, pn) {
 		touchCancel(ev);
 	}
 }
+*/
 
 
-/* ------------------------------------ *
-function generateModalCheckIn( ev )
-
-Create a modal for the checkin page.
- * ------------------------------------ */
-function touchEnd (ev, pn) {
-	;
-}
 
 
 /* ------------------------------------ *
@@ -1108,20 +1088,20 @@ Create a modal for the checkin page.
 function generateModalCheckIn( ev ) {
 	ev.preventDefault();
 	//Add a new window with callback and extra elements
-	addFrameworkWin( [
+	var node = addFrameworkWin( [
 		{ textarea: { 
-			width: "100%", height: "80%", id: "ta-inner" 
+				id: "ta-inner", 
+				className: "js-popup--textarea"
 		}}
 	, { button: {
-			innerHTML: "Save!"
-		, width: "50%"
-		, height: "30px"
-		, left: "10px"
-		, marginTop: "10px"
-		, eventListener: { event:"click", callback:saveParticipantNote }
+				innerHTML: "Save!"
+		  , className: "submit"
+		  , eventListener: { event:"click", callback:saveParticipantNote }
 		}} 		
 	]); 
+	document.getElementById("ta-inner").focus();
 }
+
 
 
 /* ------------------------------------ *
@@ -1131,29 +1111,29 @@ Create a modal for the recovery page.
  * ------------------------------------ */
 function generateModalRecovery( ev ) {
 	ev.preventDefault();
-	addFrameworkWin( [
-		{ textarea: { width: "100%", height: "80%", id: "ta-inner" 
-		 ,innerHTML: document.getElementById("reasonStoppedEarly").value
+	var node = addFrameworkWin( [
+		{ textarea: { 
+				id: "ta-inner" 
+			, className: "js-popup--textarea"
+		 	, innerHTML: document.getElementById("reasonStoppedEarly").value
 		}}
 	, { button: {
-			innerHTML: "Save!"
-		, width: "50%"
-		, height: "30px"
-		, left: "10px"
-		, marginTop: "10px"
-		, eventListener: { event:"click", callback: saveParticipantEarlyStopReason }
+				innerHTML: "Save!"
+		  , className: "submit"
+			, eventListener: { event:"click", callback: saveParticipantEarlyStopReason }
 		}} 		
 	]); 
+	document.getElementById("ta-inner").focus();
 }
 
 
 /* ------------------------------------ *
-function viewAdditional( ev )
+function generateViewAdditional( ev )
 
 Create a modal with the previous 
 results.
  * ------------------------------------ */
-function viewAdditional( ev ) {
+function generateViewAdditional( ev ) {
 	ev.preventDefault();
 	pd = [].slice.call( document.querySelectorAll("input[name=ps_pid]") );
 	//make xhr request for the rest of the data
@@ -1165,11 +1145,10 @@ function viewAdditional( ev ) {
 			a.RESULTS.DATA.map( function(aa) { str += "<tr><td>" + aa[3] + "</td><td>" + aa[5] + "</td></tr>"; } );
 			str += "</table>";
 			addFrameworkWin( [
-				{ div: { 
-					width: "80%"
-				 ,height: "80%"
-				 ,top: "10%"
-				 ,innerHTML: "<h5>Notes</h5>" + str 
+				{ h5: { innerHTML: "Notes" } }
+			 ,{ div: { 
+				  className: "js-popup--table"
+				 ,innerHTML: str 
 				}}
 			]);
 		}
@@ -1403,6 +1382,9 @@ typedef Router {
 	
 } 
  */
+
+function biz(ev) { ev.preventDefault(); alert( 'clicked' ); }
+
 Router = {
 	"check-in": [
 		//In JS however, I have to use JSON for an object, meaning that I have to specify the key for each "column" I want.  This is a lot of typing... 
@@ -1423,7 +1405,7 @@ Router = {
 	 ,{ domSelector: ".params"             
 		, event: "blur"    , f: activateOtherParamText }
 	 ,{ domSelector: ".view_more"          
-		, event: "click"   , f: viewAdditional }
+		, event: "click"   , f: generateViewAdditional }
 	]
 
 	,"recovery": [
@@ -1457,14 +1439,12 @@ Router = {
 	,"/":      [
 		{ domSelector: ".part-drop-list li" 
 		, event: "dragstart"  , attr: { draggable: true }, f: drag }
-	 ,{ domSelector: ".part-drop-list li" 
-		, event: "touchstart" , attr: { checked:true, draggable: true }, f: touchStart }
+ 	 ,{ domSelector: ".part-drop-list li" 
+		, event: "touchstart" , attr: { draggable: true }, f: touchStart }
+	 /*,{ domSelector: ".listing"           
+		, event: "touchmove"  , f: tm }
 	 ,{ domSelector: ".listing"           
-		, event: "touchEnd"   , f: touchEnd }
-	 ,{ domSelector: ".listing"           
-		, event: "touchMove"  , f: tm }
-	 ,{ domSelector: ".listing"           
-		, event: "touchCancel", f: touchCancel }
+		, event: "touchcancel", f: touchCancel }*/
 	 ,{ domSelector: "#wash-id"           
 		, event: "click"      , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      
@@ -1481,13 +1461,11 @@ Router = {
 		{ domSelector: ".part-drop-list li" 
 		, event: "dragstart"  , attr: { draggable: true }, f: [ drag ] }
 	 ,{ domSelector: ".part-drop-list li" 
-		, event: "touchstart" , attr: { checked:true, draggable: true }, f: [ touchStart ] }
+		, event: "touchstart" , attr: { checked:true, draggable: true }, f: touchStart }
+/*	 ,{ domSelector: ".listing"           
+		, event: "touchmove"  , f: tm }
 	 ,{ domSelector: ".listing"           
-		, event: "touchEnd"   , f: [ touchEnd ] }
-	 ,{ domSelector: ".listing"           
-		, event: "touchMove"  , f: [ tm ] }
-	 ,{ domSelector: ".listing"           
-		, event: "touchCancel", f: [ touchCancel ] }
+		, event: "touchcancel", f: touchCancel }*/
 	 ,{ domSelector: "#wash-id"           
 		, event: "click"      , f: saveSessionUsers }
 	 ,{ domSelector: "#bigly-search"      
@@ -1501,17 +1479,26 @@ Router = {
 	]
 };
 
+function db( text ) {
+	var n;
+	debug.c.appendChild( n = document.createElement( "li" )	);
+	n.innerHTML = text;
+}
 
 //main()
 document.addEventListener("DOMContentLoaded", function(ev) {
-	rx = new Routex({ routes:Router, debug:true });
-	rx.init();
+	(rx = new Routex({ routes:Router })).init();
+	
 	document.addEventListener("touchstart", function() { 
 		TOUCHABLE=1; 
-		//Initialize any date picker elements
 	});
 
-	//str = [];for ( n in Router ) str.push( n ); 
+	if ( debug.on ) {
+		(debug.p = document.createElement("div")).className = "js-debug"; 
+		debug.p.appendChild( ( debug.c = document.createElement("ul") ) );
+		document.body.appendChild( debug.p );
+		db( "Debug Window" );	
+	}	
 
 	//Initialize all global elements here, because Routex does not include a way to do this right now.
 	document.querySelector( ".login"	).addEventListener( "click", slideMenu );

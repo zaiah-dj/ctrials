@@ -40,16 +40,16 @@ manifest={
 /* ... */
 
 /*Select a datasource*/
-,"source" = ( useDebug ) ? "zProgrammer_AntonioCollins" : "motrpac"
+,"source" = "mpdb"
 
 /*All requests will use this as the base directory*/
-,"base"   = "/motrpac/web/secure/dataentry/iv/"
+,"base"   = "/ctrials/"
 
 /*This is a symbolic name for the application*/
 /*,"name"   = "iv"*/
 
 /*Set the site title from here*/
-,"title"  = "Motrpac Intervention Tracking"
+,"title"  = "Clinical Trials Interface"
 
 /*This is used to control how much logging to do where*/
 ,"settings" = {
