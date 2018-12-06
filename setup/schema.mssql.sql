@@ -9,13 +9,13 @@ run the motrpac intervention interface
 from a local setup.
 
  ------------------------------- */
-IF db_id( 'DATABASE_NAME' ) IS NULL
+IF db_id( 'ctrial_db' ) IS NULL
 BEGIN
-	CREATE DATABASE DATABASE_NAME;
+	CREATE DATABASE ctrial_db;
 END
 GO
 
-USE DATABASE_NAME;
+USE ctrial_db;
 GO
 
 DECLARE @BUILD_EQUIPMENT_LOG integer;

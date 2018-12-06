@@ -23,6 +23,7 @@
 TODO
 LOCAL.TODO
 src.vim
+dev.mk
 
 # Exclude these directories
 components/*

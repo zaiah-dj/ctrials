@@ -5,6 +5,15 @@ This project is a stripped down, open-source implementation of an app I wrote to
 
 ## Table of Contents
 
+- Setup
+	- Running Locally
+	- Linux
+	- OSX
+	- Windows
+- General Usage
+	- 
+- Developer Usage
+	- 
 
 ## Setup 
 
@@ -15,6 +24,7 @@ This project is a stripped down, open-source implementation of an app I wrote to
 - SQL Server (Runs on Linux, OSX and Windows)
 - Git Bash (or some other Unix-compatible shell)
 - GNU Make
+
 
 #### Linux
 
