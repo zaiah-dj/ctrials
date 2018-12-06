@@ -1,28 +1,58 @@
 <cfscript>
-
-//recall is needed, so let's handle it
-
-
-//also check to see if a session was stopped early
-aborted = StructKeyExists( url, "abort" );
 	//get the type of user
 	type = dbExec(
-		string = "select randomGroupCode from #data.data.participants# where participantGUID = :pid"
+		string = "select randomGroupCode from v_ADUSessionTickler where participantGUID = :pid"
 	 ,bindArgs = { pid = url.id }
 	).results.randomGroupCode;
 	isEnd = ListContains(const.ENDURANCE, type );
 	isRes = ListContains(const.RESISTANCE, type );
 	mpName = ( isEnd ) ? "time" : "extype";
+	dbName = ( isEnd ) ? "frm_eetl" : "frm_retl";
 	partClass = ( isEnd ) ? "endurance" : "resistance";	
 	lastIndicator = ( isEnd ) ? "Recorded Time" : "Exercise";
 
-if ( aborted ) {
+//recall is needed, so let's handle it
+previous = dbExec( 
+	string = "
+SELECT 
+	breaks
+, stopped
+, stoppedhr
+, stoppedrpe
+, stoppedOthafct
+, stoppedsp
+FROM
+	#dbName#
+WHERE
+	participantGUID = :pid
+AND
+	d_visit = :dvisit
+"
+, bindArgs = {
+		pid = currentId
+  , dvisit = { value = cdate, type = "cf_sql_date" }
+  }
+);
+	
 
-	//Figure out The text name will do a lot
-	lastExercise = (StructKeyExists(url, mpName )) ? url[ mpName ] : 0;
-	obj = CreateObject( "component", "components.#partClass#" ).init();	
-	lastExerciseName = (isEnd) ? obj.getTimeInfo( lastExercise ).pname : obj.getExerciseName( lastExercise ).pname;
-	lastExercisePrefix = (isEnd) ? obj.getTimeInfo( lastExercise ).prefix : obj.getExerciseName( lastExercise ).prefix;
-
+//Approximate the values from what is in the database (if anything)
+pr = previous.results;
+values = {
+	recoveryDone = ( previous.prefix.recordCount gt 0 )
+ ,breaksTaken=[
+		(pr.breaks eq 0 || pr.breaks eq "" ) ? "checked" : ""
+	 ,(pr.breaks eq 1 ) ? "checked" : ""
+	 ,(pr.breaks eq 2 ) ? "checked" : ""
+	]
+ ,sessionStoppedEarly=[
+		(pr.stopped eq 0 || pr.stopped eq "") ? "checked" : ""
+	 ,(pr.stopped eq 1 ) ? "checked" : ""
+	]
+ ,stoppedReason = pr.stoppedsp
+ ,stoppedAfct = ( pr.stoppedOthafct eq "" ) ? 0 : pr.stoppedOthafct
+ ,stoppedHr = ( pr.stoppedhr eq "" ) ? 145 : pr.stoppedhr
+ ,stoppedRpe = ( pr.stoppedrpe eq "" ) ? 13 : pr.stoppedrpe
+ ,hiddenOrNot = ( pr.stopped eq 1 ) ? "" : "js-hidden"
 }
+
 </cfscript>

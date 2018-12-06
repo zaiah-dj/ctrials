@@ -49,7 +49,7 @@ function buildRecordThreads( sess_t, q ) {
 		if ( !StructKeyExists( sess_t.participants, key) ) {
 			//Create a key that can be referenced by the participant GUID
 			cp = sess_t.participants[ key ] = {};
-			cp.recordThread = Trim( dbExec( string = "SELECT newID() as newGUID" ).results.newGUID );
+			cp.recordThread = Trim( dbExec( string = "SELECT UUID() as newGUID" ).results.newGUID );
 			cp.checkInCompleted = 0 ;
 			cp.exerciseParameter = 0 ;
 			cp.recoveryCompleted = 0;
