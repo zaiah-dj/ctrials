@@ -8,12 +8,11 @@ PREFIX=
 SED=sed
 TAR=tar
 DATE=date
+DBUSER=
+DBPASSWORD=
 
 # Type your credentials for MySQL here 
-#DBUSER="root"
-#DBPASSWORD=""
-DBUSER="SA"
-DBPASSWORD="GKbAt68!"
+include auth.mk
 
 # Things that should never change
 DBSERVER="localhost"
@@ -37,9 +36,14 @@ DATES= \
 
 # Extract just the targets so that I know what everything does
 main:
+	@printf "ctrials - an open-source patient management interface\n"
+	@printf "=====================================================\n\n"
 	@printf "Available options are:\n"
-	@grep '^# [a-z]' Makefile | sed 's/^# //'
-
+	@grep '^# [a-z]' Makefile | sed 's/^# //' | sed 's/^/  /'
+	@printf "\nTo seed the database properly, type in the username and password\n"
+	@printf "as environment variables to make via the -e flag.\n"
+	@printf "(try \`make -e DBUSER=username -e DBPASSWORD=passw0rd\`)\n\n"
+	@printf "Optionally, you can also type them into the file auth.mk\n"
 
 # mssql - Load and prepare database tables for a client running SQL Server 2016+ 
 mssql: SQLBIN=sqlcmd
