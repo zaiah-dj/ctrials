@@ -31,8 +31,8 @@ var STATE_TRACKER = {};
 //Document was touched
 var docWasTouched = 0;
 //All endpoints go here for easy editing in the future
-const var apibase = "/ctrials";
-const var api = {
+const apibase = "/ctrials";
+const api = {
 	"updateNote":	apibase + "/update-note.cfm"
  ,"updateGeneral": apibase + "/update.cfm"
  ,"completedDays": apibase + "/completed-days-results.cfm"
