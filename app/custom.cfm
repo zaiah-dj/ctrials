@@ -2,12 +2,6 @@
 custom.cfm
 ==========
 
-Notes:
-------
-These comments are written in Markdown and can be converted to HTML by running
-`make doc`.
-
-
 Date Created:        
 ------------
 2018-09-25
@@ -49,7 +43,7 @@ function buildRecordThreads( sess_t, q ) {
 		if ( !StructKeyExists( sess_t.participants, key) ) {
 			//Create a key that can be referenced by the participant GUID
 			cp = sess_t.participants[ key ] = {};
-			cp.recordThread = Trim( dbExec( string = "SELECT UUID() as newGUID" ).results.newGUID );
+			cp.recordThread = randstr( 36 );
 			cp.checkInCompleted = 0 ;
 			cp.exerciseParameter = 0 ;
 			cp.recoveryCompleted = 0;

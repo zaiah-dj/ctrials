@@ -451,6 +451,7 @@ if ( StructKeyExists( cs, "participants" ) ) {
 
 		//Short name for reference throughout the app
 		sc = cs.participants[ cs.participantId ];
+//writedump( cs.participants ); abort; 
 
 		//Define a prefix to choose between Endurance and Resistance participants
 		prefix = (isEnd) ? "eetl" : "retl";

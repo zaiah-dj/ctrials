@@ -28,6 +28,7 @@ dev.mk
 # Exclude these directories
 components/*
 app/dev/
+WEB-INF/
 
 # Always track CFCs
 !components/*.cfc
