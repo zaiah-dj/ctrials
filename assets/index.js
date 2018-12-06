@@ -31,11 +31,13 @@ var STATE_TRACKER = {};
 //Document was touched
 var docWasTouched = 0;
 //All endpoints go here for easy editing in the future
-/*
-var ENDPOINTS = {
-	["/time"] = "/motrpac/web/secure/dataentry/iv/time.cfm"
+const var apibase = "/ctrials";
+const var api = {
+	"updateNote":	apibase + "/update-note.cfm"
+ ,"updateGeneral": apibase + "/update.cfm"
+ ,"completedDays": apibase + "/completed-days-results.cfm"
+ ,"notes": apibase + "/notes.cfm"
 };
-*/
 
 /* ----------------------------------------------------*
  * Routex( args )
@@ -627,7 +629,7 @@ function checkInSaveNote ( ev ) {
 			}
 		}
 	}
-	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update-note.cfm", true );
+	xhr.open( "POST", api.updateNote , true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( 
 		"note=" + noteValue + 
@@ -683,7 +685,7 @@ function saveSessionUsers (ev) {
 //console.log( payload );return;
 
 	//Send a POST to the server
-	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
+	xhr.open( "POST", api.updateGeneral, true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( payload );
 /*console.log( payload );
@@ -741,15 +743,10 @@ function updateExerciseSession ( ev ) {
 	var q = document.getElementById( "weekSession" );
 	
 	//Create the URL
-	var l = "/motrpac/web/secure/dataentry/iv/" 
-		+ "completed-days-results.cfm" 
-		+ "?pid=" + pid 
-		+ "&week=" + ev.target.value ;
+	var l = api.completedDays + "?pid=" + pid + "&week=" + ev.target.value ;
 
 	//Send a request and replace the field
 	var x = new XMLHttpRequest();
-	//console.log( l );
-	
 	x.open( "GET", l , false); 
 	x.send();
 	q.innerHTML = x.responseText;	
@@ -846,7 +843,7 @@ function releaseParticipant ( ev ) {
 	}
 
 	//Send the POST request to server
-	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/update.cfm", true );
+	xhr.open( "POST", api.updateGeneral, true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send( payload );
 
@@ -979,7 +976,7 @@ function sendPageValCallback ( ev ) {
 			}
 		}
 	}
-	x.open( 'POST', '/motrpac/web/secure/dataentry/iv/update.cfm', false );
+	x.open( 'POST', api.updateGeneral, false );
 	x.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
 	x.send(Vals);
 }
@@ -1153,7 +1150,7 @@ function generateViewAdditional( ev ) {
 			]);
 		}
 	}
-	xhr.open( "POST", "/motrpac/web/secure/dataentry/iv/notes.cfm", true );
+	xhr.open( "POST", api.notes, true );
 	xhr.setRequestHeader( "Content-Type", "application/x-www-form-urlencoded" );
 	xhr.send(
 		"pid=" + pd[0].value +

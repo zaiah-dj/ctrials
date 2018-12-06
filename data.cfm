@@ -40,7 +40,7 @@ manifest={
 /* ... */
 
 /*Select a datasource*/
-,"source" = "mpdb"
+,"source" = "ctrial_db"
 
 /*All requests will use this as the base directory*/
 ,"base"   = "/ctrials/"
